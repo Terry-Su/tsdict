@@ -16,6 +16,7 @@ import isBoolean from "lodash/isBoolean"
 import isString from "lodash/isString"
 import isDate from "lodash/isDate"
 import find from "lodash/find"
+import debounce from "lodash/debounce"
 
 export {
   isNil,
@@ -36,7 +37,9 @@ export {
 	isBoolean,
 	isString,
 	isDate,
-	find
+  find,
+  
+  debounce,
 }
 
 export const isIndexFound = ( index: number ) => index !== -1

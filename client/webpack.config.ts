@@ -3,14 +3,14 @@ const { resolve } = PATH
 const webpack = require( 'webpack' )
 const CopyWebpackPlugin = require( "copy-webpack-plugin" )
 import { __DEV__ } from "./script/global"
-import { OUTPUT_FILE_NAME, ENTRY, OUTPUT, ENTRY_INDEX_HTML, OUTPUT_INDEX_HTML } from './script/constants';
+import { OUTPUT_FILE_NAME, ENTRY, OUTPUT, ENTRY_INDEX_HTML, OUTPUT_INDEX_HTML } from './script/constants'
 
 
 
 
 const webpackClientConfig = {
-  mode  : __DEV__ ? 'development' : 'production',
-  entry : {
+  mode : __DEV__ ? 'development' : 'production',
+  entry: {
     [ OUTPUT_FILE_NAME ]: [ 
       ENTRY,
       `webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000`,   
@@ -27,9 +27,21 @@ const webpackClientConfig = {
       {
         test: /\.ts|\.tsx$/,
         use : {
-          loader : 'ts-loader',
+          loader: 'ts-loader',
         },
         exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        use : [ "style-loader", "css-loader" ]
+      },
+      {
+        test: /\.scss$/,
+        use : [
+          "style-loader", // creates style nodes from JS strings
+          "css-loader", // translates CSS into CommonJS
+          "sass-loader" // compiles Sass to CSS
+        ]
       },
     ]
   },
@@ -52,7 +64,7 @@ const webpackClientConfig = {
     __DEV__ ?
      [
       new webpack.HotModuleReplacementPlugin()
-    ]:
+    ] :
     []    
   )
 }

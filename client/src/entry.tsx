@@ -5,6 +5,7 @@ import { hot } from 'react-hot-loader'
 import dva, { connect, Router } from "dva"
 import models from "./models/index"
 import mapValues from 'lodash/mapValues'
+import './style/main.scss'
 
 
 const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
