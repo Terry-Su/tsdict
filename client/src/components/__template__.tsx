@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import mapState from "../utils/mapState";
 import mapStateAndStyle from "../utils/mapStateAndStyle";
 
 export default mapStateAndStyle()(
