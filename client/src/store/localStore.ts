@@ -1,4 +1,4 @@
-import { LOCAL_STOREAGE_STORE_NAME } from './../constants/names'
+import { LOCAL_STOREAGE_STORE_NAME } from '../constants/names'
 class LocalStore {
   setItem( key, data ) {
     try {
@@ -25,21 +25,6 @@ class LocalStore {
   getStore() {
     return this.getItem( LOCAL_STOREAGE_STORE_NAME )
   }
-
-  // setCategory( category ) {
-  //   this.setItem( LOCAL_STOREAGE_CATEGORY_NAME, category )
-  // }
-  // getCategory() {
-  //   return this.getItem( LOCAL_STOREAGE_CATEGORY_NAME )
-  // }
-
-  // setCategorySequence( sequence ) {
-  //   this.setItem( LOCAL_STOREAGE_CATEGORY_SEQUENCE_NAME, sequence )
-  // }
-  // getCategorySequence() {
-  //   return this.getItem( LOCAL_STOREAGE_CATEGORY_SEQUENCE_NAME )
-  // }
-
 
 }
 

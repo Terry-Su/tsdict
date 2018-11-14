@@ -17,6 +17,7 @@ import isString from "lodash/isString"
 import isDate from "lodash/isDate"
 import find from "lodash/find"
 import debounce from "lodash/debounce"
+import pick from "lodash/pick"
 
 export {
   isNil,
@@ -38,7 +39,8 @@ export {
 	isString,
 	isDate,
   find,
-  
+  pick,
+
   debounce,
 }
 

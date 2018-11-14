@@ -33,7 +33,9 @@ export default mapState(
           <br />
 
           <section>
-            <OnlineLinks />
+            {
+              searching.trim() !== '' && <OnlineLinks />
+            }
           </section>
           
         </div>

@@ -1,10 +1,12 @@
 import { defaultOnlineLinks } from "../constants/default"
 import { cloneDeep } from "../utils/lodash"
+import { DictDataWord } from "../../../shared/__typings__/DictData"
 
 export default {
   namespace: "mainData",
   state    : {
-    onlineLinks: defaultOnlineLinks
+    onlineLinks: defaultOnlineLinks,
+    cachedWords: []
   },
   reducers: {
     UPDATE_ONLINE_LINKS: ( state, { value } ) => ( {
@@ -19,7 +21,7 @@ export default {
       ...state,
       onlineLinks: removeArrayElementByName( state.onlineLinks, value )
     } ),
-    ENABLE_ONLINE_LINK_BY_NAME: ( state, { value } ) => ( {
+    ENABLE_ONLINE_LINK_BY_NAME: ( state, { value }: { value: string } ) => ( {
       ...state,
       onlineLinks: state.onlineLinks.map( link => {
         if ( link.name === value ) {
@@ -28,7 +30,7 @@ export default {
         return link
       } )
     } ),
-    DISABLE_ONLINE_LINK_BY_NAME: ( state, { value } ) => ( {
+    DISABLE_ONLINE_LINK_BY_NAME: ( state, { value }: { value: string } ) => ( {
       ...state,
       onlineLinks: state.onlineLinks.map( link => {
         if ( link.name === value ) {
@@ -36,7 +38,15 @@ export default {
         }
         return link
       } )
-    } )
+    } ),
+    ADD_CACHED_WORD: ( state, { value }: { value: DictDataWord } ) => ( {
+      ...state,
+      cachedWords: [ ...state.cachedWords, value ]
+    } ),
+    REMOVE_CACHED_WORD_BY_NAME: ( state, { value }: { value: string } ) => ( {
+      ...state,
+      cachedWords: removeArrayElementByName( state.cachedWords, value )
+    } ),
   },
   effects: {}
 }
