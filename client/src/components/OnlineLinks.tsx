@@ -39,7 +39,7 @@ export default mapState(
     get enabledOnlineLinks() {
       const { mainData } = this.props
       const { onlineLinks } = mainData
-      return onlineLinks.filter( ( { enabled } ) => isNil( enabled ) || enabled )
+      return onlineLinks.filter( ( { disabled } ) => ! disabled )
     }
 
     handleTabChange = ( event, tabIndex ) => {

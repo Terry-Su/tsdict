@@ -5,9 +5,11 @@ import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
+import { Link } from "dva/router"
+import { EDIT_ONLINE_LINKS } from "../constants/routes"
 
 export default mapStateAndStyle()(
-  class TheTopBar extends Component<any, any> {
+  class TopBar extends Component<any, any> {
     state = {
       anchorEl: null
     }
@@ -38,7 +40,9 @@ export default mapStateAndStyle()(
               open={Boolean( anchorEl )}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleClose}>Item1</MenuItem>
+              <Link to={ EDIT_ONLINE_LINKS }>
+                <MenuItem onClick={this.handleClose}>Edit Online Links</MenuItem>
+              </Link>
               <MenuItem onClick={this.handleClose}>Item2</MenuItem>
               <MenuItem onClick={this.handleClose}>Item3</MenuItem>
             </Menu>

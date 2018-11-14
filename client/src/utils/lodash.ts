@@ -18,6 +18,8 @@ import isDate from "lodash/isDate"
 import find from "lodash/find"
 import debounce from "lodash/debounce"
 import pick from "lodash/pick"
+import findIndex from "lodash/findIndex"
+import isEqual from "lodash/isEqual"
 
 export {
   isNil,
@@ -25,7 +27,8 @@ export {
   isUndefined,
   isArray,
   isObject,
-
+  isEqual,
+  
 	cloneDeep,
 	includes,
   uniq,
@@ -40,6 +43,7 @@ export {
 	isDate,
   find,
   pick,
+  findIndex,
 
   debounce,
 }

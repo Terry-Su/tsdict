@@ -2,11 +2,11 @@ import React, { Component } from "react"
 import mapState from "../../utils/mapState"
 import OnlineLinks from "../OnlineLinks"
 import Input from '@material-ui/core/Input'
-import Button from "@material-ui/core/Button"
+import TopBar from "../TopBar"
 
 
 export default mapState(
-  class TheHome extends Component<any, any> {
+  class TheHomePage extends Component<any, any> {
     onSearchChange = e => {
       const { value: searching } = e.target
       const { dispatch } = this.props
@@ -27,6 +27,7 @@ export default mapState(
       const { searching } = app
       return (
         <div>
+          <TopBar />
           <section>
             <Input type="text" onChange={ this.onSearchChange } onKeyDown={ this.onSearchKeyDown } value={ searching } />
             &nbsp;&nbsp;

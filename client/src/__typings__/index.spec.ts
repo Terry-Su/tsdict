@@ -6,8 +6,9 @@ export interface ClientData {
 }
 
 export interface OnlineLink {
+  id: string,
   label: string,
   url: string,
-  enabled?: boolean
+  disabled?: boolean
   after?: string
 }
