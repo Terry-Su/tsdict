@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import mapStateAndStyle from "../../utils/mapStateAndStyle"
+import Button from "@material-ui/core/Button"
 
 
 export default mapStateAndStyle( {
@@ -16,7 +17,7 @@ export default mapStateAndStyle( {
     render() {
       const { classes: c, onClick } = this.props
       return (
-        <button className={ c.entry } onClick={ e => onClick && onClick( e ) }>F</button>
+        <Button variant="contained" className={ c.entry }  onClick={ e => onClick && onClick( e ) }>F</Button>
       )
     }
   }

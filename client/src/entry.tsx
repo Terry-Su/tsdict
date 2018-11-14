@@ -2,14 +2,13 @@ import React from 'react'
 import { render } from 'react-dom'
 import TheApp from './components/TheApp'
 import { hot } from 'react-hot-loader'
-import dva, { connect, Router } from "dva"
+import dva, { connect } from "dva"
 import models from "./models/index"
 import mapValues from 'lodash/mapValues'
 import './style/main.scss'
 import { pick, notNil, cloneDeep } from './utils/lodash'
 import localStore from "./store/localStore"
-
-
+import { Router, Route } from 'dva/router'
 
 
 const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
@@ -57,6 +56,10 @@ model( app )
 
 
 
-app.router( () => <TheHotApp /> )
+app.router( ( { history } ) =>
+  <Router history={history}>
+    <Route path="/" component={TheHotApp} />
+  </Router>
+)
 
 app.start( "#app" )

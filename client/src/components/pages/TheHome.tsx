@@ -1,6 +1,9 @@
 import React, { Component } from "react"
 import mapState from "../../utils/mapState"
 import OnlineLinks from "../OnlineLinks"
+import Input from '@material-ui/core/Input'
+import Button from "@material-ui/core/Button"
+
 
 export default mapState(
   class TheHome extends Component<any, any> {
@@ -25,9 +28,8 @@ export default mapState(
       return (
         <div>
           <section>
-            <input type="text" onChange={ this.onSearchChange } onKeyDown={ this.onSearchKeyDown } value={ searching } />
+            <Input type="text" onChange={ this.onSearchChange } onKeyDown={ this.onSearchKeyDown } value={ searching } />
             &nbsp;&nbsp;
-            <button>Search</button>
           </section>
 
           <br />
