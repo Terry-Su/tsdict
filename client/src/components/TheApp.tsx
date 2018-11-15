@@ -15,8 +15,8 @@ export default class TheApp extends Component<any, any> {
       <TheTestingComponent />
     ) : (
       <div> 
-        <Route path={ HOME_ROUTE } component={ TheHomePage } />
-        <Route path={ EDIT_ONLINE_LINKS_ROUTE } component={ TheEditOnlineLinksPage } />
+        <Route exact path={ HOME_ROUTE } component={ TheHomePage } />
+        <Route exact path={ EDIT_ONLINE_LINKS_ROUTE } component={ TheEditOnlineLinksPage } />
       </div>
     )
   }

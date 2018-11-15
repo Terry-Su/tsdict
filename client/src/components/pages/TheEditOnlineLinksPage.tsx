@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button"
 import { OnlineLink } from "../../__typings__/index.spec"
 import { notNil } from "../../utils/lodash"
 import getUniqueKey from "../../utils/getUniqueId"
+import TopbarLayout from "../layouts/TopbarLayout"
 
 export default mapStateAndStyle()(
   class Template extends Component<any, any> {
@@ -54,7 +55,7 @@ export default mapStateAndStyle()(
       const { mainData, dispatch } = this.props
       const { onlineLinks } = mainData
       return (
-        <section>
+        <TopbarLayout>
           <section>
             <Input placeholder="Label" inputRef={ this.addingLabelInputRef }></Input>
             <Input placeholder="Url" inputRef={ this.addingUrlInputRef }></Input>
@@ -78,7 +79,7 @@ export default mapStateAndStyle()(
               <br /><br /><br />
             </section>
           ) )}
-        </section>
+        </TopbarLayout>
       )
     }
   }

@@ -3,6 +3,7 @@ import mapState from "../../utils/mapState"
 import OnlineLinks from "../OnlineLinks"
 import Input from '@material-ui/core/Input'
 import TopBar from "../TopBar"
+import TopbarLayout from "../layouts/TopbarLayout"
 
 
 export default mapState(
@@ -26,8 +27,7 @@ export default mapState(
       const { app } = this.props
       const { searching } = app
       return (
-        <div>
-          <TopBar />
+        <TopbarLayout>
           <section>
             <Input type="text" onChange={ this.onSearchChange } onKeyDown={ this.onSearchKeyDown } value={ searching } />
             &nbsp;&nbsp;
@@ -41,7 +41,7 @@ export default mapState(
             }
           </section>
           
-        </div>
+        </TopbarLayout>
       )
     }
   }
