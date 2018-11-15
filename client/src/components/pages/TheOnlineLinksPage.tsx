@@ -3,10 +3,12 @@ import mapStateAndStyle from "../../utils/mapStateAndStyle"
 import Input from "@material-ui/core/Input"
 import Switch from "@material-ui/core/Switch"
 import Button from "@material-ui/core/Button"
-import { OnlineLink } from "../../__typings__/index.spec"
+import { OnlineLink } from "../../__typings__"
 import { notNil } from "../../utils/lodash"
 import getUniqueKey from "../../utils/getUniqueId"
 import TopbarLayout from "../layouts/TopbarLayout"
+import { createOnlineLink } from "../../models/mainData"
+import getUniqueId from "../../utils/getUniqueId"
 
 export default mapStateAndStyle()(
   class Template extends Component<any, any> {
@@ -28,11 +30,12 @@ export default mapStateAndStyle()(
       const label = this.addingLabelInputRef.current.value
       const url = this.addingUrlInputRef.current.value
       const after = this.addingAfterInputRef.current.value
-      this.props.dispatch( { type : 'mainData/ADD_ONLINE_LINK', value: {
+      this.props.dispatch( { type : 'mainData/ADD_ONLINE_LINK', value: createOnlineLink( {
+        id: getUniqueId(),
         label,
         url,
         after
-      } } )
+      } ) } )
 
       this.addingLabelInputRef.current.value = ''
       this.addingUrlInputRef.current.value = ''

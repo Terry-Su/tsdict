@@ -4,15 +4,16 @@ import OnlineLinks from "../OnlineLinks"
 import Input from '@material-ui/core/Input'
 import TopBar from "../TopBar"
 import TopbarLayout from "../layouts/TopbarLayout"
+import TheAddButton from "../TheHome/TheAddButton"
 
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
     onSearchChange = e => {
-      const { value: searching } = e.target
+      const { value } = e.target
       const { dispatch } = this.props
 
-      dispatch( { type: 'app/UPDATE_SEARCHING', searching } )
+      dispatch( { type: 'app/UPDATE_SEARCHING', value } )
     }
 
     onSearchKeyDown = ( e ) => {
@@ -31,6 +32,7 @@ export default mapState(
           <section>
             <Input type="text" onChange={ this.onSearchChange } onKeyDown={ this.onSearchKeyDown } value={ searching } />
             &nbsp;&nbsp;
+            <TheAddButton />
           </section>
 
           <br />

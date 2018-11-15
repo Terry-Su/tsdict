@@ -4,7 +4,7 @@ export default {
     searching: '',
   },
   reducers: {
-    UPDATE_SEARCHING: ( state, { searching } ) => ( { ...state, searching} )
+    UPDATE_SEARCHING: ( state, { value } ) => ( { ...state, searching: value } )
   },
   effects: {}
 }

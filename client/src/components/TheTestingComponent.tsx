@@ -2,13 +2,15 @@ import React from 'react'
 import ExitButton from "./Button/ExitButton"
 import TheHomePage from "./pages/TheHomePage"
 import IframeViewer from "./IframeViewer"
-import TheEditOnlineLinksPage from './pages/TheEditOnlineLinksPage'
+import TheOnlineLinksPage from './pages/TheOnlineLinksPage'
+import TheWordsPage from './pages/TheWordsPage'
 
 const TheTestingComponent = 
   // TheHomePage
   // ExitButton
   // () => <IframeViewer src="https://bing.com/images/search?q=" />
-  TheEditOnlineLinksPage
+  // TheOnlineLinksPage
+  TheWordsPage
 
 
 export default TheTestingComponent

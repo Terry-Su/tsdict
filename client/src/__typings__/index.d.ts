@@ -1,7 +1,7 @@
 import { DictDataWord } from "../../../shared/__typings__/DictData"
 
 export interface ClientData {
-  cachedWords: DictDataWord[]
+  words: DictDataWord[]
   onlineLinks: OnlineLink[]
 }
 

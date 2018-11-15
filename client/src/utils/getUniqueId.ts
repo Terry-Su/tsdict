@@ -1,4 +1,4 @@
-export default function( topic = "" ): string {
+export default function( topic?: string ): string {
   var result, i, j
   result = ""
   for ( j = 0; j < 32; j++ ) {
@@ -8,5 +8,5 @@ export default function( topic = "" ): string {
       .toUpperCase()
     result = result + i
   }
-  return `${topic}-${result}-${new Date().getTime()}`
+  return `${topic ? topic : ''}${topic ? '-' : ''}${result}-${new Date().getTime()}`
 }

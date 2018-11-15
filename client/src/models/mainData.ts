@@ -1,26 +1,24 @@
-import { defaultOnlineLinks } from "../constants/default"
+import { defaultOnlineLinks, defaultWords } from "../constants/default"
 import { cloneDeep, findIndex, isEqual } from "../utils/lodash"
 import { DictDataWord } from "../../../shared/__typings__/DictData"
-import { OnlineLink } from "../__typings__/index.spec"
+import { OnlineLink } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 
 export default {
   namespace: "mainData",
   state    : {
     onlineLinks: defaultOnlineLinks,
-    cachedWords: []
+    words      : defaultWords
   },
   reducers: {
+    // online links
     UPDATE_ONLINE_LINKS: ( state, { value } ) => ( {
       ...state,
       onlineLinks: value
     } ),
     ADD_ONLINE_LINK: ( state, { value } ) => ( {
       ...state,
-      onlineLinks: [ ...state.onlineLinks, {
-        ...value,
-        id: getUniqueId()
-      } ]
+      onlineLinks: [ ...state.onlineLinks, value ]
     } ),
     UPDATE_ONLINE_LINK: ( state, { link, key, value } ) => ( {
       ...state,
@@ -62,21 +60,34 @@ export default {
         return link
       } )
     } ),
-    ADD_CACHED_WORD: ( state, { value }: { value: DictDataWord } ) => ( {
+
+    // cached
+    ADD_WORD: ( state, { value }: { value: DictDataWord } ) => ( {
       ...state,
-      cachedWords: [ ...state.cachedWords, value ]
+      words: [ ...state.words, value ]
     } ),
-    // REMOVE_CACHED_WORD_BY_NAME: ( state, { value }: { value: string } ) => ( {
-    //   ...state,
-    //   cachedWords: removeArrayElement( state.cachedWords, value )
-    // } ),
+
+    UPDATE_WORD: ( state, { word, key, value } ) => ( {
+      ...state,
+      words: state.words.map( theWord => {
+        if ( isEqual( word, theWord ) ) {
+          theWord[ key ] = value  
+        }
+        return theWord
+      } )
+    } ),
+    
+    REMOVE_WORD: ( state, { value } ) => ( {
+      ...state,
+      words: removeArrayElement( state.words, value )
+    } )
   },
   effects: {}
 }
 
-function removeArrayElement( array, link ) {
+function removeArrayElement( array, element ) {
   let cloned = cloneDeep( array )
-  const index = findIndex( cloned, item => isEqual( item, link ) )
+  const index = findIndex( cloned, item => isEqual( item, element ) )
 
   if ( index !== -1 ) {
     cloned.splice( index, 1 )
@@ -85,3 +96,34 @@ function removeArrayElement( array, link ) {
   
   throw `unexpected removeArrayElement! index: ${index}`
 }
+
+
+export const createOnlineLink = ( {
+  id,
+  label,
+  url,
+  disabled,
+  after,
+}: OnlineLink ): OnlineLink => ( {
+  id,
+  label,
+  url,
+  disabled,
+  after,
+} )
+
+export const createWord = ( {
+  id,
+  name,
+  comments,
+  pictures,
+  audios,
+  videos
+}: DictDataWord ) => ( {
+  id,
+  name,
+  comments,
+  pictures,
+  audios,
+  videos
+} )

@@ -2,8 +2,9 @@ import React, { Component } from "react"
 import TheHomePage from "./pages/TheHomePage"
 import TheTestingComponent from "./TheTestingComponent"
 import { Route } from 'dva/router'
-import TheEditOnlineLinksPage from "./pages/TheEditOnlineLinksPage"
-import { HOME_ROUTE, EDIT_ONLINE_LINKS_ROUTE } from "../constants/routes"
+import TheOnlineLinksPage from "./pages/TheOnlineLinksPage"
+import { HOME_ROUTE, EDIT_ONLINE_LINKS_ROUTE, WORDS_ROUTE } from "../constants/routes"
+import TheWordsPage from "./pages/TheWordsPage"
 
 const isTestingSingleComponent = false
 
@@ -16,7 +17,8 @@ export default class TheApp extends Component<any, any> {
     ) : (
       <div> 
         <Route exact path={ HOME_ROUTE } component={ TheHomePage } />
-        <Route exact path={ EDIT_ONLINE_LINKS_ROUTE } component={ TheEditOnlineLinksPage } />
+        <Route exact path={ WORDS_ROUTE } component={ TheWordsPage } />
+        <Route exact path={ EDIT_ONLINE_LINKS_ROUTE } component={ TheOnlineLinksPage } />
       </div>
     )
   }

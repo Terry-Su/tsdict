@@ -6,11 +6,12 @@ export interface DictData {
 
 
 export interface DictDataWord {
-  name: string
-  comments: string[]
-  pictures: DictDataWordMedia[]
-  audios: DictDataWordMedia[]
-  videos: DictDataWordMedia[]
+  id: string,
+  name: string,
+  comments?: string[]
+  pictures?: DictDataWordMedia[]
+  audios?: DictDataWordMedia[]
+  videos?: DictDataWordMedia[]
 } 
 
 

@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
-import { EDIT_ONLINE_LINKS_ROUTE, HOME_ROUTE } from "../constants/routes"
+import { EDIT_ONLINE_LINKS_ROUTE, HOME_ROUTE, WORDS_ROUTE } from "../constants/routes"
 
 export default mapStateAndStyle( {
   link: {
@@ -36,7 +36,7 @@ export default mapStateAndStyle( {
       return (
         <AppBar position="static">
           <Toolbar>
-            <IconButton color="inherit"
+            {/* <IconButton color="inherit"
             onClick={this.handleClick}>
               Menu
             </IconButton>
@@ -53,10 +53,17 @@ export default mapStateAndStyle( {
 
               <MenuItem onClick={this.handleClose}>Item2</MenuItem>
               <MenuItem onClick={this.handleClose}>Item3</MenuItem>
-            </Menu>
+            </Menu> */}
 
             <Link to={HOME_ROUTE} className={ c.link }>
               <IconButton >Home</IconButton>
+            </Link>
+            <Link to={WORDS_ROUTE} className={ c.link }>
+              <IconButton >Words</IconButton>
+            </Link>
+            
+            <Link to={EDIT_ONLINE_LINKS_ROUTE} className={ c.link }>
+              <IconButton >Online Links</IconButton>
             </Link>
           </Toolbar>
         </AppBar>
