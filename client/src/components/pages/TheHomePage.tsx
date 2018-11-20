@@ -17,8 +17,6 @@ export default mapState(
       return getCurrentWord( this )
     }
 
-    
-
     onAddNoteClick = () => {
       const { currentWord: word } = this
       this.props.dispatch( {
@@ -58,34 +56,40 @@ export default mapState(
           <TheSearch />
           <br />
 
-          <section>
-            <h2>Note</h2>
-            {notes.map( ( note, index ) => (
-              <section key={index}>
-                <TextField
-                  multiline
-                  value={note}
-                  onChange={event => this.onNoteChange( event, index )}
-                />
-                <Button
-                  variant="contained"
-                  onClick={() => this.onRemoveNoteClick( index )}
-                >
-                  Remove
-                </Button>
+          {searching.trim() !== "" && (
+            <section>
+              <section>
+                <h2>Note</h2>
+                {notes.map( ( note, index ) => (
+                  <section key={index}>
+                    <TextField
+                      multiline
+                      value={note}
+                      onChange={event => this.onNoteChange( event, index )}
+                    />
+                    <Button
+                      variant="contained"
+                      onClick={() => this.onRemoveNoteClick( index )}
+                    >
+                      Remove
+                    </Button>
+                  </section>
+                ) )}
+                {
+                  <Button variant="contained" onClick={this.onAddNoteClick}>
+                    Add Note
+                  </Button>
+                }
               </section>
-            ) )}
-            {
-              <Button variant="contained" onClick={this.onAddNoteClick}>
-                Add Note
-              </Button>
-            }
-          </section>
 
-          <br />
+              <br />
 
-          <h2>Online links</h2>
-          <section>{searching.trim() !== "" && <OnlineLinks />}</section>
+              <h2>Online links</h2>
+              <section>
+                <OnlineLinks />
+              </section>
+            </section>
+          )}
         </TopbarLayout>
       )
     }
