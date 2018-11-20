@@ -14,46 +14,32 @@ class Reducers {
     ...state,
     onlineLinks: [ ...state.onlineLinks, value ]
   } )
-  UPDATE_ONLINE_LINK = ( state, { link, key, value } ) => ( {
+  UPDATE_ONLINE_LINK = ( state, { index, key, value } ) => ( {
     ...state,
-    onlineLinks: state.onlineLinks.map( theLink => {
-      if ( isEqual( link, theLink ) ) {
-        theLink[ key ] = value
-      }
-      return theLink
-    } )
-  } )
-  REMOVE_ONLINE_LINK = ( state, { value }: { value: OnlineLink } ) => ( {
-    ...state,
-    onlineLinks: removeArrayElement( state.onlineLinks, value )
-  } )
-  ENABLE_ONLINE_LINK_ = ( state, { value }: { value: OnlineLink } ) => ( {
-    ...state,
-    onlineLinks: state.onlineLinks.map( link => {
-      if ( link === value ) {
-        link.disabled = false
+    onlineLinks: state.onlineLinks.map( ( link, theIndex ) => {
+      if ( theIndex === index ) {
+        link[ key ] = value
       }
       return link
     } )
   } )
-  DISABLE_ONLINE_LINK = ( state, { value }: { value: OnlineLink } ) => ( {
+  REMOVE_ONLINE_LINK = ( state, { value }: { value: number } ) => ( {
     ...state,
-    onlineLinks: state.onlineLinks.map( link => {
-      if ( link === value ) {
-        link.disabled = true
+    onlineLinks: removeArrayElementByIndex( state.onlineLinks, value )
+  } )
+  ENABLE_ONLINE_LINK = ( state, { index, value = false }: { index: number, value: boolean } ) => ( {
+    ...state,
+    onlineLinks: state.onlineLinks.map( ( link, theIndex ) => {
+      if ( theIndex === index ) {
+        link.disabled = value
       }
       return link
     } )
   } )
-  TOGGLE_ONLINE_LINK_ = ( state, { value }: { value: OnlineLink } ) => ( {
-    ...state,
-    onlineLinks: state.onlineLinks.map( link => {
-      if ( link === value ) {
-        link.disabled = !link.disabled
-      }
-      return link
-    } )
-  } )
+  DISABLE_ONLINE_LINK = ( state, { index, value }: { index: number, value: boolean } ) => this.ENABLE_ONLINE_LINK( state, { index, value } )
+  TOGGLE_ONLINE_LINK = ( state, { value: index }: { value: number} ) => {
+    return this.ENABLE_ONLINE_LINK( state, { index, value: ! state.onlineLinks[ index ].disabled } )
+  }
 
   // cached
   ADD_WORD = ( state, { value }: { value: DictDataWord } ) => {
@@ -128,7 +114,15 @@ export default {
   reducers: {
     ...new Reducers()
   },
-  effects: {}
+  effects: {
+    refresh( payload, { put, select } ) {
+      const onlineLinks = select( state => state.mainData.onlineLinks )
+      console.log( onlineLinks )
+      // yield put( { type: "UPDATE_ONLINE_LINKS", value: [] } )
+
+      
+    }
+  }
 }
 
 function removeArrayElement( array, element ) {

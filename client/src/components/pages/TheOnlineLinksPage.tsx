@@ -42,17 +42,23 @@ export default mapStateAndStyle()(
       this.addingAfterInputRef.current.value = ''
     }
 
-    onRemoveClick = link => {
-      this.props.dispatch( { type: 'mainData/REMOVE_ONLINE_LINK', value: link } )
+    onRemoveClick = index => {
+      const { dispatch, mainData } = this.props
+      dispatch( { type: 'mainData/REMOVE_ONLINE_LINK', value: index } )
+      setTimeout( () => {
+        const { onlineLinks } = this.props.mainData
+        dispatch( { type: "mainData/UPDATE_ONLINE_LINKS", value: [] } )
+        dispatch( { type: "mainData/UPDATE_ONLINE_LINKS", value: onlineLinks } )
+      }, 0 )
     }
 
-    handleSwitchChange = link => {
-      this.props.dispatch( { type: 'mainData/TOGGLE_ONLINE_LINK_', value: link } )
+    handleSwitchChange = index => {
+      this.props.dispatch( { type: 'mainData/TOGGLE_ONLINE_LINK', value: index } )
     }
 
-    onLabelInputChange = ( link, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', link, key: 'label', value: e.target.value } )
-    onUrlInputChange = ( link, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', link, key: 'url', value: e.target.value } )
-    onAfterInputChange = ( link, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', link, key: 'after', value: e.target.value } )
+    onLabelInputChange = ( index, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', index, key: 'label', value: e.target.value } )
+    onUrlInputChange = ( index, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', index, key: 'url', value: e.target.value } )
+    onAfterInputChange = ( index, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', index, key: 'after', value: e.target.value } )
 
     render() {
       const { mainData, dispatch } = this.props
@@ -66,19 +72,19 @@ export default mapStateAndStyle()(
             <Button variant="contained" onClick={ this.onAddClick }>Add</Button>
           </section>
 
-          {onlineLinks.map( ( link: OnlineLink ) => (
-            <section key={ link.id }>
-              <Input defaultValue={link.label} onChange={ ( e ) => this.onLabelInputChange( link, e ) }/>
-              <Input defaultValue={link.url} onChange={ ( e ) => this.onUrlInputChange( link, e ) } />
+          {onlineLinks.map( ( link: OnlineLink, index: number ) => (
+            <section key={ index }>
+              <Input defaultValue={link.label} onChange={ ( e ) => this.onLabelInputChange( index, e ) }/>
+              <Input defaultValue={link.url} onChange={ ( e ) => this.onUrlInputChange( index, e ) } />
               {
-                notNil( link.after ) && link.after.trim() !== '' && <Input defaultValue={link.after} onChange={ ( e ) => this.onAfterInputChange( link, e ) }/>
+                notNil( link.after ) && link.after.trim() !== '' && <Input defaultValue={link.after} onChange={ ( e ) => this.onAfterInputChange( index, e ) }/>
               }
               <Switch
                 checked={! link.disabled}
-                onChange={() => this.handleSwitchChange( link )}
+                onChange={() => this.handleSwitchChange( index )}
                 value="checkedA"
               />
-              <Button variant="contained" onClick={ () => this.onRemoveClick( link ) }>Remove</Button>
+              <Button variant="contained" onClick={ () => this.onRemoveClick( index ) }>Remove</Button>
               <br /><br /><br />
             </section>
           ) )}
