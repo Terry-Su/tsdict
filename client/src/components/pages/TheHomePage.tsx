@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import mapState from "../../utils/mapState"
 import OnlineLinks from "../OnlineLinks"
-import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import TopBar from "../TopBar"
 import TopbarLayout from "../layouts/TopbarLayout"
@@ -10,6 +9,7 @@ import { getCanBeAdded, getCurrentWord } from "../../selectors"
 import { node } from "_@types_prop-types@15.5.6@@types/prop-types"
 import { DictDataWord } from "../../../../shared/__typings__/DictData"
 import TextField from "@material-ui/core/TextField"
+import TheSearch from "../TheHome/TheSearch"
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
@@ -17,12 +17,7 @@ export default mapState(
       return getCurrentWord( this )
     }
 
-    onSearchChange = e => {
-      const { value } = e.target
-      const { dispatch } = this.props
-
-      dispatch( { type: "app/UPDATE_SEARCHING", value } )
-    }
+    
 
     onAddNoteClick = () => {
       const { currentWord: word } = this
@@ -60,16 +55,7 @@ export default mapState(
       const { notes = [] } = this.currentWord
       return (
         <TopbarLayout>
-          <section>
-            <Input
-              type="text"
-              onChange={this.onSearchChange}
-              value={searching}
-            />
-            &nbsp;&nbsp;
-            <TheAddButton />
-          </section>
-
+          <TheSearch />
           <br />
 
           <section>
