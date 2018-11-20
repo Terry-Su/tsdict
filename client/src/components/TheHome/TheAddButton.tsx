@@ -3,15 +3,13 @@ import mapStateAndStyle from "../../utils/mapStateAndStyle"
 import Button from "@material-ui/core/Button"
 import { createWord } from "../../models/mainData"
 import getUniqueId from "../../utils/getUniqueId"
+import { getCanBeAdded } from "../../selectors"
 
 export default mapStateAndStyle()(
   class TheAddButton extends Component<any, any> {
 
     get canBeAdded(): Boolean {
-      const { app, mainData } = this.props
-      const { searching } = app
-      const { words } = mainData
-      return searching.trim() !== '' && words.every( ( { name } ) => name !== searching )
+      return getCanBeAdded( this )
     }
 
     onButtonClick = () => {
