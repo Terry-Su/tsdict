@@ -9,6 +9,7 @@ import { Link } from "dva/router"
 import { EDIT_ONLINE_LINKS_ROUTE, HOME_ROUTE, WORDS_ROUTE } from "../constants/routes"
 import download from '../assets/js/download'
 import localStore from "../store/localStore"
+import Uploader from "./Uploader/Uploader"
 
 export default mapStateAndStyle( {
   link: {
@@ -36,6 +37,22 @@ export default mapStateAndStyle( {
       const str = JSON.stringify( storeLocal )
       const fileName = `tsdict.json`
       download( str, fileName )
+    }
+
+    onImportClick = () => {
+      console.log( 'onImportClick' )
+    }
+
+    onUploadChange = ( text ) => {
+      const d = JSON.parse( text )
+
+      // check
+      const valid = d != null
+
+      if ( valid ) {
+        localStore.setStore( d )
+        window.location.reload()
+      }
     }
 
     render() {
@@ -75,8 +92,11 @@ export default mapStateAndStyle( {
               <IconButton >Online Links</IconButton>
             </Link>
 
-            <IconButton onClick={ this.onExportClick } className={ c.link }>Export</IconButton>
-            <IconButton className={ c.link }>Import</IconButton>
+            <IconButton className={ c.link } onClick={ this.onExportClick }>Export</IconButton>
+            <IconButton className={ c.link }>
+                Import
+              <Uploader onChange={ this.onUploadChange }/>
+            </IconButton>
             
           </Toolbar>
         </AppBar>
