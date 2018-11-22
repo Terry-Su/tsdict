@@ -7,6 +7,8 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
 import { EDIT_ONLINE_LINKS_ROUTE, HOME_ROUTE, WORDS_ROUTE } from "../constants/routes"
+import download from '../assets/js/download'
+import localStore from "../store/localStore"
 
 export default mapStateAndStyle( {
   link: {
@@ -27,6 +29,13 @@ export default mapStateAndStyle( {
 
     handleClose = () => {
       this.setState( { anchorEl: null } )
+    }
+
+    onExportClick = () => {
+      const storeLocal = localStore.getStore()
+      const str = JSON.stringify( storeLocal )
+      const fileName = `tsdict.json`
+      download( str, fileName )
     }
 
     render() {
@@ -65,6 +74,10 @@ export default mapStateAndStyle( {
             <Link to={EDIT_ONLINE_LINKS_ROUTE} className={ c.link }>
               <IconButton >Online Links</IconButton>
             </Link>
+
+            <IconButton onClick={ this.onExportClick } className={ c.link }>Export</IconButton>
+            <IconButton className={ c.link }>Import</IconButton>
+            
           </Toolbar>
         </AppBar>
       )
