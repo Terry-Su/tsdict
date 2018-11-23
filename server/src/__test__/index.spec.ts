@@ -1,7 +1,8 @@
-import { hello } from "..";
-
+import '../index'
 describe( "Test", () => {
   it( "Unit", () => {
-    hello()
+    // hello()
+
+    console.log( 123 )
   } )
 } )

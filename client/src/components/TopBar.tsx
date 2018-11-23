@@ -6,17 +6,21 @@ import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
-import { EDIT_ONLINE_LINKS_ROUTE, HOME_ROUTE, WORDS_ROUTE } from "../constants/routes"
-import download from '../assets/js/download'
+import {
+  EDIT_ONLINE_LINKS_ROUTE,
+  HOME_ROUTE,
+  WORDS_ROUTE
+} from "../constants/routes"
+import download from "../assets/js/download"
 import localStore from "../store/localStore"
 import Uploader from "./Uploader/Uploader"
 
 export default mapStateAndStyle( {
   link: {
-    textDecoration: 'none!important',
-    '& span'      : {
-      color: 'white!important',
-    },
+    textDecoration: "none!important",
+    "& span"      : {
+      color: "white!important"
+    }
   }
 } )(
   class TopBar extends Component<any, any> {
@@ -35,15 +39,15 @@ export default mapStateAndStyle( {
     onExportClick = () => {
       const storeLocal = localStore.getStore()
       const str = JSON.stringify( storeLocal )
-      const fileName = `tsdict.json`
+      const fileName = `tsdict2.json`
       download( str, fileName )
     }
 
     onImportClick = () => {
-      console.log( 'onImportClick' )
+      console.log( "onImportClick" )
     }
 
-    onUploadChange = ( text ) => {
+    onUploadChange = text => {
       const d = JSON.parse( text )
 
       // check
@@ -81,23 +85,24 @@ export default mapStateAndStyle( {
               <MenuItem onClick={this.handleClose}>Item3</MenuItem>
             </Menu> */}
 
-            <Link to={HOME_ROUTE} className={ c.link }>
-              <IconButton >Home</IconButton>
+            <Link to={HOME_ROUTE} className={c.link}>
+              <IconButton>Home</IconButton>
             </Link>
-            <Link to={WORDS_ROUTE} className={ c.link }>
-              <IconButton >Words</IconButton>
-            </Link>
-            
-            <Link to={EDIT_ONLINE_LINKS_ROUTE} className={ c.link }>
-              <IconButton >Online Links</IconButton>
+            <Link to={WORDS_ROUTE} className={c.link}>
+              <IconButton>Words</IconButton>
             </Link>
 
-            <IconButton className={ c.link } onClick={ this.onExportClick }>Export</IconButton>
-            <IconButton className={ c.link }>
-                Import
-              <Uploader onChange={ this.onUploadChange }/>
+            <Link to={EDIT_ONLINE_LINKS_ROUTE} className={c.link}>
+              <IconButton>Online Links</IconButton>
+            </Link>
+
+            <IconButton className={c.link} onClick={this.onExportClick}>
+              Export
             </IconButton>
-            
+            <IconButton className={c.link}>
+              Import
+              <Uploader onChange={this.onUploadChange} />
+            </IconButton>
           </Toolbar>
         </AppBar>
       )

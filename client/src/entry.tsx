@@ -15,7 +15,12 @@ const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
 
 const app = dva( {
   onStateChange() {
-    let store = null
+    updateLocalStore()
+  }
+} )
+
+function updateLocalStore() {
+  let store = null
 
     try {
       const storeKeys = Object.keys( models )
@@ -23,8 +28,7 @@ const app = dva( {
     } catch ( e ) { console.log( e ) }
 
     notNil( store ) && localStore.setStore( store )
-  }
-} )
+}
 
 function model( app ) {
   let resModelsMap = models
@@ -63,3 +67,5 @@ app.router( ( { history } ) =>
 )
 
 app.start( "#app" )
+
+updateLocalStore()

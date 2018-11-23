@@ -3,7 +3,7 @@ const { resolve } = PATH
 const webpack = require( 'webpack' )
 const CopyWebpackPlugin = require( "copy-webpack-plugin" )
 import { __DEV__ } from "./script/global"
-import { OUTPUT_FILE_NAME, ENTRY, OUTPUT, ENTRY_INDEX_HTML, OUTPUT_INDEX_HTML } from './script/constants'
+import { OUTPUT_FILE_NAME, ENTRY, OUTPUT, ENTRY_INDEX_HTML, OUTPUT_INDEX_HTML, ENTRY_INDEX_CACHE, OUTPUT_INDEX_CACHE } from './script/constants'
 
 
 
@@ -57,7 +57,11 @@ const webpackClientConfig = {
       {
         from: ENTRY_INDEX_HTML,
         to  : OUTPUT_INDEX_HTML
-      }
+      },
+      {
+        from: ENTRY_INDEX_CACHE,
+        to  : OUTPUT_INDEX_CACHE
+      },
     ],
    ),
   ].concat(

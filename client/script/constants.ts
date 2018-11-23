@@ -12,3 +12,6 @@ export const OUTPUT_FILE_NAME = 'bundle.js'
 
 export const ENTRY_INDEX_HTML = resolve( SRC, 'index.html' )
 export const OUTPUT_INDEX_HTML = resolve( OUTPUT, 'index.html' )
+
+export const ENTRY_INDEX_CACHE = resolve( SRC, 'cache.appcache' )
+export const OUTPUT_INDEX_CACHE = resolve( OUTPUT, 'cache.appcache' )
