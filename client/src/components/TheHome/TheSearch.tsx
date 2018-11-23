@@ -5,7 +5,7 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import TheAddButton from "./TheAddButton"
-import { getCanBeAdded, getCurrentWord } from "../../selectors"
+import selector from "../../selectors"
 import { DictDataWord } from "../../../../shared/__typings__/DictData"
 
 export default mapStateAndStyle()(
@@ -14,9 +14,6 @@ export default mapStateAndStyle()(
       isTyping: false
     }
 
-    get currentWord(): DictDataWord {
-      return getCurrentWord()
-    }
 
     get filteredWords(): string[] {
       const { app, mainData } = this.props
@@ -49,6 +46,7 @@ export default mapStateAndStyle()(
       const { searching } = app
       const { filteredWords } = this
       const { isTyping } = this.state
+      const { wordIsAdded } = selector
       return (
         <section>
           <section>
@@ -61,7 +59,7 @@ export default mapStateAndStyle()(
             <TheAddButton />
           </section>
           {
-            isTyping && this.filteredWords.length > 0 && <List>
+            ! wordIsAdded && isTyping && this.filteredWords.length > 0 && <List>
             {
               filteredWords.map( ( name, index ) => <ListItem button key={index} onClick={ () => this.onFilteredWordClick( name ) }>
                 <ListItemText>{ name }</ListItemText>

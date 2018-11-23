@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button"
 import TopBar from "../TopBar"
 import TopbarLayout from "../layouts/TopbarLayout"
 import TheAddButton from "../TheHome/TheAddButton"
-import { getCanBeAdded, getCurrentWord } from "../../selectors"
+import selector  from "../../selectors"
 import { node } from "_@types_prop-types@15.5.6@@types/prop-types"
 import { DictDataWord } from "../../../../shared/__typings__/DictData"
 import TextField from "@material-ui/core/TextField"
@@ -13,12 +13,9 @@ import TheSearch from "../TheHome/TheSearch"
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
-    get currentWord(): DictDataWord {
-      return getCurrentWord()
-    }
 
     onAddNoteClick = () => {
-      const { currentWord: word } = this
+      const { currentWord: word } = selector
       this.props.dispatch( {
         type : "mainData/UPDATE_WORD_ADD_ONE_NOTE",
         word,
@@ -27,7 +24,7 @@ export default mapState(
     }
     onNoteChange = ( event, index ) => {
       const { value } = event.target
-      const { currentWord: word } = this
+      const { currentWord: word } = selector
       this.props.dispatch( {
         type: "mainData/UPDATE_WORD_UPDATE_ONE_NOTE",
         word,
@@ -36,7 +33,7 @@ export default mapState(
       } )
     }
     onRemoveNoteClick = ( index: number ) => {
-      const { currentWord: word } = this
+      const { currentWord: word } = selector
       this.props.dispatch( {
         type : "mainData/UPDATE_WORD_REMOVE_ONE_NOTE",
         word,
@@ -49,8 +46,8 @@ export default mapState(
     render() {
       const { app } = this.props
       const { searching } = app
-      const canBeAdded = getCanBeAdded()
-      const { notes = [] } = this.currentWord
+      const { wordCanBeAdded, currentWord } = selector
+      const { notes = [] } = currentWord
       return (
         <TopbarLayout>
           <TheSearch />
@@ -62,7 +59,7 @@ export default mapState(
               {
                 // Add note
                 // visible only when the word is added
-                !canBeAdded && (
+                !wordCanBeAdded && (
                 <section>
                   <h2>Note</h2>
                   {notes.map( ( note, index ) => (

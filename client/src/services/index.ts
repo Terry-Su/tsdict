@@ -1,7 +1,7 @@
 import request from "../utils/request"
-import { getServer } from "../selectors"
+import selector from "../selectors"
 
-export const backup = data => request( `${ getServer() }/backup`, {
+export const backup = data => request( `${ selector.server }/backup`, {
   method : 'post',
   headers: {
     "Content-Type": "application/json; charset=utf-8",

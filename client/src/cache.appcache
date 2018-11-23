@@ -4,5 +4,5 @@ NETWORK:
 
 CACHE:
 index.html
-bundle.js
+# bundle.js
 
