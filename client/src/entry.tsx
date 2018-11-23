@@ -14,11 +14,13 @@ import store from './store/store'
 
 const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
 
-export const app = dva( {
+const app = dva( {
   onStateChange() {
     updateLocalStore()
   }
 } )
+
+export const root = app
 
 function updateLocalStore() {
     const data = store.getData()

@@ -9,7 +9,7 @@ export default mapStateAndStyle()(
   class TheAddButton extends Component<any, any> {
 
     get canBeAdded(): Boolean {
-      return getCanBeAdded( this )
+      return getCanBeAdded()
     }
 
     onButtonClick = () => {

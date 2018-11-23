@@ -14,7 +14,7 @@ import TheSearch from "../TheHome/TheSearch"
 export default mapState(
   class TheHomePage extends Component<any, any> {
     get currentWord(): DictDataWord {
-      return getCurrentWord( this )
+      return getCurrentWord()
     }
 
     onAddNoteClick = () => {
@@ -49,39 +49,44 @@ export default mapState(
     render() {
       const { app } = this.props
       const { searching } = app
-      const canBeAdded = getCanBeAdded( this )
+      const canBeAdded = getCanBeAdded()
       const { notes = [] } = this.currentWord
       return (
         <TopbarLayout>
           <TheSearch />
           <br />
 
-          {searching.trim() !== "" && (
+          {
+          searching.trim() !== "" && (
             <section>
-              <section>
-                <h2>Note</h2>
-                {notes.map( ( note, index ) => (
-                  <section key={index}>
-                    <TextField
-                      multiline
-                      value={note}
-                      onChange={event => this.onNoteChange( event, index )}
-                    />
-                    <Button
-                      variant="contained"
-                      onClick={() => this.onRemoveNoteClick( index )}
-                    >
-                      Remove
+              {
+                // Add note
+                // visible only when the word is added
+                !canBeAdded && (
+                <section>
+                  <h2>Note</h2>
+                  {notes.map( ( note, index ) => (
+                    <section key={index}>
+                      <TextField
+                        multiline
+                        value={note}
+                        onChange={event => this.onNoteChange( event, index )}
+                      />
+                      <Button
+                        variant="contained"
+                        onClick={() => this.onRemoveNoteClick( index )}
+                      >
+                        Remove
+                      </Button>
+                    </section>
+                  ) )}
+                  {
+                    <Button variant="contained" onClick={this.onAddNoteClick}>
+                      Add Note
                     </Button>
-                  </section>
-                ) )}
-                {
-                  <Button variant="contained" onClick={this.onAddNoteClick}>
-                    Add Note
-                  </Button>
-                }
-              </section>
-
+                  }
+                </section>
+              )}
               <br />
 
               <h2>Online links</h2>

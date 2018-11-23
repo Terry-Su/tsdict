@@ -15,7 +15,7 @@ export default mapStateAndStyle()(
     }
 
     get currentWord(): DictDataWord {
-      return getCurrentWord( this )
+      return getCurrentWord()
     }
 
     get filteredWords(): string[] {
