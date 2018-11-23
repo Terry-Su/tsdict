@@ -1,3 +1,8 @@
 CACHE MANIFEST
+NETWORK:
+*
+
+CACHE:
 index.html
 bundle.js
+

@@ -12,3 +12,8 @@ export interface OnlineLink {
   disabled?: boolean
   after?: string
 }
+
+
+export interface Setting {
+  server: string
+}

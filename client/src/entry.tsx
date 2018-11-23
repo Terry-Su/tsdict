@@ -9,25 +9,20 @@ import './style/main.scss'
 import { pick, notNil, cloneDeep } from './utils/lodash'
 import localStore from "./store/localStore"
 import { Router, Route } from 'dva/router'
+import store from './store/store'
 
 
 const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
 
-const app = dva( {
+export const app = dva( {
   onStateChange() {
     updateLocalStore()
   }
 } )
 
 function updateLocalStore() {
-  let store = null
-
-    try {
-      const storeKeys = Object.keys( models )
-      store = pick( app[ "_store" ].getState(), storeKeys )
-    } catch ( e ) { console.log( e ) }
-
-    notNil( store ) && localStore.setStore( store )
+    const data = store.getData()
+    notNil( data ) && localStore.setStore( data )
 }
 
 function model( app ) {

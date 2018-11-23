@@ -14,6 +14,8 @@ import {
 import download from "../assets/js/download"
 import localStore from "../store/localStore"
 import Uploader from "./Uploader/Uploader"
+import { backup } from "../services"
+import store from "../store/store"
 
 export default mapStateAndStyle( {
   link: {
@@ -57,6 +59,13 @@ export default mapStateAndStyle( {
         localStore.setStore( d )
         window.location.reload()
       }
+    }
+
+    onBackupClick = () => {
+      const data = store.getData()
+      backup( data ).then( data => {
+        console.log( data )
+      } )
     }
 
     render() {
@@ -103,6 +112,11 @@ export default mapStateAndStyle( {
               Import
               <Uploader onChange={this.onUploadChange} />
             </IconButton>
+
+            <IconButton className={c.link} onClick={this.onBackupClick}>
+              Backup
+            </IconButton>
+
           </Toolbar>
         </AppBar>
       )

@@ -1,8 +1,8 @@
-import '../index'
-describe( "Test", () => {
-  it( "Unit", () => {
-    // hello()
+// import '../index'
+// describe( "Test", () => {
+//   it( "Unit", () => {
+//     // hello()
 
-    console.log( 123 )
-  } )
-} )
+//     console.log( 123 )
+//   } )
+// } )
