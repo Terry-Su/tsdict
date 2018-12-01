@@ -59,6 +59,12 @@ class Reducers {
     } )
   } )
 
+  UPDATE_WORD_NOTE = ( state, { word, value } ) => this.UPDATE_WORD( state, {
+    word,
+    key: 'note',
+    value
+  } )
+
   UPDATE_WORD_ADD_ARRAY_ITEM = ( state, { word, key, value } ) =>
     this.UPDATE_WORD( state, {
       word,
@@ -99,6 +105,26 @@ class Reducers {
     { word, value: index }: { word: string; value: number }
   ) => this.UPDATE_WORD_REMOVE_ARRAY_ITEM( state, { word, key: "notes", index } )
 
+  UPDATE_WORD_ADD_A_PICTURE = ( state, { word, value } ) =>
+  this.UPDATE_WORD_ADD_ARRAY_ITEM( state, { word, key: "pictures", value } )
+
+  UPDATE_WORD_UPDATE_A_PICTURE = (
+    state,
+    { word, index, value }: { word: string; value: string; index: number }
+  ) =>
+    this.UPDATE_WORD_UPDATE_ARRAY_ITEM( state, {
+      word,
+      key: "pictures",
+      index,
+      value
+    } )
+
+  UPDATE_WORD_REMOVE_A_PICTURE = (
+    state,
+    { word, value: index }: { word: string; value: number }
+  ) => this.UPDATE_WORD_REMOVE_ARRAY_ITEM( state, { word, key: "pictures", index } )
+  
+
   REMOVE_WORD = ( state, { value } ) => ( {
     ...state,
     words: removeArrayElement( state.words, value )
@@ -109,7 +135,7 @@ export default {
   namespace: "mainData",
   state    : {
     onlineLinks: defaultOnlineLinks,
-    words      : defaultWords
+    words      : defaultWords,
   },
   reducers: {
     ...new Reducers()
@@ -164,15 +190,9 @@ export const createOnlineLink = ( {
 export const createWord = ( {
   id,
   name,
-  notes = [],
-  pictures = [],
-  audios = [],
-  videos = []
+  note = '',
 }: DictDataWord ) => ( {
   id,
   name,
-  notes,
-  pictures,
-  audios,
-  videos
+  note
 } )

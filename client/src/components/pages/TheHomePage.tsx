@@ -10,6 +10,7 @@ import { node } from "_@types_prop-types@15.5.6@@types/prop-types"
 import { DictDataWord } from "../../../../shared/__typings__/DictData"
 import TextField from "@material-ui/core/TextField"
 import TheSearch from "../TheHome/TheSearch"
+import Note, { NoteData } from "../Note/Note"
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
@@ -22,16 +23,11 @@ export default mapState(
         value: ""
       } )
     }
-    onNoteChange = ( event, index ) => {
-      const { value } = event.target
-      const { currentWord: word } = selector
-      this.props.dispatch( {
-        type: "mainData/UPDATE_WORD_UPDATE_ONE_NOTE",
-        word,
-        index,
-        value
-      } )
-    }
+    // onNoteChange = ( event, index ) => {
+    //   const { value } = event.target
+    //   const { currentWord: word } = selector
+      
+    // }
     onRemoveNoteClick = ( index: number ) => {
       const { currentWord: word } = selector
       this.props.dispatch( {
@@ -41,19 +37,43 @@ export default mapState(
       } )
     }
 
-    search() {}
+    onAddPictureClick = () => {
+
+    }
+
+    onPictureUrlChange = () => {
+
+    }
+
+    onRemovePictureClick = () => {
+
+    }
+    
+    onNoteChange = ( data: NoteData ) => {
+      const { currentWord: word } = selector
+      this.props.dispatch( {
+        type : "mainData/UPDATE_WORD_NOTE",
+        word,
+        value: data
+      } )
+    }
 
     render() {
       const { app } = this.props
       const { searching } = app
-      const { wordCanBeAdded, currentWord } = selector
-      const { notes = [] } = currentWord
+      const { wordCanBeAdded: isNewWord, currentWord } = selector
+      const { note } = currentWord
+      const isOldWord = ! isNewWord
       return (
         <TopbarLayout>
           <TheSearch />
           <br />
 
-          {
+{
+  isOldWord && <Note data={ note } onChange={ this.onNoteChange } />
+}
+
+          {/* {
           searching.trim() !== "" && (
             <section>
               {
@@ -82,6 +102,31 @@ export default mapState(
                       Add Note
                     </Button>
                   }
+
+                  <br />
+                  <br />
+                  <br />
+
+                  {[].map( ( picture, index ) => (
+                    <section key={index}>
+                      <TextField
+                        multiline
+                        value={'Url'}
+                        onChange={event => this.onPictureUrlChange()}
+                      />
+                      <Button
+                        variant="contained"
+                        onClick={() => this.onRemovePictureClick()}
+                      >
+                        Remove
+                      </Button>
+                    </section>
+                  ) )}
+                  {
+                    <Button variant="contained" onClick={this.onAddPictureClick}>
+                      Add Picture
+                    </Button>
+                  }
                 </section>
               )}
               <br />
@@ -91,7 +136,7 @@ export default mapState(
                 <OnlineLinks />
               </section>
             </section>
-          )}
+          )} */}
         </TopbarLayout>
       )
     }

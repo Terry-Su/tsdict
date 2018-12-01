@@ -8,10 +8,7 @@ export interface DictData {
 export interface DictDataWord {
   id: string,
   name: string,
-  notes?: string[]
-  pictures?: DictDataWordMedia[]
-  audios?: DictDataWordMedia[]
-  videos?: DictDataWordMedia[]
+  note: string
 } 
 
 

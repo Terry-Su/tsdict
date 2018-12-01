@@ -34,9 +34,6 @@ export const defaultWords: DictDataWord[] = [
   { name: 'B' },
 ].map( item => ( {
   ...item,
-  id      : getUniqueId(),
-  notes   : [],
-  pictures: [],
-  audios  : [],
-  videos  : [],
+  id  : getUniqueId(),
+  note: '',
 } ) )

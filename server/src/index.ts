@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { TEST_FILE, GET_BACKUP_CLIENT_DATA_FILE } from './constants/paths';
+import { GET_BACKUP_CLIENT_DATA_FILE } from './constants/paths';
 import * as bodyParser from 'body-parser'
 import * as FS from 'fs-extra'
 

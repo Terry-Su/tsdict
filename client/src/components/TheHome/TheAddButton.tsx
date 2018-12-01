@@ -13,8 +13,9 @@ export default mapStateAndStyle()(
       const { searching: name } = app
       const { wordCanBeAdded } = selector
       wordCanBeAdded && dispatch( { type : 'mainData/ADD_WORD', value: createWord( {
-        id: getUniqueId(),
-        name
+        id  : getUniqueId(),
+        name,
+        note: ''
       } ) } )
     }
 

@@ -6,7 +6,7 @@ import TheOnlineLinksPage from "./pages/TheOnlineLinksPage"
 import { HOME_ROUTE, EDIT_ONLINE_LINKS_ROUTE, WORDS_ROUTE } from "../constants/routes"
 import TheWordsPage from "./pages/TheWordsPage"
 
-const isTestingSingleComponent = false
+const isTestingSingleComponent = !! TheTestingComponent
 
 export default class TheApp extends Component<any, any> {
   
