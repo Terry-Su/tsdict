@@ -59,6 +59,11 @@ class Reducers {
     } )
   } )
 
+  UPDATE_WORDS = ( state, { value: words } ) => ( {
+    ...state,
+    words
+  } )
+
   UPDATE_WORD_NOTE = ( state, { word, value } ) => this.UPDATE_WORD( state, {
     word,
     key: 'note',
@@ -190,7 +195,7 @@ export const createOnlineLink = ( {
 export const createWord = ( {
   id,
   name,
-  note = '',
+  note,
 }: DictDataWord ) => ( {
   id,
   name,

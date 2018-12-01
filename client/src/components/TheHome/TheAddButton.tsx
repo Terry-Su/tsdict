@@ -15,7 +15,7 @@ export default mapStateAndStyle()(
       wordCanBeAdded && dispatch( { type : 'mainData/ADD_WORD', value: createWord( {
         id  : getUniqueId(),
         name,
-        note: ''
+        note: null
       } ) } )
     }
 

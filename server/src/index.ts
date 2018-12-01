@@ -1,31 +1,25 @@
 import * as express from 'express'
-import { GET_BACKUP_CLIENT_DATA_FILE } from './constants/paths';
-import * as bodyParser from 'body-parser'
-import * as FS from 'fs-extra'
+import { STORE_ROOT } from './constants/paths';
 
 const app = express()
+export default app
 
+// Enable cross-domain
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
-// parse application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.json());
+// resolve post body data
+app.use(express.json({
+  limit: '50mb'
+}));
 
 
-app.get( '/', (req, res) => {
-  res.send( 'Hello World!123' )
-} )
+import './model'
+import { PORT } from '../config';
 
-// Enable cross-domain
+app.use( express.static( STORE_ROOT ) )
 
-app.post( '/backup', (req: express.Request, res: express.Response) => {
-  console.log( GET_BACKUP_CLIENT_DATA_FILE() )
-  FS.outputJSONSync( GET_BACKUP_CLIENT_DATA_FILE(), req.body )
-} )
-
-
-app.listen( 3000 )
+app.listen( PORT )

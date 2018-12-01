@@ -1,3 +1,5 @@
+import { NoteData } from "../../client/src/components/Note/Note";
+
 export interface DictData {
   words: DictDataWord[]
   onlineLinks: string[]
@@ -8,7 +10,7 @@ export interface DictData {
 export interface DictDataWord {
   id: string,
   name: string,
-  note: string
+  note: NoteData
 } 
 
 

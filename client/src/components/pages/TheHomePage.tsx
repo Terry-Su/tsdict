@@ -11,6 +11,8 @@ import { DictDataWord } from "../../../../shared/__typings__/DictData"
 import TextField from "@material-ui/core/TextField"
 import TheSearch from "../TheHome/TheSearch"
 import Note, { NoteData } from "../Note/Note"
+import { resolveNote } from "../../services"
+import { notNil } from "../../utils/lodash"
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
@@ -49,12 +51,19 @@ export default mapState(
 
     }
     
-    onNoteChange = ( data: NoteData ) => {
+    onNoteChange = async ( data: NoteData ) => {
       const { currentWord: word } = selector
       this.props.dispatch( {
         type : "mainData/UPDATE_WORD_NOTE",
         word,
         value: data
+      } )
+
+      const note = await resolveNote()
+      notNil( note ) && this.props.dispatch( {
+        type : "mainData/UPDATE_WORD_NOTE",
+        word,
+        value: note
       } )
     }
 

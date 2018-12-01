@@ -29,15 +29,19 @@ export default mapStateAndStyle()(
       } )
 
       quill.on( 'text-change', ( delta, oldDelta, source ) => {
-        const content = quill.getContents()
-        this.props.onChange( content )
+        if ( source === 'user' ) {
+          const content = quill.getContents()
+          this.props.onChange( content )
+        }
       } )
 
       this.quill.setContents( this.props.data )
     }
     componentDidUpdate() {
       if ( JSON.stringify( this.props.data ) !== JSON.stringify( this.quill.getContents() ) ) {
+        const cachedSelection = this.quill.getSelection()
         this.quill.setContents( this.props.data ) 
+        this.quill.setSelection( cachedSelection )
       }
     }
     render() {

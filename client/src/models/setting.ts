@@ -7,7 +7,7 @@ class Reducers {
 export default {
   namespace: "setting",
   state    : {
-    server: 'http://192.168.0.102:3000',
+    server: 'http://192.168.1.7:3000',
   },
   reducers: {
     ... new Reducers()
