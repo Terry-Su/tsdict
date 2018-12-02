@@ -39,6 +39,11 @@ class Selector {
     return !this.wordCanBeAdded
   }
 
+  get shallShowWordPanel() {
+    const { searching } = this.appState
+    return searching.trim() !== "" && !this.wordCanBeAdded
+  }
+
   get currentWord(): DictDataWord {
     const { searching } = this.appState
     const { words } = this.mainDataState

@@ -69,7 +69,7 @@ export default mapState(
     render() {
       const { app } = this.props
       const { searching } = app
-      const { wordCanBeAdded: isNewWord, currentWord } = selector
+      const { wordCanBeAdded: isNewWord, currentWord, shallShowWordPanel } = selector
       const { note } = currentWord
       const isOldWord = ! isNewWord
       return (
@@ -78,7 +78,7 @@ export default mapState(
           <br />
 
 {
-  isOldWord && <Note data={ note } onChange={ this.onNoteChange } />
+  shallShowWordPanel && <Note data={ note } onChange={ this.onNoteChange } />
 }
 
           {/* {
