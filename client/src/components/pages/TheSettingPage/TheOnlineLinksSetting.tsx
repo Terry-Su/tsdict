@@ -1,17 +1,16 @@
 import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
+import mapStateAndStyle from "../../../utils/mapStateAndStyle"
 import Input from "@material-ui/core/Input"
 import Switch from "@material-ui/core/Switch"
 import Button from "@material-ui/core/Button"
-import { OnlineLink } from "../../__typings__"
-import { notNil } from "../../utils/lodash"
-import getUniqueKey from "../../utils/getUniqueId"
-import TopbarLayout from "../layouts/TopbarLayout"
-import { createOnlineLink } from "../../models/mainData"
-import getUniqueId from "../../utils/getUniqueId"
+import { OnlineLink } from "../../../__typings__"
+import { notNil } from "../../../utils/lodash"
+import getUniqueKey from "../../../utils/getUniqueId"
+import { createOnlineLink } from "../../../models/mainData"
+import getUniqueId from "../../../utils/getUniqueId"
 
 export default mapStateAndStyle()(
-  class Template extends Component<any, any> {
+  class TheOnlineLinksSetting extends Component<any, any> {
     addingLabelInputRef: any = React.createRef()
     addingUrlInputRef: any = React.createRef()
     addingAfterInputRef: any = React.createRef()
@@ -64,7 +63,8 @@ export default mapStateAndStyle()(
       const { mainData, dispatch } = this.props
       const { onlineLinks } = mainData
       return (
-        <TopbarLayout>
+        <div>
+          <h2>Online Links</h2>
           <section>
             <Input placeholder="Label" inputRef={ this.addingLabelInputRef }></Input>
             <Input placeholder="Url" inputRef={ this.addingUrlInputRef }></Input>
@@ -88,7 +88,7 @@ export default mapStateAndStyle()(
               <br /><br /><br />
             </section>
           ) )}
-        </TopbarLayout>
+        </div>
       )
     }
   }

@@ -1,9 +1,9 @@
 import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
+import mapStateAndStyle from "../../../utils/mapStateAndStyle"
 import Button from "@material-ui/core/Button"
-import { createWord } from "../../models/mainData"
-import getUniqueId from "../../utils/getUniqueId"
-import selector from "../../selectors"
+import { createWord } from "../../../models/mainData"
+import getUniqueId from "../../../utils/getUniqueId"
+import selector from "../../../selectors"
 
 export default mapStateAndStyle()(
   class TheAddButton extends Component<any, any> {

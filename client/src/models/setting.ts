@@ -1,10 +1,4 @@
-class Reducers {
-  UPDATE_STATE  =( state, { value } ) => value
-  
-  UPDATE_KEY = ( key: string ) => ( state, { value } ) => ( { ...state, [ key ]: value } )
 
-  UPDATE_SERVER = this.UPDATE_KEY( 'server' )
-}
 
 export default {
   namespace: "setting",
@@ -12,7 +6,13 @@ export default {
     server: 'http://192.168.1.7:3000',
   },
   reducers: {
-    ... new Reducers()
+    ... new ( class {
+      UPDATE_STATE  =( state, { value } ) => value
+      
+      UPDATE_KEY = ( key: string ) => ( state, { value } ) => ( { ...state, [ key ]: value } )
+    
+      UPDATE_SERVER = this.UPDATE_KEY( 'server' )
+    } )()
   },
   effects: {}
 }

@@ -1,12 +1,12 @@
 import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
+import mapStateAndStyle from "../../../utils/mapStateAndStyle"
 import Input from "@material-ui/core/Input"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import TheAddButton from "./TheAddButton"
-import selector from "../../selectors"
-import { DictDataWord } from "../../../../shared/__typings__/DictData"
+import selector from "../../../selectors"
+import { DictDataWord } from "../../../../../shared/__typings__/DictData"
 
 export default mapStateAndStyle()(
   class TheSearch extends Component<any, any> {

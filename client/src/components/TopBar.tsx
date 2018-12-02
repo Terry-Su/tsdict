@@ -107,47 +107,13 @@ export default mapStateAndStyle( {
       return (
         <AppBar position="static">
           <Toolbar>
-            {/* <IconButton color="inherit"
-            onClick={this.handleClick}>
-              Menu
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean( anchorEl )}
-              onClose={this.handleClose}
-            >
-              <Link to={EDIT_ONLINE_LINKS_ROUTE}>
-                <MenuItem onClick={this.handleClose}>
-                  Edit Online Links
-                </MenuItem>
-              </Link>
-
-              <MenuItem onClick={this.handleClose}>Item2</MenuItem>
-              <MenuItem onClick={this.handleClose}>Item3</MenuItem>
-            </Menu> */}
-
+            {/* Buttons */}
             <Link to={HOME_ROUTE} className={c.link}>
               <IconButton>Home</IconButton>
             </Link>
             <Link to={WORDS_ROUTE} className={c.link}>
               <IconButton>Words</IconButton>
             </Link>
-
-            <Link to={EDIT_ONLINE_LINKS_ROUTE} className={c.link}>
-              <IconButton>Online Links</IconButton>
-            </Link>
-
-            <IconButton className={c.link} onClick={this.onExportClick}>
-              Export
-            </IconButton>
-            <IconButton className={c.link}>
-              Import
-              <Uploader onChange={this.onUploadChange} />
-            </IconButton>
-
-            <IconButton className={c.link} onClick={this.onBackupClick}>
-              Backup
-            </IconButton>
 
             <IconButton className={c.link} onClick={this.onPullClick}>
               Pull
@@ -157,8 +123,31 @@ export default mapStateAndStyle( {
               Push
             </IconButton>
 
-            <IconButton className={c.link} onClick={this.onCleanClick}>
-              Clean Media
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean( anchorEl )}
+              onClose={this.handleClose}
+            >
+              <Link to={EDIT_ONLINE_LINKS_ROUTE}>
+                <MenuItem onClick={this.handleClose}>Setting</MenuItem>
+              </Link>
+              <MenuItem onClick={this.handleClose}>
+                <span onClick={this.onExportClick}>Export</span>
+              </MenuItem>
+              <MenuItem onClick={this.handleClose}>
+                <span>
+                  Import
+                  <Uploader onChange={this.onUploadChange} />
+                </span>
+              </MenuItem>
+              <MenuItem onClick={this.handleClose}>
+                <span onClick={this.onBackupClick}>Backup</span>
+              </MenuItem>
+              <MenuItem onClick={this.onCleanClick}>Clean Media</MenuItem>
+              {/* <MenuItem onClick={this.handleClose}></MenuItem> */}
+            </Menu>
+            <IconButton className={c.link} color="inherit" onClick={this.handleClick}>
+              Menu
             </IconButton>
           </Toolbar>
         </AppBar>
