@@ -5,6 +5,7 @@ import IframeViewer from "./IframeViewer"
 import TheWordsPage from './pages/TheWordsPage'
 import Note from './Note/Note'
 import TheSettingPage from './pages/TheSettingPage/TheSettingPage'
+import Uploader from './Uploader/Uploader'
 
 const TheTestingComponent = 
   // TheHomePage
@@ -13,6 +14,7 @@ const TheTestingComponent =
   // TheSettingPage
   // TheWordsPage
   // Note
+  // Uploader
   null
 
 

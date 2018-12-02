@@ -49,10 +49,6 @@ export default mapStateAndStyle( {
       download( str, fileName )
     }
 
-    onImportClick = () => {
-      console.log( "onImportClick" )
-    }
-
     onUploadChange = text => {
       const d = JSON.parse( text )
 
@@ -131,22 +127,21 @@ export default mapStateAndStyle( {
               <Link to={EDIT_ONLINE_LINKS_ROUTE}>
                 <MenuItem onClick={this.handleClose}>Setting</MenuItem>
               </Link>
-              <MenuItem onClick={this.handleClose}>
-                <span onClick={this.onExportClick}>Export</span>
-              </MenuItem>
-              <MenuItem onClick={this.handleClose}>
-                <span>
-                  Import
-                  <Uploader onChange={this.onUploadChange} />
-                </span>
-              </MenuItem>
-              <MenuItem onClick={this.handleClose}>
-                <span onClick={this.onBackupClick}>Backup</span>
-              </MenuItem>
+              <MenuItem onClick={this.onExportClick}>Export</MenuItem>
+
+              <div style={{ position: 'relative' }}>
+                <MenuItem onClick={this.handleClose}>Import</MenuItem>
+                <Uploader onChange={this.onUploadChange} />
+              </div>
+              <MenuItem onClick={this.onBackupClick}>Backup</MenuItem>
               <MenuItem onClick={this.onCleanClick}>Clean Media</MenuItem>
               {/* <MenuItem onClick={this.handleClose}></MenuItem> */}
             </Menu>
-            <IconButton className={c.link} color="inherit" onClick={this.handleClick}>
+            <IconButton
+              className={c.link}
+              color="inherit"
+              onClick={this.handleClick}
+            >
               Menu
             </IconButton>
           </Toolbar>
