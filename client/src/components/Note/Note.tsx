@@ -3,6 +3,7 @@ import mapStateAndStyle from "../../utils/mapStateAndStyle"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import Delta from "_quill-delta@4.1.0@quill-delta"
+import { debounce } from "../../utils/lodash"
 
 export type NoteData = Delta
 export default mapStateAndStyle()(
@@ -28,12 +29,15 @@ export default mapStateAndStyle()(
         theme      : 'snow'
       } )
 
-      quill.on( 'text-change', ( delta, oldDelta, source ) => {
+      const debouncedOnChange = debounce( ( delta, oldDelta, source ) => {
+        console.log( 'changed' )
         if ( source === 'user' ) {
           const content = quill.getContents()
           this.props.onChange( content )
         }
-      } )
+      }, 1000 )
+
+      quill.on( 'text-change', debouncedOnChange )
 
       this.quill.setContents( this.props.data )
     }
