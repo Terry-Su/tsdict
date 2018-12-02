@@ -1,8 +1,8 @@
 CACHE MANIFEST
-NETWORK:
-*
 
-CACHE:
+# Version, used to update source
+# 2018-1202-1154-0
+
 index.html
-# bundle.js
+bundle.js
 

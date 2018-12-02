@@ -5,7 +5,7 @@ const webpack = require( "webpack" )
 import webpackConfig from "../webpack.config"
 import { PORT } from "../config"
 import { __DEV__ } from "./global"
-import { OUTPUT_INDEX_HTML, OUTPUT } from "./constants";
+import { OUTPUT_INDEX_HTML, OUTPUT } from "./constants"
 
 
 export default function() {
@@ -30,6 +30,8 @@ export default function() {
 
   if ( __DEV__ ) {
     const app = express()
+
+    // app.use( express.static( OUTPUT ) )
 
     // webpck hmr
     app.use(

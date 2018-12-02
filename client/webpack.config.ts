@@ -1,33 +1,38 @@
-import * as PATH from 'path'
+import * as PATH from "path"
 const { resolve } = PATH
-const webpack = require( 'webpack' )
+const webpack = require( "webpack" )
 const CopyWebpackPlugin = require( "copy-webpack-plugin" )
 import { __DEV__ } from "./script/global"
-import { OUTPUT_FILE_NAME, ENTRY, OUTPUT, ENTRY_INDEX_HTML, OUTPUT_INDEX_HTML, ENTRY_INDEX_CACHE, OUTPUT_INDEX_CACHE } from './script/constants'
-
-
-
+import {
+  OUTPUT_FILE_NAME,
+  ENTRY,
+  OUTPUT,
+  ENTRY_INDEX_HTML,
+  OUTPUT_INDEX_HTML,
+  ENTRY_INDEX_CACHE,
+  OUTPUT_INDEX_CACHE
+} from "./script/constants"
 
 const webpackClientConfig = {
-  mode : __DEV__ ? 'development' : 'production',
+  mode : __DEV__ ? "development" : "production",
   entry: {
-    [ OUTPUT_FILE_NAME ]: [ 
+    [ OUTPUT_FILE_NAME ]: [
       ENTRY,
-      `webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000`,   
+      `webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000`
     ]
   },
   output: {
     path      : OUTPUT,
-    filename  : '[name]',
-    publicPath: '/'
+    filename  : "[name]",
+    publicPath: "/"
   },
-  devtool: __DEV__ ? 'source-map' : false,
+  devtool: __DEV__ ? "source-map" : false,
   module : {
     rules: [
       {
         test: /\.ts|\.tsx$/,
         use : {
-          loader: 'ts-loader',
+          loader: "ts-loader"
         },
         exclude: /node_modules/
       },
@@ -42,15 +47,11 @@ const webpackClientConfig = {
           "css-loader", // translates CSS into CommonJS
           "sass-loader" // compiles Sass to CSS
         ]
-      },
+      }
     ]
   },
   resolve: {
-    extensions: [
-      '.tsx',
-      '.ts',
-      '.js'
-    ]
+    extensions: [ ".tsx", ".ts", ".js" ]
   },
   plugins: [
     new CopyWebpackPlugin( [
@@ -61,17 +62,9 @@ const webpackClientConfig = {
       {
         from: ENTRY_INDEX_CACHE,
         to  : OUTPUT_INDEX_CACHE
-      },
-    ],
-   ),
-  ].concat(
-    __DEV__ ?
-     [
-      new webpack.HotModuleReplacementPlugin()
-    ] :
-    []    
-  )
+      }
+    ] )
+  ].concat( __DEV__ ? [ new webpack.HotModuleReplacementPlugin() ] : [] )
 }
-
 
 export default webpackClientConfig
