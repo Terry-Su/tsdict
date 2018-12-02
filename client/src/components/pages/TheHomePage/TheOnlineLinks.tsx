@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import mapState from "../utils/mapState"
-import { isNil } from "../utils/lodash"
-import IframeViewer from "./IframeViewer"
-import mapStateAndStyle from "../utils/mapStateAndStyle"
+import mapState from "../../../utils/mapState"
+import { isNil } from "../../../utils/lodash"
+import IframeViewer from "../../IframeViewer"
+import mapStateAndStyle from "../../../utils/mapStateAndStyle"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 
