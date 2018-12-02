@@ -5,7 +5,8 @@ import {
   GET_STORE_MEDIA_FILE,
   GET_URL_RELATIVE_TO_STORE_ROOT,
   GET_STORE_IMAGE_FILES,
-  STORE_ROOT
+  STORE_ROOT,
+  STORE_CURRENT_DATA_FILE
 } from "./constants/paths";
 import * as bodyParser from "body-parser";
 import * as FS from "fs-extra";
@@ -16,11 +17,43 @@ import isBase64Url from "./utils/isBase64Url";
 import { URL } from "url";
 import { flatten } from "lodash";
 import { notNil } from "./utils/lodash";
-import * as PATH from 'path'
-const trash = require( 'trash' )
+import * as PATH from "path";
+const trash = require("trash");
 
 app.post("/backup", (req: express.Request, res: express.Response) => {
-  FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_FILE(), req.body);
+  try {
+    FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_FILE(), req.body);
+    res.send(true);
+    return;
+  } catch (e) {
+    console.log(e);
+  }
+  res.send(null);
+});
+
+app.get("/pull", (req: express.Request, res: express.Response) => {
+  let data;
+  try {
+    data = FS.readJSONSync(STORE_CURRENT_DATA_FILE);
+  } catch (e) {
+    console.log(e);
+  }
+
+  if (notNil(data)) {
+    return res.send(data);
+  }
+  return res.send(null);
+});
+
+app.post("/push", (req: express.Request, res: express.Response) => {
+  try {
+    FS.outputJSONSync(STORE_CURRENT_DATA_FILE, req.body);
+    res.send(true);
+    return;
+  } catch (e) {
+    console.log(e);
+  }
+  res.send(null);
 });
 
 // replace the media(image for example) url with server url instead of base64 url
@@ -67,38 +100,44 @@ app.post("/resolveNote", (req: express.Request, res: express.Response) => {
   }
 });
 
-
 app.post("/cleanUseless", (req: express.Request, res: express.Response) => {
-  const words: DictDataWord[] = req.body;
-  const imageUrls = flatten(
-    words
-      .filter(({ note }) => notNil(note) && notNil(note.ops) )
-      .map(({ note }) =>
-        note.ops
-          .filter(({ insert }: any) => insert && insert.image)
-          .map(({ insert }: any) => insert.image)
-      )
-  );
-  const relativePaths = imageUrls.map( url => {
-    try {
-      url = new URL( url )
-      return url.pathname
-    }catch(e) {
-      console.log( e )
-    }
-    return url
-  } )
+  try {
+    const words: DictDataWord[] = req.body;
+    const imageUrls = flatten(
+      words
+        .filter(({ note }) => notNil(note) && notNil(note.ops))
+        .map(({ note }) =>
+          note.ops
+            .filter(({ insert }: any) => insert && insert.image)
+            .map(({ insert }: any) => insert.image)
+        )
+    );
+    const relativePaths = imageUrls.map(url => {
+      try {
+        url = new URL(url);
+        return url.pathname;
+      } catch (e) {
+        console.log(e);
+      }
+      return url;
+    });
 
-  const storeImageFiles = GET_STORE_IMAGE_FILES()
+    const storeImageFiles = GET_STORE_IMAGE_FILES();
 
-  storeImageFiles.forEach( storeImageFile => {
-    const storeReltivePath = `/${PATH.relative( STORE_ROOT, storeImageFile)}`
+    storeImageFiles.forEach(storeImageFile => {
+      const storeReltivePath = `/${PATH.relative(STORE_ROOT, storeImageFile)}`;
 
-    if ( ! relativePaths.includes( storeReltivePath ) ) {
-      trash( storeImageFile ).then( () => {
-        `${storeImageFile} was removed into trash` 
-      } )
-    }
-  } )
-  console.log(imageUrls);
+      if (
+        relativePaths &&
+        relativePaths.length > 0 &&
+        !relativePaths.includes(storeReltivePath)
+      ) {
+        trash(storeImageFile).then(() => {
+          `${storeImageFile} was removed into trash`;
+        });
+      }
+    });
+    res.send(true);
+  } catch (e) {}
+  res.send(null);
 });

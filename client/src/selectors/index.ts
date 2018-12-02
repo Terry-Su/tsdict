@@ -1,9 +1,18 @@
 import { DictDataWord } from "../../../shared/__typings__/DictData"
 import { root } from "../entry"
+import models from "../models"
+import { pick } from "../utils/lodash"
+
 
 class Selector {
   get state() {
     return root[ "_store" ].getState()
+  }
+
+  get storeData() {
+    const storeKeys = Object.keys( models )
+    const data = pick( root[ "_store" ].getState(), storeKeys )
+    return data
   }
 
   get appState() {

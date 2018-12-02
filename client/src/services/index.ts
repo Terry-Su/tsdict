@@ -11,8 +11,24 @@ const post = ( url, data, config = {} ) => requestServer( url, {
   ...config,
 } )
 
+const get = ( url,config = {} ) => requestServer( url, {
+  method: 'get',
+  // headers: {
+  //   "Content-Type": "application/json; charset=utf-8",
+  // },
+  ...config,
+} )
+
 
 export const backup = data => post( 'backup', data )
+export const pull = data => {
+  backup( data )
+  return get( 'pull' )
+}
+export const push = data => {
+  backup( data )
+  return post( 'push', data )
+}
 
 
 // replace the media(image for example) url with server url instead of base64 url 

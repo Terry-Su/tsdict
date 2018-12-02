@@ -5,6 +5,8 @@ import { OnlineLink } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 
 class Reducers {
+  UPDATE_STATE  =( state, { value } ) => value
+  
   // online links
   UPDATE_ONLINE_LINKS = ( state, { value } ) => ( {
     ...state,

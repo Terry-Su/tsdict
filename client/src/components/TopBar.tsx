@@ -14,14 +14,18 @@ import {
 import download from "../assets/js/download"
 import localStore from "../store/localStore"
 import Uploader from "./Uploader/Uploader"
-import { backup } from "../services"
-import store from "../store/store"
+import { backup, pull, push, cleanUseless } from "../services"
+import selector from "../selectors"
+import models from "../models/index"
+import { notNil, mapValues } from "../utils/lodash"
 
 export default mapStateAndStyle( {
   link: {
+    fontSize      : "12px!important",
     textDecoration: "none!important",
     "& span"      : {
-      color: "white!important"
+      fontSize: "12px!important",
+      color   : "white!important"
     }
   }
 } )(
@@ -62,12 +66,40 @@ export default mapStateAndStyle( {
     }
 
     onBackupClick = () => {
-      const data = store.getData()
-      backup( data ).then( data => {
-        console.log( data )
-      } )
+      const { dispatch } = this.props
+      backup( selector.storeData )
+        .then( data => data && dispatch( { type: `app/SHOW_BACKUP_SUCCESS` } ) )
+        .catch( () => dispatch( { type: `app/SHOW_BACKUP_FAIL` } ) )
     }
 
+    onPullClick = () => {
+      const { dispatch } = this.props
+      pull( selector.storeData )
+        .then( data => {
+          notNil( data ) &&
+            mapValues( models, ( { namespace: name } ) => {
+              dispatch( { type: `${name}/UPDATE_STATE`, value: data[ name ] } )
+              dispatch( { type: `app/SHOW_PULL_SUCCESS` } )
+            } )
+        } )
+        .catch( () => dispatch( { type: `app/SHOW_PULL_FAIL` } ) )
+    }
+
+    onPushClick = () => {
+      const { dispatch } = this.props
+      push( selector.storeData )
+        .then( data => {
+          data && dispatch( { type: `app/SHOW_PUSH_SUCCESS` } )
+        } )
+        .catch( () => dispatch( { type: `app/SHOW_PUSH_FAIL` } ) )
+    }
+
+    onCleanClick = () => {
+      const { dispatch } = this.props
+      cleanUseless()
+        .then( data => data && dispatch( { type: `app/SHOW_CLEAN_SUCCESS` } ) )
+        .catch( () => dispatch( { type: `app/SHOW_CLEAN_FAIL` } ) )
+    }
     render() {
       const { anchorEl } = this.state
       const { classes: c } = this.props
@@ -117,6 +149,17 @@ export default mapStateAndStyle( {
               Backup
             </IconButton>
 
+            <IconButton className={c.link} onClick={this.onPullClick}>
+              Pull
+            </IconButton>
+
+            <IconButton className={c.link} onClick={this.onPushClick}>
+              Push
+            </IconButton>
+
+            <IconButton className={c.link} onClick={this.onCleanClick}>
+              Clean Media
+            </IconButton>
           </Toolbar>
         </AppBar>
       )

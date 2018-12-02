@@ -1,4 +1,6 @@
 class Reducers {
+  UPDATE_STATE  =( state, { value } ) => value
+  
   UPDATE_KEY = ( key: string ) => ( state, { value } ) => ( { ...state, [ key ]: value } )
 
   UPDATE_SERVER = this.UPDATE_KEY( 'server' )

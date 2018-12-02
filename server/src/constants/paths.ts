@@ -15,6 +15,8 @@ export const GET_BACKUP_CLIENT_DATA_FILE = () => {
   return resolve( BACKUP, `clientData${ time }.json`  )
 }
 
+export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
+
 export const GET_STORE_MEDIA_FILE = () => {
   const name = `${moment().format( 'YYYYMMDD-hmmss' )}-${getUniqueId()}`
   return resolve( STORE_IMAGE, name )

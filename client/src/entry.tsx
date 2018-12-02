@@ -9,7 +9,7 @@ import './style/main.scss'
 import { pick, notNil, cloneDeep } from './utils/lodash'
 import localStore from "./store/localStore"
 import { Router, Route } from 'dva/router'
-import store from './store/store'
+import selector from './selectors'
 
 
 const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
@@ -23,7 +23,7 @@ const app = dva( {
 export const root = app
 
 function updateLocalStore() {
-    const data = store.getData()
+    const data = selector.storeData
     notNil( data ) && localStore.setStore( data )
 }
 
@@ -52,7 +52,6 @@ function model( app ) {
 }
 
 model( app )
-// mapValues( models, model => app.model( model ) )
 
 
 
