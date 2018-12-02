@@ -17,7 +17,7 @@ import { URL } from "url";
 import { flatten } from "lodash";
 import { notNil } from "./utils/lodash";
 import * as PATH from 'path'
-import trash from 'trash'
+const trash = require( 'trash' )
 
 app.post("/backup", (req: express.Request, res: express.Response) => {
   FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_FILE(), req.body);
@@ -99,8 +99,6 @@ app.post("/cleanUseless", (req: express.Request, res: express.Response) => {
         `${storeImageFile} was removed into trash` 
       } )
     }
-    console.log( storeReltivePath )
-
   } )
   console.log(imageUrls);
 });
