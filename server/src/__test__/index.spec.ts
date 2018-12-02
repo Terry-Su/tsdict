@@ -7,18 +7,20 @@ import '../index'
 //   } )
 // } )
 
-
 describe("long asynchronous specs", function() {
   var originalTimeout;
   beforeEach(function() {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 6000000;
   });
 
   it("takes a long time", function(done) {
+
+
+
     setTimeout(function() {
       done();
-    }, 900000);
+    }, 9000000);
   });
 
   afterEach(function() {

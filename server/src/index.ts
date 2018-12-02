@@ -1,8 +1,11 @@
 import * as express from 'express'
 import { STORE_ROOT } from './constants/paths';
+import { PORT } from '../config';
 
 const app = express()
 export default app
+
+app.use( express.static( STORE_ROOT ) )
 
 // Enable cross-domain
 app.use(function(req, res, next) {
@@ -17,9 +20,8 @@ app.use(express.json({
 }));
 
 
-import './model'
-import { PORT } from '../config';
 
-app.use( express.static( STORE_ROOT ) )
+import './model'
+
 
 app.listen( PORT )

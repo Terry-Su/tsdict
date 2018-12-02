@@ -1,5 +1,6 @@
 import * as PATH from 'path'
 import * as moment from 'moment'
+import * as GLOB from 'glob'
 import getUniqueId from '../utils/getUniqueId';
 const { resolve, relative } = PATH
 
@@ -21,3 +22,8 @@ export const GET_STORE_MEDIA_FILE = () => {
 
 
 export const GET_URL_RELATIVE_TO_STORE_ROOT = path => relative( STORE_ROOT, path )
+
+
+export const GET_STORE_IMAGE_FILES = () => {
+  return GLOB.sync( `${STORE_IMAGE}/**/*` )
+}

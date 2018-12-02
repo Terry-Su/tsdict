@@ -5,12 +5,14 @@ import { Route } from 'dva/router'
 import TheOnlineLinksPage from "./pages/TheOnlineLinksPage"
 import { HOME_ROUTE, EDIT_ONLINE_LINKS_ROUTE, WORDS_ROUTE } from "../constants/routes"
 import TheWordsPage from "./pages/TheWordsPage"
+import { cleanUseless } from "../services"
 
 const isTestingSingleComponent = !! TheTestingComponent
 
 export default class TheApp extends Component<any, any> {
-  
-
+  componentDidMount() {
+    cleanUseless()
+  }
   render() {
     return isTestingSingleComponent ? (
       <TheTestingComponent />

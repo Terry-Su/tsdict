@@ -3,7 +3,9 @@ import app from ".";
 import {
   GET_BACKUP_CLIENT_DATA_FILE,
   GET_STORE_MEDIA_FILE,
-  GET_URL_RELATIVE_TO_STORE_ROOT
+  GET_URL_RELATIVE_TO_STORE_ROOT,
+  GET_STORE_IMAGE_FILES,
+  STORE_ROOT
 } from "./constants/paths";
 import * as bodyParser from "body-parser";
 import * as FS from "fs-extra";
@@ -11,11 +13,11 @@ import Delta from "_quill-delta@4.1.0@quill-delta";
 import { DictDataWord } from "../../shared/__typings__/DictData";
 import outputBase64Media from "./utils/outputBase64Media";
 import isBase64Url from "./utils/isBase64Url";
-import {URL} from 'url'
-
-app.get("/", (req, res) => {
-  res.send("Hello World!123");
-});
+import { URL } from "url";
+import { flatten } from "lodash";
+import { notNil } from "./utils/lodash";
+import * as PATH from 'path'
+import trash from 'trash'
 
 app.post("/backup", (req: express.Request, res: express.Response) => {
   FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_FILE(), req.body);
@@ -25,7 +27,7 @@ app.post("/backup", (req: express.Request, res: express.Response) => {
 app.post("/resolveNote", (req: express.Request, res: express.Response) => {
   function replaceImage(url): string {
     let resolvedUrl = url;
-    const prefix = req.protocol + '://' + req.get('host')
+    const prefix = req.protocol + "://" + req.get("host");
 
     // resolve base64 url
     if (isBase64Url(url)) {
@@ -34,13 +36,13 @@ app.post("/resolveNote", (req: express.Request, res: express.Response) => {
         .replace(/;base64,.+/, "");
       const path = `${GET_STORE_MEDIA_FILE()}.${extension}`;
       outputBase64Media(url, path);
-      resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT(path)}`
+      resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT(path)}`;
     }
 
-    const cachedUrl = resolvedUrl
-    resolvedUrl = new URL( resolvedUrl )
+    const cachedUrl = resolvedUrl;
+    resolvedUrl = new URL(resolvedUrl);
 
-    resolvedUrl = `${prefix}${resolvedUrl.pathname}`
+    resolvedUrl = `${prefix}${resolvedUrl.pathname}`;
     // add prefix
     return resolvedUrl;
   }
@@ -63,4 +65,42 @@ app.post("/resolveNote", (req: express.Request, res: express.Response) => {
     });
     res.send(note);
   }
+});
+
+
+app.post("/cleanUseless", (req: express.Request, res: express.Response) => {
+  const words: DictDataWord[] = req.body;
+  const imageUrls = flatten(
+    words
+      .filter(({ note }) => notNil(note) && notNil(note.ops) )
+      .map(({ note }) =>
+        note.ops
+          .filter(({ insert }: any) => insert && insert.image)
+          .map(({ insert }: any) => insert.image)
+      )
+  );
+  const relativePaths = imageUrls.map( url => {
+    try {
+      url = new URL( url )
+      return url.pathname
+    }catch(e) {
+      console.log( e )
+    }
+    return url
+  } )
+
+  const storeImageFiles = GET_STORE_IMAGE_FILES()
+
+  storeImageFiles.forEach( storeImageFile => {
+    const storeReltivePath = `/${PATH.relative( STORE_ROOT, storeImageFile)}`
+
+    if ( ! relativePaths.includes( storeReltivePath ) ) {
+      trash( storeImageFile ).then( () => {
+        `${storeImageFile} was removed into trash` 
+      } )
+    }
+    console.log( storeReltivePath )
+
+  } )
+  console.log(imageUrls);
 });

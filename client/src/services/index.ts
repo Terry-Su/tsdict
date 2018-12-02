@@ -17,3 +17,5 @@ export const backup = data => post( 'backup', data )
 
 // replace the media(image for example) url with server url instead of base64 url 
 export const resolveNote = () => post( 'resolveNote', selector.currentWord.note )
+
+export const cleanUseless = () => post( 'cleanUseless', selector.mainDataState.words )
