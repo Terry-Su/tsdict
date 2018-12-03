@@ -25,16 +25,54 @@ import { backup } from "./action";
 const trash = require("trash");
 
 app.use( express.static( STORE_ROOT ) )
-// app.use( express.static( CLIENT_PUBLIC ) )
+app.use( express.static( CLIENT_PUBLIC ) )
 
 
-// app.get('/', (req, res) => {
-//   res.sendFile( CLIENT_PUBLIC_INDEX )
-// })
+app.get('/', (req, res) => {
+  res.sendFile( CLIENT_PUBLIC_INDEX )
+})
 
 // app.get('/cache.appcache', (req, res) => {
 //   res.sendFile(CLIENT_PUBLIC_APP_CACHE)
 // })
+app.get( '/cache', (req, res) => {
+  const storeImageFiles = GET_STORE_IMAGE_FILES();
+
+  // const urls = storeImageFiles.map( path => `${req.protocol}/${req.get('host')}/${PATH.relative(STORE_ROOT, path)}` )
+  let urls = []
+  try {
+    const clientData = FS.readJSONSync(STORE_CURRENT_DATA_FILE)
+    urls = flatten(
+      clientData.mainData.words
+        .filter(({ note }) => notNil(note) && notNil(note.ops))
+        .map(({ note }) =>
+          note.ops
+            .filter(({ insert }: any) => insert && insert.image)
+            .map(({ insert }: any) => insert.image)
+        )
+    );  
+  }
+  catch(e) {console.log(e)}
+
+  const urlsStr = urls.join('\n')
+
+  const text =
+`CACHE MANIFEST
+
+CACHE:
+#NETWORK:
+index.html
+bundle.js
+${urlsStr}
+
+NETWORK:
+*
+
+# Version, used to update source
+# 1.0.0-3-${new Date().getTime()}
+`
+res.send( text )
+} )
 
 app.post("/backup", (req: express.Request, res: express.Response) => {
   try {
