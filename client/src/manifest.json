@@ -1,5 +1,7 @@
 {
   "name": "TSDict",
   "short_name": "TSDict",
+  "description": "TSDict",
+  "start_url": "/",
   "display": "standalone"
 }

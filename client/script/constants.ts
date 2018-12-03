@@ -18,3 +18,6 @@ export const OUTPUT_INDEX_CACHE = resolve( OUTPUT, 'cache.appcache' )
 
 export const ENTRY_MANIFEST_CACHE = resolve( SRC, 'manifest.json' )
 export const OUTPUT_MANIFEST_CACHE = resolve( OUTPUT, 'manifest.json' )
+
+export const ENTRY_SW = resolve( SRC, 'sw.js' )
+export const OUTPUT_SW = resolve( OUTPUT, 'sw.js' )

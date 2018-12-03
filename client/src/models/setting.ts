@@ -3,7 +3,7 @@
 export default {
   namespace: "setting",
   state    : {
-    server        : 'http://192.168.1.7:3000',
+    server        : 'http://192.168.20.67:3000',
     isSameHostName: true,
     port          : '3000',
   },

@@ -2,6 +2,7 @@ import * as PATH from "path"
 const { resolve } = PATH
 const webpack = require( "webpack" )
 const CopyWebpackPlugin = require( "copy-webpack-plugin" )
+const WriteFilePlugin = require( "write-file-webpack-plugin" )
 import { __DEV__ } from "./script/global"
 import {
   OUTPUT_FILE_NAME,
@@ -12,7 +13,9 @@ import {
   ENTRY_INDEX_CACHE,
   OUTPUT_INDEX_CACHE,
   ENTRY_MANIFEST_CACHE,
-  OUTPUT_MANIFEST_CACHE
+  OUTPUT_MANIFEST_CACHE,
+  ENTRY_SW,
+  OUTPUT_SW
 } from "./script/constants"
 
 const webpackClientConfig = {
@@ -69,7 +72,12 @@ const webpackClientConfig = {
         from: ENTRY_MANIFEST_CACHE,
         to  : OUTPUT_MANIFEST_CACHE
       },
-    ] )
+      {
+        from: ENTRY_SW,
+        to  : OUTPUT_SW
+      },
+    ] ),
+    new WriteFilePlugin()
   ].concat( __DEV__ ? [ new webpack.HotModuleReplacementPlugin() ] : [] )
 }
 

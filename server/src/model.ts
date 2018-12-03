@@ -6,7 +6,10 @@ import {
   GET_URL_RELATIVE_TO_STORE_ROOT,
   GET_STORE_IMAGE_FILES,
   STORE_ROOT,
-  STORE_CURRENT_DATA_FILE
+  STORE_CURRENT_DATA_FILE,
+  CLIENT_PUBLIC,
+  CLIENT_PUBLIC_INDEX,
+  CLIENT_PUBLIC_APP_CACHE
 } from "./constants/paths";
 import * as bodyParser from "body-parser";
 import * as FS from "fs-extra";
@@ -18,11 +21,24 @@ import { URL } from "url";
 import { flatten } from "lodash";
 import { notNil } from "./utils/lodash";
 import * as PATH from "path";
+import { backup } from "./action";
 const trash = require("trash");
+
+app.use( express.static( STORE_ROOT ) )
+// app.use( express.static( CLIENT_PUBLIC ) )
+
+
+// app.get('/', (req, res) => {
+//   res.sendFile( CLIENT_PUBLIC_INDEX )
+// })
+
+// app.get('/cache.appcache', (req, res) => {
+//   res.sendFile(CLIENT_PUBLIC_APP_CACHE)
+// })
 
 app.post("/backup", (req: express.Request, res: express.Response) => {
   try {
-    FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_FILE(), req.body);
+    backup( req.body )
     res.send(true);
     return;
   } catch (e) {
@@ -31,9 +47,10 @@ app.post("/backup", (req: express.Request, res: express.Response) => {
   res.send(null);
 });
 
-app.get("/pull", (req: express.Request, res: express.Response) => {
+app.post("/pull", (req: express.Request, res: express.Response) => {
   let data;
   try {
+    backup( req.body )
     data = FS.readJSONSync(STORE_CURRENT_DATA_FILE);
   } catch (e) {
     console.log(e);
@@ -47,6 +64,7 @@ app.get("/pull", (req: express.Request, res: express.Response) => {
 
 app.post("/push", (req: express.Request, res: express.Response) => {
   try {
+    backup( req.body )
     FS.outputJSONSync(STORE_CURRENT_DATA_FILE, req.body);
     res.send(true);
     return;

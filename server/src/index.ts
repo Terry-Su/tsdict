@@ -1,11 +1,13 @@
 import * as express from 'express'
+import * as https from 'https'
+import * as FS from 'fs'
+import * as PATH from 'path'
 import { STORE_ROOT } from './constants/paths';
 import { PORT } from '../config';
 
 const app = express()
 export default app
 
-app.use( express.static( STORE_ROOT ) )
 
 // Enable cross-domain
 app.use(function(req, res, next) {
