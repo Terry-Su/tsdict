@@ -20,9 +20,12 @@ export default mapStateAndStyle()(
       const quill = this.quill = new Quill( container, {
         modules: {
           toolbar: [
-            [ { header: [ 1, 2, false ] } ],
-            [ 'bold', 'italic', 'underline' ],
-            [ 'image', 'code-block' ]
+            // [ { header: [ 1, 2, false ] } ],
+            // [ 'bold', 'italic', 'underline' ],
+            [ 
+              'image',
+              'video',
+            ]
           ]
         },
         placeholder: 'Compose an epic...',
