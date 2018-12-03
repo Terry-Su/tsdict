@@ -4,6 +4,13 @@ CACHE:
 #NETWORK:
 index.html
 bundle.js
+#*.jpg
+#*.jpeg
+#*.png
+#*.gif
+
+NETWORK:
+*
 
 # Version, used to update source
 # 1.0.0-3
