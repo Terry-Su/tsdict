@@ -59,17 +59,15 @@ app.get("/cache", (req, res) => {
   const text = `CACHE MANIFEST
 
 CACHE:
-#NETWORK:
 index.html
 bundle.js
 ${urlsStr}
 
-NETWORK:
-*
+#NETWORK:
+#*
 
 # Version, used to update source
-# 1.0.0-3-${new Date().getTime()}
-`;
+# 1.0.0-3`;
   res.send(text);
 });
 
