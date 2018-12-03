@@ -30,11 +30,11 @@ export default mapStateAndStyle()(
       } )
 
       const debouncedOnChange = debounce( ( delta, oldDelta, source ) => {
-        if ( source === 'user' ) {
+        // if ( source === 'user' ) {
           const content = quill.getContents()
           this.props.onChange( content )
-        }
-      }, 2000 )
+        // }
+      }, 1000 )
 
       quill.on( 'text-change', debouncedOnChange )
 
