@@ -7,7 +7,7 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
 import {
-  EDIT_ONLINE_LINKS_ROUTE,
+  SETTING,
   HOME_ROUTE,
   WORDS_ROUTE
 } from "../constants/routes"
@@ -124,7 +124,7 @@ export default mapStateAndStyle( {
               open={Boolean( anchorEl )}
               onClose={this.handleClose}
             >
-              <Link to={EDIT_ONLINE_LINKS_ROUTE}>
+              <Link to={SETTING}>
                 <MenuItem onClick={this.handleClose}>Setting</MenuItem>
               </Link>
               <MenuItem onClick={this.onExportClick}>Export</MenuItem>

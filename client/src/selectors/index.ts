@@ -51,7 +51,12 @@ class Selector {
   }
 
   get server(): string {
-    return this.settingState.server
+    const {
+      server,
+      isSameHostName,
+      port
+    } = this.settingState
+    return isSameHostName ? `http://${location.hostname}:${port}` : server
   }
 }
 
