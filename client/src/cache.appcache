@@ -4,10 +4,6 @@ CACHE:
 #NETWORK:
 index.html
 bundle.js
-#*.jpg
-#*.jpeg
-#*.png
-#*.gif
 
 NETWORK:
 *

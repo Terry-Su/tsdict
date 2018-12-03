@@ -6,15 +6,11 @@ import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
-import {
-  SETTING,
-  HOME_ROUTE,
-  WORDS_ROUTE
-} from "../constants/routes"
+import { SETTING, HOME_ROUTE, WORDS_ROUTE } from "../constants/routes"
 import download from "../assets/js/download"
 import localStore from "../store/localStore"
 import Uploader from "./Uploader/Uploader"
-import { backup, pull, push, cleanUseless } from "../services"
+import { backup, pull, push, updateMedias } from "../services"
 import selector from "../selectors"
 import models from "../models/index"
 import { notNil, mapValues } from "../utils/lodash"
@@ -90,11 +86,14 @@ export default mapStateAndStyle( {
         .catch( () => dispatch( { type: `app/SHOW_PUSH_FAIL` } ) )
     }
 
-    onCleanClick = () => {
+    onUpdateMediaClick = () => {
       const { dispatch } = this.props
-      cleanUseless()
-        .then( data => data && dispatch( { type: `app/SHOW_CLEAN_SUCCESS` } ) )
-        .catch( () => dispatch( { type: `app/SHOW_CLEAN_FAIL` } ) )
+      updateMedias()
+        .then( words => {
+          dispatch( { type: "mainData/UPDATE_WORDS", value: words } )
+        } )
+        .then( () => dispatch( { type: "app/SHOW_UPDATE_MEDIA_SUCCESS" } ) )
+        .catch( () => dispatch( { type: "app/SHOW_UPDATE_MEDIA_FAIL" } ) )
     }
     render() {
       const { anchorEl } = this.state
@@ -129,12 +128,12 @@ export default mapStateAndStyle( {
               </Link>
               <MenuItem onClick={this.onExportClick}>Export</MenuItem>
 
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: "relative" }}>
                 <MenuItem onClick={this.handleClose}>Import</MenuItem>
                 <Uploader onChange={this.onUploadChange} />
               </div>
               <MenuItem onClick={this.onBackupClick}>Backup</MenuItem>
-              <MenuItem onClick={this.onCleanClick}>Clean Media</MenuItem>
+              <MenuItem onClick={this.onUpdateMediaClick}>Update Media</MenuItem>
               {/* <MenuItem onClick={this.handleClose}></MenuItem> */}
             </Menu>
             <IconButton

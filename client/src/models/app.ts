@@ -55,14 +55,24 @@ export default {
         message    : 'Push failed',
       } )
 
-      SHOW_CLEAN_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
+      // SHOW_CLEAN_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
+      //   messageType: 'success',
+      //   message    : 'Clean media successfully',
+      // } )
+
+      // SHOW_CLEAN_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
+      //   messageType: 'error',
+      //   message    : 'Clean media failed',
+      // } )
+
+      SHOW_UPDATE_MEDIA_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
         messageType: 'success',
-        message    : 'Clean media successfully',
+        message    : 'Update media successfully',
       } )
 
-      SHOW_CLEAN_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_UPDATE_MEDIA_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
         messageType: 'error',
-        message    : 'Clean media failed',
+        message    : 'Update media failed',
       } )
     } )()
   } ,

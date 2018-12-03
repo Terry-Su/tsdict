@@ -9,7 +9,7 @@ import { node } from "_@types_prop-types@15.5.6@@types/prop-types"
 import { DictDataWord } from "../../../../../shared/__typings__/DictData"
 import TextField from "@material-ui/core/TextField"
 import Note, { NoteData } from "../../Note/Note"
-import { resolveNote } from "../../../services"
+import { updateMedia } from "../../../services"
 import { notNil } from "../../../utils/lodash"
 import TheSearch from "./TheSearch"
 import TheOnlineLinks from "./TheOnlineLinks"
@@ -52,7 +52,7 @@ export default mapState(
         value: data
       } )
 
-      const note = await resolveNote()
+      const note = await updateMedia()
       notNil( note ) &&
         this.props.dispatch( {
           type : "mainData/UPDATE_WORD_NOTE",

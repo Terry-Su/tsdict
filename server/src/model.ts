@@ -21,27 +21,26 @@ import { URL } from "url";
 import { flatten } from "lodash";
 import { notNil } from "./utils/lodash";
 import * as PATH from "path";
-import { backup } from "./action";
-const trash = require("trash");
+import { backup, updateMedia, cleanUselessMedias } from "./actions";
+import { getImageUrls } from "./getters";
 
-app.use( express.static( STORE_ROOT ) )
-app.use( express.static( CLIENT_PUBLIC ) )
+app.use(express.static(STORE_ROOT));
+app.use(express.static(CLIENT_PUBLIC));
 
-
-app.get('/', (req, res) => {
-  res.sendFile( CLIENT_PUBLIC_INDEX )
-})
+app.get("/", (req, res) => {
+  res.sendFile(CLIENT_PUBLIC_INDEX);
+});
 
 // app.get('/cache.appcache', (req, res) => {
 //   res.sendFile(CLIENT_PUBLIC_APP_CACHE)
 // })
-app.get( '/cache', (req, res) => {
+app.get("/cache", (req, res) => {
   const storeImageFiles = GET_STORE_IMAGE_FILES();
 
   // const urls = storeImageFiles.map( path => `${req.protocol}/${req.get('host')}/${PATH.relative(STORE_ROOT, path)}` )
-  let urls = []
+  let urls = [];
   try {
-    const clientData = FS.readJSONSync(STORE_CURRENT_DATA_FILE)
+    const clientData = FS.readJSONSync(STORE_CURRENT_DATA_FILE);
     urls = flatten(
       clientData.mainData.words
         .filter(({ note }) => notNil(note) && notNil(note.ops))
@@ -50,14 +49,14 @@ app.get( '/cache', (req, res) => {
             .filter(({ insert }: any) => insert && insert.image)
             .map(({ insert }: any) => insert.image)
         )
-    );  
+    );
+  } catch (e) {
+    console.log(e);
   }
-  catch(e) {console.log(e)}
 
-  const urlsStr = urls.join('\n')
+  const urlsStr = urls.join("\n");
 
-  const text =
-`CACHE MANIFEST
+  const text = `CACHE MANIFEST
 
 CACHE:
 #NETWORK:
@@ -70,13 +69,13 @@ NETWORK:
 
 # Version, used to update source
 # 1.0.0-3-${new Date().getTime()}
-`
-res.send( text )
-} )
+`;
+  res.send(text);
+});
 
 app.post("/backup", (req: express.Request, res: express.Response) => {
   try {
-    backup( req.body )
+    backup(req.body);
     res.send(true);
     return;
   } catch (e) {
@@ -88,7 +87,7 @@ app.post("/backup", (req: express.Request, res: express.Response) => {
 app.post("/pull", (req: express.Request, res: express.Response) => {
   let data;
   try {
-    backup( req.body )
+    backup(req.body);
     data = FS.readJSONSync(STORE_CURRENT_DATA_FILE);
   } catch (e) {
     console.log(e);
@@ -102,7 +101,7 @@ app.post("/pull", (req: express.Request, res: express.Response) => {
 
 app.post("/push", (req: express.Request, res: express.Response) => {
   try {
-    backup( req.body )
+    backup(req.body);
     FS.outputJSONSync(STORE_CURRENT_DATA_FILE, req.body);
     res.send(true);
     return;
@@ -113,87 +112,20 @@ app.post("/push", (req: express.Request, res: express.Response) => {
 });
 
 // replace the media(image for example) url with server url instead of base64 url
-app.post("/resolveNote", (req: express.Request, res: express.Response) => {
-  function replaceImage(url): string {
-    let resolvedUrl = url;
-    const prefix = req.protocol + "://" + req.get("host");
+app.post("/updateMedia", (req: express.Request, res: express.Response) => {
+  let { body: note } = req;
+  note = notNil( note ) ? updateMedia(note, req) : note
+  res.send(note);
+});
 
-    // resolve base64 url
-    if (isBase64Url(url)) {
-      const extension = url
-        .replace(/^data:.+?\//, "")
-        .replace(/;base64,.+/, "");
-      const path = `${GET_STORE_MEDIA_FILE()}.${extension}`;
-      outputBase64Media(url, path);
-      resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT(path)}`;
+app.post("/updateMedias", (req: express.Request, res: express.Response) => {
+  let words = req.body;
+  words.forEach( ({note}) => {
+    if ( notNil( note ) ) {
+      note = updateMedia( note, req )
     }
-
-    const cachedUrl = resolvedUrl;
-    resolvedUrl = new URL(resolvedUrl);
-
-    resolvedUrl = `${prefix}${resolvedUrl.pathname}`;
-    // add prefix
-    return resolvedUrl;
-  }
-
-  let note = req.body;
-  if (note) {
-    const { ops } = note;
-    note.ops = note.ops.map((item: any) => {
-      if (item.insert && item.insert.image) {
-        const sourceUrl = item.insert.image;
-        let url = sourceUrl;
-        try {
-          url = replaceImage(sourceUrl);
-        } catch (e) {
-          console.log(e);
-        }
-        item.insert.image = url;
-      }
-      return item;
-    });
-    res.send(note);
-  }
+  } )
+  cleanUselessMedias( req.body )
+  res.send( words )
 });
 
-app.post("/cleanUseless", (req: express.Request, res: express.Response) => {
-  try {
-    const words: DictDataWord[] = req.body;
-    const imageUrls = flatten(
-      words
-        .filter(({ note }) => notNil(note) && notNil(note.ops))
-        .map(({ note }) =>
-          note.ops
-            .filter(({ insert }: any) => insert && insert.image)
-            .map(({ insert }: any) => insert.image)
-        )
-    );
-    const relativePaths = imageUrls.map(url => {
-      try {
-        url = new URL(url);
-        return url.pathname;
-      } catch (e) {
-        console.log(e);
-      }
-      return url;
-    });
-
-    const storeImageFiles = GET_STORE_IMAGE_FILES();
-
-    storeImageFiles.forEach(storeImageFile => {
-      const storeReltivePath = `/${PATH.relative(STORE_ROOT, storeImageFile)}`;
-
-      if (
-        relativePaths &&
-        relativePaths.length > 0 &&
-        !relativePaths.includes(storeReltivePath)
-      ) {
-        trash(storeImageFile).then(() => {
-          `${storeImageFile} was removed into trash`;
-        });
-      }
-    });
-    res.send(true);
-  } catch (e) {}
-  res.send(null);
-});
