@@ -1,8 +1,8 @@
 import * as express from "express";
 import app from ".";
 import {
-  GET_BACKUP_CLIENT_DATA_FILE,
-  GET_STORE_MEDIA_FILE,
+  GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
+  GET_STORE_IMAGE_UNIQUE_FILE,
   GET_URL_RELATIVE_TO_STORE_ROOT,
   GET_STORE_IMAGE_FILES,
   STORE_ROOT,
@@ -31,9 +31,6 @@ app.get("/", (req, res) => {
   res.sendFile(CLIENT_PUBLIC_INDEX);
 });
 
-// app.get('/cache.appcache', (req, res) => {
-//   res.sendFile(CLIENT_PUBLIC_APP_CACHE)
-// })
 app.get("/cache", (req, res) => {
   const storeImageFiles = GET_STORE_IMAGE_FILES();
 
@@ -46,8 +43,15 @@ app.get("/cache", (req, res) => {
         .filter(({ note }) => notNil(note) && notNil(note.ops))
         .map(({ note }) =>
           note.ops
-            .filter(({ insert }: any) => insert && insert.image)
-            .map(({ insert }: any) => insert.image)
+            .filter(({ insert }: any) => insert && (insert.image || insert.video))
+            .map(({ insert }: any) => {
+              if ( notNil( insert.image ) ) {
+                return insert.image
+              }
+              if ( notNil( insert.video ) ) {
+                return insert.video
+              }
+            })
         )
     );
   } catch (e) {

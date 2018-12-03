@@ -1,6 +1,12 @@
 import * as express from "express";
 import * as FS from "fs-extra";
-import { GET_BACKUP_CLIENT_DATA_FILE, GET_STORE_MEDIA_FILE, GET_URL_RELATIVE_TO_STORE_ROOT, GET_STORE_IMAGE_FILES, STORE_ROOT } from "./constants/paths";
+import {
+  GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
+  GET_STORE_IMAGE_UNIQUE_FILE,
+  GET_URL_RELATIVE_TO_STORE_ROOT,
+  GET_STORE_IMAGE_FILES,
+  STORE_ROOT
+} from "./constants/paths";
 import isBase64Url from "./utils/isBase64Url";
 import outputBase64Media from "./utils/outputBase64Media";
 import { URL } from "url";
@@ -9,13 +15,19 @@ import { getImageUrls } from "./getters";
 import * as PATH from "path";
 const trash = require("trash");
 
-
-export function backup( data ) {
-  FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_FILE(), data);
+export function backup(data) {
+  FS.outputJSONSync(GET_BACKUP_CLIENT_DATA_UNIQUE_FILE(), data);
 }
 
 // replace the media(image for example) url with server url instead of base64 url
-export function updateMedia( note, req: express.Request ) {
+export function updateMedia(note, req: express.Request) {
+
+  function replaceServerUrl( url: string ) {
+    const prefix = req.protocol + "://" + req.get("host");
+    const urlInfo = new URL(url)
+    return `${prefix}${urlInfo.pathname}`
+  }
+
   function replaceImage(url): string {
     let resolvedUrl = url;
     const prefix = req.protocol + "://" + req.get("host");
@@ -25,39 +37,44 @@ export function updateMedia( note, req: express.Request ) {
       const extension = url
         .replace(/^data:.+?\//, "")
         .replace(/;base64,.+/, "");
-      const path = `${GET_STORE_MEDIA_FILE()}.${extension}`;
+      const path = `${GET_STORE_IMAGE_UNIQUE_FILE()}.${extension}`;
       outputBase64Media(url, path);
       resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT(path)}`;
     }
 
-    const cachedUrl = resolvedUrl;
-    resolvedUrl = new URL(resolvedUrl);
-
-    resolvedUrl = `${prefix}${resolvedUrl.pathname}`;
-    // add prefix
-    return resolvedUrl;
+    const res = replaceServerUrl( resolvedUrl )
+    return res;
   }
 
   if (note) {
     const { ops } = note;
     note.ops = note.ops.map((item: any) => {
-      if (item.insert && item.insert.image) {
-        const sourceUrl = item.insert.image;
-        let url = sourceUrl;
-        try {
-          url = replaceImage(sourceUrl);
-        } catch (e) {
-          console.log(e);
+      if (item.insert) {
+        if (item.insert.image) {
+          const sourceUrl = item.insert.image;
+          let url = sourceUrl;
+          try {
+            url = replaceImage(sourceUrl);
+          } catch (e) {
+            console.log(e);
+          }
+          item.insert.image = url;
         }
-        item.insert.image = url;
+        if ( item.insert.video ) {
+          try {
+            item.insert.video = replaceServerUrl(item.insert.video)
+          } catch (e) {
+            console.log(e);
+          }
+        }
       }
       return item;
     });
   }
-  return note
+  return note;
 }
 
-export function cleanUselessMedias( words: DictDataWord[] ) {
+export function cleanUselessMedias(words: DictDataWord[]) {
   try {
     const imageUrls = getImageUrls(words);
     const relativePaths = imageUrls.map(url => {
@@ -74,8 +91,6 @@ export function cleanUselessMedias( words: DictDataWord[] ) {
 
     storeImageFiles.forEach(storeImageFile => {
       const storeReltivePath = `/${PATH.relative(STORE_ROOT, storeImageFile)}`;
-
-      console.log( relativePaths, relativePaths.includes( storeReltivePath ) )
       if (
         relativePaths &&
         relativePaths.length > 0 &&
@@ -86,7 +101,7 @@ export function cleanUselessMedias( words: DictDataWord[] ) {
         });
       }
     });
-    return true
+    return true;
   } catch (e) {}
-  return null
+  return null;
 }
