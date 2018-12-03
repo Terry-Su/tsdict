@@ -10,7 +10,9 @@ import {
   ENTRY_INDEX_HTML,
   OUTPUT_INDEX_HTML,
   ENTRY_INDEX_CACHE,
-  OUTPUT_INDEX_CACHE
+  OUTPUT_INDEX_CACHE,
+  ENTRY_MANIFEST_CACHE,
+  OUTPUT_MANIFEST_CACHE
 } from "./script/constants"
 
 const webpackClientConfig = {
@@ -62,7 +64,11 @@ const webpackClientConfig = {
       {
         from: ENTRY_INDEX_CACHE,
         to  : OUTPUT_INDEX_CACHE
-      }
+      },
+      {
+        from: ENTRY_MANIFEST_CACHE,
+        to  : OUTPUT_MANIFEST_CACHE
+      },
     ] )
   ].concat( __DEV__ ? [ new webpack.HotModuleReplacementPlugin() ] : [] )
 }

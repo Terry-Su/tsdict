@@ -5,7 +5,7 @@ export default {
   state    : {
     server        : 'http://192.168.1.7:3000',
     isSameHostName: true,
-    port          : '3600',
+    port          : '3000',
   },
   reducers: {
     ... new ( class {

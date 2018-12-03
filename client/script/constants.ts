@@ -15,3 +15,6 @@ export const OUTPUT_INDEX_HTML = resolve( OUTPUT, 'index.html' )
 
 export const ENTRY_INDEX_CACHE = resolve( SRC, 'cache.appcache' )
 export const OUTPUT_INDEX_CACHE = resolve( OUTPUT, 'cache.appcache' )
+
+export const ENTRY_MANIFEST_CACHE = resolve( SRC, 'manifest.json' )
+export const OUTPUT_MANIFEST_CACHE = resolve( OUTPUT, 'manifest.json' )
