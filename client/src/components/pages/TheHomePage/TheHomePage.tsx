@@ -17,6 +17,7 @@ import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Degree from "../../Degree/Degree"
 import TheDegree from "./TheDegree"
+import TheTags from "./TheTags"
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
@@ -87,6 +88,7 @@ export default mapState(
             <div>
               
               <TheDegree />
+              <TheTags />
 
               <Tabs
               value={tabIndex}

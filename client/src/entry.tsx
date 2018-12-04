@@ -37,7 +37,10 @@ function model( app ) {
       if ( resModelsMap && storeLocal ) {
         let clonedReModelsMap = cloneDeep( resModelsMap )
         mapValues( storeLocal, ( value, key ) => {
-          clonedReModelsMap[ key ][ 'state' ] = value
+          clonedReModelsMap[ key ][ 'state' ] = {
+            ...clonedReModelsMap[ key ][ 'state' ],
+            ...value
+          }
         } )
         return clonedReModelsMap
       }
