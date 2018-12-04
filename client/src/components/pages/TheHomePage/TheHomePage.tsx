@@ -15,6 +15,8 @@ import TheSearch from "./TheSearch"
 import TheOnlineLinks from "./TheOnlineLinks"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
+import Degree from "../../Degree/Degree"
+import TheDegree from "./TheDegree"
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
@@ -83,6 +85,9 @@ export default mapState(
           <br />
           {shallShowWordPanel && (
             <div>
+              
+              <TheDegree />
+
               <Tabs
               value={tabIndex}
               onChange={this.handleTabChange}

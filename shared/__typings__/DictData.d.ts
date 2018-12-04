@@ -1,19 +1,9 @@
 import { NoteData } from "../../client/src/components/Note/Note";
 
-export interface DictData {
-  words: DictDataWord[]
-  onlineLinks: string[]
-  enabledOnlineLinks: string[]
-}
-
-
+export type DictDataWordDegree = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 export interface DictDataWord {
   id: string,
   name: string,
-  note: NoteData
+  note: NoteData,
+  degree?: DictDataWordDegree
 } 
-
-
-export interface DictDataWordMedia {
-  relative: string
-}

@@ -5,7 +5,7 @@ import { Route } from "dva/router"
 import { HOME_ROUTE, SETTING, WORDS_ROUTE } from "../constants/routes"
 import TheWordsPage from "./pages/TheWordsPage"
 import selector from "../selectors"
-import Message from "./material/Message"
+import Message from "./materials/Message"
 import TheSettingPage from "./pages/TheSettingPage/TheSettingPage"
 
 const isTestingSingleComponent = !!TheTestingComponent

@@ -6,6 +6,8 @@ import TheWordsPage from './pages/TheWordsPage'
 import Note from './Note/Note'
 import TheSettingPage from './pages/TheSettingPage/TheSettingPage'
 import Uploader from './Uploader/Uploader'
+import Degree from './Degree/Degree'
+import Star from './Degree/Star'
 
 const TheTestingComponent = 
   // TheHomePage
@@ -15,6 +17,8 @@ const TheTestingComponent =
   // TheWordsPage
   // Note
   // Uploader
+  // Star
+  // Degree
   null
 
 
