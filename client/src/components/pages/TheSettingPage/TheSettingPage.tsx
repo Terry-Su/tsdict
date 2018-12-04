@@ -6,6 +6,8 @@ import selector from "../../../selectors"
 import Input from "@material-ui/core/Input"
 import Switch from "@material-ui/core/Switch"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { Link } from "dva/router"
+import { TAGS } from "../../../constants/routes"
 
 
 export default mapStateAndStyle()(
@@ -42,6 +44,8 @@ export default mapStateAndStyle()(
             </div>
           }
 
+          <h2>Tags</h2>
+          <Link to={TAGS}>All tags</Link>
           <TheOnlineLinksSetting />
         </TopbarLayout>
       )

@@ -2,6 +2,7 @@ import { DictDataWord } from "../../../shared/__typings__/DictData"
 import { root } from "../entry"
 import models from "../models"
 import { pick } from "../utils/lodash"
+import { Tag, ClientData } from "../__typings__";
 
 
 class Selector {
@@ -19,7 +20,7 @@ class Selector {
     return this.state.app
   }
 
-  get mainDataState() {
+  get mainDataState(): ClientData {
     return this.state.mainData
   }
 
@@ -47,7 +48,12 @@ class Selector {
   get currentWord(): DictDataWord {
     const { searching } = this.appState
     const { words } = this.mainDataState
-    return words.filter( ( { name } ) => name === searching )[ 0 ] || {}
+    return <any>words.filter( ( { name } ) => name === searching )[ 0 ] || {}
+  }
+
+  get currentTags(): Tag[] {
+    const { id }  = this.currentWord
+    return this.mainDataState.tags.filter( ( {ids} ) => ids.includes( id ) )
   }
 
   get server(): string {

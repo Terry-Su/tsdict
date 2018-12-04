@@ -117,23 +117,27 @@ export default mapStateAndStyle( {
             <IconButton className={c.link} onClick={this.onPushClick}>
               Push
             </IconButton>
+            <Link to={SETTING} className={c.link}>
+              <IconButton>
+                Setting
+              </IconButton>
+            </Link>
 
             <Menu
               anchorEl={anchorEl}
               open={Boolean( anchorEl )}
               onClose={this.handleClose}
             >
-              <Link to={SETTING}>
-                <MenuItem onClick={this.handleClose}>Setting</MenuItem>
-              </Link>
               <MenuItem onClick={this.onExportClick}>Export</MenuItem>
 
               <div style={{ position: "relative" }}>
-                <MenuItem onClick={this.handleClose}>Import</MenuItem>
+                <MenuItem >Import</MenuItem>
                 <Uploader onChange={this.onUploadChange} />
               </div>
               <MenuItem onClick={this.onBackupClick}>Backup</MenuItem>
-              <MenuItem onClick={this.onUpdateMediaClick}>Update Media</MenuItem>
+              <MenuItem onClick={this.onUpdateMediaClick}>
+                Update Media
+              </MenuItem>
               {/* <MenuItem onClick={this.handleClose}></MenuItem> */}
             </Menu>
             <IconButton
@@ -141,7 +145,7 @@ export default mapStateAndStyle( {
               color="inherit"
               onClick={this.handleClick}
             >
-              Menu
+              More
             </IconButton>
           </Toolbar>
         </AppBar>

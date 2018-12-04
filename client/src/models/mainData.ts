@@ -126,28 +126,29 @@ export default {
       //     value: removeArrayElementByIndex( word[ key ], index )
       //   } )
 
-      
       ADD_TAG = ( state, { tag }: { tag: Tag } ) => ( {
         ...state,
-        tags: [ ...state.onlineLinks, tag ]
+        tags: [ ...state.tags, tag ]
       } )
 
-      ADD_WORD_ID_TO_TAG_NAME = ( state: ClientData, { wordId, tagName }: {tagName: string, wordId: string} ) => {
+      ADD_WORD_ID_TO_TAG_NAME = (
+        state: ClientData,
+        { wordId, tagName }: { tagName: string; wordId: string }
+      ) => {
         const { tags } = state
-        
+
         const targetTag: Tag = tags.filter( ( { name } ) => name === tagName )[ 0 ]
 
-        if ( isNil( targetTag )  ) {
+        if ( isNil( targetTag ) ) {
           // No such a tag name
 
           const tag: Tag = createTag( tagName, [ wordId ] )
-          return this.ADD_TAG( state, { tag }  )
+          return this.ADD_TAG( state, { tag } )
         } else {
           // there's already the tag name
 
           return this.UPDATE_TAG_ADD_WORD_ID( state, { tag: targetTag, wordId } )
         }
-
       }
 
       UPDATE_TAG = ( state, { tag, ids }: { tag: Tag; ids: string[] } ) => ( {
@@ -172,11 +173,34 @@ export default {
       UPDATE_TAG_REMOVE_WORD_ID = (
         state,
         { tag, wordId }: { tag: Tag; wordId: string }
-      ) =>
-        this.UPDATE_TAG( state, {
-          tag,
-          ids: removeArrayElement( tag[ TAG_IDS ], wordId )
+      ) => {
+        const newIds = removeArrayElement( tag[ TAG_IDS ], wordId )
+        if ( newIds.length > 0 ) {
+          // ids is not empty
+          return this.UPDATE_TAG( state, {
+            tag,
+            ids: removeArrayElement( tag[ TAG_IDS ], wordId )
+          } )
+        } else {
+          // ids is not empty
+          return this.REMOVE_TAG( state, { tag } )
+        }
+      }
+
+      UPDATE_TAG_NAME = ( state, { tag, newName }:{ tag: Tag, newName: string } ) => ( {
+        ...state,
+        tags: state.tags.map( theTag => {
+          if ( theTag === tag ) {
+            theTag.name = newName
+          }
+          return theTag
         } )
+      } )
+
+      REMOVE_TAG = ( state, { tag }: { tag: Tag } ) => ( {
+        ...state,
+        tags: removeArrayElement( state.tags, tag )
+      } )
     }()
   },
   effects: {
@@ -231,11 +255,8 @@ export const createWord = ( { id, name, note }: DictDataWord ) => ( {
   degree: 0
 } )
 
-
-
 export const createTag = ( name: string, ids: string[] = [] ) => ( {
   id: getUniqueId(),
   name,
   ids
 } )
-
