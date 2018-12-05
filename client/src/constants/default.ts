@@ -1,4 +1,4 @@
-import { OnlineLink } from "../__typings__"
+import { OnlineLink, Tree } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 import { DictDataWord } from "../../../shared/__typings__/DictData"
 import { NoteData } from "../components/Note/Note"
@@ -38,3 +38,9 @@ export const defaultWords: DictDataWord[] = [
   id  : getUniqueId(),
   note: null,
 } ) )
+
+export const defaultTree: Tree = {
+  name : 'root',
+  id   : getUniqueId(),
+  nodes: []
+}

@@ -1,8 +1,10 @@
 import { DictDataWord } from "../../../shared/__typings__/DictData"
 import { root } from "../entry"
 import models from "../models"
-import { pick } from "../utils/lodash"
-import { Tag, ClientData } from "../__typings__";
+import { pick, notNil } from "../utils/lodash"
+import { Tag, ClientData, Tree } from "../__typings__"
+import { TreeState, CalcTree } from "../models/tree"
+import { AppState } from "../models/app"
 
 
 class Selector {
@@ -16,7 +18,7 @@ class Selector {
     return data
   }
 
-  get appState() {
+  get appState(): AppState {
     return this.state.app
   }
 
@@ -28,6 +30,11 @@ class Selector {
     return this.state.setting
   }
 
+  get treeState(): TreeState {
+    return this.state.tree
+  }
+
+  // # app section
   get wordCanBeAdded(): boolean {
     const { searching } = this.appState
     const { words } = this.mainDataState
@@ -45,17 +52,29 @@ class Selector {
     return searching.trim() !== "" && !this.wordCanBeAdded
   }
 
+  // # main data section
+
   get currentWord(): DictDataWord {
     const { searching } = this.appState
     const { words } = this.mainDataState
-    return <any>words.filter( ( { name } ) => name === searching )[ 0 ] || {}
+    return words.filter( ( { name } ) => name === searching )[ 0 ]
   }
 
   get currentTags(): Tag[] {
     const { id }  = this.currentWord
-    return this.mainDataState.tags.filter( ( {ids} ) => ids.includes( id ) )
+    return this.mainDataState.tags.filter( ( { ids } ) => ids.includes( id ) )
   }
 
+  getWordByWordId( wordId: string ) {
+    const { words } = this.mainDataState
+    return words.filter( ( { id } ) => id === wordId )[ 0 ]
+  }
+
+  getWordByWordName( wordName: string ) {
+    return this.mainDataState.words.filter( word => word.name === wordName )[ 0 ]
+  }
+
+  // # setting section
   get server(): string {
     const {
       server,
@@ -64,6 +83,24 @@ class Selector {
     } = this.settingState
     return isSameHostName ? `http://${location.hostname}:${port}` : server
   }
+
+
+  // # tree section
+  get currentTree(): Tree {
+    const { root, currentTreeId } = this.treeState
+    const current: Tree = new CalcTree( root ).getTreeById( currentTreeId )
+    return current
+  } 
+
+  get currentTreeIdAbove(): string {
+    const { root, currentTreeId } = this.treeState
+    const treeAbove: Tree = new CalcTree( root ).getTreeAbove( currentTreeId )
+    return notNil( treeAbove ) ? treeAbove.id : null
+  }
+
+
+
+
 }
 
 const selector = new Selector()

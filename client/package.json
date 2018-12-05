@@ -5,7 +5,8 @@
     "ts": "ts-node --project script/tsconfig.json script/index.ts"
   },
   "devDependencies": {
-    "@material-ui/core": "^3.4.0",
+    "@material-ui/core": "^3.6.1",
+    "@material-ui/icons": "^3.0.1",
     "@types/lodash": "^4.14.116",
     "@types/node": "^10.12.5",
     "@types/quill": "^2.0.1",

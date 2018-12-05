@@ -12,11 +12,7 @@ export default mapStateAndStyle()(
       const { app, mainData, dispatch } = this.props
       const { searching: name } = app
       const { wordCanBeAdded } = selector
-      wordCanBeAdded && dispatch( { type : 'mainData/ADD_WORD', value: createWord( {
-        id  : getUniqueId(),
-        name,
-        note: null
-      } ) } )
+      wordCanBeAdded && dispatch( { type: 'mainData/ADD_WORD', value: createWord( name ) } )
     }
 
     render() {

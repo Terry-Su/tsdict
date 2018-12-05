@@ -27,7 +27,7 @@ export default mapState(
 
     onAddNoteClick = () => {
       const { currentWord: word } = selector
-      this.props.dispatch( {
+      notNil( word ) && this.props.dispatch( {
         type : "mainData/UPDATE_WORD_ADD_ONE_NOTE",
         word,
         value: ""
@@ -40,7 +40,7 @@ export default mapState(
     // }
     onRemoveNoteClick = ( index: number ) => {
       const { currentWord: word } = selector
-      this.props.dispatch( {
+      notNil( word ) && this.props.dispatch( {
         type : "mainData/UPDATE_WORD_REMOVE_ONE_NOTE",
         word,
         value: index
@@ -49,7 +49,7 @@ export default mapState(
 
     onNoteChange = async ( data: NoteData ) => {
       const { currentWord: word } = selector
-      this.props.dispatch( {
+      notNil( word ) && this.props.dispatch( {
         type : "mainData/UPDATE_WORD_NOTE",
         word,
         value: data
@@ -78,7 +78,7 @@ export default mapState(
         currentWord,
         shallShowWordPanel
       } = selector
-      const { note } = currentWord
+      const note = notNil( currentWord ) ? currentWord.note : null
       const { tabIndex } = this.state
       return (
         <TopbarLayout>

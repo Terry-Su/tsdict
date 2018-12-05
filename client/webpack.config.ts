@@ -77,8 +77,10 @@ const webpackClientConfig = {
         to  : OUTPUT_SW
       },
     ] ),
-    new WriteFilePlugin()
-  ].concat( __DEV__ ? [ new webpack.HotModuleReplacementPlugin() ] : [] )
+  ].concat( __DEV__ ? [ 
+    new WriteFilePlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ] : [] )
 }
 
 export default webpackClientConfig

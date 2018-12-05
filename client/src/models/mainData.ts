@@ -1,14 +1,16 @@
-import { defaultOnlineLinks, defaultWords } from "../constants/default"
+import { defaultOnlineLinks, defaultWords, defaultTree } from "../constants/default"
 import { cloneDeep, findIndex, isEqual, isNil } from "../utils/lodash"
-import { DictDataWord } from "../../../shared/__typings__/DictData"
+import { DictDataWord, DictDataWordDegree } from "../../../shared/__typings__/DictData"
 import { OnlineLink, ClientData, Tag } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 import { TAG_IDS } from "../constants/shared"
+import { NoteData } from "../components/Note/Note"
 
 const state: ClientData = {
   onlineLinks: defaultOnlineLinks,
   words      : defaultWords,
-  tags       : []
+  tags       : [],
+  tree       : defaultTree,
 }
 
 export default {
@@ -248,11 +250,11 @@ export const createOnlineLink = ( {
   after
 } )
 
-export const createWord = ( { id, name, note }: DictDataWord ) => ( {
-  id,
+export const createWord = ( name: string, config: { note?: NoteData, degree?: DictDataWordDegree } = { degree: 0 } ) => ( {
+  id    : getUniqueId(),
   name,
-  note,
-  degree: 0
+  note  : config.note,
+  degree: config.degree,
 } )
 
 export const createTag = ( name: string, ids: string[] = [] ) => ( {

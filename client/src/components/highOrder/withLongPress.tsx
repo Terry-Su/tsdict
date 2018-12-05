@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 
 export default function( Target: any ) {
-  return class LongClick extends Component<{
+  return class LongPress extends Component<{
     onLongPress: Function
+    className?: string
   }, any> {
     INTERVAL = 1000
 
@@ -21,9 +22,10 @@ export default function( Target: any ) {
     }
 
     render() {
-      return <span style={{ display: 'inline-block' }} onMouseDown={ this.onPress } onMouseUp={ this.onRelease } onMouseOut={ this.onRelease } >
-        <Target { ...this.props }/>
-      </span>
+      const { onLongPress, className = '', ...others } = this.props
+      return <div className={ className } onMouseDown={ this.onPress } onMouseUp={ this.onRelease } onMouseOut={ this.onRelease } >
+        <Target { ...others }/>
+      </div>
     }
   }
 }

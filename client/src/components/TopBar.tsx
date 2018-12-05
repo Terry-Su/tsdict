@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
-import { SETTING, HOME_ROUTE, WORDS_ROUTE } from "../constants/routes"
+import { SETTING_ROUTE, HOME_ROUTE, WORDS_ROUTE, TREE_ROUTE } from "../constants/routes"
 import download from "../assets/js/download"
 import localStore from "../store/localStore"
 import Uploader from "./Uploader/Uploader"
@@ -109,18 +109,11 @@ export default mapStateAndStyle( {
             <Link to={WORDS_ROUTE} className={c.link}>
               <IconButton>Words</IconButton>
             </Link>
-
-            <IconButton className={c.link} onClick={this.onPullClick}>
-              Pull
-            </IconButton>
-
-            <IconButton className={c.link} onClick={this.onPushClick}>
-              Push
-            </IconButton>
-            <Link to={SETTING} className={c.link}>
-              <IconButton>
-                Setting
-              </IconButton>
+            <Link to={TREE_ROUTE} className={c.link}>
+              <IconButton>Tree</IconButton>
+            </Link>
+            <Link to={SETTING_ROUTE} className={c.link}>
+              <IconButton>Setting</IconButton>
             </Link>
 
             <Menu
@@ -131,12 +124,19 @@ export default mapStateAndStyle( {
               <MenuItem onClick={this.onExportClick}>Export</MenuItem>
 
               <div style={{ position: "relative" }}>
-                <MenuItem >Import</MenuItem>
+                <MenuItem>Import</MenuItem>
                 <Uploader onChange={this.onUploadChange} />
               </div>
               <MenuItem onClick={this.onBackupClick}>Backup</MenuItem>
               <MenuItem onClick={this.onUpdateMediaClick}>
                 Update Media
+              </MenuItem>
+              <MenuItem onClick={this.onPullClick}>
+                Pull
+              </MenuItem>
+
+              <MenuItem onClick={this.onPushClick}>
+                Push
               </MenuItem>
               {/* <MenuItem onClick={this.handleClose}></MenuItem> */}
             </Menu>
