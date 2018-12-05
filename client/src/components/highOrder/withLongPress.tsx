@@ -5,7 +5,7 @@ export default function( Target: any ) {
     onLongPress: Function
     className?: string
   }, any> {
-    INTERVAL = 1000
+    INTERVAL = 600
 
     timer
 
@@ -23,7 +23,7 @@ export default function( Target: any ) {
 
     render() {
       const { onLongPress, className = '', ...others } = this.props
-      return <div className={ className } onMouseDown={ this.onPress } onMouseUp={ this.onRelease } onMouseOut={ this.onRelease } >
+      return <div className={ className } onMouseDown={ this.onPress } onTouchStart={ this.onPress } onMouseUp={ this.onRelease } onTouchEnd={ this.onRelease } onMouseOut={ this.onRelease }>
         <Target { ...others }/>
       </div>
     }
