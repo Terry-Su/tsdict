@@ -14,8 +14,12 @@ import { backup, pull, push, updateMedias } from "../services"
 import selector from "../selectors"
 import models from "../models/index"
 import { notNil, mapValues } from "../utils/lodash"
+import { TOP_BAR_HEIGHT } from "../constants/numbers"
 
 export default mapStateAndStyle( {
+  entry: {
+    height: `${TOP_BAR_HEIGHT}px`,
+  },
   link: {
     fontSize      : "12px!important",
     textDecoration: "none!important",
@@ -100,7 +104,7 @@ export default mapStateAndStyle( {
       const { classes: c } = this.props
 
       return (
-        <AppBar position="static">
+        <AppBar position="static" className={ c.entry }>
           <Toolbar>
             {/* Buttons */}
             <Link to={HOME_ROUTE} className={c.link}>

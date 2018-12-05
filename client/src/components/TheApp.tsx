@@ -15,10 +15,14 @@ const isTestingSingleComponent = !!TheTestingComponent
 export default class TheApp extends Component<any, any> {
   render() {
     const { isShowingMessage, message, messageType } = selector.appState
+    const { classes: c } = this.props
     return isTestingSingleComponent ? (
       <TheTestingComponent />
     ) : (
-      <div>
+      <div style={{
+        width : '100%',
+        height: '100%',
+      }} >
         <Route exact path={HOME_ROUTE} component={TheHomePage} />
         <Route exact path={WORDS_ROUTE} component={TheWordsPage} />
         <Route exact path={TREE_ROUTE} component={TheTreePage} />

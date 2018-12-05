@@ -10,6 +10,10 @@ export class GlobalStyle {
   ai_fe = { alignItems: "flex-end" }
 
   flex_1 = { flex: 1 }
+  w_100__h_100 = {
+    width : '100%',
+    height: '100%',
+  }
 
   // combinations
   d_f__jc_c__ai_c = {
