@@ -37,6 +37,8 @@ export default mapStateAndStyle( {
     render() {
       const { classes: c } = this.props
       const { shallShowBackButton } = this
+      const { currentTree } =  selector
+      const { name } = currentTree
       return (
         <div className={c.entry}>
           <div className={c.left}>
@@ -44,7 +46,9 @@ export default mapStateAndStyle( {
               <KeyboardBackspace onClick={this.onBackClick} />
             )}
           </div>
-          <h2 className={c.center}>Tree</h2>
+          <h2 className={c.center}>{
+            shallShowBackButton ? name  : 'Tree'
+          }</h2>
           <span className={c.right}>Other</span>
         </div>
       )
