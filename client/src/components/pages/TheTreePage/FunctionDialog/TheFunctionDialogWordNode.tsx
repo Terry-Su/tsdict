@@ -5,6 +5,7 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import NewListItem from "./NewListItem"
 import DialogTitle from "@material-ui/core/DialogTitle"
+import selector from "../../../../selectors"
 
 
 
@@ -18,19 +19,29 @@ export default mapStateAndStyle( {
     wordId: string,
     open: boolean,
     onClose: any,
+    showRenameDialog: Function
 
-    classes: any
+    classes: any,
+    dispatch: Function
   }, any> {
     onDeleteClick = () => {
       console.log( this.props.wordId )
     }
+
+    onRenameClick = () => {
+      const { showRenameDialog, wordId, onClose } = this.props
+      onClose()
+      showRenameDialog( wordId )
+    }
+
     render() {
-      const { classes: c, open, onClose } = this.props
+      const { classes: c, open, onClose, dispatch, wordId } = this.props
+      const word = selector.getWordByWordId( wordId )
       return (
         <Dialog open={ open } onClose={onClose}>
           <DialogTitle>Word</DialogTitle>
           <List className={ c.list }>
-            <NewListItem>Rename</NewListItem>
+            <NewListItem onClick={ this.onRenameClick }>Rename</NewListItem>
             <NewListItem onClick={ this.onDeleteClick }>Delete</NewListItem>
           </List>
         </Dialog>

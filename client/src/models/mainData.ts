@@ -5,6 +5,7 @@ import { OnlineLink, ClientData, Tag } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 import { TAG_IDS } from "../constants/shared"
 import { NoteData } from "../components/Note/Note"
+import selector from "../selectors"
 
 const state: ClientData = {
   onlineLinks: defaultOnlineLinks,
@@ -101,6 +102,16 @@ export default {
           key: "degree",
           value
         } )
+      
+      UPDATE_WORD_NAME = ( state, { word, value } ) =>
+      {
+        const notExistWordName = ! selector.getExistsWordName( value )
+        return notExistWordName ? this.UPDATE_WORD( state, {
+          word,
+          key: "name",
+          value
+        } ) : state
+      }
 
       REMOVE_WORD = ( state, { value } ) => ( {
         ...state,

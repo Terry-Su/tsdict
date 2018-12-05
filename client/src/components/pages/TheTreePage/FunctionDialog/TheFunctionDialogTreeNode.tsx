@@ -16,14 +16,21 @@ export default mapStateAndStyle( {
   }
 } )(
   class TheFunctionDialogTreeNode extends Component<{
-    tree: Tree
+    theTree: Tree
     onClose: any
     open: boolean
+    showRenameDialog: Function
 
     classes: any
   }, any> {
     onDeleteClick = () => {
-      console.log( this.props.tree )
+      console.log( this.props.theTree )
+    }
+
+    onRenameClick = () => {
+      const { showRenameDialog, theTree, onClose } = this.props
+      onClose()
+      showRenameDialog( theTree )
     }
 
     render() {
@@ -32,7 +39,7 @@ export default mapStateAndStyle( {
         <Dialog open={ open } onClose={ onClose }>
           <DialogTitle>Folder</DialogTitle>
           <List className={ c.list }>
-            <NewListItem>Rename</NewListItem>
+            <NewListItem onClick={ this.onRenameClick }>Rename</NewListItem>
             <NewListItem onClick={ this.onDeleteClick }>Delete</NewListItem>
           </List>
         </Dialog>

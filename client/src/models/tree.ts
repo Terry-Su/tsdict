@@ -15,6 +15,8 @@ export class TreeState {
   // for showing current tree
   currentTreeId: string = defaultTree.id
   addMode: TreeAddMode = TreeAddMode.Tree
+
+  
 }
 
 export default {
@@ -51,6 +53,13 @@ export default {
       UPDATE_CURRENT_ID_TO_UPPER_ID = ( state: TreeState ) => {
         const { currentTreeIdAbove } = selector
         return this.UPDATE_CURRENT_ID( state, { value: currentTreeIdAbove } )
+      }
+
+      UPDATE_TREE_NAME = ( state: TreeState, { tree, newName }: { tree: Tree, newName: string } ) => {
+        tree.name = newName 
+        return {
+          ...state
+        }
       }
     }()
   },

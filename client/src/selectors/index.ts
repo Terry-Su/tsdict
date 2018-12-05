@@ -53,7 +53,6 @@ class Selector {
   }
 
   // # main data section
-
   get currentWord(): DictDataWord {
     const { searching } = this.appState
     const { words } = this.mainDataState
@@ -72,6 +71,10 @@ class Selector {
 
   getWordByWordName( wordName: string ) {
     return this.mainDataState.words.filter( word => word.name === wordName )[ 0 ]
+  }
+
+  getExistsWordName( wordName: string ): boolean {
+    return this.mainDataState.words.some( word => word.name === wordName )
   }
 
   // # setting section
