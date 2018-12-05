@@ -1,3 +1,4 @@
+import CommonModelReducer from "../utils/CommonModelReducer"
 
 
 
@@ -15,7 +16,7 @@ export default {
     ...new AppState()
   },
   reducers: {
-    ...new class {
+    ...new class extends CommonModelReducer {
       UPDATE_STATE = ( state, { value } ) => value
       UPDATE_SEARCHING = ( state, { value } ) => ( { ...state, searching: value } )
 

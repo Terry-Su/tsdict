@@ -83,6 +83,16 @@ export default mapStateAndStyle( {
       }
     }
 
+    removeTreeNode = ( node: TreeNode ) => {
+      const { dispatch } = this.props
+      if ( isString( node ) ) {
+        dispatch( { type: 'tree/UPDATE_CURRENT_TREE_REMOVE_WORD_ID', wordId: node } )
+      }
+      if ( isPlainObject( node  ) ) {
+        dispatch( { type: 'tree/REMOVE_TREE', tree: node } )
+      }
+    }
+
     render() {
       const { classes: c } = this.props
       const {
@@ -113,12 +123,14 @@ export default mapStateAndStyle( {
             open={isTreeNodeDialogOpen}
             onClose={() => this.setState( { isTreeNodeDialogOpen: false } )}
             showRenameDialog={ this.showRenameDialog }
+            removeTreeNode={ this.removeTreeNode }
           />
           <TheFunctionDialogWordNode
             wordId={focusWordId}
             open={isWordNodeDialogOpen}
             onClose={() => this.setState( { isWordNodeDialogOpen: false } )}
             showRenameDialog={ this.showRenameDialog }
+            removeTreeNode={ this.removeTreeNode }
           />
           <TheRenameDialog
             name={renamingName}

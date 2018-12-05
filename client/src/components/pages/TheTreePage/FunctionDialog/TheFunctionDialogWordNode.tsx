@@ -20,12 +20,15 @@ export default mapStateAndStyle( {
     open: boolean,
     onClose: any,
     showRenameDialog: Function
+    removeTreeNode: Function
 
     classes: any,
     dispatch: Function
   }, any> {
     onDeleteClick = () => {
-      console.log( this.props.wordId )
+      const { removeTreeNode, wordId, onClose } = this.props
+      onClose()
+      removeTreeNode( wordId )
     }
 
     onRenameClick = () => {

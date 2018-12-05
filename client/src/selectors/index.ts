@@ -64,6 +64,10 @@ class Selector {
     return this.mainDataState.tags.filter( ( { ids } ) => ids.includes( id ) )
   }
 
+  get wordIds(): string[] {
+    return this.mainDataState.words.map( ( { id } ) => id ) as string[]
+  }
+
   getWordByWordId( wordId: string ) {
     const { words } = this.mainDataState
     return words.filter( ( { id } ) => id === wordId )[ 0 ]
@@ -101,9 +105,11 @@ class Selector {
     return notNil( treeAbove ) ? treeAbove.id : null
   }
 
-
-
-
+  getTreeAbove = ( id: string ) => {
+    const { root } = this.treeState
+    const treeAbove = new CalcTree( root ).getTreeAbove( id )
+    return treeAbove
+  }
 }
 
 const selector = new Selector()

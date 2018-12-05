@@ -1,3 +1,4 @@
+import CommonModelReducer from "../utils/CommonModelReducer"
 
 
 export default {
@@ -8,7 +9,7 @@ export default {
     port          : '3000',
   },
   reducers: {
-    ... new ( class {
+    ... new ( class extends CommonModelReducer {
       UPDATE_STATE  =( state, { value } ) => value
       
       UPDATE_KEY = ( key: string, target?: any ) => ( state, { value } ) => ( { ...state, [ key ]: target !== undefined ? target : value } )

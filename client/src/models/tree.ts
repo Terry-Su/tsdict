@@ -4,6 +4,7 @@ import { Tree, TreeNode } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 import selector from "../selectors"
 import { isPlainObject, isString } from "../utils/lodash"
+import { removeArrayElement } from "../utils/js"
 
 export enum TreeAddMode {
   Tree = "tree",
@@ -61,6 +62,24 @@ export default {
           ...state
         }
       }
+
+      UPDATE_CURRENT_TREE_REMOVE_WORD_ID = ( state: TreeState, { wordId }: { wordId: string } ) => {
+        removeArrayElement( selector.currentTree.nodes, wordId )
+        return { ...state }
+      }
+
+      UPDATE_ALL_TREES_REMOVE_USELESS_WORD_IDS = ( state: TreeState ) => {
+        const { root } = state
+        new CalcTree( root ).removeUselessWordIds( selector.wordIds )
+        return { ...state }
+      }
+
+      REMOVE_TREE = ( state, { tree }: { tree: Tree }  ) => {
+        const treeAbove = selector.getTreeAbove( tree.id )
+        removeArrayElement( treeAbove.nodes, tree  )
+        return { ...state }
+      }
+
     }()
   },
   effects: {}
@@ -75,19 +94,19 @@ export const createTree = (
   nodes: config.nodes
 } )
 
+export function getNodesTrees( tree: Tree ): Tree[] {
+  return tree.nodes.filter( node => isPlainObject( node ) ) as Tree[]
+}
+
+export function getNodesWordIds( tree: Tree ): string[] {
+  return tree.nodes.filter( node => isString( node ) ) as string[]
+}
+
 export class CalcTree {
-  root: Tree
+  tree: Tree
 
-  constructor( root: Tree ) {
-    this.root = root
-  }
-
-  getNodesTrees( tree: Tree ): Tree[] {
-    return tree.nodes.filter( node => isPlainObject( node ) ) as Tree[]
-  }
-
-  getNodesWordIds( tree: Tree ) {
-    return tree.nodes.filter( node => isString( node ) )
+  constructor( tree: Tree ) {
+    this.tree = tree
   }
 
   getTreeById( treeId: string ): Tree {
@@ -100,11 +119,11 @@ export class CalcTree {
         res = tree
       } else {
         // not matched
-        const nodesTrees = self.getNodesTrees( tree )
+        const nodesTrees = getNodesTrees( tree )
         nodesTrees.forEach( newTree => recurToGetTree( newTree, id ) )
       }
     }
-    recurToGetTree( this.root, treeId )
+    recurToGetTree( this.tree, treeId )
     return res
   }
 
@@ -112,7 +131,7 @@ export class CalcTree {
     let res: Tree
     const self = this
     function recurToGetTree( tree: Tree, id: string ) {
-      const nodesTrees = self.getNodesTrees( tree )
+      const nodesTrees = getNodesTrees( tree )
       const isIdInTreesBelow = nodesTrees.some( tree => tree.id === id )
       if ( isIdInTreesBelow ) {
         res = tree
@@ -120,7 +139,21 @@ export class CalcTree {
         nodesTrees.forEach( newTree => recurToGetTree( newTree, id ) )
       }
     }
-    recurToGetTree( this.root, treeId )
+    recurToGetTree( this.tree, treeId )
     return res
+  }
+
+  removeUselessWordIds( usefulWordIds: string[] ) {
+    function recurToRemove( tree: Tree ) {
+      const nodesWordIds = getNodesWordIds( tree )
+      const removingIds = nodesWordIds.filter( id => !usefulWordIds.includes( id ) )
+
+      const { nodes } = tree      
+      removingIds.forEach( wordId => removeArrayElement( nodes, wordId ) )
+
+      const nodesTrees = getNodesTrees( tree )
+      nodesTrees.forEach( newTree => recurToRemove( newTree ) )
+    }
+    recurToRemove( this.tree )
   }
 }

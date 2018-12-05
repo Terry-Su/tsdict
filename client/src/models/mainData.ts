@@ -6,6 +6,8 @@ import getUniqueId from "../utils/getUniqueId"
 import { TAG_IDS } from "../constants/shared"
 import { NoteData } from "../components/Note/Note"
 import selector from "../selectors"
+import { removeArrayElement, removeArrayElementByIndex } from "../utils/js"
+import CommonModelReducer from "../utils/CommonModelReducer"
 
 const state: ClientData = {
   onlineLinks: defaultOnlineLinks,
@@ -18,9 +20,7 @@ export default {
   namespace: "mainData",
   state,
   reducers : {
-    ...new class {
-      UPDATE_STATE = ( state, { value } ) => value
-
+    ...new class extends CommonModelReducer {
       // online links
       UPDATE_ONLINE_LINKS = ( state, { value } ) => ( {
         ...state,
@@ -39,10 +39,12 @@ export default {
           return link
         } )
       } )
-      REMOVE_ONLINE_LINK = ( state, { value }: { value: number } ) => ( {
-        ...state,
-        onlineLinks: removeArrayElementByIndex( state.onlineLinks, value )
-      } )
+      REMOVE_ONLINE_LINK = ( state, { value }: { value: number } ) => {
+        removeArrayElementByIndex( state.onlineLinks, value )
+        return {
+          ...state,
+        }
+      }
       ENABLE_ONLINE_LINK = (
         state,
         { index, value = false }: { index: number; value: boolean }
@@ -113,10 +115,10 @@ export default {
         } ) : state
       }
 
-      REMOVE_WORD = ( state, { value } ) => ( {
-        ...state,
-        words: removeArrayElement( state.words, value )
-      } )
+      REMOVE_WORD = ( state, { value }: { value: DictDataWord } ) => {
+        removeArrayElement( state.words, value )
+        return { ...state }
+      }
 
       // UPDATE_WORD_ADD_ARRAY_ITEM = ( state, { word, key, value } ) =>
       //   this.UPDATE_WORD( state, {
@@ -136,7 +138,7 @@ export default {
       //   this.UPDATE_WORD( state, {
       //     word,
       //     key,
-      //     value: removeArrayElementByIndex( word[ key ], index )
+      //     value: cloneAndRemoveArrayElementByIndex( word[ key ], index )
       //   } )
 
       ADD_TAG = ( state, { tag }: { tag: Tag } ) => ( {
@@ -190,10 +192,9 @@ export default {
         const newIds = removeArrayElement( tag[ TAG_IDS ], wordId )
         if ( newIds.length > 0 ) {
           // ids is not empty
-          return this.UPDATE_TAG( state, {
-            tag,
-            ids: removeArrayElement( tag[ TAG_IDS ], wordId )
-          } )
+          return {
+            ...state
+          }
         } else {
           // ids is not empty
           return this.REMOVE_TAG( state, { tag } )
@@ -210,10 +211,12 @@ export default {
         } )
       } )
 
-      REMOVE_TAG = ( state, { tag }: { tag: Tag } ) => ( {
-        ...state,
-        tags: removeArrayElement( state.tags, tag )
-      } )
+      REMOVE_TAG = ( state, { tag }: { tag: Tag } ) => {
+        removeArrayElement( state.tags, tag )
+        return { ...state }
+      }
+
+
     }()
   },
   effects: {
@@ -225,27 +228,6 @@ export default {
   }
 }
 
-function removeArrayElement( array, element ) {
-  let cloned = cloneDeep( array )
-  const index = findIndex( cloned, item => isEqual( item, element ) )
-
-  if ( index !== -1 ) {
-    cloned.splice( index, 1 )
-    return cloned
-  }
-
-  throw `unexpected removeArrayElement! index: ${index}`
-}
-
-function removeArrayElementByIndex( array, index: number ) {
-  let cloned = cloneDeep( array )
-  if ( index !== -1 ) {
-    cloned.splice( index, 1 )
-    return cloned
-  }
-
-  throw `unexpected removeArrayElement! index: ${index}`
-}
 
 export const createOnlineLink = ( {
   id,
