@@ -46,7 +46,7 @@ export default mapStateAndStyle( {
     onExportClick = () => {
       const storeLocal = localStore.getStore()
       const str = JSON.stringify( storeLocal )
-      const fileName = `tsdict2.json`
+      const fileName = `tsdict.json`
       download( str, fileName )
     }
 
