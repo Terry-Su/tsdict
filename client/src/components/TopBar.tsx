@@ -18,7 +18,8 @@ import { TOP_BAR_HEIGHT } from "../constants/numbers"
 
 export default mapStateAndStyle( {
   entry: {
-    height: `${TOP_BAR_HEIGHT}px`,
+    maxHeight: `${TOP_BAR_HEIGHT}px`,
+    minHeight: `${TOP_BAR_HEIGHT}px`,
   },
   link: {
     fontSize      : "12px!important",
@@ -117,7 +118,7 @@ export default mapStateAndStyle( {
               <IconButton>Tree</IconButton>
             </Link>
             <Link to={TAGS_ROUTE} className={c.link}>
-              <IconButton>Tags</IconButton>
+              <IconButton>Tag</IconButton>
             </Link>
             <Link to={SETTING_ROUTE} className={c.link}>
               <IconButton>Setting</IconButton>

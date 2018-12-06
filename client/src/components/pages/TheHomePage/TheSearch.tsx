@@ -4,11 +4,12 @@ import Input from "@material-ui/core/Input"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
-import TheAddButton from "./TheAddButton"
 import selector from "../../../selectors"
 import { DictDataWord } from "../../../../../shared/__typings__/DictData"
 import DownSuggest from "../../materials/DownSuggest"
 import DownSuggestContainer from "../../materials/DownSuggestContainer"
+import Button from "@material-ui/core/Button"
+import { createWord } from "../../../models/core"
 
 export default mapStateAndStyle( {} )(
   class TheSearch extends Component<any, any> {
@@ -40,6 +41,14 @@ export default mapStateAndStyle( {} )(
       this.setState( { isTyping: true } )
     }
 
+    onAddClick = () => {
+      const { app, dispatch } = this.props
+      const { searching: name } = app
+      const { wordCanBeAdded } = selector
+      wordCanBeAdded && dispatch( { type: 'core/ADD_WORD', value: createWord( name ) } )
+      this.setState( { isTyping: false } )
+    }
+
     render() {
       const { app, classes: c } = this.props
       const { searching } = app
@@ -67,7 +76,9 @@ export default mapStateAndStyle( {} )(
               )}
             </DownSuggestContainer>
             &nbsp;&nbsp;
-            <TheAddButton />
+            {
+              selector.wordCanBeAdded && <Button variant="contained" onClick={ this.onAddClick }>Add</Button>
+            }
           </section>
         </section>
       )

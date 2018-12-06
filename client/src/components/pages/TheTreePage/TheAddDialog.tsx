@@ -21,25 +21,53 @@ import { notNil, isNil } from "../../../utils/lodash"
 import { createWord } from "../../../models/core"
 import DownSuggestContainer from "../../materials/DownSuggestContainer"
 import DownSuggest from "../../materials/DownSuggest"
+import Paper from "@material-ui/core/Paper"
 
 class State {
   treeName: string = ""
   wordName: string = ""
   degree: DictDataWordDegree = 0
+  currentAddMode: TreeAddMode = TreeAddMode.Tree
 }
 
 export default mapStateAndStyle( {
   entry: {
-    minWidth: "200px",
-    padding : "20px"
+    // position: 'fixed',
+    // left  : 0,
+    // top   : 0,
+    // width : document.body.getBoundingClientRect().width,
+    // height: document.body.getBoundingClientRect().height,
+    // with   : "300px",
+    // padding : "10px 30px 20px 30px"
+    margin: 0,
+
+    "&>div>div": {
+      width    : "80%",
+      maxWidth : "100%",
+      // height   : "90%",
+      maxHeight: "100%",
+      margin   : 0
+    }
   },
+  content: {
+    boxSizing: "border-box",
+    width    : "100%",
+    height   : "100%",
+  padding  : "0 20px 20px 20px"
+  },
+  radiosContainer: {
+    display       : "flex",
+    justifyContent: "space-around",
+    alignItems    : "center"
+  },
+  radio      : {},
   downSuggest: {
-    maxHeight: '100px',
+    maxHeight: "100px"
   },
   bottomButtons: {
     display       : "flex",
     justifyContent: "flex-end"
-  },
+  }
 } )(
   class TheAddDialog extends Component<
     {
@@ -59,13 +87,6 @@ export default mapStateAndStyle( {
     }
 
     onDialogClose = () => {}
-
-    onRadioChange = e => {
-      this.props.dispatch( {
-        type : "treePage/UPDATE_ADD_MODE",
-        value: e.target.value
-      } )
-    }
 
     onTreeNameChange = e => {
       this.setState( {
@@ -92,6 +113,10 @@ export default mapStateAndStyle( {
           value: degree
         } )
       }
+    }
+
+    onCancelClick = () => {
+      this.props.dispatch( { type: "treePage/HIDE_ADD_DIALOG" } )
     }
 
     onConfirmClick = () => {
@@ -140,39 +165,52 @@ export default mapStateAndStyle( {
     }
 
     render() {
-      const { classes: c } = this.props
+      const { classes: c, dispatch } = this.props
       const { addMode, isAddDialogOpen } = selector.treePageState
       const { treeName, wordName, degree } = this.state
       const { wordInStore, isNewWord } = this
 
       const filteredDegree = isNewWord ? degree : wordInStore.degree
       const { wordNames } = selector
+      const { currentAddMode } = this.state
+
+      console.log( addMode )
 
       return (
-        <Dialog open={isAddDialogOpen} onClose={this.close}>
+        <Dialog className={c.entry} open={isAddDialogOpen} onClose={this.close}>
           <DialogTitle>Add</DialogTitle>
-          <div className={c.entry}>
-            <FormControl className={c.entry}>
-              <RadioGroup
-                aria-label="Gender"
-                name="gender1"
-                value={addMode}
-                onChange={this.onRadioChange}
-              >
-                <FormControlLabel
-                  className={c.radioLabel}
+          <div className={c.content}>
+            <div className={c.radiosContainer}>
+              <span>
+                <Radio
+                  className={c.radio}
                   value={TreeAddMode.Tree}
-                  control={<Radio />}
-                  label="Folder"
+                  checked={addMode === TreeAddMode.Tree}
+                  onChange={e =>
+                    dispatch( {
+                      type : "treePage/UPDATE_ADD_MODE",
+                      value: e.target.value
+                    } )
+                  }
                 />
-                <FormControlLabel
-                  className={c.radioLabel}
+                <label>Folder</label>
+              </span>
+
+              <span>
+                <Radio
+                  className={c.radio}
                   value={TreeAddMode.WordId}
-                  control={<Radio />}
-                  label="Word"
+                  checked={addMode === TreeAddMode.WordId}
+                  onChange={e =>
+                    dispatch( {
+                      type : "treePage/UPDATE_ADD_MODE",
+                      value: e.target.value
+                    } )
+                  }
                 />
-              </RadioGroup>
-            </FormControl>
+                <label>Word</label>
+              </span>
+            </div>
 
             <br />
 
@@ -198,7 +236,7 @@ export default mapStateAndStyle( {
                       placeholder="Word name"
                     />
                     <DownSuggest
-                      className={ c.downSuggest }
+                      className={c.downSuggest}
                       text={wordName}
                       texts={wordNames}
                       onItemClick={name => {
@@ -224,6 +262,10 @@ export default mapStateAndStyle( {
             <br />
 
             <div className={c.bottomButtons}>
+              <Button variant="contained" onClick={this.onCancelClick}>
+                Cancel
+              </Button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
               <Button
                 variant="contained"
                 color="primary"
@@ -231,10 +273,6 @@ export default mapStateAndStyle( {
               >
                 Confirm
               </Button>
-              &nbsp;&nbsp;
-              {/* <Button variant="contained" color="secondary">
-                Cancel
-              </Button> */}
             </div>
           </div>
         </Dialog>
