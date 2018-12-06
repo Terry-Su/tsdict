@@ -39,7 +39,7 @@ app.get("/cache", (req, res) => {
   try {
     const clientData = FS.readJSONSync(STORE_CURRENT_DATA_FILE);
     urls = flatten(
-      clientData.mainData.words
+      clientData.core.words
         .filter(({ note }) => notNil(note) && notNil(note.ops))
         .map(({ note }) =>
           note.ops
