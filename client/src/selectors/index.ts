@@ -24,7 +24,7 @@ class Selector {
   }
 
   get mainDataState(): ClientData {
-    return this.state.mainData
+    return this.state.core
   }
 
   get settingState() {

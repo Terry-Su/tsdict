@@ -17,7 +17,7 @@ const state: ClientData = {
 }
 
 export default {
-  namespace: "mainData",
+  namespace: "core",
   state,
   reducers : {
     ...new class extends CommonModelReducer {
@@ -234,7 +234,7 @@ export default {
   },
   effects: {
     refresh( payload, { put, select } ) {
-      const onlineLinks = select( state => state.mainData.onlineLinks )
+      const onlineLinks = select( state => state.core.onlineLinks )
       // console.log( onlineLinks )
       // yield put( { type: "UPDATE_ONLINE_LINKS", value: [] } )
     },

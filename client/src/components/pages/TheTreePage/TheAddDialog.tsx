@@ -15,7 +15,7 @@ import { GlobalStyle, GS } from "../../../style/globalStyle"
 import Degree from "../../Degree/Degree"
 import { DictDataWordDegree, DictDataWord } from "../../../../../shared/__typings__/DictData"
 import { notNil, isNil } from "../../../utils/lodash"
-import { createWord } from "../../../models/mainData"
+import { createWord } from "../../../models/core"
 
 class State {
   treeName: string = ""
@@ -84,7 +84,7 @@ export default mapStateAndStyle( {
           degree
         } )
       } else {
-        this.props.dispatch( { type: 'mainData/UPDATE_WORD_DEGREE', word: wordInStore, value: degree } )
+        this.props.dispatch( { type: 'core/UPDATE_WORD_DEGREE', word: wordInStore, value: degree } )
       }
     }
 
@@ -116,7 +116,7 @@ export default mapStateAndStyle( {
         const canBeAdded  = notNil( wordName ) && wordName.trim() !== ''
         const word: DictDataWord = createWord( wordName, { degree } )
         if ( canBeAdded ) {
-          dispatch( { type: 'mainData/ADD_WORD', value: word } )
+          dispatch( { type: 'core/ADD_WORD', value: word } )
           dispatch( { type: 'tree/ADD_WORD_ID', wordId: word.id } )
         }
       } else {

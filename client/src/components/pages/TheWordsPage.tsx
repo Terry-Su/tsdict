@@ -34,7 +34,7 @@ export default mapStateAndStyle( {
     }
 
     onRemoveClick = () => {
-      this.props.dispatch( { type: "mainData/REMOVE_WORD", value: this.removingWord } )
+      this.props.dispatch( { type: "core/REMOVE_WORD", value: this.removingWord } )
       this.removingWord = null
       this.closeMenu()
     }
@@ -46,8 +46,8 @@ export default mapStateAndStyle( {
     }
 
     render() {
-      const { mainData, classes: c } = this.props
-      const { words } = mainData
+      const { core, classes: c } = this.props
+      const { words } = core
       const { anchorEl } = this.state
       return (
         <TopbarLayout>

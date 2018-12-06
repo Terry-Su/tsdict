@@ -35,7 +35,7 @@ export default mapStateAndStyle()(
       const { tagName } = this.state
       const { id: wordId } = selector.currentWord
       this.props.dispatch( {
-        type: "mainData/ADD_WORD_ID_TO_TAG_NAME",
+        type: "core/ADD_WORD_ID_TO_TAG_NAME",
         wordId,
         tagName
       } )
@@ -43,7 +43,7 @@ export default mapStateAndStyle()(
     onChipDelete = ( tag: Tag ) => {
       const { id: wordId } = selector.currentWord
       this.props.dispatch( {
-        type: "mainData/UPDATE_TAG_REMOVE_WORD_ID",
+        type: "core/UPDATE_TAG_REMOVE_WORD_ID",
         tag,
         wordId
       } )

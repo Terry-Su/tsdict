@@ -29,7 +29,7 @@ export default mapState(
       const { currentWord: word } = selector
       notNil( word ) &&
         this.props.dispatch( {
-          type : "mainData/UPDATE_WORD_ADD_ONE_NOTE",
+          type : "core/UPDATE_WORD_ADD_ONE_NOTE",
           word,
           value: ""
         } )
@@ -43,7 +43,7 @@ export default mapState(
       const { currentWord: word } = selector
       notNil( word ) &&
         this.props.dispatch( {
-          type : "mainData/UPDATE_WORD_REMOVE_ONE_NOTE",
+          type : "core/UPDATE_WORD_REMOVE_ONE_NOTE",
           word,
           value: index
         } )
@@ -53,7 +53,7 @@ export default mapState(
       const { currentWord: word } = selector
       if ( notNil( word ) ) {
         this.props.dispatch( {
-          type : "mainData/UPDATE_WORD_NOTE",
+          type : "core/UPDATE_WORD_NOTE",
           word,
           value: data
         } )
@@ -61,7 +61,7 @@ export default mapState(
         const note = await updateMedia()
         notNil( note ) &&
           this.props.dispatch( {
-            type : "mainData/UPDATE_WORD_NOTE",
+            type : "core/UPDATE_WORD_NOTE",
             word,
             value: note
           } )

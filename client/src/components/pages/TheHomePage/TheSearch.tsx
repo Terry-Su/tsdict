@@ -16,9 +16,9 @@ export default mapStateAndStyle()(
 
 
     get filteredWords(): string[] {
-      const { app, mainData } = this.props
+      const { app, core } = this.props
       const { searching } = app
-      const { words } = mainData
+      const { words } = core
       return words.filter(  ( { name } ): DictDataWord => searching.trim() !== '' && name.startsWith( searching ) ).map( ( word: DictDataWord ) => {
         return word.name
       } ).sort( ( a: string, b: string ) => {

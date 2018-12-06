@@ -94,7 +94,7 @@ export default mapStateAndStyle( {
       const { dispatch } = this.props
       updateMedias()
         .then( words => {
-          dispatch( { type: "mainData/UPDATE_WORDS", value: words } )
+          dispatch( { type: "core/UPDATE_WORDS", value: words } )
         } )
         .then( () => dispatch( { type: "app/SHOW_UPDATE_MEDIA_SUCCESS" } ) )
         .catch( () => dispatch( { type: "app/SHOW_UPDATE_MEDIA_FAIL" } ) )

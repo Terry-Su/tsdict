@@ -37,8 +37,8 @@ export default mapState(
     }
 
     get enabledOnlineLinks() {
-      const { mainData } = this.props
-      const { onlineLinks } = mainData
+      const { core } = this.props
+      const { onlineLinks } = core
       return onlineLinks.filter( ( { disabled } ) => ! disabled )
     }
 
@@ -49,7 +49,7 @@ export default mapState(
     }
 
     render() {
-      const { mainData } = this.props
+      const { core } = this.props
       const { tabIndex } = this.state
       return (
         <div>

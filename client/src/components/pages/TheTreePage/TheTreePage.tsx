@@ -76,7 +76,7 @@ export default mapStateAndStyle( {
       const { dispatch } = this.props
       if ( isString( node ) ) {
         const word = selector.getWordByWordId( node )
-        dispatch( { type: 'mainData/UPDATE_WORD_NAME', word, value: newName } )
+        dispatch( { type: 'core/UPDATE_WORD_NAME', word, value: newName } )
       }
       if ( isPlainObject( node ) ) {
         dispatch( { type: 'tree/UPDATE_TREE_NAME', tree: node, newName } )

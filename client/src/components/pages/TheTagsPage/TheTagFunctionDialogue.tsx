@@ -19,7 +19,7 @@ export default mapStateAndStyle()(
                   dispatch( { type: 'tagPage/HIDE_TAG_FUNCTION_DIALOG' } )
                   dispatch( { type : 'tagPage/UPDATE_CALLBACK_AFTER_RENAMED', value: ( newName: string ) => {
                     const { longPressingTag: tag, } = selector.tagPageState
-                    dispatch( { type: 'mainData/UPDATE_TAG_NAME', tag, newName } )
+                    dispatch( { type: 'core/UPDATE_TAG_NAME', tag, newName } )
                   } } )
                   dispatch( { type: 'tagPage/UPDATE_RENAMING_WORD', value: selector.tagPageState.longPressingTag.name } )
                   dispatch( { type: 'tagPage/SHOW_RENAME_DIALOG' } )
@@ -29,7 +29,7 @@ export default mapStateAndStyle()(
                 label  : "Delete",
                 onClick: () => {
                   dispatch( { type: 'tagPage/HIDE_TAG_FUNCTION_DIALOG' } )
-                  dispatch( { type: 'mainData/removeLongPressingTag' } )
+                  dispatch( { type: 'core/removeLongPressingTag' } )
                 }
               }
             ]

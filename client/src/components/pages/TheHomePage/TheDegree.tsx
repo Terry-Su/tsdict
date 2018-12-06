@@ -14,12 +14,12 @@ export default mapStateAndStyle( {
   class TheDegree extends Component<any, any> {
     onDegreeChange = degree => {
       const { currentWord: word } = selector
-      notNil( word ) && this.props.dispatch( { type: 'mainData/UPDATE_WORD_DEGREE', word, value: degree } )
+      notNil( word ) && this.props.dispatch( { type: 'core/UPDATE_WORD_DEGREE', word, value: degree } )
     }
 
     onLongPress = () => {
       const { currentWord: word } = selector
-      notNil( word ) && this.props.dispatch( { type: 'mainData/UPDATE_WORD_DEGREE', word, value: 0 } )
+      notNil( word ) && this.props.dispatch( { type: 'core/UPDATE_WORD_DEGREE', word, value: 0 } )
     }
 
     render() {

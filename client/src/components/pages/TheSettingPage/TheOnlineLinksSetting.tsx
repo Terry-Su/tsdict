@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button"
 import { OnlineLink } from "../../../__typings__"
 import { notNil } from "../../../utils/lodash"
 import getUniqueKey from "../../../utils/getUniqueId"
-import { createOnlineLink } from "../../../models/mainData"
+import { createOnlineLink } from "../../../models/core"
 import getUniqueId from "../../../utils/getUniqueId"
 
 export default mapStateAndStyle()(
@@ -29,7 +29,7 @@ export default mapStateAndStyle()(
       const label = this.addingLabelInputRef.current.value
       const url = this.addingUrlInputRef.current.value
       const after = this.addingAfterInputRef.current.value
-      this.props.dispatch( { type : 'mainData/ADD_ONLINE_LINK', value: createOnlineLink( {
+      this.props.dispatch( { type : 'core/ADD_ONLINE_LINK', value: createOnlineLink( {
         id: getUniqueId(),
         label,
         url,
@@ -42,26 +42,26 @@ export default mapStateAndStyle()(
     }
 
     onRemoveClick = index => {
-      const { dispatch, mainData } = this.props
-      dispatch( { type: 'mainData/REMOVE_ONLINE_LINK', value: index } )
+      const { dispatch, core } = this.props
+      dispatch( { type: 'core/REMOVE_ONLINE_LINK', value: index } )
       setTimeout( () => {
-        const { onlineLinks } = this.props.mainData
-        dispatch( { type: "mainData/UPDATE_ONLINE_LINKS", value: [] } )
-        dispatch( { type: "mainData/UPDATE_ONLINE_LINKS", value: onlineLinks } )
+        const { onlineLinks } = this.props.core
+        dispatch( { type: "core/UPDATE_ONLINE_LINKS", value: [] } )
+        dispatch( { type: "core/UPDATE_ONLINE_LINKS", value: onlineLinks } )
       }, 0 )
     }
 
     handleSwitchChange = index => {
-      this.props.dispatch( { type: 'mainData/TOGGLE_ONLINE_LINK', value: index } )
+      this.props.dispatch( { type: 'core/TOGGLE_ONLINE_LINK', value: index } )
     }
 
-    onLabelInputChange = ( index, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', index, key: 'label', value: e.target.value } )
-    onUrlInputChange = ( index, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', index, key: 'url', value: e.target.value } )
-    onAfterInputChange = ( index, e ) => this.props.dispatch( { type: 'mainData/UPDATE_ONLINE_LINK', index, key: 'after', value: e.target.value } )
+    onLabelInputChange = ( index, e ) => this.props.dispatch( { type: 'core/UPDATE_ONLINE_LINK', index, key: 'label', value: e.target.value } )
+    onUrlInputChange = ( index, e ) => this.props.dispatch( { type: 'core/UPDATE_ONLINE_LINK', index, key: 'url', value: e.target.value } )
+    onAfterInputChange = ( index, e ) => this.props.dispatch( { type: 'core/UPDATE_ONLINE_LINK', index, key: 'after', value: e.target.value } )
 
     render() {
-      const { mainData, dispatch } = this.props
-      const { onlineLinks } = mainData
+      const { core, dispatch } = this.props
+      const { onlineLinks } = core
       return (
         <div>
           <h2>Online Links</h2>
