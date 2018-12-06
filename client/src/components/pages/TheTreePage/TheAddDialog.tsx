@@ -13,9 +13,14 @@ import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import { GlobalStyle, GS } from "../../../style/globalStyle"
 import Degree from "../../Degree/Degree"
-import { DictDataWordDegree, DictDataWord } from "../../../../../shared/__typings__/DictData"
+import {
+  DictDataWordDegree,
+  DictDataWord
+} from "../../../../../shared/__typings__/DictData"
 import { notNil, isNil } from "../../../utils/lodash"
 import { createWord } from "../../../models/core"
+import DownSuggestContainer from "../../materials/DownSuggestContainer"
+import DownSuggest from "../../materials/DownSuggest"
 
 class State {
   treeName: string = ""
@@ -28,13 +33,13 @@ export default mapStateAndStyle( {
     minWidth: "200px",
     padding : "20px"
   },
-  // radioLabel: {
-  //   display: "inline-block!important"
-  // }
+  downSuggest: {
+    maxHeight: '100px',
+  },
   bottomButtons: {
     display       : "flex",
     justifyContent: "flex-end"
-  }
+  },
 } )(
   class TheAddDialog extends Component<
     {
@@ -81,15 +86,19 @@ export default mapStateAndStyle( {
           degree
         } )
       } else {
-        this.props.dispatch( { type: 'core/UPDATE_WORD_DEGREE', word: wordInStore, value: degree } )
+        this.props.dispatch( {
+          type : "core/UPDATE_WORD_DEGREE",
+          word : wordInStore,
+          value: degree
+        } )
       }
     }
 
     onConfirmClick = () => {
-      switch( selector.treePageState.addMode ) {
+      switch ( selector.treePageState.addMode ) {
         case TreeAddMode.Tree:
-         this.confirmAddFoler()
-         break
+          this.confirmAddFoler()
+          break
         case TreeAddMode.WordId:
           this.confirmAddWord()
           break
@@ -100,29 +109,30 @@ export default mapStateAndStyle( {
     confirmAddFoler = () => {
       const { dispatch } = this.props
       const { treeName } = this.state
-      const canBeAdded  = notNil( treeName ) && treeName.trim() !== ''
-      canBeAdded && dispatch( { type: 'treePage/ADD_TREE', tree: createTree( treeName ) } )
+      const canBeAdded = notNil( treeName ) && treeName.trim() !== ""
+      canBeAdded &&
+        dispatch( { type: "treePage/ADD_TREE", tree: createTree( treeName ) } )
     }
 
     confirmAddWord = () => {
-      const { isNewWord } = this 
+      const { isNewWord } = this
       const { wordName, degree } = this.state
       const { dispatch } = this.props
       if ( isNewWord ) {
-        const canBeAdded  = notNil( wordName ) && wordName.trim() !== ''
+        const canBeAdded = notNil( wordName ) && wordName.trim() !== ""
         const word: DictDataWord = createWord( wordName, { degree } )
         if ( canBeAdded ) {
-          dispatch( { type: 'core/ADD_WORD', value: word } )
-          dispatch( { type: 'treePage/ADD_WORD_ID', wordId: word.id } )
+          dispatch( { type: "core/ADD_WORD", value: word } )
+          dispatch( { type: "treePage/ADD_WORD_ID", wordId: word.id } )
         }
       } else {
         const { wordInStore } = this
-        dispatch( { type: 'treePage/ADD_WORD_ID', wordId: wordInStore.id } )
+        dispatch( { type: "treePage/ADD_WORD_ID", wordId: wordInStore.id } )
       }
     }
 
     close = () => {
-      this.props.dispatch( { type: 'treePage/HIDE_ADD_DIALOG' } )
+      this.props.dispatch( { type: "treePage/HIDE_ADD_DIALOG" } )
       // reset state
       setTimeout( () => {
         this.setState( new State() )
@@ -130,12 +140,13 @@ export default mapStateAndStyle( {
     }
 
     render() {
-      const { classes: c  } = this.props
+      const { classes: c } = this.props
       const { addMode, isAddDialogOpen } = selector.treePageState
       const { treeName, wordName, degree } = this.state
       const { wordInStore, isNewWord } = this
 
       const filteredDegree = isNewWord ? degree : wordInStore.degree
+      const { wordNames } = selector
 
       return (
         <Dialog open={isAddDialogOpen} onClose={this.close}>
@@ -165,9 +176,9 @@ export default mapStateAndStyle( {
 
             <br />
 
-            {// tree area
+            {// # tree area
             addMode === TreeAddMode.Tree && (
-              <div className={c.d_f__jc_c__ai_cTAGS_ROUTE}>
+              <div className={c.d_f__jc_c__ai_c}>
                 <Input
                   value={treeName}
                   onChange={this.onTreeNameChange}
@@ -176,29 +187,48 @@ export default mapStateAndStyle( {
               </div>
             )}
 
-            {// word area
+            {// # word area
             addMode === TreeAddMode.WordId && (
               <div>
-                <div className={c.d_f__jc_c__ai_cTAGS_ROUTE}>
-                  <Input
-                    value={wordName}
-                    onChange={this.onWordNameChange}
-                    placeholder="Word name"
-                  />
+                <div className={c.d_f__jc_c__ai_c}>
+                  <DownSuggestContainer>
+                    <Input
+                      value={wordName}
+                      onChange={this.onWordNameChange}
+                      placeholder="Word name"
+                    />
+                    <DownSuggest
+                      className={ c.downSuggest }
+                      text={wordName}
+                      texts={wordNames}
+                      onItemClick={name => {
+                        this.setState( {
+                          wordName: name
+                        } )
+                      }}
+                    />
+                  </DownSuggestContainer>
                 </div>
                 <br />
                 <br />
-                <div className={c.d_f__jc_c__ai_cTAGS_ROUTE}>
-                  <Degree degree={filteredDegree} onChange={ this.onDegreeChange }  />
+                <div className={c.d_f__jc_c__ai_c}>
+                  <Degree
+                    degree={filteredDegree}
+                    onChange={this.onDegreeChange}
+                  />
                 </div>
               </div>
             )}
 
             <br />
             <br />
-            
+
             <div className={c.bottomButtons}>
-              <Button variant="contained" color="primary" onClick={ this.onConfirmClick }>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.onConfirmClick}
+              >
                 Confirm
               </Button>
               &nbsp;&nbsp;

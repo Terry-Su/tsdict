@@ -5,6 +5,8 @@ import Input from "@material-ui/core/Input"
 import Chip from "@material-ui/core/Chip"
 import selector from "../../../selectors"
 import { Tag } from "../../../__typings__"
+import DownSuggestContainer from "../../materials/DownSuggestContainer"
+import DownSuggest from "../../materials/DownSuggest"
 
 export default mapStateAndStyle()(
   class TheTags extends Component<
@@ -23,10 +25,12 @@ export default mapStateAndStyle()(
       this.setState( { isIntputing: true } )
     }
     onInputBlur = () => {
-      const { tagName } = this.state
-      !( tagName.trim() === "" ) && this.addWordToTagName()
-      this.setState( { tagName: "" } )
-      this.setState( { isIntputing: false } )
+      setTimeout( () => {
+        const { tagName } = this.state
+        !( tagName.trim() === "" ) && this.addWordToTagName()
+        this.setState( { tagName: "" } )
+        this.setState( { isIntputing: false } )
+      }, 200 )
     }
     onEnterPress = () => {
       this.onInputBlur()
@@ -48,9 +52,17 @@ export default mapStateAndStyle()(
         wordId
       } )
     }
+
+    onDownSuggestItemClick = tagName => {
+      this.setState( { tagName }, () => {
+        !( tagName.trim() === "" ) && this.addWordToTagName()
+        this.setState( { tagName: "" } )
+        this.setState( { isIntputing: false } )
+      } )
+    }
     render() {
       const { tagName, isIntputing } = this.state
-      const { currentTags } = selector
+      const { currentTags, tagNames } = selector
       return (
         <div>
           {currentTags.map( tag => (
@@ -66,18 +78,25 @@ export default mapStateAndStyle()(
           )}
 
           {isIntputing && (
-            <Input
-              onBlur={this.onInputBlur}
-              value={tagName}
-              onChange={this.onInputChange}
-              onKeyPress={ev => {
-                if ( ev.key === "Enter" ) {
-                  // Do code here
-                  ev.preventDefault()
-                  this.onEnterPress()
-                }
-              }}
-            />
+            <DownSuggestContainer>
+              <Input
+                onBlur={this.onInputBlur}
+                value={tagName}
+                onChange={this.onInputChange}
+                onKeyPress={ev => {
+                  if ( ev.key === "Enter" ) {
+                    // Do code here
+                    ev.preventDefault()
+                    this.onEnterPress()
+                  }
+                }}
+              />
+              <DownSuggest
+                text={tagName}
+                texts={tagNames}
+                onItemClick={this.onDownSuggestItemClick}
+              />
+            </DownSuggestContainer>
           )}
         </div>
       )

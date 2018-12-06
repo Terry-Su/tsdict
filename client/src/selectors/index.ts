@@ -71,11 +71,19 @@ class Selector {
   }
 
   get wordIds(): string[] {
-    return this.coreState.words.map( ( { id } ) => id ) as string[]
+    return this.coreState.words.map( ( { id } ) => id )
+  }
+
+  get wordNames(): string[] {
+    return this.coreState.words.map( ( { name } ) => name )
   }
 
   get rootTree(): Tree {
     return this.coreState.tree
+  }
+
+  get tagNames(): string[] {
+    return this.coreState.tags.map( tag => tag.name )
   }
 
   // tag

@@ -7,25 +7,29 @@ import ListItemText from "@material-ui/core/ListItemText"
 import TheAddButton from "./TheAddButton"
 import selector from "../../../selectors"
 import { DictDataWord } from "../../../../../shared/__typings__/DictData"
+import DownSuggest from "../../materials/DownSuggest"
+import DownSuggestContainer from "../../materials/DownSuggestContainer"
 
-export default mapStateAndStyle()(
+export default mapStateAndStyle( {} )(
   class TheSearch extends Component<any, any> {
     state = {
       isTyping: false
     }
-
-
     get filteredWords(): string[] {
       const { app, core } = this.props
       const { searching } = app
       const { words } = core
-      return words.filter(  ( { name } ): DictDataWord => searching.trim() !== '' && name.startsWith( searching ) ).map( ( word: DictDataWord ) => {
-        return word.name
-      } ).sort( ( a: string, b: string ) => {
-        return a.length > b.length ?
-        1 : 
-        -1
-      } )
+      return words
+        .filter(
+          ( { name } ): DictDataWord =>
+            searching.trim() !== "" && name.startsWith( searching )
+        )
+        .map( ( word: DictDataWord ) => {
+          return word.name
+        } )
+        .sort( ( a: string, b: string ) => {
+          return a.length > b.length ? 1 : -1
+        } )
     }
 
     onSearchChange = e => {
@@ -36,37 +40,35 @@ export default mapStateAndStyle()(
       this.setState( { isTyping: true } )
     }
 
-    onFilteredWordClick = name => {
-      this.props.dispatch( { type: "app/UPDATE_SEARCHING", value: name } )
-      this.setState( { isTyping: false } )
-    }
-
     render() {
-      const { app } = this.props
+      const { app, classes: c } = this.props
       const { searching } = app
-      const { filteredWords } = this
+      const { wordNames } = selector
+      const { dispatch } = this.props
       const { isTyping } = this.state
-      const { wordIsAdded } = selector
       return (
         <section>
           <section>
-            <Input
-              type="text"
-              onChange={this.onSearchChange}
-              value={searching}
-            />
+            <DownSuggestContainer>
+              <Input
+                type="text"
+                onChange={this.onSearchChange}
+                value={searching}
+              />
+              {isTyping && (
+                <DownSuggest
+                  text={searching}
+                  texts={wordNames}
+                  onItemClick={name => {
+                    dispatch( { type: "app/UPDATE_SEARCHING", value: name } )
+                    this.setState( { isTyping: false } )
+                  }}
+                />
+              )}
+            </DownSuggestContainer>
             &nbsp;&nbsp;
             <TheAddButton />
           </section>
-          {
-            ! wordIsAdded && isTyping && this.filteredWords.length > 0 && <List>
-            {
-              filteredWords.map( ( name, index ) => <ListItem button key={index} onClick={ () => this.onFilteredWordClick( name ) }>
-                <ListItemText>{ name }</ListItemText>
-              </ListItem> )
-            }
-          </List>
-          }
         </section>
       )
     }
