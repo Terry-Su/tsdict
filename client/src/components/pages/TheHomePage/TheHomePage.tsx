@@ -27,11 +27,12 @@ export default mapState(
 
     onAddNoteClick = () => {
       const { currentWord: word } = selector
-      notNil( word ) && this.props.dispatch( {
-        type : "mainData/UPDATE_WORD_ADD_ONE_NOTE",
-        word,
-        value: ""
-      } )
+      notNil( word ) &&
+        this.props.dispatch( {
+          type : "mainData/UPDATE_WORD_ADD_ONE_NOTE",
+          word,
+          value: ""
+        } )
     }
     // onNoteChange = ( event, index ) => {
     //   const { value } = event.target
@@ -40,28 +41,31 @@ export default mapState(
     // }
     onRemoveNoteClick = ( index: number ) => {
       const { currentWord: word } = selector
-      notNil( word ) && this.props.dispatch( {
-        type : "mainData/UPDATE_WORD_REMOVE_ONE_NOTE",
-        word,
-        value: index
-      } )
+      notNil( word ) &&
+        this.props.dispatch( {
+          type : "mainData/UPDATE_WORD_REMOVE_ONE_NOTE",
+          word,
+          value: index
+        } )
     }
 
     onNoteChange = async ( data: NoteData ) => {
       const { currentWord: word } = selector
-      notNil( word ) && this.props.dispatch( {
-        type : "mainData/UPDATE_WORD_NOTE",
-        word,
-        value: data
-      } )
-
-      const note = await updateMedia()
-      notNil( note ) &&
+      if ( notNil( word ) ) {
         this.props.dispatch( {
           type : "mainData/UPDATE_WORD_NOTE",
           word,
-          value: note
+          value: data
         } )
+
+        const note = await updateMedia()
+        notNil( note ) &&
+          this.props.dispatch( {
+            type : "mainData/UPDATE_WORD_NOTE",
+            word,
+            value: note
+          } )
+      }
     }
 
     handleTabChange = ( event, tabIndex ) => {
@@ -86,35 +90,28 @@ export default mapState(
           <br />
           {shallShowWordPanel && (
             <div>
-              
               <TheDegree />
               <TheTags />
 
               <Tabs
-              value={tabIndex}
-              onChange={this.handleTabChange}
-              scrollable
-              scrollButtons="on"
-              indicatorColor="primary"
-              textColor="primary"
-            >
-              <Tab label="Note">
-              </Tab>
-              <Tab label="links">
-              </Tab>
-            </Tabs>
-            <br />
+                value={tabIndex}
+                onChange={this.handleTabChange}
+                scrollable
+                scrollButtons="on"
+                indicatorColor="primary"
+                textColor="primary"
+              >
+                <Tab label="Note" />
+                <Tab label="links" />
+              </Tabs>
+              <br />
 
-                {
-                  tabIndex === 0 && <Note data={note} onChange={this.onNoteChange} />
-                }
-                {
-                  tabIndex === 1 && <TheOnlineLinks />
-                }
+              {tabIndex === 0 && (
+                <Note data={note} onChange={this.onNoteChange} />
+              )}
+              {tabIndex === 1 && <TheOnlineLinks />}
             </div>
           )}
-
-
         </TopbarLayout>
       )
     }

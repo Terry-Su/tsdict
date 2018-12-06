@@ -23,7 +23,7 @@ const TheTestingComponent =
   // Degree
   // TheTagsPage
   // TheTreePage
-  TheTagsPage
+  // TheTagsPage
   null
 
 

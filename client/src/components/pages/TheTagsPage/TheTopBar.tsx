@@ -28,7 +28,7 @@ export default mapStateAndStyle( {
   class TheTopBar extends Component<any, any> {
 
     onBackClick = () => {
-      this.props.dispatch( { type: 'app/UPDATE_CURRENT_TAG_ID', value: null } )
+      this.props.dispatch( { type: 'tagPage/UPDATE_CURRENT_TAG_ID', value: null } )
     }
 
     render() {

@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "dva/router"
-import { SETTING_ROUTE, HOME_ROUTE, WORDS_ROUTE, TREE_ROUTE } from "../constants/routes"
+import { SETTING_ROUTE, HOME_ROUTE, WORDS_ROUTE, TREE_ROUTE, TAGS_ROUTE } from "../constants/routes"
 import download from "../assets/js/download"
 import localStore from "../store/localStore"
 import Uploader from "./Uploader/Uploader"
@@ -115,6 +115,9 @@ export default mapStateAndStyle( {
             </Link>
             <Link to={TREE_ROUTE} className={c.link}>
               <IconButton>Tree</IconButton>
+            </Link>
+            <Link to={TAGS_ROUTE} className={c.link}>
+              <IconButton>Tags</IconButton>
             </Link>
             <Link to={SETTING_ROUTE} className={c.link}>
               <IconButton>Setting</IconButton>

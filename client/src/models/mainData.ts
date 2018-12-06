@@ -211,6 +211,19 @@ export default {
         } )
       } )
 
+      UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS = ( state:ClientData ) => {
+        state.tags.forEach( tag => {
+          const { ids } = tag
+          ids.forEach( id => {
+            const word = selector.getWordByWordId( id )
+            if ( isNil( word ) ) {
+              removeArrayElement( ids, id )
+            }
+          } )
+        } )
+        return { ...state }
+      }
+
       REMOVE_TAG = ( state, { tag }: { tag: Tag } ) => {
         removeArrayElement( state.tags, tag )
         return { ...state }
@@ -222,9 +235,18 @@ export default {
   effects: {
     refresh( payload, { put, select } ) {
       const onlineLinks = select( state => state.mainData.onlineLinks )
-      console.log( onlineLinks )
+      // console.log( onlineLinks )
       // yield put( { type: "UPDATE_ONLINE_LINKS", value: [] } )
-    }
+    },
+    *removeLongPressingTag( payload , { put } ) {
+      const { longPressingTag: tag } = selector.tagPageState
+      yield put( { type: 'REMOVE_TAG', tag } )
+    },
+    *removeLongPressingWord( payload , { put } ) {
+      const { longPressingWord: value } = selector.tagPageState
+      yield put( { type: 'REMOVE_WORD', value } )
+      yield put( { type: 'UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS' } )
+    },
   }
 }
 

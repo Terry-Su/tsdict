@@ -5,6 +5,7 @@ import { pick, notNil, isNil } from "../utils/lodash"
 import { Tag, ClientData, Tree } from "../__typings__"
 import { TreeState, CalcTree } from "../models/tree"
 import { AppState } from "../models/app"
+import { TagPageState } from "../models/tagPage"
 
 
 class Selector {
@@ -34,6 +35,10 @@ class Selector {
     return this.state.tree
   }
 
+  get tagPageState(): TagPageState {
+    return this.state.tagPage
+  }
+
   // # app section
   get wordCanBeAdded(): boolean {
     const { searching } = this.appState
@@ -51,13 +56,6 @@ class Selector {
     const { searching } = this.appState
     return searching.trim() !== "" && !this.wordCanBeAdded
   }
-
-  // ## tags
-  get isTagsHome(): boolean {
-    const { currentTagId } = this.appState
-    return isNil( currentTagId )
-  }
-
 
   // # main data section
   get currentWord(): DictDataWord {
@@ -77,7 +75,7 @@ class Selector {
 
   // tag
   get currentTag(): Tag {
-    const { currentTagId } = this.appState
+    const { currentTagId } = this.tagPageState
     const { tags } = this.mainDataState
     return tags.filter( tag => tag.id === currentTagId )[ 0 ]
   }
@@ -123,6 +121,13 @@ class Selector {
     const { root } = this.treeState
     const treeAbove = new CalcTree( root ).getTreeAbove( id )
     return treeAbove
+  }
+
+
+  // # tag page section
+  get isTagsHome(): boolean {
+    const { currentTagId } = this.tagPageState
+    return isNil( currentTagId )
   }
 
 }

@@ -16,7 +16,9 @@ const DecoratedListItem: any = withLongPress( ListItem )
 export default mapStateAndStyle()(
   class TheTagWordsList extends Component<any, any> {
     onItemLongPress = ( word: DictDataWord ) => {
-      console.log( word )
+      const { dispatch } = this.props
+      dispatch( { type: 'tagPage/UPDATE_LONG_PRESSING_WORD', value: word } )
+      dispatch( { type: 'tagPage/SHOW_WORD_FUNCTION_DIALOG' } )
     }
 
     render() {

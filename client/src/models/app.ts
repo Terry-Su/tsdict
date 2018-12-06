@@ -1,5 +1,6 @@
 import CommonModelReducer from "../utils/CommonModelReducer"
-
+import { Tag } from "../__typings__"
+import { DictDataWord } from "../../../shared/__typings__/DictData"
 
 
 
@@ -8,9 +9,6 @@ export class AppState {
   isShowingMessage: boolean = false
   message: string = ""
   messageType: string = "success"
-
-  // For tags page
-  currentTagId: string
 }
 
 export default {
@@ -94,13 +92,9 @@ export default {
           messageType: "error",
           message    : "Update media failed"
         } )
-
-
-
-
-      // # tags section
-      UPDATE_CURRENT_TAG_ID = this.UPDATE_STATE_VALUE( 'currentTagId' )
     }()
   },
-  effects: {}
+  effects: {
+    
+  }
 }

@@ -14,11 +14,13 @@ const DecoratedListItem: any = withLongPress( ListItem )
 export default mapStateAndStyle()(
   class TheList extends Component<any, any> {
     onItemLongPress = ( tag: Tag ) => {
-      console.log( tag )
+      const { dispatch } = this.props
+      dispatch( { type: 'tagPage/UPDATE_LONG_PRESSING_TAG', value: tag } )
+      dispatch( { type: 'tagPage/SHOW_TAG_FUNCTION_DIALOG', value: tag } )
     }
 
     onItemClick = ( tag: Tag ) => {
-      this.props.dispatch( { type: 'app/UPDATE_CURRENT_TAG_ID', value: tag.id } )
+      this.props.dispatch( { type: 'tagPage/UPDATE_CURRENT_TAG_ID', value: tag.id } )
     }
 
     render() {
