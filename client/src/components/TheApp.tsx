@@ -7,8 +7,8 @@ import TheWordsPage from "./pages/TheWordsPage"
 import selector from "../selectors"
 import Message from "./materials/Message"
 import TheSettingPage from "./pages/TheSettingPage/TheSettingPage"
-import TheTagsPage from "./pages/TheTagsPage"
 import TheTreePage from "./pages/TheTreePage/TheTreePage"
+import TheTagsPage from "./pages/TheTagsPage/TheTagsPage"
 
 const isTestingSingleComponent = !!TheTestingComponent
 

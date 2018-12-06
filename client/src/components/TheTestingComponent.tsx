@@ -8,8 +8,8 @@ import TheSettingPage from './pages/TheSettingPage/TheSettingPage'
 import Uploader from './Uploader/Uploader'
 import Degree from './Degree/Degree'
 import Star from './Degree/Star'
-import TheTagsPage from './pages/TheTagsPage'
 import TheTreePage from './pages/TheTreePage/TheTreePage'
+import TheTagsPage from './pages/TheTagsPage/TheTagsPage'
 
 const TheTestingComponent = 
   // TheHomePage
@@ -23,6 +23,7 @@ const TheTestingComponent =
   // Degree
   // TheTagsPage
   // TheTreePage
+  TheTagsPage
   null
 
 

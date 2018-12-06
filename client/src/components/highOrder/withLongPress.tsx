@@ -24,7 +24,8 @@ export default function( Target: any ) {
     render() {
       const { onLongPress, className = '', ...others } = this.props
       return <div className={ className } onMouseDown={ this.onPress } onTouchStart={ this.onPress } onMouseUp={ this.onRelease } onTouchEnd={ this.onRelease } onMouseOut={ this.onRelease }>
-        <Target { ...others }/>
+        <Target { ...others }>
+        </Target>
       </div>
     }
   }

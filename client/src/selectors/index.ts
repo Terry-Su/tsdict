@@ -1,7 +1,7 @@
 import { DictDataWord } from "../../../shared/__typings__/DictData"
 import { root } from "../entry"
 import models from "../models"
-import { pick, notNil } from "../utils/lodash"
+import { pick, notNil, isNil } from "../utils/lodash"
 import { Tag, ClientData, Tree } from "../__typings__"
 import { TreeState, CalcTree } from "../models/tree"
 import { AppState } from "../models/app"
@@ -52,6 +52,13 @@ class Selector {
     return searching.trim() !== "" && !this.wordCanBeAdded
   }
 
+  // ## tags
+  get isTagsHome(): boolean {
+    const { currentTagId } = this.appState
+    return isNil( currentTagId )
+  }
+
+
   // # main data section
   get currentWord(): DictDataWord {
     const { searching } = this.appState
@@ -66,6 +73,13 @@ class Selector {
 
   get wordIds(): string[] {
     return this.mainDataState.words.map( ( { id } ) => id ) as string[]
+  }
+
+  // tag
+  get currentTag(): Tag {
+    const { currentTagId } = this.appState
+    const { tags } = this.mainDataState
+    return tags.filter( tag => tag.id === currentTagId )[ 0 ]
   }
 
   getWordByWordId( wordId: string ) {
@@ -110,6 +124,7 @@ class Selector {
     const treeAbove = new CalcTree( root ).getTreeAbove( id )
     return treeAbove
   }
+
 }
 
 const selector = new Selector()

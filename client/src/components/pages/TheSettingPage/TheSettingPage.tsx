@@ -44,8 +44,6 @@ export default mapStateAndStyle()(
             </div>
           }
 
-          <h2>Tags</h2>
-          <Link to={TAGS_ROUTE}>All tags</Link>
           <TheOnlineLinksSetting />
         </TopbarLayout>
       )

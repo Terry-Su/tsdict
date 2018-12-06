@@ -15,9 +15,7 @@ export class TreeState {
   root: Tree = defaultTree
   // for showing current tree
   currentTreeId: string = defaultTree.id
-  addMode: TreeAddMode = TreeAddMode.Tree
-
-  
+  addMode: TreeAddMode = TreeAddMode.Tree  
 }
 
 export default {
