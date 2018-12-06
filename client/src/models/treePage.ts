@@ -11,24 +11,23 @@ export enum TreeAddMode {
   WordId = "wordId"
 }
 
-export class TreeState {
-  root: Tree = defaultTree
+export class TreePageState {
   // for showing current tree
   currentTreeId: string = defaultTree.id
   addMode: TreeAddMode = TreeAddMode.Tree  
 }
 
 export default {
-  namespace: "tree",
+  namespace: "treePage",
   state    : {
-    ...new TreeState()
+    ...new TreePageState()
   },
   reducers: {
     ...new class extends CommonModelReducer {
       UPDATE_ADD_MODE = this.UPDATE_STATE_VALUE( "addMode" )
 
       ADD_TREE_NODE = (
-        state: TreeState,
+        state: TreePageState,
         { treeNode }: { treeNode: TreeNode }
       ) => {
         selector.currentTree.nodes.push( treeNode )
@@ -37,38 +36,37 @@ export default {
         }
       }
 
-      ADD_TREE = ( state: TreeState, { tree }: { tree: Tree } ) =>
+      ADD_TREE = ( state: TreePageState, { tree }: { tree: Tree } ) =>
         this.ADD_TREE_NODE( state, {
           treeNode: tree
         } )
 
-      ADD_WORD_ID = ( state: TreeState, { wordId }: { wordId: string } ) =>
+      ADD_WORD_ID = ( state: TreePageState, { wordId }: { wordId: string } ) =>
         this.ADD_TREE_NODE( state, {
           treeNode: wordId
         } )
 
       UPDATE_CURRENT_ID = this.UPDATE_STATE_VALUE( "currentTreeId" )
 
-      UPDATE_CURRENT_ID_TO_UPPER_ID = ( state: TreeState ) => {
+      UPDATE_CURRENT_ID_TO_UPPER_ID = ( state: TreePageState ) => {
         const { currentTreeIdAbove } = selector
         return this.UPDATE_CURRENT_ID( state, { value: currentTreeIdAbove } )
       }
 
-      UPDATE_TREE_NAME = ( state: TreeState, { tree, newName }: { tree: Tree, newName: string } ) => {
+      UPDATE_TREE_NAME = ( state: TreePageState, { tree, newName }: { tree: Tree, newName: string } ) => {
         tree.name = newName 
         return {
           ...state
         }
       }
 
-      UPDATE_CURRENT_TREE_REMOVE_WORD_ID = ( state: TreeState, { wordId }: { wordId: string } ) => {
+      UPDATE_CURRENT_TREE_REMOVE_WORD_ID = ( state: TreePageState, { wordId }: { wordId: string } ) => {
         removeArrayElement( selector.currentTree.nodes, wordId )
         return { ...state }
       }
 
-      UPDATE_ALL_TREES_REMOVE_USELESS_WORD_IDS = ( state: TreeState ) => {
-        const { root } = state
-        new CalcTree( root ).removeUselessWordIds( selector.wordIds )
+      UPDATE_ALL_TREES_REMOVE_USELESS_WORD_IDS = ( state: TreePageState ) => {
+        new CalcTree( selector.rootTree ).removeUselessWordIds( selector.wordIds )
         return { ...state }
       }
 

@@ -31,7 +31,7 @@ export default mapStateAndStyle( {
     }
 
     onBackClick = () => {
-      this.props.dispatch( { type: 'tree/UPDATE_CURRENT_ID_TO_UPPER_ID' } )
+      this.props.dispatch( { type: 'treePage/UPDATE_CURRENT_ID_TO_UPPER_ID' } )
     }
 
     render() {

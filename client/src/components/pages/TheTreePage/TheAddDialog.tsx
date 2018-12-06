@@ -7,7 +7,7 @@ import FormControl from "@material-ui/core/FormControl"
 import FormLabel from "@material-ui/core/FormLabel"
 import Radio from "@material-ui/core/Radio"
 import RadioGroup from "@material-ui/core/RadioGroup"
-import { TreeAddMode, createTree } from "../../../models/tree"
+import { TreeAddMode, createTree } from "../../../models/treePage"
 import selector from "../../../selectors"
 import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
@@ -60,7 +60,7 @@ export default mapStateAndStyle( {
 
     onRadioChange = e => {
       this.props.dispatch( {
-        type : "tree/UPDATE_ADD_MODE",
+        type : "treePage/UPDATE_ADD_MODE",
         value: e.target.value
       } )
     }
@@ -105,7 +105,7 @@ export default mapStateAndStyle( {
       const { dispatch } = this.props
       const { treeName } = this.state
       const canBeAdded  = notNil( treeName ) && treeName.trim() !== ''
-      canBeAdded && dispatch( { type: 'tree/ADD_TREE', tree: createTree( treeName ) } )
+      canBeAdded && dispatch( { type: 'treePage/ADD_TREE', tree: createTree( treeName ) } )
     }
 
     confirmAddWord = () => {
@@ -117,11 +117,11 @@ export default mapStateAndStyle( {
         const word: DictDataWord = createWord( wordName, { degree } )
         if ( canBeAdded ) {
           dispatch( { type: 'core/ADD_WORD', value: word } )
-          dispatch( { type: 'tree/ADD_WORD_ID', wordId: word.id } )
+          dispatch( { type: 'treePage/ADD_WORD_ID', wordId: word.id } )
         }
       } else {
         const { wordInStore } = this
-        dispatch( { type: 'tree/ADD_WORD_ID', wordId: wordInStore.id } )
+        dispatch( { type: 'treePage/ADD_WORD_ID', wordId: wordInStore.id } )
       }
     }
 

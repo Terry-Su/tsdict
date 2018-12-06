@@ -24,7 +24,7 @@ export default mapStateAndStyle()(
     }
 
     render() {
-      const { tags } = selector.mainDataState
+      const { tags } = selector.coreState
       return (
         <List>
           {tags.map( tag => (

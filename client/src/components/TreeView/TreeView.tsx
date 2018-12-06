@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import mapStateAndStyle from "../../utils/mapStateAndStyle"
 import selector from "../../selectors"
-import { CalcTree } from "../../models/tree"
+import { CalcTree } from "../../models/treePage"
 import { Tree, TreeNode } from "../../__typings__"
 import { node } from "_@types_prop-types@15.5.6@@types/prop-types"
 import TreeViewItem from "./TreeViewWordItem"

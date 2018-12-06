@@ -79,17 +79,17 @@ export default mapStateAndStyle( {
         dispatch( { type: 'core/UPDATE_WORD_NAME', word, value: newName } )
       }
       if ( isPlainObject( node ) ) {
-        dispatch( { type: 'tree/UPDATE_TREE_NAME', tree: node, newName } )
+        dispatch( { type: 'treePage/UPDATE_TREE_NAME', tree: node, newName } )
       }
     }
 
     removeTreeNode = ( node: TreeNode ) => {
       const { dispatch } = this.props
       if ( isString( node ) ) {
-        dispatch( { type: 'tree/UPDATE_CURRENT_TREE_REMOVE_WORD_ID', wordId: node } )
+        dispatch( { type: 'treePage/UPDATE_CURRENT_TREE_REMOVE_WORD_ID', wordId: node } )
       }
       if ( isPlainObject( node  ) ) {
-        dispatch( { type: 'tree/REMOVE_TREE', tree: node } )
+        dispatch( { type: 'treePage/REMOVE_TREE', tree: node } )
       }
     }
 
@@ -104,8 +104,8 @@ export default mapStateAndStyle( {
         isRenameDialogOpen,
         renamingName
       } = this.state
-      const { currentTree, treeState } = selector
-      const tree = notNil( currentTree ) ? currentTree : treeState.root
+      const { currentTree, coreState } = selector
+      const tree = notNil( currentTree ) ? currentTree : coreState.tree
       return (
         <TopbarLayout>
           <TheTreeTopBar />

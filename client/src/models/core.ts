@@ -1,7 +1,14 @@
-import { defaultOnlineLinks, defaultWords, defaultTree } from "../constants/default"
+import {
+  defaultOnlineLinks,
+  defaultWords,
+  defaultTree
+} from "../constants/default"
 import { cloneDeep, findIndex, isEqual, isNil } from "../utils/lodash"
-import { DictDataWord, DictDataWordDegree } from "../../../shared/__typings__/DictData"
-import { OnlineLink, ClientData, Tag } from "../__typings__"
+import {
+  DictDataWord,
+  DictDataWordDegree
+} from "../../../shared/__typings__/DictData"
+import { OnlineLink, ClientData, Tag, Tree } from "../__typings__"
 import getUniqueId from "../utils/getUniqueId"
 import { TAG_IDS } from "../constants/shared"
 import { NoteData } from "../components/Note/Note"
@@ -9,17 +16,19 @@ import selector from "../selectors"
 import { removeArrayElement, removeArrayElementByIndex } from "../utils/js"
 import CommonModelReducer from "../utils/CommonModelReducer"
 
-const state: ClientData = {
-  onlineLinks: defaultOnlineLinks,
-  words      : defaultWords,
-  tags       : [],
-  tree       : defaultTree,
+export class CoreState {
+  words: DictDataWord[] = defaultWords
+  tags: Tag[] = []
+  tree: Tree = defaultTree
+  onlineLinks: OnlineLink[] = defaultOnlineLinks
 }
 
 export default {
   namespace: "core",
-  state,
-  reducers : {
+  state    : {
+    ...new CoreState()
+  },
+  reducers: {
     ...new class extends CommonModelReducer {
       // online links
       UPDATE_ONLINE_LINKS = ( state, { value } ) => ( {
@@ -42,7 +51,7 @@ export default {
       REMOVE_ONLINE_LINK = ( state, { value }: { value: number } ) => {
         removeArrayElementByIndex( state.onlineLinks, value )
         return {
-          ...state,
+          ...state
         }
       }
       ENABLE_ONLINE_LINK = (
@@ -104,15 +113,16 @@ export default {
           key: "degree",
           value
         } )
-      
-      UPDATE_WORD_NAME = ( state, { word, value } ) =>
-      {
-        const notExistWordName = ! selector.getExistsWordName( value )
-        return notExistWordName ? this.UPDATE_WORD( state, {
-          word,
-          key: "name",
-          value
-        } ) : state
+
+      UPDATE_WORD_NAME = ( state, { word, value } ) => {
+        const notExistWordName = !selector.getExistsWordName( value )
+        return notExistWordName ?
+          this.UPDATE_WORD( state, {
+              word,
+              key: "name",
+              value
+            } ) :
+          state
       }
 
       REMOVE_WORD = ( state, { value }: { value: DictDataWord } ) => {
@@ -201,7 +211,10 @@ export default {
         }
       }
 
-      UPDATE_TAG_NAME = ( state, { tag, newName }:{ tag: Tag, newName: string } ) => ( {
+      UPDATE_TAG_NAME = (
+        state,
+        { tag, newName }: { tag: Tag; newName: string }
+      ) => ( {
         ...state,
         tags: state.tags.map( theTag => {
           if ( theTag === tag ) {
@@ -211,7 +224,7 @@ export default {
         } )
       } )
 
-      UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS = ( state:ClientData ) => {
+      UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS = ( state: ClientData ) => {
         state.tags.forEach( tag => {
           const { ids } = tag
           ids.forEach( id => {
@@ -228,8 +241,6 @@ export default {
         removeArrayElement( state.tags, tag )
         return { ...state }
       }
-
-
     }()
   },
   effects: {
@@ -238,18 +249,17 @@ export default {
       // console.log( onlineLinks )
       // yield put( { type: "UPDATE_ONLINE_LINKS", value: [] } )
     },
-    *removeLongPressingTag( payload , { put } ) {
+    *removeLongPressingTag( payload, { put } ) {
       const { longPressingTag: tag } = selector.tagPageState
-      yield put( { type: 'REMOVE_TAG', tag } )
+      yield put( { type: "REMOVE_TAG", tag } )
     },
-    *removeLongPressingWord( payload , { put } ) {
+    *removeLongPressingWord( payload, { put } ) {
       const { longPressingWord: value } = selector.tagPageState
-      yield put( { type: 'REMOVE_WORD', value } )
-      yield put( { type: 'UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS' } )
-    },
+      yield put( { type: "REMOVE_WORD", value } )
+      yield put( { type: "UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS" } )
+    }
   }
 }
-
 
 export const createOnlineLink = ( {
   id,
@@ -265,11 +275,14 @@ export const createOnlineLink = ( {
   after
 } )
 
-export const createWord = ( name: string, config: { note?: NoteData, degree?: DictDataWordDegree } = { degree: 0 } ) => ( {
+export const createWord = (
+  name: string,
+  config: { note?: NoteData; degree?: DictDataWordDegree } = { degree: 0 }
+) => ( {
   id    : getUniqueId(),
   name,
   note  : config.note,
-  degree: config.degree,
+  degree: config.degree
 } )
 
 export const createTag = ( name: string, ids: string[] = [] ) => ( {

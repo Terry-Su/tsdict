@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import mapStateAndStyle from "../../utils/mapStateAndStyle"
 import selector from "../../selectors"
-import { CalcTree } from "../../models/tree"
+import { CalcTree } from "../../models/treePage"
 import { Tree, TreeNode } from "../../__typings__"
 import { isString, notNil } from "../../utils/lodash"
 import ListItem from "@material-ui/core/ListItem"
@@ -23,7 +23,7 @@ export default mapStateAndStyle()(
   > {
     onClick = () => {
       const { theTree, dispatch } = this.props
-      dispatch( { type: 'tree/UPDATE_CURRENT_ID', value: theTree.id } )
+      dispatch( { type: 'treePage/UPDATE_CURRENT_ID', value: theTree.id } )
     }
 
     render() {

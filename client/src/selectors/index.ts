@@ -3,9 +3,10 @@ import { root } from "../entry"
 import models from "../models"
 import { pick, notNil, isNil } from "../utils/lodash"
 import { Tag, ClientData, Tree } from "../__typings__"
-import { TreeState, CalcTree } from "../models/tree"
+import { TreePageState, CalcTree } from "../models/treePage"
 import { AppState } from "../models/app"
 import { TagPageState } from "../models/tagPage"
+import { CoreState } from "../models/core"
 
 
 class Selector {
@@ -19,20 +20,20 @@ class Selector {
     return data
   }
 
-  get appState(): AppState {
-    return this.state.app
+  get coreState(): CoreState {
+    return this.state.core
   }
 
-  get mainDataState(): ClientData {
-    return this.state.core
+  get appState(): AppState {
+    return this.state.app
   }
 
   get settingState() {
     return this.state.setting
   }
 
-  get treeState(): TreeState {
-    return this.state.tree
+  get treeState(): TreePageState {
+    return this.state.treePage
   }
 
   get tagPageState(): TagPageState {
@@ -42,7 +43,7 @@ class Selector {
   // # app section
   get wordCanBeAdded(): boolean {
     const { searching } = this.appState
-    const { words } = this.mainDataState
+    const { words } = this.coreState
     return (
       searching.trim() !== "" && words.every( ( { name } ) => name !== searching )
     )
@@ -57,40 +58,44 @@ class Selector {
     return searching.trim() !== "" && !this.wordCanBeAdded
   }
 
-  // # main data section
+  // # core section
   get currentWord(): DictDataWord {
     const { searching } = this.appState
-    const { words } = this.mainDataState
+    const { words } = this.coreState
     return words.filter( ( { name } ) => name === searching )[ 0 ]
   }
 
   get currentTags(): Tag[] {
     const { id }  = this.currentWord
-    return this.mainDataState.tags.filter( ( { ids } ) => ids.includes( id ) )
+    return this.coreState.tags.filter( ( { ids } ) => ids.includes( id ) )
   }
 
   get wordIds(): string[] {
-    return this.mainDataState.words.map( ( { id } ) => id ) as string[]
+    return this.coreState.words.map( ( { id } ) => id ) as string[]
+  }
+
+  get rootTree(): Tree {
+    return this.coreState.tree
   }
 
   // tag
   get currentTag(): Tag {
     const { currentTagId } = this.tagPageState
-    const { tags } = this.mainDataState
+    const { tags } = this.coreState
     return tags.filter( tag => tag.id === currentTagId )[ 0 ]
   }
 
   getWordByWordId( wordId: string ) {
-    const { words } = this.mainDataState
+    const { words } = this.coreState
     return words.filter( ( { id } ) => id === wordId )[ 0 ]
   }
 
   getWordByWordName( wordName: string ) {
-    return this.mainDataState.words.filter( word => word.name === wordName )[ 0 ]
+    return this.coreState.words.filter( word => word.name === wordName )[ 0 ]
   }
 
   getExistsWordName( wordName: string ): boolean {
-    return this.mainDataState.words.some( word => word.name === wordName )
+    return this.coreState.words.some( word => word.name === wordName )
   }
 
   // # setting section
@@ -104,22 +109,21 @@ class Selector {
   }
 
 
-  // # tree section
+  // # tree page section
   get currentTree(): Tree {
-    const { root, currentTreeId } = this.treeState
-    const current: Tree = new CalcTree( root ).getTreeById( currentTreeId )
+    const { currentTreeId } = this.treeState
+    const current: Tree = new CalcTree( this.rootTree ).getTreeById( currentTreeId )
     return current
   } 
 
   get currentTreeIdAbove(): string {
-    const { root, currentTreeId } = this.treeState
-    const treeAbove: Tree = new CalcTree( root ).getTreeAbove( currentTreeId )
+    const { currentTreeId } = this.treeState
+    const treeAbove: Tree = new CalcTree( this.rootTree ).getTreeAbove( currentTreeId )
     return notNil( treeAbove ) ? treeAbove.id : null
   }
 
   getTreeAbove = ( id: string ) => {
-    const { root } = this.treeState
-    const treeAbove = new CalcTree( root ).getTreeAbove( id )
+    const treeAbove = new CalcTree( this.rootTree ).getTreeAbove( id )
     return treeAbove
   }
 

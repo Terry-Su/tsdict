@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import mapStateAndStyle from "../../utils/mapStateAndStyle"
 import selector from "../../selectors"
-import { CalcTree } from "../../models/tree"
+import { CalcTree } from "../../models/treePage"
 import { Tree, TreeNode } from "../../__typings__"
 import { isString, notNil } from "../../utils/lodash"
 import ListItem from "@material-ui/core/ListItem"
