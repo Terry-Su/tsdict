@@ -84,7 +84,7 @@ export default mapStateAndStyle()(
                 onChange={() => this.handleSwitchChange( index )}
                 value="checkedA"
               />
-              <Button variant="contained" onClick={ () => this.onRemoveClick( index ) }>Remove</Button>
+              <Button variant="contained" onClick={ () => this.onRemoveClick( index ) }>Delete</Button>
               <br /><br /><br />
             </section>
           ) )}

@@ -74,7 +74,7 @@ export default mapStateAndStyle( {
             open={Boolean( anchorEl )}
             onClose={this.closeMenu}
           >
-            <MenuItem onClick={() => this.onRemoveClick()}>Remove</MenuItem>
+            <MenuItem onClick={() => this.onRemoveClick()}>Delete</MenuItem>
           </Menu>
         </TopbarLayout>
       )
