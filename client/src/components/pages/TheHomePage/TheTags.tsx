@@ -1,12 +1,13 @@
 import React, { Component } from "react"
 import mapStateAndStyle from "../../../utils/mapStateAndStyle"
-import Button from "@material-ui/core/Button"
+import IconButton from "@material-ui/core/IconButton"
 import Input from "@material-ui/core/Input"
 import Chip from "@material-ui/core/Chip"
 import selector from "../../../selectors"
 import { Tag } from "../../../__typings__"
 import DownSuggestContainer from "../../materials/DownSuggestContainer"
 import DownSuggest from "../../materials/DownSuggest"
+import TagIcon from "@material-ui/icons/LocalOffer"
 
 export default mapStateAndStyle()(
   class TheTags extends Component<
@@ -72,9 +73,9 @@ export default mapStateAndStyle()(
             </span>
           ) )}
           {!isIntputing && (
-            <Button variant="contained" size="small" onClick={this.onAddClick}>
-              +
-            </Button>
+            <IconButton onClick={this.onAddClick}>
+              <TagIcon color="action"/>
+            </IconButton>
           )}
 
           {isIntputing && (
