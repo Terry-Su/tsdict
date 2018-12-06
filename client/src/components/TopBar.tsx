@@ -75,7 +75,13 @@ export default mapStateAndStyle( {
         .then( data => {
           notNil( data ) &&
             mapValues( models, ( { namespace: name } ) => {
-              dispatch( { type: `${name}/UPDATE_STATE`, value: data[ name ] } )
+              const currentState = selector.state[ name ]
+              const targetState = data[ name ]
+
+              dispatch( { type : `${name}/UPDATE_STATE`, value: notNil( targetState ) ? {
+                ...currentState,
+                ...targetState,
+              } : selector.state[ name ] } )
               dispatch( { type: `app/SHOW_PULL_SUCCESS` } )
             } )
         } )
