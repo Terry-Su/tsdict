@@ -5,6 +5,7 @@ import getUniqueId from "../utils/getUniqueId"
 import selector from "../selectors"
 import { isPlainObject, isString } from "../utils/lodash"
 import { removeArrayElement } from "../utils/js"
+import { DictDataWord } from "../../../shared/__typings__/DictData"
 
 export enum TreeAddMode {
   Tree = "tree",
@@ -14,7 +15,20 @@ export enum TreeAddMode {
 export class TreePageState {
   // for showing current tree
   currentTreeId: string = defaultTree.id
-  addMode: TreeAddMode = TreeAddMode.Tree  
+
+  addMode: TreeAddMode = TreeAddMode.Tree 
+  
+  isAddDialogOpen: boolean = false
+
+  isTreeFunctionDialogOpen: boolean = false
+  isWordFunctionDialogOpen: boolean = false
+
+  longPressingTree: Tree
+  longPressingWord: DictDataWord
+
+  isRenameDialogOpen: boolean = false
+  renamingName: string = ''
+  callbackAfterRenamed: Function
 }
 
 export default {
@@ -46,18 +60,11 @@ export default {
           treeNode: wordId
         } )
 
-      UPDATE_CURRENT_ID = this.UPDATE_STATE_VALUE( "currentTreeId" )
+      UPDATE_CURRENT_TREE_ID = this.UPDATE_STATE_VALUE( "currentTreeId" )
 
       UPDATE_CURRENT_ID_TO_UPPER_ID = ( state: TreePageState ) => {
         const { currentTreeIdAbove } = selector
-        return this.UPDATE_CURRENT_ID( state, { value: currentTreeIdAbove } )
-      }
-
-      UPDATE_TREE_NAME = ( state: TreePageState, { tree, newName }: { tree: Tree, newName: string } ) => {
-        tree.name = newName 
-        return {
-          ...state
-        }
+        return this.UPDATE_CURRENT_TREE_ID( state, { value: currentTreeIdAbove } )
       }
 
       UPDATE_CURRENT_TREE_REMOVE_WORD_ID = ( state: TreePageState, { wordId }: { wordId: string } ) => {
@@ -76,6 +83,24 @@ export default {
         return { ...state }
       }
 
+
+      SHOW_ADD_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isAddDialogOpen', true )
+      HIDE_ADD_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isAddDialogOpen', false )
+
+      SHOW_TREE_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isTreeFunctionDialogOpen', true )
+      HIDE_TREE_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isTreeFunctionDialogOpen', false )
+
+      SHOW_WORD_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isWordFunctionDialogOpen', true )
+      HIDE_WORD_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isWordFunctionDialogOpen', false )
+
+      UPDATE_LONG_PRESSING_TREE = this.UPDATE_STATE_VALUE( 'longPressingTree' )
+
+      UPDATE_LONG_PRESSING_WORD = this.UPDATE_STATE_VALUE( 'longPressingWord' )
+
+      SHOW_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', true )
+      HIDE_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', false )
+      UPDATE_CALLBACK_AFTER_RENAMED = this.UPDATE_STATE_VALUE( 'callbackAfterRenamed' )
+      UPDATE_RENAMING_NAME= this.UPDATE_STATE_VALUE( 'renamingName' )
     }()
   },
   effects: {}

@@ -241,6 +241,15 @@ export default {
         removeArrayElement( state.tags, tag )
         return { ...state }
       }
+
+
+      // ## tree
+      UPDATE_TREE_NAME = ( state: CoreState, { tree, newName }: { tree: Tree, newName: string } ) => {
+        tree.name = newName 
+        return {
+          ...state
+        }
+      }
     }()
   },
   effects: {

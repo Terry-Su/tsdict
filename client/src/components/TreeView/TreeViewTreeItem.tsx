@@ -23,7 +23,7 @@ export default mapStateAndStyle()(
   > {
     onClick = () => {
       const { theTree, dispatch } = this.props
-      dispatch( { type: 'treePage/UPDATE_CURRENT_ID', value: theTree.id } )
+      dispatch( { type: 'treePage/UPDATE_CURRENT_TREE_ID', value: theTree.id } )
     }
 
     render() {

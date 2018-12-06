@@ -38,9 +38,6 @@ export default mapStateAndStyle( {
 } )(
   class TheAddDialog extends Component<
     {
-      open: boolean
-      onClose: any
-
       dispatch: Function
       classes: any
     },
@@ -89,8 +86,7 @@ export default mapStateAndStyle( {
     }
 
     onConfirmClick = () => {
-      const { onClose } = this.props
-      switch( selector.treeState.addMode ) {
+      switch( selector.treePageState.addMode ) {
         case TreeAddMode.Tree:
          this.confirmAddFoler()
          break
@@ -111,7 +107,7 @@ export default mapStateAndStyle( {
     confirmAddWord = () => {
       const { isNewWord } = this 
       const { wordName, degree } = this.state
-      const { dispatch, onClose } = this.props
+      const { dispatch } = this.props
       if ( isNewWord ) {
         const canBeAdded  = notNil( wordName ) && wordName.trim() !== ''
         const word: DictDataWord = createWord( wordName, { degree } )
@@ -126,8 +122,7 @@ export default mapStateAndStyle( {
     }
 
     close = () => {
-      const { onClose } = this.props
-      onClose && onClose()
+      this.props.dispatch( { type: 'treePage/HIDE_ADD_DIALOG' } )
       // reset state
       setTimeout( () => {
         this.setState( new State() )
@@ -135,15 +130,15 @@ export default mapStateAndStyle( {
     }
 
     render() {
-      const { classes: c, open, onClose } = this.props
-      const { addMode } = selector.treeState
+      const { classes: c  } = this.props
+      const { addMode, isAddDialogOpen } = selector.treePageState
       const { treeName, wordName, degree } = this.state
       const { wordInStore, isNewWord } = this
 
       const filteredDegree = isNewWord ? degree : wordInStore.degree
 
       return (
-        <Dialog open={open} onClose={this.close}>
+        <Dialog open={isAddDialogOpen} onClose={this.close}>
           <DialogTitle>Add</DialogTitle>
           <div className={c.entry}>
             <FormControl className={c.entry}>

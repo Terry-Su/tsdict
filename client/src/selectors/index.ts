@@ -32,7 +32,7 @@ class Selector {
     return this.state.setting
   }
 
-  get treeState(): TreePageState {
+  get treePageState(): TreePageState {
     return this.state.treePage
   }
 
@@ -111,13 +111,13 @@ class Selector {
 
   // # tree page section
   get currentTree(): Tree {
-    const { currentTreeId } = this.treeState
+    const { currentTreeId } = this.treePageState
     const current: Tree = new CalcTree( this.rootTree ).getTreeById( currentTreeId )
     return current
   } 
 
   get currentTreeIdAbove(): string {
-    const { currentTreeId } = this.treeState
+    const { currentTreeId } = this.treePageState
     const treeAbove: Tree = new CalcTree( this.rootTree ).getTreeAbove( currentTreeId )
     return notNil( treeAbove ) ? treeAbove.id : null
   }
