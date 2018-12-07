@@ -20,7 +20,7 @@ export default {
   },
   reducers: {
     ...new class extends CommonModelReducer {
-      UPDATE_CURRENT_TAG_ID = this.UPDATE_STATE_VALUE( 'currentTagId' )
+      UPDATE_CURRENT_TAG_ID = this.UPDATE_STATE_KEY( 'currentTagId' )
 
       SHOW_TAG_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isTagFunctionDialogOpen', true )
       HIDE_TAG_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isTagFunctionDialogOpen', false )
@@ -28,13 +28,13 @@ export default {
       SHOW_WORD_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isWordFunctionDialogOpen', true )
       HIDE_WORD_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isWordFunctionDialogOpen', false )
 
-      UPDATE_LONG_PRESSING_TAG = this.UPDATE_STATE_VALUE( 'longPressingTag' )
-      UPDATE_LONG_PRESSING_WORD = this.UPDATE_STATE_VALUE( 'longPressingWord' )
+      UPDATE_LONG_PRESSING_TAG = this.UPDATE_STATE_KEY( 'longPressingTag' )
+      UPDATE_LONG_PRESSING_WORD = this.UPDATE_STATE_KEY( 'longPressingWord' )
 
       SHOW_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', true )
       HIDE_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', false )
-      UPDATE_RENAMING_WORD = this.UPDATE_STATE_VALUE( 'renamingName' )
-      UPDATE_CALLBACK_AFTER_RENAMED = this.UPDATE_STATE_VALUE( 'callbackAfterRenamed' )
+      UPDATE_RENAMING_WORD = this.UPDATE_STATE_KEY( 'renamingName' )
+      UPDATE_CALLBACK_AFTER_RENAMED = this.UPDATE_STATE_KEY( 'callbackAfterRenamed' )
     }()
   },
   effects: {}

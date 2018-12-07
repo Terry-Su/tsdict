@@ -1,4 +1,4 @@
-import { cloneDeep, findIndex, isEqual } from "./lodash"
+import { cloneDeep, findIndex, isEqual, isUndefined } from './lodash'
 
 export function removeArrayElement( array, element ) {
   const index = findIndex( array, item => item === element )
@@ -20,4 +20,10 @@ export function removeArrayElementByIndex( array, index: number ) {
   }
 
   throw `unexpected removeArrayElement! array: ${array}`
+}
+
+
+
+export function getValueNotUndefined( a: any, b: any ) {
+  return isUndefined( a ) ? b : a
 }

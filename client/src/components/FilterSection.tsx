@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Tag } from '@/__typings__'
 import selector from '@/selectors'
 import { GlobalStyle } from '@/style/globalStyle'
+import { getValueNotUndefined } from '@/utils/js'
 import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { Chip, MenuItem, Paper, Select } from '@material-ui/core'
@@ -14,12 +15,13 @@ import Degree from './Degree/Degree'
 
 class Style extends GlobalStyle {
   entry = {
+    ...this.d_ib,
     ...this.bxz_bb,
-    padding: '10px 20px'
+    padding: "10px 20px"
   }
 
   selectInput = {
-    minWidth: '300px'
+    minWidth: "300px"
   }
   chips = {
     display : "flex",
@@ -35,8 +37,12 @@ class State {
   selectedTagIds: string[] = []
 }
 class Props extends DefaultProps {
-  onDegreeRangeChange = ( start: number, end: number ) => {}
-  onTagsChange = ( tags: Tag[] ) => {}
+  startDegree: DictDataWordDegree
+  endDegree: DictDataWordDegree
+  selectedTagIds: string[]
+
+  onDegreeRangeChange = ( start: DictDataWordDegree, end: DictDataWordDegree ) => {}
+  onTagIdsChange = ( tagIds: string[] ) => {}
 }
 
 export default mapStateAndStyle<Props>( new Style() )(
@@ -60,23 +66,25 @@ export default mapStateAndStyle<Props>( new Style() )(
     }
 
     onTagSelectChange = e => {
-      const { onTagsChange } = this.props
+      const { onTagIdsChange } = this.props
       this.setState( { selectedTagIds: e.target.value }, () => {
         const { selectedTagIds } = this.state
-        if ( notNil( onTagsChange ) ) {
-          const tags = selectedTagIds.map( id => selector.getTagByTagId( id ) )
-          onTagsChange( tags )
+        if ( notNil( onTagIdsChange ) ) {
+          onTagIdsChange( selectedTagIds )
         }
-        
       } )
     }
 
     render() {
       const { classes: c, dispatch, onDegreeRangeChange } = this.props
-      const { startDegree, endDegree, selectedTagIds } = this.state
       const { tags } = selector.coreState
+      const { props, state } = this
+      
+      const startDegree = getValueNotUndefined( props.startDegree, state.startDegree )
+      const endDegree = getValueNotUndefined( props.endDegree, state.endDegree )
+      const selectedTagIds = getValueNotUndefined( props.selectedTagIds, state.selectedTagIds )
       return (
-        <Paper className={c.entry}>
+        <div className={c.entry}>
           <div>
             <h4>Degree Range</h4>
             <div className={c.d_f__ai_c}>
@@ -91,34 +99,40 @@ export default mapStateAndStyle<Props>( new Style() )(
               &nbsp;&nbsp;
               <Degree degree={endDegree} onChange={this.onEndDegreeChange} />
             </div>
-
-            <div>
-              <h4>Tags</h4>
-              <Select
-                multiple
-                value={selectedTagIds}
-                onChange={this.onTagSelectChange}
-                input={<Input className={c.selectInput} placeholder="Select tags"/>}
-                renderValue={( selectedTagIds: string[] ) => (
-                  <div className={c.chips}>
-                    {selectedTagIds.map( tagId => {
-                      const { name } = selector.getTagByTagId( tagId )
-                      return (
-                        <Chip key={tagId} label={name} className={c.chip} />
-                      )
-                    } )}
-                  </div>
-                )}
-              >
-                {tags.map( ( tag: Tag ) => (
-                  <MenuItem key={tag.id} value={tag.id}>
-                    {tag.name}
-                  </MenuItem>
-                ) )}
-              </Select>
-            </div>
+            {tags.length > 0 && (
+              <div>
+                <h4>Tags</h4>
+                <Select
+                  multiple
+                  value={selectedTagIds}
+                  onChange={this.onTagSelectChange}
+                  input={
+                    <Input
+                      className={c.selectInput}
+                      placeholder="Select tags"
+                    />
+                  }
+                  renderValue={( selectedTagIds: string[] ) => (
+                    <div className={c.chips}>
+                      {selectedTagIds.map( tagId => {
+                        const { name } = selector.getTagByTagId( tagId )
+                        return (
+                          <Chip key={tagId} label={name} className={c.chip} />
+                        )
+                      } )}
+                    </div>
+                  )}
+                >
+                  {tags.map( ( tag: Tag ) => (
+                    <MenuItem key={tag.id} value={tag.id}>
+                      {tag.name}
+                    </MenuItem>
+                  ) )}
+                </Select>
+              </div>
+            )}
           </div>
-        </Paper>
+        </div>
       )
     }
   }

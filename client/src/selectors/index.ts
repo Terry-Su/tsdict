@@ -7,6 +7,7 @@ import { AppState } from '@/models/app'
 import { CoreState } from '@/models/core'
 import { TagPageState } from '@/models/tagPage'
 import { CalcTree, TreePageState } from '@/models/treePage'
+import { WordPageState } from '@/models/wordPage'
 import { notNil } from '@/utils/lodash'
 import { DictDataWord } from '@shared/__typings__/DictData'
 
@@ -41,22 +42,8 @@ class Selector {
     return this.state.tagPage
   }
 
-  // # app section
-  get wordCanBeAdded(): boolean {
-    const { searching } = this.appState
-    const { words } = this.coreState
-    return (
-      searching.trim() !== "" && words.every( ( { name } ) => name !== searching )
-    )
-  }
-
-  get wordIsAdded(): boolean {
-    return !this.wordCanBeAdded
-  }
-
-  get shallShowWordPanel() {
-    const { searching } = this.appState
-    return searching.trim() !== "" && !this.wordCanBeAdded
+  get wordPageState(): WordPageState {
+    return this.state.wordPage
   }
 
   // # core section
@@ -93,11 +80,16 @@ class Selector {
     return this.coreState.words.some( word => word.name === wordName )
   }
 
+  getWordTags( wordId: string ): Tag[] {
+    const { tags = [] } = this.coreState
+    return tags.filter( tag => tag.ids.includes( wordId ) )
+  }
+
   get rootTree(): Tree {
     return this.coreState.tree
   }
 
-  // tag
+  // ## tag
   get tagNames(): string[] {
     return this.coreState.tags.map( tag => tag.name )
   }
@@ -112,6 +104,27 @@ class Selector {
     const { tags } = this.coreState
     return tags.filter( ( { id } ) => id === tagId )[ 0 ]
   }
+
+
+  // # app section
+  get wordCanBeAdded(): boolean {
+    const { searching } = this.appState
+    const { words } = this.coreState
+    return (
+      searching.trim() !== "" && words.every( ( { name } ) => name !== searching )
+    )
+  }
+
+  get wordIsAdded(): boolean {
+    return !this.wordCanBeAdded
+  }
+
+  get shallShowWordPanel() {
+    const { searching } = this.appState
+    return searching.trim() !== "" && !this.wordCanBeAdded
+  }
+
+  
 
 
 
@@ -151,6 +164,7 @@ class Selector {
     return isNil( currentTagId )
   }
 
+  // # word page section
 }
 
 const selector = new Selector()

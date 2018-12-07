@@ -40,7 +40,7 @@ export default {
   },
   reducers: {
     ...new class extends CommonModelReducer {
-      UPDATE_ADD_MODE = this.UPDATE_STATE_VALUE( "addMode" )
+      UPDATE_ADD_MODE = this.UPDATE_STATE_KEY( "addMode" )
 
       ADD_TREE_NODE = (
         state: TreePageState,
@@ -62,7 +62,7 @@ export default {
           treeNode: wordId
         } )
 
-      UPDATE_CURRENT_TREE_ID = this.UPDATE_STATE_VALUE( "currentTreeId" )
+      UPDATE_CURRENT_TREE_ID = this.UPDATE_STATE_KEY( "currentTreeId" )
 
       UPDATE_CURRENT_ID_TO_UPPER_ID = ( state: TreePageState ) => {
         const { currentTreeIdAbove } = selector
@@ -95,14 +95,14 @@ export default {
       SHOW_WORD_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isWordFunctionDialogOpen', true )
       HIDE_WORD_FUNCTION_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isWordFunctionDialogOpen', false )
 
-      UPDATE_LONG_PRESSING_TREE = this.UPDATE_STATE_VALUE( 'longPressingTree' )
+      UPDATE_LONG_PRESSING_TREE = this.UPDATE_STATE_KEY( 'longPressingTree' )
 
-      UPDATE_LONG_PRESSING_WORD = this.UPDATE_STATE_VALUE( 'longPressingWord' )
+      UPDATE_LONG_PRESSING_WORD = this.UPDATE_STATE_KEY( 'longPressingWord' )
 
       SHOW_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', true )
       HIDE_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', false )
-      UPDATE_CALLBACK_AFTER_RENAMED = this.UPDATE_STATE_VALUE( 'callbackAfterRenamed' )
-      UPDATE_RENAMING_NAME= this.UPDATE_STATE_VALUE( 'renamingName' )
+      UPDATE_CALLBACK_AFTER_RENAMED = this.UPDATE_STATE_KEY( 'callbackAfterRenamed' )
+      UPDATE_RENAMING_NAME= this.UPDATE_STATE_KEY( 'renamingName' )
     }()
   },
   effects: {}
