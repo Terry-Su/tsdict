@@ -1,6 +1,7 @@
 import { Link } from 'dva/router'
 import React, { Component } from 'react'
 
+import FilterSection from '@/components/FilterSection'
 import TopbarLayout from '@/components/layouts/TopbarLayout'
 import { HOME_ROUTE } from '@/constants/routes'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
@@ -52,6 +53,7 @@ export default mapStateAndStyle( {
       const { anchorEl } = this.state
       return (
         <TopbarLayout>
+          <FilterSection />
           <List>
             {words.map( word => (
               <ListItem

@@ -79,20 +79,6 @@ class Selector {
     return this.coreState.words.map( ( { name } ) => name )
   }
 
-  get rootTree(): Tree {
-    return this.coreState.tree
-  }
-
-  get tagNames(): string[] {
-    return this.coreState.tags.map( tag => tag.name )
-  }
-
-  // tag
-  get currentTag(): Tag {
-    const { currentTagId } = this.tagPageState
-    const { tags } = this.coreState
-    return tags.filter( tag => tag.id === currentTagId )[ 0 ]
-  }
 
   getWordByWordId( wordId: string ) {
     const { words } = this.coreState
@@ -106,6 +92,28 @@ class Selector {
   getExistsWordName( wordName: string ): boolean {
     return this.coreState.words.some( word => word.name === wordName )
   }
+
+  get rootTree(): Tree {
+    return this.coreState.tree
+  }
+
+  // tag
+  get tagNames(): string[] {
+    return this.coreState.tags.map( tag => tag.name )
+  }
+  
+  get currentTag(): Tag {
+    const { currentTagId } = this.tagPageState
+    const { tags } = this.coreState
+    return tags.filter( tag => tag.id === currentTagId )[ 0 ]
+  }
+
+  getTagByTagId( tagId: string ) {
+    const { tags } = this.coreState
+    return tags.filter( ( { id } ) => id === tagId )[ 0 ]
+  }
+
+
 
   // # setting section
   get server(): string {

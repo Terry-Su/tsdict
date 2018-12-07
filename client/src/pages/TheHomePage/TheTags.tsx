@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
 import { Tag } from '@/__typings__'
-import DownSuggest from '@/components/materials/DownSuggest'
-import DownSuggestContainer from '@/components/materials/DownSuggestContainer'
+import DownSuggest from '@/components/DownSuggest/DownSuggest'
+import DownSuggestContainer from '@/components/DownSuggest/DownSuggestContainer'
 import selector from '@/selectors'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import Chip from '@material-ui/core/Chip'

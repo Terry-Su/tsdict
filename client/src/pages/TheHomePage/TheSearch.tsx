@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import DownSuggest from '@/components/materials/DownSuggest'
-import DownSuggestContainer from '@/components/materials/DownSuggestContainer'
+import DownSuggest from '@/components/DownSuggest/DownSuggest'
+import DownSuggestContainer from '@/components/DownSuggest/DownSuggestContainer'
 import { createWord } from '@/models/core'
 import selector from '@/selectors'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'

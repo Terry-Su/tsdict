@@ -1,7 +1,7 @@
 import { Route } from 'dva/router'
 import React, { Component } from 'react'
 
-import Message from '@/components/materials/Message'
+import Message from '@/components/Message'
 import { HOME_ROUTE, SETTING_ROUTE, TAGS_ROUTE, TREE_ROUTE, WORDS_ROUTE } from '@/constants/routes'
 import TheHomePage from '@/pages/TheHomePage/TheHomePage'
 import TheSettingPage from '@/pages/TheSettingPage/TheSettingPage'

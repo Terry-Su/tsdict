@@ -13,6 +13,7 @@ export default mapStateAndStyle()(
     {
       degree: DictDataWordDegree,
       onChange: Function
+      classes: any
     },
     any
   > {
@@ -30,9 +31,9 @@ export default mapStateAndStyle()(
     }
 
     render() {
-      const { degree = 0 } = this.props
+      const { degree = 0, classes: c, onChange, ...other } = this.props
       return (
-        <div>
+        <div className={ c.d_ib } >
           {starsCountArray.map( ( value, index ) => (
             <Star
               key={index}
