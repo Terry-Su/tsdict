@@ -12,7 +12,9 @@ import { DictDataWordDegree } from '@shared/__typings__/DictData'
 
 import BasicComponent, { DefaultProps } from './BasicComponent'
 import Degree from './Degree/Degree'
+import withLongPress from './highOrder/withLongPress'
 
+const DecoratedDegree: any = withLongPress( Degree )
 class Style extends GlobalStyle {
   entry = {
     ...this.d_ib,
@@ -90,14 +92,19 @@ export default mapStateAndStyle<Props>( new Style() )(
             <div className={c.d_f__ai_c}>
               <span>From</span>
               &nbsp;&nbsp;
-              <Degree
+              <DecoratedDegree
                 degree={startDegree}
                 onChange={this.onStartDegreeChange}
+                onLongPress={ () => this.onStartDegreeChange( 0 ) }
+                onLong
               />
               &nbsp;&nbsp;
               <span>To</span>
               &nbsp;&nbsp;
-              <Degree degree={endDegree} onChange={this.onEndDegreeChange} />
+              <DecoratedDegree degree={endDegree}
+               onChange={this.onEndDegreeChange} 
+               onLongPress={ () => this.onEndDegreeChange( 0 ) }
+               />
             </div>
             {tags.length > 0 && (
               <div>
