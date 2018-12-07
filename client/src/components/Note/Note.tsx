@@ -1,9 +1,11 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import Quill from "quill"
-import "quill/dist/quill.snow.css"
-import Delta from "_quill-delta@4.1.0@quill-delta"
-import { debounce } from "../../utils/lodash"
+import 'quill/dist/quill.snow.css'
+
+import Delta from '_quill-delta@4.1.0@quill-delta'
+import { debounce } from 'lodash'
+import Quill from 'quill'
+import React, { Component } from 'react'
+
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
 
 export type NoteData = Delta
 export default mapStateAndStyle()(

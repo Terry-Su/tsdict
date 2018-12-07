@@ -1,13 +1,14 @@
-import { DictDataWord } from "../../../shared/__typings__/DictData"
-import { root } from "../entry"
-import models from "../models"
-import { pick, notNil, isNil } from "../utils/lodash"
-import { Tag, ClientData, Tree } from "../__typings__"
-import { TreePageState, CalcTree } from "../models/treePage"
-import { AppState } from "../models/app"
-import { TagPageState } from "../models/tagPage"
-import { CoreState } from "../models/core"
+import { isNil, pick } from 'lodash'
 
+import { Tag, Tree } from '@/__typings__'
+import { root } from '@/entry'
+import models from '@/models'
+import { AppState } from '@/models/app'
+import { CoreState } from '@/models/core'
+import { TagPageState } from '@/models/tagPage'
+import { CalcTree, TreePageState } from '@/models/treePage'
+import { notNil } from '@/utils/lodash'
+import { DictDataWord } from '@shared/__typings__/DictData'
 
 class Selector {
   get state() {

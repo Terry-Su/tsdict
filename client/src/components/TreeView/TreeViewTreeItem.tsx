@@ -1,16 +1,14 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import selector from "../../selectors"
-import { CalcTree } from "../../models/treePage"
-import { Tree, TreeNode } from "../../__typings__"
-import { isString, notNil } from "../../utils/lodash"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemAvatar from "@material-ui/core/ListItemAvatar"
-import Avatar from "@material-ui/core/Avatar"
-import FolderIcon from "@material-ui/icons/Folder"
-import NotesIcon from "@material-ui/icons/Notes"
-import ListItemText from "@material-ui/core/ListItemText"
-import { routerRedux } from "dva/router"
+import { routerRedux } from 'dva/router'
+import React, { Component } from 'react'
+
+import { Tree } from '@/__typings__'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import Avatar from '@material-ui/core/Avatar'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemText from '@material-ui/core/ListItemText'
+import FolderIcon from '@material-ui/icons/Folder'
+
 const { push } = routerRedux
 
 export default mapStateAndStyle()(

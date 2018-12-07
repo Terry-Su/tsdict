@@ -1,13 +1,14 @@
+import React, { Component } from 'react'
 
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import Dialog from "@material-ui/core/Dialog"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import DialogContent from "@material-ui/core/DialogContent"
-import DialogContentText from "@material-ui/core/DialogContentText"
-import DialogActions from "@material-ui/core/DialogActions"
-import Button from "@material-ui/core/Button"
-import Input from "@material-ui/core/Input"
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Input from '@material-ui/core/Input'
+
 
 class State {
   value: string

@@ -1,4 +1,5 @@
-import { LOCAL_STOREAGE_STORE_NAME } from '../constants/names'
+import { LOCAL_STOREAGE_STORE_NAME } from '@/constants/names'
+
 class LocalStore {
   setItem( key, data ) {
     try {

@@ -1,7 +1,6 @@
-import { OnlineLink, Tree } from "../__typings__"
-import getUniqueId from "../utils/getUniqueId"
-import { DictDataWord } from "../../../shared/__typings__/DictData"
-import { NoteData } from "../components/Note/Note"
+import { OnlineLink, Tree } from '@/__typings__'
+import getUniqueId from '@/utils/getUniqueId'
+import { DictDataWord } from '@shared/__typings__/DictData'
 
 export const defaultOnlineLinks: OnlineLink[] = [
   {

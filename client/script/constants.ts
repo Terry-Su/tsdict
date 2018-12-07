@@ -1,9 +1,11 @@
 import * as PATH from 'path'
+
 const { resolve } = PATH
 
 
 export const ROOT = resolve( __dirname, '../' )
 export const SRC = resolve( ROOT, 'src' )
+export const SHARED = resolve( ROOT, '../shared' )
 
 export const ENTRY = resolve( SRC, 'entry.tsx' )
 export const OUTPUT = resolve( ROOT, 'build' )

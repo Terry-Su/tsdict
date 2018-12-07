@@ -1,4 +1,4 @@
-import CommonModelReducer from "../utils/CommonModelReducer"
+import CommonModelReducer from '@/utils/CommonModelReducer'
 
 export class TemplateState {}
 

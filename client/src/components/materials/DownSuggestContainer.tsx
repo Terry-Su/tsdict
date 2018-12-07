@@ -1,5 +1,6 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
+import React, { Component } from 'react'
+
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
 
 export default mapStateAndStyle( {
   entry: {

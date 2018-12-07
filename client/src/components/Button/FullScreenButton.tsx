@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import Button from "@material-ui/core/Button"
+import React, { Component } from 'react'
 
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import Button from '@material-ui/core/Button'
 
 export default mapStateAndStyle( {
   entry: {

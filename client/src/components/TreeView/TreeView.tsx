@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import selector from "../../selectors"
-import { CalcTree } from "../../models/treePage"
-import { Tree, TreeNode } from "../../__typings__"
-import { node } from "_@types_prop-types@15.5.6@@types/prop-types"
-import TreeViewItem from "./TreeViewWordItem"
-import { isString, isPlainObject } from "../../utils/lodash"
-import List from "@material-ui/core/List"
-import TreeViewTreeItem from "./TreeViewTreeItem"
-import TreeViewWordItem from "./TreeViewWordItem"
-import withLongPress from "../highOrder/withLongPress"
+import { node } from '_@types_prop-types@15.5.6@@types/prop-types'
+import { isPlainObject } from 'lodash'
+import React, { Component } from 'react'
+import { isString } from 'util'
+
+import { Tree } from '@/__typings__'
+import withLongPress from '@/components/highOrder/withLongPress'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import List from '@material-ui/core/List'
+
+import TreeViewTreeItem from './TreeViewTreeItem'
+import TreeViewWordItem from './TreeViewWordItem'
 
 const DecoratedDiv = withLongPress( ( props: any ) => <div {...props}>{props.children}</div> )
 

@@ -1,9 +1,9 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import Dialog from "@material-ui/core/Dialog"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
+import React, { Component } from 'react'
+
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import Dialog from '@material-ui/core/Dialog'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
 
 const ListItemButton = ( props: any ) => (
   <ListItem button {...props}>

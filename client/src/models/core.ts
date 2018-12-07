@@ -1,20 +1,14 @@
-import {
-  defaultOnlineLinks,
-  defaultWords,
-  defaultTree
-} from "../constants/default"
-import { cloneDeep, findIndex, isEqual, isNil } from "../utils/lodash"
-import {
-  DictDataWord,
-  DictDataWordDegree
-} from "../../../shared/__typings__/DictData"
-import { OnlineLink, ClientData, Tag, Tree } from "../__typings__"
-import getUniqueId from "../utils/getUniqueId"
-import { TAG_IDS } from "../constants/shared"
-import { NoteData } from "../components/Note/Note"
-import selector from "../selectors"
-import { removeArrayElement, removeArrayElementByIndex } from "../utils/js"
-import CommonModelReducer from "../utils/CommonModelReducer"
+import { isEqual, isNil } from 'lodash'
+
+import { OnlineLink, Tag, Tree } from '@/__typings__'
+import { NoteData } from '@/components/Note/Note'
+import { defaultOnlineLinks, defaultTree, defaultWords } from '@/constants/default'
+import { TAG_IDS } from '@/constants/shared'
+import selector from '@/selectors'
+import CommonModelReducer from '@/utils/CommonModelReducer'
+import getUniqueId from '@/utils/getUniqueId'
+import { removeArrayElement, removeArrayElementByIndex } from '@/utils/js'
+import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
 
 export class CoreState {
   words: DictDataWord[] = defaultWords
@@ -157,7 +151,7 @@ export default {
       } )
 
       ADD_WORD_ID_TO_TAG_NAME = (
-        state: ClientData,
+        state: CoreState,
         { wordId, tagName }: { tagName: string; wordId: string }
       ) => {
         const { tags } = state
@@ -224,7 +218,7 @@ export default {
         } )
       } )
 
-      UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS = ( state: ClientData ) => {
+      UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS = ( state: CoreState ) => {
         state.tags.forEach( tag => {
           const { ids } = tag
           ids.forEach( id => {

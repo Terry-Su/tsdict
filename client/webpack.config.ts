@@ -1,23 +1,16 @@
-import * as PATH from "path"
+import * as PATH from 'path'
+
+import {
+    ENTRY, ENTRY_INDEX_CACHE, ENTRY_INDEX_HTML, ENTRY_MANIFEST_CACHE, ENTRY_SW, OUTPUT,
+    OUTPUT_FILE_NAME, OUTPUT_INDEX_CACHE, OUTPUT_INDEX_HTML, OUTPUT_MANIFEST_CACHE, OUTPUT_SW,
+    SHARED, SRC
+} from './script/constants'
+import { __DEV__ } from './script/global'
+
 const { resolve } = PATH
 const webpack = require( "webpack" )
 const CopyWebpackPlugin = require( "copy-webpack-plugin" )
 const WriteFilePlugin = require( "write-file-webpack-plugin" )
-import { __DEV__ } from "./script/global"
-import {
-  OUTPUT_FILE_NAME,
-  ENTRY,
-  OUTPUT,
-  ENTRY_INDEX_HTML,
-  OUTPUT_INDEX_HTML,
-  ENTRY_INDEX_CACHE,
-  OUTPUT_INDEX_CACHE,
-  ENTRY_MANIFEST_CACHE,
-  OUTPUT_MANIFEST_CACHE,
-  ENTRY_SW,
-  OUTPUT_SW
-} from "./script/constants"
-
 const webpackClientConfig = {
   mode : __DEV__ ? "development" : "production",
   entry: {
@@ -56,6 +49,10 @@ const webpackClientConfig = {
     ]
   },
   resolve: {
+    alias: {
+      '@'      : SRC,
+      '@shared': SHARED, 
+    },
     extensions: [ ".tsx", ".ts", ".js" ]
   },
   plugins: [
@@ -71,10 +68,6 @@ const webpackClientConfig = {
       {
         from: ENTRY_MANIFEST_CACHE,
         to  : OUTPUT_MANIFEST_CACHE
-      },
-      {
-        from: ENTRY_SW,
-        to  : OUTPUT_SW
       },
     ] ),
   ].concat( __DEV__ ? [ 

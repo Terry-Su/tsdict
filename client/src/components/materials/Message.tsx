@@ -1,11 +1,7 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import {
-  Snackbar,
-  SnackbarContent,
-  withStyles,
-  IconButton
-} from "@material-ui/core"
+import React, { Component } from 'react'
+
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import { IconButton, Snackbar, SnackbarContent, withStyles } from '@material-ui/core'
 
 export default mapStateAndStyle( {
   content: {

@@ -1,8 +1,9 @@
-import React, { Component } from "react"
-import mapState from "../utils/mapState"
-import mapStateAndStyle from "../utils/mapStateAndStyle"
-import ExitButton from "./Button/ExitButton"
-import FullScreenButton from "./Button/FullScreenButton"
+import React, { Component } from 'react'
+
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+
+import ExitButton from './Button/ExitButton'
+import FullScreenButton from './Button/FullScreenButton'
 
 export default mapStateAndStyle( {
   entry: {

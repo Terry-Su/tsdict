@@ -1,20 +1,23 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../utils/mapStateAndStyle"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import IconButton from "@material-ui/core/IconButton"
-import Menu from "@material-ui/core/Menu"
-import MenuItem from "@material-ui/core/MenuItem"
-import { Link } from "dva/router"
-import { SETTING_ROUTE, HOME_ROUTE, WORDS_ROUTE, TREE_ROUTE, TAGS_ROUTE } from "../constants/routes"
-import download from "../assets/js/download"
-import localStore from "../store/localStore"
-import Uploader from "./Uploader/Uploader"
-import { backup, pull, push, updateMedias } from "../services"
-import selector from "../selectors"
-import models from "../models/index"
-import { notNil, mapValues } from "../utils/lodash"
-import { TOP_BAR_HEIGHT } from "../constants/numbers"
+import { Link } from 'dva/router'
+import { mapValues } from 'lodash'
+import React, { Component } from 'react'
+
+import download from '@/assets/js/download'
+import { TOP_BAR_HEIGHT } from '@/constants/numbers'
+import { HOME_ROUTE, SETTING_ROUTE, TAGS_ROUTE, TREE_ROUTE, WORDS_ROUTE } from '@/constants/routes'
+import models from '@/models'
+import selector from '@/selectors'
+import localStore from '@/store/localStore'
+import { notNil } from '@/utils/lodash'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Toolbar from '@material-ui/core/Toolbar'
+
+import { backup, pull, push, updateMedias } from '../services'
+import Uploader from './Uploader/Uploader'
 
 export default mapStateAndStyle( {
   entry: {

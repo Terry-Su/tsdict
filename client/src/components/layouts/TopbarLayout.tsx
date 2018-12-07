@@ -1,7 +1,9 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import TopBar from "../TopBar"
-import { TOP_BAR_HEIGHT } from "../../constants/numbers"
+import React, { Component } from 'react'
+
+import { TOP_BAR_HEIGHT } from '@/constants/numbers'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+
+import TopBar from '../TopBar'
 
 export default mapStateAndStyle( {
   main: {

@@ -5,6 +5,15 @@
 ],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*",
+      ],
+      "@shared/*": [
+        "../shared/*"
+      ]
+    },
     "module": "es6",
 		"target": "es5",
 		"jsx": "react",

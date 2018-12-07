@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import TheApp from './components/TheApp'
+import TheApp from './TheApp'
 import { hot } from 'react-hot-loader'
 import dva, { connect } from "dva"
 import models from "./models/index"

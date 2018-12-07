@@ -1,9 +1,10 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import Paper from "@material-ui/core/Paper"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import { notNil } from "../../utils/lodash"
+import React, { Component } from 'react'
+
+import { notNil } from '@/utils/lodash'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import Paper from '@material-ui/core/Paper'
 
 export default mapStateAndStyle( {
   entry: {

@@ -4,9 +4,10 @@
     "javascript",
     "javascriptreact",
     { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true },
+    { "language": "typescriptreact", "autoFix": true }
   ],
- 
+
   "prettier.eslintIntegration": true,
-  
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.hasSemicolon": false,
 }

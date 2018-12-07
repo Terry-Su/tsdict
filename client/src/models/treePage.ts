@@ -1,11 +1,13 @@
-import CommonModelReducer from "../utils/CommonModelReducer"
-import { defaultTree } from "../constants/default"
-import { Tree, TreeNode } from "../__typings__"
-import getUniqueId from "../utils/getUniqueId"
-import selector from "../selectors"
-import { isPlainObject, isString } from "../utils/lodash"
-import { removeArrayElement } from "../utils/js"
-import { DictDataWord } from "../../../shared/__typings__/DictData"
+import { isPlainObject } from 'lodash'
+import { isString } from 'util'
+
+import { Tree, TreeNode } from '@/__typings__'
+import { defaultTree } from '@/constants/default'
+import selector from '@/selectors'
+import CommonModelReducer from '@/utils/CommonModelReducer'
+import getUniqueId from '@/utils/getUniqueId'
+import { removeArrayElement } from '@/utils/js'
+import { DictDataWord } from '@shared/__typings__/DictData'
 
 export enum TreeAddMode {
   Tree = "tree",

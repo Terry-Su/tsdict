@@ -1,8 +1,9 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "../../utils/mapStateAndStyle"
-import { DictDataWordDegree } from "../../../../shared/__typings__/DictData"
-import Star from "./Star"
-import { notNil } from "../../utils/lodash"
+import React, { Component } from 'react'
+
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import { DictDataWordDegree } from '@shared/__typings__/DictData'
+
+import Star from './Star'
 
 const MAX_DEGREE: DictDataWordDegree = 10
 const STARS_COUNT = MAX_DEGREE / 2

@@ -1,7 +1,6 @@
-import CommonModelReducer from "../utils/CommonModelReducer"
-import { Tag } from "../__typings__"
-import { DictDataWord } from "../../../shared/__typings__/DictData"
-
+import { Tag } from '@/__typings__'
+import CommonModelReducer from '@/utils/CommonModelReducer'
+import { DictDataWord } from '@shared/__typings__/DictData'
 
 export class TagPageState {
   currentTagId: string

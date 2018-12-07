@@ -1,5 +1,5 @@
-import request from "../utils/request"
-import selector from "../selectors"
+import selector from '@/selectors'
+import request from '@/utils/request'
 
 const requestServer = ( url, ...args ) => request( `${selector.server}/${url}`, ...args )
 const post = ( url, data, config = {} ) => requestServer( url, {
