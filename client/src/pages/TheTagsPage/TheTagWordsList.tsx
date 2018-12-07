@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import withLongPress from '@/components/highOrder/withLongPress'
 import selector from '@/selectors'
+import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import Avatar from '@material-ui/core/Avatar'
 import List from '@material-ui/core/List'
@@ -24,7 +25,7 @@ export default mapStateAndStyle()(
     render() {
       const { currentTag } = selector
       const { ids = [] } = currentTag
-      const words = ids.map( id => selector.getWordByWordId( id ) )
+      const words = ids.map( id => selector.getWordByWordId( id ) ).filter( notNil )
       return (
         <List>
           {words.map( word => (

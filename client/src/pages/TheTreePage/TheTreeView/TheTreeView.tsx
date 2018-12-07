@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Tree, TreeNode } from '@/__typings__'
 import TreeItem from '@/pages/TheTreePage/TheTreeView/TreeItem'
 import selector from '@/selectors'
+import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import List from '@material-ui/core/List'
 
@@ -19,7 +20,7 @@ export default mapStateAndStyle()(
       if ( isString( node ) ) {
         const wordId = node
         const word = selector.getWordByWordId( wordId )
-        return <WordItem key={wordId} word={ word }/>
+        return notNil( word ) ? <WordItem key={wordId} word={ word }/> : null
       }
     }
 
