@@ -10,6 +10,8 @@ import getUniqueId from '@/utils/getUniqueId'
 import { removeArrayElement } from '@/utils/js'
 import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
 
+import { CalcTree } from './core'
+
 export enum TreeAddMode {
   Tree = "tree",
   WordId = "wordId"
@@ -84,18 +86,7 @@ export default {
         return { ...state }
       }
 
-      UPDATE_ALL_TREES_REMOVE_USELESS_WORD_IDS = ( state: TreePageState ) => {
-        new CalcTree( selector.rootTree ).removeUselessWordIds( selector.wordIds )
-        return { ...state }
-      }
-
-      REMOVE_TREE = ( state, { tree }: { tree: Tree }  ) => {
-        const treeAbove = selector.getTreeAbove( tree.id )
-        removeArrayElement( treeAbove.nodes, tree  )
-        return { ...state }
-      }
-
-
+      
       SHOW_ADD_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isAddDialogOpen', true )
       HIDE_ADD_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isAddDialogOpen', false )
 
@@ -144,58 +135,4 @@ export function getNodesWordIds( tree: Tree ): string[] {
   return tree.nodes.filter( node => isString( node ) ) as string[]
 }
 
-export class CalcTree {
-  tree: Tree
 
-  constructor( tree: Tree ) {
-    this.tree = tree
-  }
-
-  getTreeById( treeId: string ): Tree {
-    let res: Tree = null
-    const self = this
-    function recurToGetTree( tree: Tree, id: string ) {
-      if ( tree.id === id ) {
-        // matched
-
-        res = tree
-      } else {
-        // not matched
-        const nodesTrees = getNodesTrees( tree )
-        nodesTrees.forEach( newTree => recurToGetTree( newTree, id ) )
-      }
-    }
-    recurToGetTree( this.tree, treeId )
-    return res
-  }
-
-  getTreeAbove( treeId: string ): Tree {
-    let res: Tree
-    const self = this
-    function recurToGetTree( tree: Tree, id: string ) {
-      const nodesTrees = getNodesTrees( tree )
-      const isIdInTreesBelow = nodesTrees.some( tree => tree.id === id )
-      if ( isIdInTreesBelow ) {
-        res = tree
-      } else {
-        nodesTrees.forEach( newTree => recurToGetTree( newTree, id ) )
-      }
-    }
-    recurToGetTree( this.tree, treeId )
-    return res
-  }
-
-  removeUselessWordIds( usefulWordIds: string[] ) {
-    function recurToRemove( tree: Tree ) {
-      const nodesWordIds = getNodesWordIds( tree )
-      const removingIds = nodesWordIds.filter( id => !usefulWordIds.includes( id ) )
-
-      const { nodes } = tree      
-      removingIds.forEach( wordId => removeArrayElement( nodes, wordId ) )
-
-      const nodesTrees = getNodesTrees( tree )
-      nodesTrees.forEach( newTree => recurToRemove( newTree ) )
-    }
-    recurToRemove( this.tree )
-  }
-}

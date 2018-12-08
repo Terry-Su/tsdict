@@ -32,7 +32,7 @@ export default mapStateAndStyle()(
                 label  : "Delete",
                 onClick: () => {
                   this.close()
-                  dispatch( { type: 'treePage/REMOVE_TREE', tree } )
+                  dispatch( { type: 'core/REMOVE_TREE', tree } )
                 }
               }
             ]

@@ -10,6 +10,8 @@ import getUniqueId from '@/utils/getUniqueId'
 import { removeArrayElement, removeArrayElementByIndex } from '@/utils/js'
 import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
 
+import { getNodesTrees, getNodesWordIds } from './treePage'
+
 export class CoreState {
   words: DictDataWord[] = defaultWords
   tags: Tag[] = []
@@ -119,31 +121,21 @@ export default {
           state
       }
 
-      REMOVE_WORD = ( state, { value }: { value: DictDataWord } ) => {
+      REMOVE_WORD_IDS_OF_WORD_IN_TREES = ( state : CoreState, { word }: { word: DictDataWord } ) => {
+        const { rootTree } = selector
+        const { words } = selector.coreState
+        const wordIds = words.map( word => word.id )
+        new CalcTree( rootTree ).removeUselessWordIds( wordIds )
+
+        return { ...state }
+      } 
+
+      REMOVE_WORD_AND_RELATED = ( state, { value }: { value: DictDataWord } ) => {
         removeArrayElement( state.words, value )
+        this.UPDATE_ALL_TREES_REMOVE_USELESS_WORD_IDS( state )
+        this.UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS( state )
         return { ...state }
       }
-
-      // UPDATE_WORD_ADD_ARRAY_ITEM = ( state, { word, key, value } ) =>
-      //   this.UPDATE_WORD( state, {
-      //     word,
-      //     key,
-      //     value: [ ...word[ key ], value ]
-      //   } )
-      // UPDATE_WORD_UPDATE_ARRAY_ITEM = ( state, { word, key, index, value } ) => {
-      //   word[ key ][ index ] = value
-      //   return this.UPDATE_WORD( state, {
-      //     word,
-      //     key,
-      //     value: word[ key ]
-      //   } )
-      // }
-      // UPDATE_WORD_REMOVE_ARRAY_ITEM = ( state, { word, key, index } ) =>
-      //   this.UPDATE_WORD( state, {
-      //     word,
-      //     key,
-      //     value: cloneAndRemoveArrayElementByIndex( word[ key ], index )
-      //   } )
 
       ADD_TAG = ( state, { tag }: { tag: Tag } ) => ( {
         ...state,
@@ -244,6 +236,17 @@ export default {
           ...state
         }
       }
+
+      UPDATE_ALL_TREES_REMOVE_USELESS_WORD_IDS = ( state: CoreState ) => {
+        new CalcTree( selector.rootTree ).removeUselessWordIds( selector.wordIds )
+        return { ...state }
+      }
+
+      REMOVE_TREE = ( state, { tree }: { tree: Tree }  ) => {
+        const treeAbove = selector.getTreeAbove( tree.id )
+        removeArrayElement( treeAbove.nodes, tree  )
+        return { ...state }
+      }
     }()
   },
   effects: {
@@ -256,10 +259,10 @@ export default {
       const { longPressingTag: tag } = selector.tagPageState
       yield put( { type: "REMOVE_TAG", tag } )
     },
-    *removeLongPressingWord( payload, { put } ) {
-      const { longPressingWord: value } = selector.tagPageState
-      yield put( { type: "REMOVE_WORD", value } )
-      yield put( { type: "UPDATE_ALL_TAGS_REMOVE_USELESS_WORD_IDS" } )
+    *removeLongPressingTagWord( payload, { put } ) {
+      const { longPressingWord: word } = selector.tagPageState
+      const { currentTag: tag } = selector
+      yield put( { type: "UPDATE_TAG_REMOVE_WORD_ID", tag, wordId: word.id } )
     }
   }
 }
@@ -293,3 +296,59 @@ export const createTag = ( name: string, ids: string[] = [] ) => ( {
   name,
   ids
 } )
+
+export class CalcTree {
+  tree: Tree
+
+  constructor( tree: Tree ) {
+    this.tree = tree
+  }
+
+  getTreeById( treeId: string ): Tree {
+    let res: Tree = null
+    const self = this
+    function recurToGetTree( tree: Tree, id: string ) {
+      if ( tree.id === id ) {
+        // matched
+
+        res = tree
+      } else {
+        // not matched
+        const nodesTrees = getNodesTrees( tree )
+        nodesTrees.forEach( newTree => recurToGetTree( newTree, id ) )
+      }
+    }
+    recurToGetTree( this.tree, treeId )
+    return res
+  }
+
+  getTreeAbove( treeId: string ): Tree {
+    let res: Tree
+    const self = this
+    function recurToGetTree( tree: Tree, id: string ) {
+      const nodesTrees = getNodesTrees( tree )
+      const isIdInTreesBelow = nodesTrees.some( tree => tree.id === id )
+      if ( isIdInTreesBelow ) {
+        res = tree
+      } else {
+        nodesTrees.forEach( newTree => recurToGetTree( newTree, id ) )
+      }
+    }
+    recurToGetTree( this.tree, treeId )
+    return res
+  }
+
+  removeUselessWordIds( usefulWordIds: string[] ) {
+    function recurToRemove( tree: Tree ) {
+      const nodesWordIds = getNodesWordIds( tree )
+      const removingIds = nodesWordIds.filter( id => !usefulWordIds.includes( id ) )
+
+      const { nodes } = tree      
+      removingIds.forEach( wordId => removeArrayElement( nodes, wordId ) )
+
+      const nodesTrees = getNodesTrees( tree )
+      nodesTrees.forEach( newTree => recurToRemove( newTree ) )
+    }
+    recurToRemove( this.tree )
+  }
+}

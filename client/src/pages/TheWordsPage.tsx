@@ -92,7 +92,7 @@ export default mapStateAndStyle( {
 
     onRemoveClick = () => {
       this.props.dispatch( {
-        type : "core/REMOVE_WORD",
+        type : "core/REMOVE_WORD_AND_RELATED",
         value: this.removingWord
       } )
       this.removingWord = null

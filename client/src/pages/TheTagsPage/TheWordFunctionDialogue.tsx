@@ -30,7 +30,7 @@ export default mapStateAndStyle()(
                 label  : "Delete",
                 onClick: () => {
                   dispatch( { type: 'tagPage/HIDE_WORD_FUNCTION_DIALOG' } )
-                  dispatch( { type: 'core/removeLongPressingWord' } )
+                  dispatch( { type: 'core/removeLongPressingTagWord' } )
                 }
               }
             ]
