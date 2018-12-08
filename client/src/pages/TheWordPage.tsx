@@ -41,7 +41,7 @@ export default mapStateAndStyle( {
     color: '#dfdfdf'
   }
 } )(
-  class TheWordsPage extends BasicComponent {
+  class TheWordPage extends BasicComponent {
     state = new State()
 
     removingWord = null
