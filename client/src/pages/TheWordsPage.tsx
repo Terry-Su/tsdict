@@ -10,6 +10,10 @@ import SortSection, { SortType } from '@/components/SortSection'
 import SubTopBar from '@/components/SubTopBar'
 import { HOME_ROUTE } from '@/constants/routes'
 import selector from '@/selectors'
+import {
+    filterWordsByDegreeRange, filterWordsBySelectedTagIds, sortWords
+} from '@/shared/reorganizeItems'
+import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { scrollToTop } from '@/utils/scrollToTop'
 import { IconButton } from '@material-ui/core'
@@ -32,6 +36,9 @@ export default mapStateAndStyle( {
   listItem: {
     cursor: "pointer",
     border: "1px solid #ddd"
+  },
+  degree: {
+    color: '#dfdfdf'
   }
 } )(
   class TheWordsPage extends BasicComponent {
@@ -53,25 +60,8 @@ export default mapStateAndStyle( {
           endDegree,
           selectedTagIds
         } = selector.wordPageState
-        res = res
-          .filter( word => {
-            // tags
-            const tags = selector.getWordTags( word.id )
-            const tagIds = tags.map( tag => tag.id )
-            return (
-              selectedTagIds.length === 0 ||
-              selectedTagIds.some( selectedTagId =>
-                tagIds.includes( selectedTagId )
-              )
-            )
-          } )
-          .filter( word => {
-            const { degree } = word
-            // degree
-            if ( startDegree <= endDegree ) {
-              return degree >= startDegree && degree <= endDegree
-            }
-          } )
+        res = filterWordsBySelectedTagIds( res, selectedTagIds )
+        res = filterWordsByDegreeRange( res, startDegree, endDegree )
       }
 
       // sort
@@ -80,43 +70,10 @@ export default mapStateAndStyle( {
         isAscendingName,
         isAscendingDegree
       } = selector.wordPageState
-      res.sort( ( a, b ) => {
-        // main sort
-        switch ( sortType ) {
-          case SortType.Name:
-            if ( a.name > b.name ) {
-              return isAscendingName ? 1 : -1
-            }
-            if ( a.name < b.name ) {
-              return isAscendingName ? -1 : 1
-            }
-            break
-          case SortType.Degree:
-            if ( a.degree > b.degree ) {
-              return isAscendingDegree ? 1 : -1
-            }
-            if ( a.degree < b.degree ) {
-              return isAscendingDegree ? -1 : 1
-            }
-            break
-        }
-
-        // second sort
-        // a.key === b.key
-        // compare the others
-        if ( a.name > b.name ) {
-          return isAscendingName ? 1 : -1
-        }
-        if ( a.name < b.name ) {
-          return isAscendingName ? -1 : 1
-        }
-        if ( a.degree > b.degree ) {
-          return isAscendingDegree ? 1 : -1
-        }
-        if ( a.degree < b.degree ) {
-          return isAscendingDegree ? -1 : 1
-        }
-        return 0
+      res = sortWords( res, {
+        sortType,
+        isAscendingName,
+        isAscendingDegree
       } )
 
       return res
@@ -174,7 +131,8 @@ export default mapStateAndStyle( {
         shallShowFilterSection: !prevState.shallShowFilterSection
       } ) )
       const main: any = this.mainRef.current
-      main.scrollTop = 0
+      // main.scrollTop = 0
+      scrollToTop( main )
     }
 
     onSortSectionClose = () => {
@@ -265,6 +223,8 @@ export default mapStateAndStyle( {
                   onClick={() => this.onWordNameClick( word.name )}
                 >
                   <Link to={HOME_ROUTE}>{word.name}</Link>
+                  &nbsp;&nbsp;
+                  <span className={c.degree}>{notNil( word.degree ) ? word.degree : 0}</span>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <Button
                     variant="contained"
