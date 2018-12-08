@@ -1,6 +1,7 @@
 import { Tag } from '@/__typings__'
+import { SortType } from '@/components/SortSection'
 import CommonModelReducer from '@/utils/CommonModelReducer'
-import { DictDataWord } from '@shared/__typings__/DictData'
+import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
 
 export class TagPageState {
   currentTagId: string
@@ -11,6 +12,14 @@ export class TagPageState {
   isRenameDialogOpen: boolean = false
   renamingName: string = ''
   callbackAfterRenamed: Function
+
+  // top bar: sort
+  sortType: SortType = SortType.Name
+  isAscendingName: boolean = true
+  isAscendingDegree: boolean = true
+  // top bar: filter
+  startDegree: DictDataWordDegree = 0
+  endDegree: DictDataWordDegree = 10
 }
 
 export default {
@@ -35,6 +44,14 @@ export default {
       HIDE_RENAME_DIALOG = this.UPDATE_STATE_KEY_VALUE( 'isRenameDialogOpen', false )
       UPDATE_RENAMING_WORD = this.UPDATE_STATE_KEY( 'renamingName' )
       UPDATE_CALLBACK_AFTER_RENAMED = this.UPDATE_STATE_KEY( 'callbackAfterRenamed' )
+
+      // top bar: sort
+      UPDATE_SORT_TYPE = this.UPDATE_STATE_KEY( 'sortType' )
+      UPDATE_IS_ASCENDING_NAME = this.UPDATE_STATE_KEY( 'isAscendingName' )
+      UPDATE_IS_ASCENDING_DEGREE = this.UPDATE_STATE_KEY( 'isAscendingDegree' )
+      // top bar: filter
+      UPDATE_START_DEGREE = this.UPDATE_STATE_KEY( 'startDegree' )
+      UPDATE_END_DEGREE = this.UPDATE_STATE_KEY( 'endDegree' )
     }()
   },
   effects: {}
