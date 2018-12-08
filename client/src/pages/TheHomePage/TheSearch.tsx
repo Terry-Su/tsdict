@@ -11,9 +11,11 @@ import { DictDataWord } from '@shared/__typings__/DictData'
 
 export default mapStateAndStyle( {} )(
   class TheSearch extends Component<any, any> {
+    searchInputRef = React.createRef()
     state = {
       isTyping: false
     }
+
     get filteredWords(): string[] {
       const { app, core } = this.props
       const { searching } = app
@@ -31,6 +33,10 @@ export default mapStateAndStyle( {} )(
         } )
     }
 
+    get isSearchInputFocused(): boolean {
+      return this.searchInputRef.current === document.activeElement
+    }
+
     onSearchChange = e => {
       const { value } = e.target
       const { dispatch } = this.props
@@ -39,11 +45,22 @@ export default mapStateAndStyle( {} )(
       this.setState( { isTyping: true } )
     }
 
+    onSearchBlur = () => {
+      setTimeout( () => {
+        this.setState( { isTyping: false } )
+      }, 50 )
+    }
+
+    onSearchFocus = () => {
+      this.setState( { isTyping: true } )
+    }
+
     onAddClick = () => {
       const { app, dispatch } = this.props
       const { searching: name } = app
       const { wordCanBeAdded } = selector
-      wordCanBeAdded && dispatch( { type: 'core/ADD_WORD', value: createWord( name ) } )
+      wordCanBeAdded &&
+        dispatch( { type: "core/ADD_WORD", value: createWord( name ) } )
       this.setState( { isTyping: false } )
     }
 
@@ -53,13 +70,19 @@ export default mapStateAndStyle( {} )(
       const { wordNames } = selector
       const { dispatch } = this.props
       const { isTyping } = this.state
+      const { isSearchInputFocused } = this
+      console.log( isTyping )
       return (
         <section>
           <section>
             <DownSuggestContainer>
               <Input
+                autoFocus
+                inputRef={this.searchInputRef}
                 type="text"
                 onChange={this.onSearchChange}
+                onBlur={this.onSearchBlur}
+                onFocus={this.onSearchFocus}
                 value={searching}
               />
               {isTyping && (
@@ -70,13 +93,16 @@ export default mapStateAndStyle( {} )(
                     dispatch( { type: "app/UPDATE_SEARCHING", value: name } )
                     this.setState( { isTyping: false } )
                   }}
+                  enableTextsWhenEmpty
                 />
               )}
             </DownSuggestContainer>
             &nbsp;&nbsp;
-            {
-              selector.wordCanBeAdded && <Button variant="contained" onClick={ this.onAddClick }>Add</Button>
-            }
+            {selector.wordCanBeAdded && (
+              <Button variant="contained" onClick={this.onAddClick}>
+                Add
+              </Button>
+            )}
           </section>
         </section>
       )

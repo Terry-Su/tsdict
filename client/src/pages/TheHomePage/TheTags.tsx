@@ -76,7 +76,7 @@ export default mapStateAndStyle()(
           ) )}
           {!isIntputing && (
             <IconButton onClick={this.onAddClick}>
-              <TagIcon color="action"/>
+              <TagIcon color="action" />
             </IconButton>
           )}
 
@@ -99,6 +99,7 @@ export default mapStateAndStyle()(
                 text={tagName}
                 texts={tagNames}
                 onItemClick={this.onDownSuggestItemClick}
+                enableTextsWhenEmpty
               />
             </DownSuggestContainer>
           )}

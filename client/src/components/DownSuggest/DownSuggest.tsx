@@ -6,6 +6,24 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Paper from '@material-ui/core/Paper'
 
+import BasicComponent, { DefaultProps } from '../BasicComponent'
+
+class Props extends DefaultProps {
+  suggestAlgorithm?: ( text: string, texts: string[] ) => string[]
+  text: string
+  texts?: string[]
+  onItemClick: Function
+
+  enableTextsWhenEmpty: boolean
+
+  classes: any
+  className: string
+}
+
+class State {
+  shallShow: boolean = false
+}
+
 export default mapStateAndStyle( {
   entry: {
     position : "absolute",
@@ -13,27 +31,11 @@ export default mapStateAndStyle( {
     zIndex   : 100,
     width    : "100%",
     maxHeight: "300px",
-    overflow : 'auto',
-
+    overflow : "auto"
   }
 } )(
-  class DownSuggest extends Component<
-    {
-      suggestAlgorithm?: ( text: string, texts: string[] ) => string[]
-      text: string
-      texts?: string[]
-      onItemClick: Function
-
-      classes: any
-      className: string
-    },
-    {
-      shallShow: boolean
-    }
-  > {
-    state = {
-      shallShow: true
-    }
+  class DownSuggest extends BasicComponent<Props, State> {
+    state = new State()
 
     defaultSuggestAlgorithm = ( text: string, texts: string[] ) => {
       return texts
@@ -44,7 +46,11 @@ export default mapStateAndStyle( {
     }
 
     get suggestions(): string[] {
-      const { suggestAlgorithm, text, texts } = this.props
+      const { suggestAlgorithm, text, texts, enableTextsWhenEmpty } = this.props
+      if ( enableTextsWhenEmpty && text.trim() === "" ) {
+        return texts
+      }
+
       const algorithm = notNil( suggestAlgorithm ) ?
         suggestAlgorithm :
         this.defaultSuggestAlgorithm
@@ -52,8 +58,15 @@ export default mapStateAndStyle( {
       return res
     }
 
+    componentDidMount() {
+      const { text, enableTextsWhenEmpty } = this.props
+      if ( enableTextsWhenEmpty && text.trim() === "" ) {
+        this.setState( { shallShow: true } )
+      }
+    }
+
     componentDidUpdate( prevProps, prevState ) {
-      prevState.shallShow === false  && this.setState( { shallShow: true } )
+      prevState.shallShow === false && this.setState( { shallShow: true } )
     }
 
     render() {
@@ -61,12 +74,13 @@ export default mapStateAndStyle( {
       const { suggestions } = this
       const has = suggestions.length > 0
       const { shallShow } = this.state
+
       return (
         shallShow &&
         has && (
           <Paper className={`${c.entry} ${className}`}>
             <List>
-              {this.suggestions.map( ( suggestion, index ) => (
+              {suggestions.map( ( suggestion, index ) => (
                 <ListItem
                   key={index}
                   button

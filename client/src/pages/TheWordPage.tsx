@@ -223,8 +223,8 @@ export default mapStateAndStyle( {
                   onClick={() => this.onWordNameClick( word.name )}
                 >
                   <Link to={HOME_ROUTE}>{word.name}</Link>
-                  &nbsp;&nbsp;
-                  <span className={c.degree}>{notNil( word.degree ) ? word.degree : 0}</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span className={c.degree}>{notNil( word.degree ) ? word.degree / 2 : 0}×★</span>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <Button
                     variant="contained"
