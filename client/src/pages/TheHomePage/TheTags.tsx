@@ -22,6 +22,7 @@ export default mapStateAndStyle()(
       tagName    : "",
       isIntputing: false
     }
+
     onInputChange = e => this.setState( { tagName: e.target.value } )
     onAddClick = () => {
       this.setState( { isIntputing: true } )
@@ -82,6 +83,7 @@ export default mapStateAndStyle()(
           {isIntputing && (
             <DownSuggestContainer>
               <Input
+                autoFocus
                 onBlur={this.onInputBlur}
                 value={tagName}
                 onChange={this.onInputChange}

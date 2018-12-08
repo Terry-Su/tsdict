@@ -73,6 +73,17 @@ export default mapStateAndStyle( {
   > {
     state = new State()
 
+    treeInputRef = React.createRef()
+    wordInputRef = React.createRef()
+
+    get treeInput() {
+      return this.treeInputRef.current as HTMLInputElement
+    }
+
+    get wordInput() {
+      return this.wordInputRef.current as HTMLInputElement
+    }
+
     get wordInStore(): DictDataWord {
       return selector.getWordByWordName( this.state.wordName )
     }
@@ -80,6 +91,14 @@ export default mapStateAndStyle( {
     get isNewWord(): boolean {
       return isNil( this.wordInStore )
     }
+
+    // componentDidMount() {
+    //   setTimeout( () => {
+    //     const { addMode } = selector.treePageState
+    //     addMode === TreeAddMode.Tree && this.treeInput && this.treeInput.focus()
+    //     addMode === TreeAddMode.WordId && this.wordInput && this.wordInput.focus()
+    //   }, 200 )
+    // }
 
     onDialogClose = () => {}
 
@@ -211,9 +230,11 @@ export default mapStateAndStyle( {
             addMode === TreeAddMode.Tree && (
               <div className={c.d_f__jc_c__ai_c}>
                 <Input
+                  autoFocus
+                  inputRef={ this.treeInputRef }
                   value={treeName}
                   onChange={this.onTreeNameChange}
-                  placeholder="Tree name"
+                  placeholder="Folder name"
                 />
               </div>
             )}
@@ -224,6 +245,8 @@ export default mapStateAndStyle( {
                 <div className={c.d_f__jc_c__ai_c}>
                   <DownSuggestContainer>
                     <Input
+                      autoFocus
+                      inputRef={ this.wordInputRef }
                       value={wordName}
                       onChange={this.onWordNameChange}
                       placeholder="Word name"

@@ -113,7 +113,8 @@ export default mapStateAndStyle( {
 
         startDegree,
         endDegree,
-        selectedTagIds
+        selectedTagIds,
+        isAddDialogOpen,
       } = selector.treePageState
 
       const { mainRef } = this
@@ -171,8 +172,9 @@ export default mapStateAndStyle( {
 
           <TheTreeView mainRef={mainRef}/>
           <TheAddButton />
-
+          
           <TheAddDialog />
+          
           <TheTreeFunctionDialogue />
           <TheWordFunctionDialogue />
           <TheRenameDialog />

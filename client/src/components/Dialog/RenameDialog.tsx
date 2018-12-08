@@ -9,18 +9,22 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Input from '@material-ui/core/Input'
 
+import BasicComponent, { DefaultProps } from '../BasicComponent'
+
+class Props extends DefaultProps {
+  defaultValue: string
+  open: boolean
+
+  onClose: any
+  onSubmit: Function
+}
 
 class State {
   value: string
 }
 
 export default mapStateAndStyle()(
-  class TheRenameDialog extends Component<{
-    defaultValue: string
-    open: boolean
-    onClose: any
-    onSubmit: Function
-  }, any> {
+  class TheRenameDialog extends BasicComponent<Props> {
     state = new State()
 
     onConfirmClick = () => {
@@ -32,18 +36,22 @@ export default mapStateAndStyle()(
 
     render() {
       const { onClose, open, defaultValue } = this.props
-      const { value } = this.state
       return (
-        <Dialog
-          open={open}
-          onClose={ onClose }
-        >
+        <Dialog open={open} onClose={onClose}>
           <DialogTitle>New Name</DialogTitle>
           <DialogContent>
-            <Input defaultValue={ defaultValue } onChange={ e => this.setState( { value: e.target.value } ) }/>
+            <Input
+              autoFocus
+              defaultValue={defaultValue}
+              onChange={e => this.setState( { value: e.target.value } )}
+            />
           </DialogContent>
           <DialogActions>
-            <Button variant='contained' color="primary" onClick={this.onConfirmClick}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.onConfirmClick}
+            >
               Confirm
             </Button>
           </DialogActions>
@@ -52,6 +60,3 @@ export default mapStateAndStyle()(
     }
   }
 )
-
-
-
