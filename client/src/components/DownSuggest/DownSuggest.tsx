@@ -13,6 +13,7 @@ class Props extends DefaultProps {
   text: string
   texts?: string[]
   onItemClick: Function
+  onItemMouseDown: Function
 
   enableTextsWhenEmpty: boolean
 
@@ -21,7 +22,7 @@ class Props extends DefaultProps {
 }
 
 class State {
-  shallShow: boolean = false
+  shallShow: boolean = true
 }
 
 export default mapStateAndStyle( {
@@ -70,7 +71,7 @@ export default mapStateAndStyle( {
     }
 
     render() {
-      const { classes: c, onItemClick, className } = this.props
+      const { classes: c, onItemClick, className, onItemMouseDown } = this.props
       const { suggestions } = this
       const has = suggestions.length > 0
       const { shallShow } = this.state
@@ -86,8 +87,12 @@ export default mapStateAndStyle( {
                   button
                   onClick={e => {
                     this.setState( { shallShow: false } )
-                    onItemClick( suggestion, e )
+                    onItemClick && onItemClick( suggestion, e )
                   }}
+                  onMouseDown={ e => {
+                    this.setState( { shallShow: false } )
+                    onItemMouseDown && onItemMouseDown( suggestion, e )
+                  } }
                 >
                   {suggestion}
                 </ListItem>

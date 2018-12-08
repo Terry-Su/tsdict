@@ -33,8 +33,11 @@ export default mapStateAndStyle( {} )(
         } )
     }
 
-    get isSearchInputFocused(): boolean {
-      return this.searchInputRef.current === document.activeElement
+    componentDidMount() {
+      const { wordIsAdded } = selector
+      if ( !wordIsAdded ) {
+        this.setState( { isTyping: true } )
+      }
     }
 
     onSearchChange = e => {
@@ -45,14 +48,13 @@ export default mapStateAndStyle( {} )(
       this.setState( { isTyping: true } )
     }
 
-    onSearchBlur = () => {
-      setTimeout( () => {
-        this.setState( { isTyping: false } )
-      }, 50 )
+    onSearchBlur = ( { currentTarget } ) => {
+      this.setState( { isTyping: false } )
     }
 
     onSearchFocus = () => {
-      this.setState( { isTyping: true } )
+      const { searching } = selector.appState
+      searching.trim() === '' && this.setState( { isTyping: true } )
     }
 
     onAddClick = () => {
@@ -70,8 +72,6 @@ export default mapStateAndStyle( {} )(
       const { wordNames } = selector
       const { dispatch } = this.props
       const { isTyping } = this.state
-      const { isSearchInputFocused } = this
-      console.log( isTyping )
       return (
         <section>
           <section>
@@ -89,7 +89,7 @@ export default mapStateAndStyle( {} )(
                 <DownSuggest
                   text={searching}
                   texts={wordNames}
-                  onItemClick={name => {
+                  onItemMouseDown={name => {
                     dispatch( { type: "app/UPDATE_SEARCHING", value: name } )
                     this.setState( { isTyping: false } )
                   }}
