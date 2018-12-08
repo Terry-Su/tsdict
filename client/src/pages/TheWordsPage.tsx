@@ -4,19 +4,26 @@ import React, { Component } from 'react'
 import { Tag } from '@/__typings__'
 import BasicComponent from '@/components/BasicComponent'
 import FilterSection from '@/components/FilterSection'
+import SubTopbarLayout from '@/components/layouts/SubTopbarLayout'
 import TopbarLayout from '@/components/layouts/TopbarLayout'
 import SortSection, { SortType } from '@/components/SortSection'
+import SubTopBar from '@/components/SubTopBar'
 import { HOME_ROUTE } from '@/constants/routes'
 import selector from '@/selectors'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import { scrollToTop } from '@/utils/scrollToTop'
+import { IconButton } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import FilterIcon from '@material-ui/icons/FilterList'
+import SortIcon from '@material-ui/icons/Sort'
 import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
 
 class State {
+  shallShowFilterSection: boolean = false
   wordMoreAnchorEl: HTMLElement
   sortAnchorEl: HTMLElement
 }
@@ -32,29 +39,40 @@ export default mapStateAndStyle( {
 
     removingWord = null
 
+    mainRef = React.createRef()
+
     get reorganizedWords(): DictDataWord[] {
       const { words } = selector.coreState
       let res = [ ...words ]
-      
+      const { shallShowFilterSection } = this.state
+
       // filter
-      const {
-        startDegree,
-        endDegree,
-        selectedTagIds
-      } = selector.wordPageState
-      res = res.filter( word => {
-        // tags
-        const tags = selector.getWordTags( word.id )
-        const tagIds = tags.map( tag => tag.id )
-        return selectedTagIds.length === 0 || selectedTagIds.some( selectedTagId => tagIds.includes( selectedTagId ) )
-      } )
-      .filter( word => {
-        const { degree } = word
-        // degree
-        if ( startDegree <= endDegree )  {
-          return degree >= startDegree && degree <= endDegree
-        }        
-      } )
+      if ( shallShowFilterSection ) {
+        const {
+          startDegree,
+          endDegree,
+          selectedTagIds
+        } = selector.wordPageState
+        res = res
+          .filter( word => {
+            // tags
+            const tags = selector.getWordTags( word.id )
+            const tagIds = tags.map( tag => tag.id )
+            return (
+              selectedTagIds.length === 0 ||
+              selectedTagIds.some( selectedTagId =>
+                tagIds.includes( selectedTagId )
+              )
+            )
+          } )
+          .filter( word => {
+            const { degree } = word
+            // degree
+            if ( startDegree <= endDegree ) {
+              return degree >= startDegree && degree <= endDegree
+            }
+          } )
+      }
 
       // sort
       const {
@@ -151,25 +169,40 @@ export default mapStateAndStyle( {
       } )
     }
 
+    onFilterButtonClick = () => {
+      this.setState( ( prevState: State ) => ( {
+        shallShowFilterSection: !prevState.shallShowFilterSection
+      } ) )
+      const main: any = this.mainRef.current
+      main.scrollTop = 0
+    }
+
     onSortSectionClose = () => {
       this.setState( {
         sortAnchorEl: null
       } )
     }
 
-    onFilterSectionDegreeRangeChange = ( start: DictDataWordDegree, end: DictDataWordDegree ) => {
-      this.dispatch( { type: 'wordPage/UPDATE_START_DEGREE', value: start } )
-      this.dispatch( { type: 'wordPage/UPDATE_END_DEGREE', value: end } )
+    onFilterSectionDegreeRangeChange = (
+      start: DictDataWordDegree,
+      end: DictDataWordDegree
+    ) => {
+      this.dispatch( { type: "wordPage/UPDATE_START_DEGREE", value: start } )
+      this.dispatch( { type: "wordPage/UPDATE_END_DEGREE", value: end } )
     }
 
     onFilterSectionTagIdsChange = ( tagIds: string[] ) => {
-      this.dispatch( { type: 'wordPage/UPDATE_SELECTED_TAG_IDS', value: tagIds } )
+      this.dispatch( { type: "wordPage/UPDATE_SELECTED_TAG_IDS", value: tagIds } )
     }
 
     render() {
       const { core, classes: c } = this.props
       const { words } = core
-      const { wordMoreAnchorEl, sortAnchorEl } = this.state
+      const {
+        wordMoreAnchorEl,
+        sortAnchorEl,
+        shallShowFilterSection
+      } = this.state
       const {
         sortType,
         isAscendingName,
@@ -183,54 +216,73 @@ export default mapStateAndStyle( {
 
       return (
         <TopbarLayout>
-          <div>
-            <FilterSection 
-              startDegree={startDegree}
-              endDegree={endDegree}
-              selectedTagIds={selectedTagIds}
-
-              onDegreeRangeChange={ this.onFilterSectionDegreeRangeChange }
-              onTagIdsChange={ this.onFilterSectionTagIdsChange }
+          <SubTopbarLayout
+            topbar={
+              <SubTopBar
+              center="All Words"
+              right={
+                <div>
+                  <IconButton
+                    color={shallShowFilterSection ? "primary" : "default"}
+                    onClick={this.onFilterButtonClick}
+                  >
+                    <FilterIcon />
+                  </IconButton>
+                  <IconButton onClick={this.onSortButtonClick}>
+                    <SortIcon />
+                  </IconButton>
+                  <SortSection
+                    anchorEl={sortAnchorEl}
+                    open={Boolean( sortAnchorEl )}
+                    onClose={this.onSortSectionClose}
+                    sortType={sortType}
+                    isAscendingName={isAscendingName}
+                    isAscendingDegree={isAscendingDegree}
+                    onChange={this.onSortSectionChange}
+                  />
+                </div>
+              }
             />
-            <Button variant="contained" onClick={this.onSortButtonClick}>
-              Sort
-            </Button>
-            <SortSection
-              anchorEl={sortAnchorEl}
-              open={Boolean( sortAnchorEl )}
-              onClose={this.onSortSectionClose}
-              sortType={sortType}
-              isAscendingName={isAscendingName}
-              isAscendingDegree={isAscendingDegree}
-              onChange={this.onSortSectionChange}
-            />
-          </div>
-
-          <List>
-            {reorganizedWords.map( word => (
-              <ListItem
-                key={word.id}
-                className={c.listItem}
-                onClick={() => this.onWordNameClick( word.name )}
-              >
-                <Link to={HOME_ROUTE}>{word.name}</Link>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button
-                  variant="contained"
-                  onClick={event => this.onMoreClick( event, word )}
-                >
-                  ...
-                </Button>
-              </ListItem>
-            ) )}
-          </List>
-          <Menu
-            anchorEl={wordMoreAnchorEl}
-            open={Boolean( wordMoreAnchorEl )}
-            onClose={this.closeMenu}
+            }
+            mainRef={ this.mainRef }
           >
-            <MenuItem onClick={() => this.onRemoveClick()}>Delete</MenuItem>
-          </Menu>
+            
+            {shallShowFilterSection && (
+              <FilterSection
+                startDegree={startDegree}
+                endDegree={endDegree}
+                selectedTagIds={selectedTagIds}
+                onDegreeRangeChange={this.onFilterSectionDegreeRangeChange}
+                onTagIdsChange={this.onFilterSectionTagIdsChange}
+              />
+            )}
+
+            <List>
+              {reorganizedWords.map( word => (
+                <ListItem
+                  key={word.id}
+                  className={c.listItem}
+                  onClick={() => this.onWordNameClick( word.name )}
+                >
+                  <Link to={HOME_ROUTE}>{word.name}</Link>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button
+                    variant="contained"
+                    onClick={event => this.onMoreClick( event, word )}
+                  >
+                    ...
+                  </Button>
+                </ListItem>
+              ) )}
+            </List>
+            <Menu
+              anchorEl={wordMoreAnchorEl}
+              open={Boolean( wordMoreAnchorEl )}
+              onClose={this.closeMenu}
+            >
+              <MenuItem onClick={() => this.onRemoveClick()}>Delete</MenuItem>
+            </Menu>
+          </SubTopbarLayout>
         </TopbarLayout>
       )
     }

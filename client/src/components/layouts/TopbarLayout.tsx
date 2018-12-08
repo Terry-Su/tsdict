@@ -13,7 +13,7 @@ export default mapStateAndStyle( {
     overflow : 'auto'
   }
 } )(
-  class WithTopbar extends Component<any, any> {
+  class TopbarLayout extends Component<any, any> {
     render() {
       const { classes: c } = this.props
       return (
