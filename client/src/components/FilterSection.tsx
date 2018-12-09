@@ -43,7 +43,7 @@ class Props extends DefaultProps {
   endDegree: DictDataWordDegree
   selectedTagIds: string[]
 
-  enableTag: boolean = true
+  enableTag: boolean 
 
   onDegreeRangeChange = ( start: DictDataWordDegree, end: DictDataWordDegree ) => {}
   onTagIdsChange = ( tagIds: string[] ) => {}
@@ -80,7 +80,7 @@ export default mapStateAndStyle<Props>( new Style() )(
     }
 
     render() {
-      const { classes: c, dispatch, onDegreeRangeChange, enableTag } = this.props
+      const { classes: c, dispatch, onDegreeRangeChange, enableTag = true } = this.props
       const { tags } = selector.coreState
       const { props, state } = this
       

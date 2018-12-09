@@ -7,9 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Input from '@material-ui/core/Input'
 
 import BasicComponent, { DefaultProps } from '../BasicComponent'
+import Input from '../Input/Input'
 
 class Props extends DefaultProps {
   defaultValue: string
@@ -44,6 +44,8 @@ export default mapStateAndStyle()(
               autoFocus
               defaultValue={defaultValue}
               onChange={e => this.setState( { value: e.target.value } )}
+              enableClear
+              onClearMouseDown={ () => this.setState( { value: '' } ) }
             />
           </DialogContent>
           <DialogActions>

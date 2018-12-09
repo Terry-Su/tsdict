@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import Degree from '@/components/Degree/Degree'
 import DownSuggest from '@/components/DownSuggest/DownSuggest'
 import DownSuggestContainer from '@/components/DownSuggest/DownSuggestContainer'
+import Input from '@/components/Input/Input'
 import { createWord } from '@/models/core'
 import { createTree, TreeAddMode } from '@/models/treePage'
 import selector from '@/selectors'
@@ -12,7 +13,6 @@ import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Input from '@material-ui/core/Input'
 import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
@@ -115,17 +115,17 @@ export default mapStateAndStyle( {
     onWordNameChange = e => {
       this.setState( {
         wordName        : e.target.value,
-        isTypingWordName: true 
+        isTypingWordName: true
       } )
     }
 
     onWordNameInputBlur = () => {
       this.setState( { isTypingWordName: false } )
     }
-    
+
     onWordNameInputFocus = () => {
       const { wordName } = this.state
-      wordName.trim() !== '' && this.setState( { isTypingWordName: true } )
+      wordName.trim() !== "" && this.setState( { isTypingWordName: true } )
     }
 
     onDegreeChange = degree => {
@@ -191,9 +191,9 @@ export default mapStateAndStyle( {
       } else {
         // is old word
         const { wordInStore } = this
-        
+
         // check if there's already one
-        if ( ! selector.currentTree.nodes.includes( wordInStore.id ) ) {
+        if ( !selector.currentTree.nodes.includes( wordInStore.id ) ) {
           dispatch( { type: "treePage/ADD_WORD_ID", wordId: wordInStore.id } )
         }
       }
@@ -264,6 +264,12 @@ export default mapStateAndStyle( {
                   value={treeName}
                   onChange={this.onTreeNameChange}
                   placeholder="Folder name"
+                  enableClear
+                  onClearMouseDown={() =>
+                    this.setState( {
+                      treeName: ""
+                    } )
+                  }
                 />
               </div>
             )}
@@ -281,21 +287,27 @@ export default mapStateAndStyle( {
                       onBlur={this.onWordNameInputBlur}
                       onFocus={this.onWordNameInputFocus}
                       placeholder="Word name"
-                    />
-                    {
-                      isTypingWordName && <DownSuggest
-                      className={c.downSuggest}
-                      text={wordName}
-                      texts={wordNames}
-                      onItemMouseDown={name => {
+                      enableClear
+                      onClearMouseDown={() =>
                         this.setState( {
-                          wordName: name
+                          wordName        : "",
+                          isTypingWordName: true
                         } )
-                        this.setState( { isTypingWordName: false } )
-                      }}
+                      }
                     />
-                    }
-                    
+                    {isTypingWordName && (
+                      <DownSuggest
+                        className={c.downSuggest}
+                        text={wordName}
+                        texts={wordNames}
+                        onItemMouseDown={name => {
+                          this.setState( {
+                            wordName: name
+                          } )
+                          this.setState( { isTypingWordName: false } )
+                        }}
+                      />
+                    )}
                   </DownSuggestContainer>
                 </div>
                 <br />
@@ -307,7 +319,11 @@ export default mapStateAndStyle( {
                   />
                 </div>
                 <div className={c.d_f__jc_c__ai_c}>
-                  {isNewWord ? <TheAddTagForNewWord /> : <TheAddTagForOldWord word={wordInStore}/>}
+                  {isNewWord ? (
+                    <TheAddTagForNewWord />
+                  ) : (
+                    <TheAddTagForOldWord word={wordInStore} />
+                  )}
                 </div>
               </div>
             )}

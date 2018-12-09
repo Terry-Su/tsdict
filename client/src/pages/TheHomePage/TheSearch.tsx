@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 
+import ClearInputButton from '@/components/Button/ClearInputButton'
 import DownSuggest from '@/components/DownSuggest/DownSuggest'
 import DownSuggestContainer from '@/components/DownSuggest/DownSuggestContainer'
+import Input from '@/components/Input/Input'
 import { createWord } from '@/models/core'
 import selector from '@/selectors'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import Button from '@material-ui/core/Button'
-import Input from '@material-ui/core/Input'
 import { DictDataWord } from '@shared/__typings__/DictData'
 
 export default mapStateAndStyle( {} )(
@@ -60,6 +61,15 @@ export default mapStateAndStyle( {} )(
       this.setState( { isTyping: true } )
     }
 
+    onClearMouseDown = () => {
+      const { dispatch } = this.props
+      dispatch( { type: "app/UPDATE_SEARCHING", value: '' } )
+      setTimeout( () => {
+        this.searchInput && this.searchInput.focus()
+        this.setState( { isTyping: true } )
+      }, 50 )
+    }
+
     onSearchBlur = ( { currentTarget } ) => {
       this.setState( { isTyping: false } )
     }
@@ -97,6 +107,8 @@ export default mapStateAndStyle( {} )(
                 onBlur={this.onSearchBlur}
                 onFocus={this.onSearchFocus}
                 value={searching}
+                enableClear
+                onClearMouseDown={ this.onClearMouseDown}
               />
               {isTyping && (
                 <DownSuggest

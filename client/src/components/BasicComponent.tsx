@@ -12,6 +12,7 @@ import mapStateAndStyle from '@/utils/mapStateAndStyle'
 export class DefaultProps {
   classes: any
   dispatch: Function
+  className: string
 }
 
 export default class BasicComponent<P extends {
