@@ -20,7 +20,7 @@ import SortIcon from '@material-ui/icons/Sort'
 import { DictDataWordDegree } from '@shared/__typings__/DictData'
 
 import TheAddButton from './TheAddButton'
-import TheAddDialog from './TheAddDialog'
+import TheAddDialog from './TheAddDialog/TheAddDialog'
 import TheRenameDialog from './TheRenameDialog'
 import TheTreeFunctionDialogue from './TheTreeFunctionDialogue'
 import TheTreeView from './TheTreeView/TheTreeView'

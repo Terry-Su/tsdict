@@ -27,5 +27,7 @@ export class GlobalStyle {
     ...this.ai_c
   }
 }
-export const GS = GlobalStyle
+export {
+  GlobalStyle as GS
+}
 export default new GlobalStyle()

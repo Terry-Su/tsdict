@@ -9,10 +9,10 @@ import mapState from '@/utils/mapState'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 
+import TheAddTag from './TheAddTag'
 import TheDegree from './TheDegree'
 import TheOnlineLinks from './TheOnlineLinks'
 import TheSearch from './TheSearch'
-import TheTags from './TheTags'
 
 export default mapState(
   class TheHomePage extends Component<any, any> {
@@ -86,7 +86,7 @@ export default mapState(
           {shallShowWordPanel && (
             <div>
               <TheDegree />
-              <TheTags />
+              <TheAddTag />
 
               <Tabs
                 value={tabIndex}

@@ -16,6 +16,10 @@ export default mapStateAndStyle( {} )(
       isTyping: false
     }
 
+    get searchInput(): HTMLInputElement {
+      return this.searchInputRef.current as HTMLInputElement
+    }
+
     get filteredWords(): string[] {
       const { app, core } = this.props
       const { searching } = app
@@ -35,8 +39,16 @@ export default mapStateAndStyle( {} )(
 
     componentDidMount() {
       const { wordIsAdded } = selector
-      if ( !wordIsAdded ) {
+      if ( ! wordIsAdded ) {
         this.setState( { isTyping: true } )
+        setTimeout( () => {
+          this.searchInput && this.searchInput.focus()
+        }, 200 )
+      }
+      if( wordIsAdded ){
+        setTimeout( () => {
+          this.searchInput && this.searchInput.blur()
+        }, 200 )
       }
     }
 
@@ -53,6 +65,7 @@ export default mapStateAndStyle( {} )(
     }
 
     onSearchFocus = () => {
+      const { wordIsAdded } = selector
       const { searching } = selector.appState
       searching.trim() === '' && this.setState( { isTyping: true } )
     }
@@ -77,7 +90,7 @@ export default mapStateAndStyle( {} )(
           <section>
             <DownSuggestContainer>
               <Input
-                autoFocus
+                // autoFocus
                 inputRef={this.searchInputRef}
                 type="text"
                 onChange={this.onSearchChange}

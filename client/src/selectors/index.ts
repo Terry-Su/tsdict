@@ -7,6 +7,7 @@ import { AppState } from '@/models/app'
 import { CalcTree, CoreState } from '@/models/core'
 import { TagPageState } from '@/models/tagPage'
 import { TreePageState } from '@/models/treePage'
+import { TreePageAddDialogState } from '@/models/treePageAddDialog'
 import { WordPageState } from '@/models/wordPage'
 import { notNil } from '@/utils/lodash'
 import { DictDataWord } from '@shared/__typings__/DictData'
@@ -36,6 +37,10 @@ class Selector {
 
   get treePageState(): TreePageState {
     return this.state.treePage
+  }
+  
+  get treePageAddDialogState(): TreePageAddDialogState {
+    return this.state.treePageAddDialog
   }
 
   get tagPageState(): TagPageState {
@@ -105,6 +110,11 @@ class Selector {
     return tags.filter( ( { id } ) => id === tagId )[ 0 ]
   }
 
+  getTagByTagName( tagName: string ) {
+    const { tags } = this.coreState
+    return tags.filter( ( { name } ) => name === tagName )[ 0 ]
+  }
+
 
   // # app section
   get wordCanBeAdded(): boolean {
@@ -116,7 +126,8 @@ class Selector {
   }
 
   get wordIsAdded(): boolean {
-    return !this.wordCanBeAdded
+    const { searching } = this.appState
+    return !this.wordCanBeAdded && searching.trim() !== ""
   }
 
   get shallShowWordPanel() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { notNil } from '@/utils/lodash'
+import { notNil, uniq } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -16,6 +16,8 @@ class Props extends DefaultProps {
   onItemMouseDown: Function
 
   enableTextsWhenEmpty: boolean
+
+  recentTexts: string[]
 
   classes: any
   className: string
@@ -47,8 +49,16 @@ export default mapStateAndStyle( {
     }
 
     get suggestions(): string[] {
-      const { suggestAlgorithm, text, texts, enableTextsWhenEmpty } = this.props
+      const { suggestAlgorithm, text, texts, enableTextsWhenEmpty, recentTexts } = this.props
+
       if ( enableTextsWhenEmpty && text.trim() === "" ) {
+        if ( notNil( recentTexts ) && recentTexts.length > 0 ) {
+          const filtered = recentTexts.filter( recentText => texts.includes( recentText ) )
+          return uniq( [
+            ...filtered,
+            ...texts,
+          ] )
+        }
         return texts
       }
 

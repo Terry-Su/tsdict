@@ -18,11 +18,15 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
 
+import TheAddTagForNewWord from './TheAddTagForNewWord'
+import TheAddTagForOldWord from './TheAddTagForOldWord'
+
 class State {
   treeName: string = ""
   wordName: string = ""
   degree: DictDataWordDegree = 0
-  currentAddMode: TreeAddMode = TreeAddMode.Tree
+
+  isTypingWordName: boolean = false
 }
 
 export default mapStateAndStyle( {
@@ -48,7 +52,7 @@ export default mapStateAndStyle( {
     boxSizing: "border-box",
     width    : "100%",
     height   : "100%",
-  padding  : "0 20px 20px 20px"
+    padding  : "0 20px 20px 20px"
   },
   radiosContainer: {
     display       : "flex",
@@ -110,8 +114,18 @@ export default mapStateAndStyle( {
 
     onWordNameChange = e => {
       this.setState( {
-        wordName: e.target.value
+        wordName        : e.target.value,
+        isTypingWordName: true 
       } )
+    }
+
+    onWordNameInputBlur = () => {
+      this.setState( { isTypingWordName: false } )
+    }
+    
+    onWordNameInputFocus = () => {
+      const { wordName } = this.state
+      wordName.trim() !== '' && this.setState( { isTypingWordName: true } )
     }
 
     onDegreeChange = degree => {
@@ -159,14 +173,29 @@ export default mapStateAndStyle( {
       const { dispatch } = this.props
       if ( isNewWord ) {
         const canBeAdded = notNil( wordName ) && wordName.trim() !== ""
-        const word: DictDataWord = createWord( wordName, { degree } )
         if ( canBeAdded ) {
+          const word: DictDataWord = createWord( wordName, { degree } )
           dispatch( { type: "core/ADD_WORD", value: word } )
           dispatch( { type: "treePage/ADD_WORD_ID", wordId: word.id } )
+
+          // add tags
+          const { currentTags } = selector.treePageAddDialogState
+          currentTags.forEach( tag => {
+            dispatch( {
+              type   : "core/ADD_WORD_ID_TO_TAG_NAME",
+              wordId : word.id,
+              tagName: tag.name
+            } )
+          } )
         }
       } else {
+        // is old word
         const { wordInStore } = this
-        dispatch( { type: "treePage/ADD_WORD_ID", wordId: wordInStore.id } )
+        
+        // check if there's already one
+        if ( ! selector.currentTree.nodes.includes( wordInStore.id ) ) {
+          dispatch( { type: "treePage/ADD_WORD_ID", wordId: wordInStore.id } )
+        }
       }
     }
 
@@ -186,7 +215,7 @@ export default mapStateAndStyle( {
 
       const filteredDegree = isNewWord ? degree : wordInStore.degree
       const { wordNames } = selector
-      const { currentAddMode } = this.state
+      const { isTypingWordName } = this.state
 
       return (
         <Dialog className={c.entry} open={isAddDialogOpen} onClose={this.close}>
@@ -231,7 +260,7 @@ export default mapStateAndStyle( {
               <div className={c.d_f__jc_c__ai_c}>
                 <Input
                   autoFocus
-                  inputRef={ this.treeInputRef }
+                  inputRef={this.treeInputRef}
                   value={treeName}
                   onChange={this.onTreeNameChange}
                   placeholder="Folder name"
@@ -246,21 +275,27 @@ export default mapStateAndStyle( {
                   <DownSuggestContainer>
                     <Input
                       autoFocus
-                      inputRef={ this.wordInputRef }
+                      inputRef={this.wordInputRef}
                       value={wordName}
                       onChange={this.onWordNameChange}
+                      onBlur={this.onWordNameInputBlur}
+                      onFocus={this.onWordNameInputFocus}
                       placeholder="Word name"
                     />
-                    <DownSuggest
+                    {
+                      isTypingWordName && <DownSuggest
                       className={c.downSuggest}
                       text={wordName}
                       texts={wordNames}
-                      onItemClick={name => {
+                      onItemMouseDown={name => {
                         this.setState( {
                           wordName: name
                         } )
+                        this.setState( { isTypingWordName: false } )
                       }}
                     />
+                    }
+                    
                   </DownSuggestContainer>
                 </div>
                 <br />
@@ -270,6 +305,9 @@ export default mapStateAndStyle( {
                     degree={filteredDegree}
                     onChange={this.onDegreeChange}
                   />
+                </div>
+                <div className={c.d_f__jc_c__ai_c}>
+                  {isNewWord ? <TheAddTagForNewWord /> : <TheAddTagForOldWord word={wordInStore}/>}
                 </div>
               </div>
             )}

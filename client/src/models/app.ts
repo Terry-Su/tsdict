@@ -1,10 +1,14 @@
+import selector from '@/selectors'
 import CommonModelReducer from '@/utils/CommonModelReducer'
+import { uniq } from '@/utils/lodash'
 
 export class AppState {
   searching: string = ""
   isShowingMessage: boolean = false
   message: string = ""
   messageType: string = "success"
+
+  recentAddedTagNames: string[] = []
 }
 
 export default {
@@ -88,6 +92,13 @@ export default {
           messageType: "error",
           message    : "Update media failed"
         } )
+
+      ADD_TO_RECENT_ADDED_TAG_NAMES = ( state: AppState, { newName }: {newName: string} )=> {
+        const { recentAddedTagNames } = state
+        recentAddedTagNames.unshift( newName )
+        state.recentAddedTagNames = uniq( recentAddedTagNames )
+        return { ...state }
+      }
     }()
   },
   effects: {
