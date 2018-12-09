@@ -153,7 +153,7 @@ class Selector {
   // # tree page section
   get currentTree(): Tree {
     const { currentTreeId } = this.treePageState
-    const current: Tree = new CalcTree( this.rootTree ).getTreeById( currentTreeId )
+    const current: Tree = new CalcTree( this.rootTree ).getTreeById( currentTreeId ) || this.rootTree
     return current
   } 
 

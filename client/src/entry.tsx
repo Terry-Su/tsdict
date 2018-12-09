@@ -1,16 +1,18 @@
+import './style/main.scss'
+
+import dva, { connect } from 'dva'
+import { Route, Router } from 'dva/router'
+import mapValues from 'lodash/mapValues'
 import React from 'react'
 import { render } from 'react-dom'
-import TheApp from './TheApp'
 import { hot } from 'react-hot-loader'
-import dva, { connect } from "dva"
-import models from "./models/index"
-import mapValues from 'lodash/mapValues'
-import './style/main.scss'
-import { pick, notNil, cloneDeep } from './utils/lodash'
-import localStore from "./store/localStore"
-import { Router, Route } from 'dva/router'
-import selector from './selectors'
 
+import { NOT_TO_SYNC_MODEL_KEYS } from './constants/modelKeys'
+import models from './models/index'
+import selector from './selectors'
+import localStore from './store/localStore'
+import TheApp from './TheApp'
+import { cloneDeep, notNil, pick } from './utils/lodash'
 
 const TheHotApp = hot( module )( connect( props => props )( TheApp ) )
 
@@ -37,9 +39,11 @@ function model( app ) {
       if ( resModelsMap && storeLocal ) {
         let clonedReModelsMap = cloneDeep( resModelsMap )
         mapValues( storeLocal, ( value, key ) => {
-          clonedReModelsMap[ key ][ 'state' ] = {
-            ...clonedReModelsMap[ key ][ 'state' ],
-            ...value
+          if ( ! NOT_TO_SYNC_MODEL_KEYS.includes( key ) ) {
+            clonedReModelsMap[ key ][ 'state' ] = {
+              ...clonedReModelsMap[ key ][ 'state' ],
+              ...value
+            }
           }
         } )
         return clonedReModelsMap

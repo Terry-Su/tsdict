@@ -17,6 +17,8 @@ export default {
   },
   reducers: {
     ...new class extends CommonModelReducer {
+      RESTORE = () => new TreePageAddDialogState()
+
       ADD_TO_CURRENT_TAGS = (   
         state: TreePageAddDialogState,
         { newTag }:  { newTag:  Tag }

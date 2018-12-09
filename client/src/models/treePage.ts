@@ -19,7 +19,7 @@ export enum TreeAddMode {
 
 export class TreePageState {
   // for showing current tree
-  currentTreeId: string = defaultTree.id
+  currentTreeId: string = null
 
   addMode: TreeAddMode = TreeAddMode.Tree 
   
