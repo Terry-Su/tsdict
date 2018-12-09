@@ -41,9 +41,9 @@ export default mapStateAndStyle( {} )(
     componentDidMount() {
       const { wordIsAdded } = selector
       if ( ! wordIsAdded ) {
-        this.setState( { isTyping: true } )
         setTimeout( () => {
           this.searchInput && this.searchInput.focus()
+          this.setState( { isTyping: true } )
         }, 200 )
       }
       if( wordIsAdded ){

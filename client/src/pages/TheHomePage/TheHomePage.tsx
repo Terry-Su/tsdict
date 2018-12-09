@@ -86,7 +86,9 @@ export default mapState(
           {shallShowWordPanel && (
             <div>
               <TheDegree />
-              <TheAddTag />
+              <div>
+                <TheAddTag />
+              </div>
 
               <Tabs
                 value={tabIndex}
