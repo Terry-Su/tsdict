@@ -119,6 +119,8 @@ export default mapStateAndStyle( {
 
       const { mainRef } = this
 
+      const { name } = selector.currentTree
+
       return (
         <TopbarLayout>
           <SubTopbarLayout
