@@ -30,7 +30,7 @@ class Props extends DefaultProps {
   onKeyPress: any
 }
 class State {
-  shallHideClearButton: boolean = false
+  shallHideClearButton: boolean = true
   value: string = ""
 }
 
@@ -96,7 +96,7 @@ export default mapStateAndStyle<Props>( new Style() )(
 
       const { shallHideClearButton } = this.state
       const { state } = this
-      const showClearButton =
+      const isShowingClearButton =
         enableClear &&
         !shallHideClearButton && (
           notNil( this.input ) ? this.input.value !== '' : false
@@ -108,7 +108,7 @@ export default mapStateAndStyle<Props>( new Style() )(
             {...{
               className: [
                 c.input,
-                showClearButton ? c.inputWithClear : "",
+                isShowingClearButton ? c.inputWithClear : "",
                 className
               ].join( " " ),
               defaultValue,
@@ -132,7 +132,7 @@ export default mapStateAndStyle<Props>( new Style() )(
               onKeyPress
             }}
           />
-          {showClearButton && (
+          {isShowingClearButton && (
             <div
               className={c.clearButton}
               onMouseDown={() => onClearMouseDown && onClearMouseDown()}
