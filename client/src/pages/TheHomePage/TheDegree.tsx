@@ -1,11 +1,11 @@
-import React, { Component } from "react"
-import mapStateAndStyle from "@/utils/mapStateAndStyle"
-import Degree from "@/components/Degree/Degree"
-import withLongPress from "@/components/highOrder/withLongPress"
-import { notNil } from "@/utils/lodash"
-import selector from "@/selectors"
+import React, { Component } from 'react'
 
-const DecoratedDegree: any = withLongPress( Degree )
+import Degree from '@/components/Degree/Degree'
+import withLongPress from '@/components/highOrder/withLongPress'
+import selector from '@/selectors'
+import { notNil } from '@/utils/lodash'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+
 export default mapStateAndStyle( {
   entry: {
     display: 'inline-block'
@@ -27,7 +27,7 @@ export default mapStateAndStyle( {
       const { currentWord: word }  = selector
       const degree = notNil( word ) ? word.degree : null
       return (
-        notNil( word ) && <DecoratedDegree className={ c.entry } degree={degree} onChange={ this.onDegreeChange } onLongPress={ this.onLongPress }/>
+        notNil( word ) && <Degree className={ c.entry } degree={degree} onChange={ this.onDegreeChange } onLongPress={ this.onLongPress }/>
       )
     }
   }

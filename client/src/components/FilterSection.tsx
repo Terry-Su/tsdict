@@ -14,7 +14,6 @@ import BasicComponent, { DefaultProps } from './BasicComponent'
 import Degree from './Degree/Degree'
 import withLongPress from './highOrder/withLongPress'
 
-const DecoratedDegree: any = withLongPress( Degree )
 class Style extends GlobalStyle {
   entry = {
     ...this.d_ib,
@@ -94,7 +93,7 @@ export default mapStateAndStyle<Props>( new Style() )(
             <div className={c.d_f__ai_c}>
               <span>From</span>
               &nbsp;&nbsp;
-              <DecoratedDegree
+              <Degree
                 degree={startDegree}
                 onChange={this.onStartDegreeChange}
                 onLongPress={ () => this.onStartDegreeChange( 0 ) }
@@ -103,7 +102,7 @@ export default mapStateAndStyle<Props>( new Style() )(
               &nbsp;&nbsp;
               <span>To</span>
               &nbsp;&nbsp;
-              <DecoratedDegree degree={endDegree}
+              <Degree degree={endDegree}
                onChange={this.onEndDegreeChange} 
                onLongPress={ () => this.onEndDegreeChange( 0 ) }
                />
