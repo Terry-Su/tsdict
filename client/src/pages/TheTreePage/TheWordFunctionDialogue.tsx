@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import FunctionDialog from '@/components/Dialog/FunctionDialog'
 import selector from '@/selectors'
+import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { DictDataWord } from '@shared/__typings__/DictData'
 

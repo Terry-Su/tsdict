@@ -1,4 +1,6 @@
+import React from 'react'
 
+import SelectTree from './components/SelectTree/SelectTree'
 
 const TheTestingComponent = 
   // TheHomePage
@@ -12,6 +14,7 @@ const TheTestingComponent =
   // TheTagPage
   // TheTreePage
   // TheTagPage
+  // SelectTree
   null
 
 

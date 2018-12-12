@@ -22,6 +22,7 @@ import { DictDataWordDegree } from '@shared/__typings__/DictData'
 import TheAddButton from './TheAddButton'
 import TheAddDialog from './TheAddDialog/TheAddDialog'
 import TheRenameDialog from './TheRenameDialog'
+import TheSelectTreeDialog from './TheSelectTreeDialog'
 import TheTreeFunctionDialogue from './TheTreeFunctionDialogue'
 import TheTreeView from './TheTreeView/TheTreeView'
 import TheWordFunctionDialogue from './TheWordFunctionDialogue'
@@ -48,7 +49,7 @@ export default mapStateAndStyle( {
     }
 
     onBackClick = () => {
-      this.props.dispatch( { type: 'treePage/UPDATE_CURRENT_ID_TO_UPPER_ID' } )
+      this.props.dispatch( { type: "treePage/UPDATE_CURRENT_ID_TO_UPPER_ID" } )
       scrollToTop( this.mainRef.current )
     }
 
@@ -100,7 +101,6 @@ export default mapStateAndStyle( {
       } )
     }
 
-    
     render() {
       const { classes: c } = this.props
       const { shallShowBackButton } = this
@@ -114,7 +114,7 @@ export default mapStateAndStyle( {
         startDegree,
         endDegree,
         selectedTagIds,
-        isAddDialogOpen,
+        isAddDialogOpen
       } = selector.treePageState
 
       const { mainRef } = this
@@ -124,43 +124,39 @@ export default mapStateAndStyle( {
       return (
         <TopbarLayout>
           <SubTopbarLayout
-          topbar={
-            <SubTopBar 
-            left={
-              shallShowBackButton && (
-                <KeyboardBackspace onClick={this.onBackClick} />
-              )
+            topbar={
+              <SubTopBar
+                left={
+                  shallShowBackButton && (
+                    <KeyboardBackspace onClick={this.onBackClick} />
+                  )
+                }
+                center={shallShowBackButton ? name : "Tree"}
+                right={
+                  <div>
+                    <IconButton
+                      color={shallShowFilterSection ? "primary" : "default"}
+                      onClick={this.onFilterButtonClick}
+                    >
+                      <FilterIcon />
+                    </IconButton>
+                    <IconButton onClick={this.onSortButtonClick}>
+                      <SortIcon />
+                    </IconButton>
+                    <SortSection
+                      anchorEl={sortAnchorEl}
+                      open={Boolean( sortAnchorEl )}
+                      onClose={this.onSortSectionClose}
+                      sortType={sortType}
+                      isAscendingName={isAscendingName}
+                      isAscendingDegree={isAscendingDegree}
+                      onChange={this.onSortSectionChange}
+                    />
+                  </div>
+                }
+              />
             }
-            center={
-              shallShowBackButton ? name  : 'Tree'
-            }
-            right={
-              <div>
-                  <IconButton
-                    color={shallShowFilterSection ? "primary" : "default"}
-                    onClick={this.onFilterButtonClick}
-                  >
-                    <FilterIcon />
-                  </IconButton>
-                  <IconButton 
-                  onClick={this.onSortButtonClick}
-                  >
-                    <SortIcon />
-                  </IconButton>
-                  <SortSection
-                    anchorEl={sortAnchorEl}
-                    open={Boolean( sortAnchorEl )}
-                    onClose={this.onSortSectionClose}
-                    sortType={sortType}
-                    isAscendingName={isAscendingName}
-                    isAscendingDegree={isAscendingDegree}
-                    onChange={this.onSortSectionChange}
-                  />
-                </div>
-            }
-          />
-          }
-          mainRef={ mainRef }
+            mainRef={mainRef}
           >
             {shallShowFilterSection && (
               <FilterSection
@@ -172,14 +168,15 @@ export default mapStateAndStyle( {
               />
             )}
 
-          <TheTreeView mainRef={mainRef}/>
-          <TheAddButton />
-          
-          <TheAddDialog />
-          
-          <TheTreeFunctionDialogue />
-          <TheWordFunctionDialogue />
-          <TheRenameDialog />
+            <TheTreeView mainRef={mainRef} />
+            <TheAddButton />
+
+            <TheAddDialog />
+
+            <TheTreeFunctionDialogue />
+            <TheWordFunctionDialogue />
+            <TheRenameDialog />
+            <TheSelectTreeDialog />
           </SubTopbarLayout>
         </TopbarLayout>
       )

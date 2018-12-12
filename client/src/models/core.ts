@@ -6,6 +6,7 @@ import { defaultOnlineLinks, defaultTree, defaultWords } from '@/constants/defau
 import { TAG_IDS } from '@/constants/shared'
 import selector from '@/selectors'
 import CommonModelReducer from '@/utils/CommonModelReducer'
+import { isTreeItem } from '@/utils/getters'
 import getUniqueId from '@/utils/getUniqueId'
 import { removeArrayElement, removeArrayElementByIndex } from '@/utils/js'
 import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
@@ -247,6 +248,11 @@ export default {
         removeArrayElement( treeAbove.nodes, tree  )
         return { ...state }
       }
+
+      MOVE_TREE_A_TO_B = ( state, { from, to }: {from: string, to: string} ) => {
+        new CalcTree( selector.rootTree ).moveAtoB( from, to )
+        return { ...state }
+      }
     }()
   },
   effects: {
@@ -304,6 +310,24 @@ export class CalcTree {
     this.tree = tree
   }
 
+  getAIncludesB( aId: string, bId: string ): boolean {
+    let res = false
+
+    function recurToGet( tree ) {
+      tree.nodes.filter( isTreeItem ).forEach( subTree => {
+        if ( subTree.id === bId ) {
+          res = true
+        }
+        recurToGet( subTree )
+      } )
+    }
+
+    const tree = this.getTreeById( aId )
+    recurToGet( tree )
+
+    return res
+  }
+
   getTreeById( treeId: string ): Tree {
     let res: Tree = null
     const self = this
@@ -350,5 +374,22 @@ export class CalcTree {
       nodesTrees.forEach( newTree => recurToRemove( newTree ) )
     }
     recurToRemove( this.tree )
+  }
+
+  moveAtoB( aId: string, bId: string ) {
+    const aIncludesB = this.getAIncludesB( aId, bId )
+    if ( ! aIncludesB ) {
+      const aTree = this.getTreeById( aId )
+      const cacheATree = aTree
+
+      // remove A
+      const aAbove = this.getTreeAbove( aId )
+      removeArrayElement( aAbove.nodes, aTree  )
+
+
+      // move to b
+      const bTree = this.getTreeById( bId )
+      bTree.nodes.push( cacheATree )
+    }
   }
 }

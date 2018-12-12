@@ -8,6 +8,7 @@ import { CalcTree, CoreState } from '@/models/core'
 import { TagPageState } from '@/models/tagPage'
 import { TreePageState } from '@/models/treePage'
 import { TreePageAddDialogState } from '@/models/treePageAddDialog'
+import { TreePageSelectTreeDialogState } from '@/models/treePageSelectTreeDialog'
 import { WordPageState } from '@/models/wordPage'
 import { notNil } from '@/utils/lodash'
 import { DictDataWord } from '@shared/__typings__/DictData'
@@ -41,6 +42,10 @@ class Selector {
   
   get treePageAddDialogState(): TreePageAddDialogState {
     return this.state.treePageAddDialog
+  }
+
+  get treePageSelectTreeDialogState(): TreePageSelectTreeDialogState {
+    return this.state.treePageSelectTreeDialog
   }
 
   get tagPageState(): TagPageState {
