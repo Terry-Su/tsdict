@@ -5,7 +5,10 @@ import {
   GET_STORE_IMAGE_UNIQUE_FILE,
   GET_URL_RELATIVE_TO_STORE_ROOT,
   GET_STORE_IMAGE_FILES,
-  STORE_ROOT
+  STORE_ROOT,
+  GET_STORE_IMAGE_UNIQUE_FILE_NAME,
+  GET_STORE_IMAGE_FILE_BY_NAME,
+  GET_STORE_BACKUP_IMAGE_FILE_BY_NAME
 } from "./constants/paths";
 import isBase64Url from "./utils/isBase64Url";
 import outputBase64Media from "./utils/outputBase64Media";
@@ -37,8 +40,13 @@ export function updateMedia(note, req: express.Request) {
       const extension = url
         .replace(/^data:.+?\//, "")
         .replace(/;base64,.+/, "");
-      const path = `${GET_STORE_IMAGE_UNIQUE_FILE()}.${extension}`;
+      
+      const name = GET_STORE_IMAGE_UNIQUE_FILE_NAME()
+      const path = `${GET_STORE_IMAGE_FILE_BY_NAME(name)}.${extension}`;
       outputBase64Media(url, path);
+
+      const backupPath = `${GET_STORE_BACKUP_IMAGE_FILE_BY_NAME(name)}.${extension}`
+      outputBase64Media( url, backupPath )
       resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT(path)}`;
     }
 
