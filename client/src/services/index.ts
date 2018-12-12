@@ -26,5 +26,5 @@ export const push = data => post( 'push', data )
 
 
 // replace the media(image for example) url with server url instead of base64 url 
-export const updateMedia = () => post( 'updateMedia', selector.currentWord.note )
+export const updateMedia = () => post( 'updateMedia', selector.currentWord )
 export const updateMedias = () => post( 'updateMedias', selector.coreState.words )

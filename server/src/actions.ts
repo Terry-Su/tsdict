@@ -23,7 +23,8 @@ export function backup(data) {
 }
 
 // replace the media(image for example) url with server url instead of base64 url
-export function updateMedia(note, req: express.Request) {
+export function updateMedia(word: DictDataWord, req: express.Request) {
+  const { note, name: wordName } = word
 
   function replaceServerUrl( url: string ) {
     const prefix = req.protocol + "://" + req.get("host");
@@ -41,7 +42,7 @@ export function updateMedia(note, req: express.Request) {
         .replace(/^data:.+?\//, "")
         .replace(/;base64,.+/, "");
       
-      const name = GET_STORE_IMAGE_UNIQUE_FILE_NAME()
+      const name = `${wordName}-${GET_STORE_IMAGE_UNIQUE_FILE_NAME()}`
       const path = `${GET_STORE_IMAGE_FILE_BY_NAME(name)}.${extension}`;
       outputBase64Media(url, path);
 

@@ -121,10 +121,10 @@ app.post("/updateMedia", (req: express.Request, res: express.Response) => {
 });
 
 app.post("/updateMedias", (req: express.Request, res: express.Response) => {
-  let words = req.body;
-  words.forEach( ({note}) => {
-    if ( notNil( note ) ) {
-      note = updateMedia( note, req )
+  let words: DictDataWord[] = req.body;
+  words.forEach( word => {
+    if ( notNil( word ) ) {
+      updateMedia( word, req )
     }
   } )
   cleanUselessMedias( req.body )
