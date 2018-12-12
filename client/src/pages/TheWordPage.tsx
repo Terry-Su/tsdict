@@ -42,7 +42,7 @@ export default mapStateAndStyle( {
   }
 } )(
   class TheWordPage extends BasicComponent {
-    state = new State()
+    state = { ...new State() }
 
     removingWord = null
 

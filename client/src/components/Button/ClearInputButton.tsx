@@ -15,9 +15,9 @@ class Style extends GlobalStyle {
   }
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class ClearInputButton extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
     render() {
       const { classes: c, dispatch } = this.props
       return <ClearIcon className={c.entry} >

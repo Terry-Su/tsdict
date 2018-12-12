@@ -40,7 +40,7 @@ export default mapStateAndStyle( {
   }
 } )(
   class TheTreePage extends BasicComponent {
-    state = new State()
+    state = { ...new State() }
 
     mainRef = React.createRef()
 

@@ -25,7 +25,7 @@ class State {
 
 export default mapStateAndStyle()(
   class TheRenameDialog extends BasicComponent<Props> {
-    state = new State()
+    state = { ...new State() }
 
     onConfirmClick = () => {
       const { onClose, onSubmit } = this.props

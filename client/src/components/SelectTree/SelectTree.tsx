@@ -43,9 +43,9 @@ class Style extends GlobalStyle {
   }
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class SelectTree extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     get filtered() {
       const { enableWord } = this.props

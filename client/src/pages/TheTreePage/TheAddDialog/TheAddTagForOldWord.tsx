@@ -14,9 +14,9 @@ class Props extends DefaultProps {
 class State {}
 class Style extends GlobalStyle {}
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class TheAddTagForOldWord extends BasicComponent<Props, State > {
-    state = new State()
+    state = { ...new State() }
 
     get currentTags(): Tag[] {
       const { word } = this.props

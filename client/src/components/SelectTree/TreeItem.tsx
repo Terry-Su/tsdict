@@ -51,9 +51,9 @@ class Style extends GlobalStyle {
   }
 }
 
-const TreeItem = mapStateAndStyle<Props>( new Style() )(
+const TreeItem = mapStateAndStyle<Props>( { ... new Style() } )(
   class TreeItemClass extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     get filtered() {
       const { enableWord, tree } = this.props

@@ -56,9 +56,9 @@ class Style extends GlobalStyle {
   }
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class Input extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     inputRef = React.createRef()
 

@@ -33,9 +33,9 @@ class Props extends DefaultProps {
 }
 class State {}
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class SubTopBar extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
     render() {
       const { classes: c, dispatch,left, center, right, children } = this.props
       return (

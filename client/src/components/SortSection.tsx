@@ -45,9 +45,9 @@ function getIcon( isAscending: boolean, shallShow: boolean ) {
   )
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class SortSection extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     onSortByNameClick = () => {
       this.setState( prevState => {

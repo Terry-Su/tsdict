@@ -18,9 +18,9 @@ class State {}
 class Style extends GlobalStyle {
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class TreeItem extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
     render() {
       const { classes: c, dispatch, onClick, wordId, active } = this.props
       const word = selector.getWordByWordId( wordId )

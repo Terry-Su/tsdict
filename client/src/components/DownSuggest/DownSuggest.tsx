@@ -38,7 +38,7 @@ export default mapStateAndStyle( {
   }
 } )(
   class DownSuggest extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     defaultSuggestAlgorithm = ( text: string, texts: string[] ) => {
       return texts

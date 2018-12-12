@@ -26,9 +26,9 @@ class State {
 }
 class Style extends GlobalStyle {}
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class AddTag extends BasicComponent<Props, State > {
-    state = new State()
+    state = { ...new State() }
 
     get potentialSuggestions(): string[]{
       const { suggestTagNames = [], tags } = this.props

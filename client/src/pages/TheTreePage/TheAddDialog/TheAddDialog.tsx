@@ -75,7 +75,7 @@ export default mapStateAndStyle( {
     },
     State
   > {
-    state = new State()
+    state = { ...new State() }
 
     treeInputRef = React.createRef()
     wordInputRef = React.createRef()
@@ -203,7 +203,7 @@ export default mapStateAndStyle( {
       this.props.dispatch( { type: "treePage/HIDE_ADD_DIALOG" } )
       // reset state
       setTimeout( () => {
-        this.setState( new State() )
+        this.setState( { ...new State() } )
       }, 200 )
     }
 

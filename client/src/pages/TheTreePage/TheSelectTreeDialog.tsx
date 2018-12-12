@@ -23,9 +23,9 @@ class Style extends GlobalStyle {
   }
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class TheSelectTreeDialog extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     onClose = () => {
       this.dispatch( { type: 'treePageSelectTreeDialog/CLOSE' } )

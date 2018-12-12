@@ -48,9 +48,9 @@ class Props extends DefaultProps {
   onTagIdsChange = ( tagIds: string[] ) => {}
 }
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class FilterSection extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     onStartDegreeChange = newDegree => {
       const { onDegreeRangeChange } = this.props

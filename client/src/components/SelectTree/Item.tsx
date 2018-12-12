@@ -28,9 +28,9 @@ class Style extends GlobalStyle {
   }
 }
 
-const Item = mapStateAndStyle<Props>( new Style() )(
+const Item = mapStateAndStyle<Props>( { ... new Style() } )(
   class ItemClass extends BasicComponent<Props, State> {
-    state = new State()
+    state = { ...new State() }
 
     get active(): boolean {
       const { selectedTreeId, treeNode } = this.props

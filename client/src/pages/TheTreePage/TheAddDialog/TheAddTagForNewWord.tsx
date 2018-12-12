@@ -11,9 +11,9 @@ class Props extends DefaultProps {}
 class State {}
 class Style extends GlobalStyle {}
 
-export default mapStateAndStyle<Props>( new Style() )(
+export default mapStateAndStyle<Props>( { ... new Style() } )(
   class TheAddTagForNewWord extends BasicComponent<Props, State > {
-    state = new State()
+    state = { ...new State() }
 
     onAdd = ( tagName: string ) => {
       const newTag = selector.getTagByTagName( tagName )

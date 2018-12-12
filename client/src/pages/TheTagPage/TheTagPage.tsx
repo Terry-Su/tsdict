@@ -28,7 +28,7 @@ class State {
 
 export default mapStateAndStyle()(
   class TheTagPage extends BasicComponent<DefaultProps, State> {
-    state = new State()
+    state = { ...new State() }
 
     mainRef= React.createRef()
 
