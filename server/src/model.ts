@@ -115,9 +115,9 @@ app.post("/push", (req: express.Request, res: express.Response) => {
 
 // replace the media(image for example) url with server url instead of base64 url
 app.post("/updateMedia", (req: express.Request, res: express.Response) => {
-  let { body: note } = req;
-  note = notNil( note ) ? updateMedia(note, req) : note
-  res.send(note);
+  let { body: word } = req;
+  word = notNil( word ) ? updateMedia(word, req) : word
+  res.send(word);
 });
 
 app.post("/updateMedias", (req: express.Request, res: express.Response) => {
@@ -127,7 +127,7 @@ app.post("/updateMedias", (req: express.Request, res: express.Response) => {
       updateMedia( word, req )
     }
   } )
-  cleanUselessMedias( req.body )
+  cleanUselessMedias( words )
   res.send( words )
 });
 

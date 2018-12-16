@@ -53,12 +53,12 @@ export default mapState(
           value: data
         } )
 
-        const note = await updateMedia()
-        notNil( note ) &&
+        const newWord = await updateMedia()
+        notNil( newWord ) &&
           this.props.dispatch( {
             type : "core/UPDATE_WORD_NOTE",
             word,
-            value: note
+            value: newWord.note
           } )
       }
     }

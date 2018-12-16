@@ -80,7 +80,7 @@ export function updateMedia(word: DictDataWord, req: express.Request) {
       return item;
     });
   }
-  return note;
+  return word;
 }
 
 export function cleanUselessMedias(words: DictDataWord[]) {
