@@ -12,6 +12,7 @@ import Tabs from '@material-ui/core/Tabs'
 import TheAddTag from './TheAddTag'
 import TheDegree from './TheDegree'
 import TheOnlineLinks from './TheOnlineLinks'
+import ThePhoneticSymbol from './ThePhoneticSymbol'
 import TheSearch from './TheSearch'
 
 export default mapState(
@@ -85,6 +86,7 @@ export default mapState(
           <br />
           {shallShowWordPanel && (
             <div>
+              <ThePhoneticSymbol />
               <TheDegree />
               <div>
                 <TheAddTag />

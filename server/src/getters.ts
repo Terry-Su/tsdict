@@ -11,3 +11,4 @@ export const getImageUrls = (words: DictDataWord[]) => flatten(
         .map(({ insert }: any) => insert.image)
     )
 );
+

@@ -1,5 +1,9 @@
 import * as express from "express";
 import * as FS from "fs-extra";
+import * as FS_ORIGIN from "fs";
+import * as READLINE from "readline";
+import { JSDOM } from "jsdom";
+
 import {
   GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
   GET_STORE_IMAGE_UNIQUE_FILE,
@@ -8,7 +12,11 @@ import {
   STORE_ROOT,
   GET_STORE_IMAGE_UNIQUE_FILE_NAME,
   GET_STORE_IMAGE_FILE_BY_NAME,
-  GET_STORE_BACKUP_IMAGE_FILE_BY_NAME
+  GET_STORE_BACKUP_IMAGE_FILE_BY_NAME,
+  Path,
+  GET_STORE_DICTS_1_HTML_FILES,
+  STORE_PHONETIC_SYMBOLS_FILE,
+  GET_STORE_PHONETIC_SYMBOLS_FILE
 } from "./constants/paths";
 import isBase64Url from "./utils/isBase64Url";
 import outputBase64Media from "./utils/outputBase64Media";
@@ -24,12 +32,12 @@ export function backup(data) {
 
 // replace the media(image for example) url with server url instead of base64 url
 export function updateMedia(word: DictDataWord, req: express.Request) {
-  const { note, name: wordName } = word
+  const { note, name: wordName } = word;
 
-  function replaceServerUrl( url: string ) {
+  function replaceServerUrl(url: string) {
     const prefix = req.protocol + "://" + req.get("host");
-    const urlInfo = new URL(url)
-    return `${prefix}${urlInfo.pathname}`
+    const urlInfo = new URL(url);
+    return `${prefix}${urlInfo.pathname}`;
   }
 
   function replaceImage(url): string {
@@ -41,17 +49,19 @@ export function updateMedia(word: DictDataWord, req: express.Request) {
       const extension = url
         .replace(/^data:.+?\//, "")
         .replace(/;base64,.+/, "");
-      
-      const name = `${wordName}-${GET_STORE_IMAGE_UNIQUE_FILE_NAME()}`
+
+      const name = `${wordName}-${GET_STORE_IMAGE_UNIQUE_FILE_NAME()}`;
       const path = `${GET_STORE_IMAGE_FILE_BY_NAME(name)}.${extension}`;
       outputBase64Media(url, path);
 
-      const backupPath = `${GET_STORE_BACKUP_IMAGE_FILE_BY_NAME(name)}.${extension}`
-      outputBase64Media( url, backupPath )
+      const backupPath = `${GET_STORE_BACKUP_IMAGE_FILE_BY_NAME(
+        name
+      )}.${extension}`;
+      outputBase64Media(url, backupPath);
       resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT(path)}`;
     }
 
-    const res = replaceServerUrl( resolvedUrl )
+    const res = replaceServerUrl(resolvedUrl);
     return res;
   }
 
@@ -69,9 +79,9 @@ export function updateMedia(word: DictDataWord, req: express.Request) {
           }
           item.insert.image = url;
         }
-        if ( item.insert.video ) {
+        if (item.insert.video) {
           try {
-            item.insert.video = replaceServerUrl(item.insert.video)
+            item.insert.video = replaceServerUrl(item.insert.video);
           } catch (e) {
             console.log(e);
           }
@@ -113,4 +123,73 @@ export function cleanUselessMedias(words: DictDataWord[]) {
     return true;
   } catch (e) {}
   return null;
+}
+
+export function generateMdxDataToHtml(mdxDataFile: Path, output: Path) {
+  let isWordName = true;
+  let html = "";
+  let wordName: string;
+  READLINE.createInterface({
+    input: FS_ORIGIN.createReadStream(mdxDataFile),
+    terminal: false
+  })
+    .on("line", line => {
+      if (isWordName) {
+        wordName = encodeURIComponent(line);
+        html = "";
+        isWordName = false;
+      } else if (line === "</>") {
+        if (wordName && wordName.length > 0) {
+          const outputFile = PATH.resolve(output, `${wordName}.html`);
+          FS.writeFileSync(outputFile, html);
+        }
+
+        isWordName = true;
+        html = "";
+      } else {
+        html = html + line;
+        isWordName = false;
+      }
+    })
+    .on("close", () => {
+      console.log("completed");
+    });
+}
+
+export function generatePhoneticSymbols() {
+  let htmlFiles: any[] = GET_STORE_DICTS_1_HTML_FILES();
+  run();
+  let data = {}
+  function run() {
+    setTimeout(() => {
+      const file = htmlFiles.pop();
+      const name = PATH.basename(file).replace(PATH.extname(file), "");
+      if (
+        !["-", `'`, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].some((str: string) =>
+          name.startsWith(str)
+        ) &&
+        !name.includes("%")
+      ) {
+        FS.readFile(file, { encoding: "utf8" }).then(html => {
+          const dom = new JSDOM(html);
+          const targets = dom.window.document.getElementsByClassName("uig");
+          if (targets && targets.length > 0) {
+            let texts = [];
+            for (let target of targets) {
+              texts.push(target.innerHTML);
+            }
+            data[name] = texts
+            console.log(name, texts.length);
+            // FS.outputJSONSync(GET_STORE_PHONETIC_SYMBOLS_FILE( name ), data);
+          }
+         
+        });
+      }
+      if (htmlFiles.length > 0) {
+        run();
+      }else {
+        FS.outputJSONSync(STORE_PHONETIC_SYMBOLS_FILE, data)
+      }
+    }, 0);
+  }
 }

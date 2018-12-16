@@ -1,11 +1,15 @@
 import '../index'
-// describe( "Test", () => {
-//   it( "Unit", () => {
-//     // hello()
 
-//     console.log( 123 )
-//   } )
-// } )
+
+import { generateMdxDataToHtml, generatePhoneticSymbols } from '../actions';
+import { STORE_DICTS_1_MDX_SOURCE, STORE_DICTS_1_HTML } from '../constants/paths';
+
+// generateMdxDataToHtml( STORE_DICTS_1_MDX_SOURCE, STORE_DICTS_1_HTML )
+
+// generatePhoneticSymbols()
+
+
+
 
 describe("long asynchronous specs", function() {
   var originalTimeout;
@@ -15,9 +19,6 @@ describe("long asynchronous specs", function() {
   });
 
   it("takes a long time", function(done) {
-
-
-
     setTimeout(function() {
       done();
     }, 9000000);
@@ -27,3 +28,4 @@ describe("long asynchronous specs", function() {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 });
+

@@ -122,6 +122,14 @@ export default {
           state
       }
 
+      UPDATE_WORD_P = ( state, { word, p } ) => {
+        return this.UPDATE_WORD( state, {
+          word,
+          key  : "p",
+          value: p
+        } )
+      }
+
       REMOVE_WORD_IDS_OF_WORD_IN_TREES = ( state : CoreState, { word }: { word: DictDataWord } ) => {
         const { rootTree } = selector
         const { words } = selector.coreState
