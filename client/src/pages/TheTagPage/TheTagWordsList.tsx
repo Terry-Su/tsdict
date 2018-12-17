@@ -65,12 +65,12 @@ export default mapStateAndStyle()(
     }
 
     onWordClick = word => {
-      this.props.dispatch(
-        push( HOME_ROUTE )
-      )
       this.props.dispatch( {
         type : "app/UPDATE_SEARCHING",
         value: word.name
+      } )
+      this.props.dispatch( {
+        type: "app/SHOW_CURRENT_WORD_PANEL",
       } )
     }
 

@@ -1,18 +1,40 @@
 import React, { Component } from 'react'
 
-import TopbarLayout from '@/components/layouts/TopbarLayout'
-import Note, { NoteData } from '@/components/Note/Note'
+import BasicComponent, { DefaultProps } from '@/components/BasicComponent'
+import TheAddTag from '@/components/TheCurrentWordPanel/TheAddTag'
+import TheDegree from '@/components/TheCurrentWordPanel/TheDegree'
+import TheOnlineLinks from '@/components/TheCurrentWordPanel/TheOnlineLinks'
+import ThePhoneticSymbol from '@/components/TheCurrentWordPanel/ThePhoneticSymbol'
+import TheSearch from '@/components/TheCurrentWordPanel/TheSearch'
 import selector from '@/selectors'
 import { updateMedia } from '@/services'
+import { GlobalStyle } from '@/style/globalStyle'
 import { notNil } from '@/utils/lodash'
-import mapState from '@/utils/mapState'
-import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
+import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import { IconButton, Tab, Tabs } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 
-export default mapState(
-  class TheHomePage extends Component<any, any> {
-    state = {
-      tabIndex: 0
+import Note, { NoteData } from '../Note/Note'
+
+class Props extends DefaultProps {
+  enableClose: boolean
+}
+class State {
+  tabIndex: number = 0
+}
+class Style extends GlobalStyle {
+  searchRow = {
+    display       : "flex",
+    justifyContent: "space-between"
+  }
+}
+
+export default mapStateAndStyle<Props>( { ...new Style() } )(
+  class TheCurrentWordPanel extends BasicComponent<Props, State> {
+    state = { ...new State() }
+
+    onClosePanelClick = () => {
+      this.dispatch( { type: "app/HIDE_CURRENT_WORD_PANEL" } )
     }
 
     onAddNoteClick = () => {
@@ -60,18 +82,26 @@ export default mapState(
     }
 
     render() {
-      const { app } = this.props
-      const { searching } = app
+      const { classes: c, dispatch, enableClose = true } = this.props
       const {
         wordCanBeAdded: isNewWord,
         currentWord,
-        shallShowWordPanel
+        shallShowWordPanel,
+        appState
       } = selector
+      const { searching } = appState
       const note = notNil( currentWord ) ? currentWord.note : null
       const { tabIndex } = this.state
       return (
-        <TopbarLayout isShowingCurrentWordPanel={true} enableCurrentWordPanelClose={false}>
-          {/* <TheSearch />
+        <div>
+          <div className={c.searchRow}>
+            <TheSearch />
+            {enableClose && (
+              <IconButton onClick={this.onClosePanelClick}>
+                <CloseIcon />
+              </IconButton>
+            )}
+          </div>
           <br />
           {shallShowWordPanel && (
             <div>
@@ -99,8 +129,8 @@ export default mapState(
               )}
               {tabIndex === 1 && <TheOnlineLinks />}
             </div>
-          )} */}
-        </TopbarLayout>
+          )}
+        </div>
       )
     }
   }

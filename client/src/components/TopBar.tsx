@@ -109,6 +109,11 @@ export default mapStateAndStyle( {
         .then( () => dispatch( { type: "app/SHOW_UPDATE_MEDIA_SUCCESS" } ) )
         .catch( () => dispatch( { type: "app/SHOW_UPDATE_MEDIA_FAIL" } ) )
     }
+
+    onLinkClick = () => {
+      this.props.dispatch( { type: 'app/HIDE_CURRENT_WORD_PANEL' } )
+    }
+
     render() {
       const { anchorEl } = this.state
       const { classes: c } = this.props
@@ -117,19 +122,19 @@ export default mapStateAndStyle( {
         <AppBar position="static" className={ c.entry }>
           <Toolbar>
             {/* Buttons */}
-            <Link to={HOME_ROUTE} className={c.link}>
+            <Link to={HOME_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Home</IconButton>
             </Link>
-            <Link to={WORDS_ROUTE} className={c.link}>
+            <Link to={WORDS_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Words</IconButton>
             </Link>
-            <Link to={TREE_ROUTE} className={c.link}>
+            <Link to={TREE_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Tree</IconButton>
             </Link>
-            <Link to={TAGS_ROUTE} className={c.link}>
+            <Link to={TAGS_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Tag</IconButton>
             </Link>
-            <Link to={SETTING_ROUTE} className={c.link}>
+            <Link to={SETTING_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Setting</IconButton>
             </Link>
 

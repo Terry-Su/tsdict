@@ -65,9 +65,9 @@ export default mapStateAndStyle()(
       return res
     }
 
-    getTreeItem = ( node: TreeNode ) => {
+    getTreeItem = ( node: TreeNode, mainRef: any ) => {
       if ( isPlainObject( node ) ) {
-        return <TreeItem tree={ node }/>
+        return <TreeItem tree={ node } mainRef={mainRef}/>
       }
       if ( isString( node ) ) {
         const wordId = node
@@ -76,13 +76,9 @@ export default mapStateAndStyle()(
       }
     }
 
-    onItemClick = () => {
-      const { mainRef } = this.props
-      scrollToTop( mainRef.current )
-    }
-
     render() {
       const { reorganizedNodes } = this
+      const { mainRef } = this.props
       return (
         <div>
           <List>
@@ -91,8 +87,7 @@ export default mapStateAndStyle()(
               key = {
                 isPlainObject( node ) ? ( node as Tree ).id : ( node as string )
               }
-              onClick={ this.onItemClick }
-            >{this.getTreeItem( node )}</div> )
+            >{this.getTreeItem( node, mainRef )}</div> )
           }
         </List>
         </div>

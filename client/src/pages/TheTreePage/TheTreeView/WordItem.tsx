@@ -23,12 +23,12 @@ export default mapStateAndStyle()(
   }, any> {
     onClick = () => {
       const { word, dispatch } = this.props
-      dispatch(
-        push( HOME_ROUTE )
-      )
       dispatch( {
         type : "app/UPDATE_SEARCHING",
         value: word.name
+      } )
+      dispatch( {
+        type: "app/SHOW_CURRENT_WORD_PANEL",
       } )
     }
 

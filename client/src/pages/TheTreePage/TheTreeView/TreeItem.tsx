@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import withLongPress from '@/components/highOrder/withLongPress'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import { scrollToTop } from '@/utils/scrollToTop'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -13,6 +14,9 @@ const DecoratedListItem: any = withLongPress( ListItem )
 export default mapStateAndStyle()(
   class TreeItem extends Component<any, any> {
     onClick = () => {
+      const { mainRef } = this.props
+      scrollToTop( mainRef.current )
+
       const { tree, dispatch } = this.props
       dispatch( { type: 'treePage/UPDATE_CURRENT_TREE_ID', value: tree.id } )
     }

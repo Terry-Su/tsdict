@@ -3,12 +3,15 @@ import CommonModelReducer from '@/utils/CommonModelReducer'
 import { uniq } from '@/utils/lodash'
 
 export class AppState {
+  isShowingCurrentWordPanel: boolean = false
+
   searching: string = ""
   isShowingMessage: boolean = false
   message: string = ""
   messageType: string = "success"
 
   recentAddedTagNames: string[] = []
+
 }
 
 export default {
@@ -20,6 +23,9 @@ export default {
     ...new class extends CommonModelReducer {
       UPDATE_STATE = ( state, { value } ) => value
       UPDATE_SEARCHING = ( state, { value } ) => ( { ...state, searching: value } )
+
+      SHOW_CURRENT_WORD_PANEL = this.UPDATE_STATE_KEY_VALUE( 'isShowingCurrentWordPanel', true )
+      HIDE_CURRENT_WORD_PANEL = this.UPDATE_STATE_KEY_VALUE( 'isShowingCurrentWordPanel', false )
 
       // message
       // SHOW_MESSAGE   = state => ( { ...state, isShowingMessage: true } )

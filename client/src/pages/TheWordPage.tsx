@@ -81,6 +81,7 @@ export default mapStateAndStyle( {
 
     onWordNameClick = value => {
       this.props.dispatch( { type: "app/UPDATE_SEARCHING", value } )
+      this.props.dispatch( { type: "app/SHOW_CURRENT_WORD_PANEL" } )
     }
 
     onMoreClick = ( event, word ) => {
@@ -222,7 +223,7 @@ export default mapStateAndStyle( {
                   className={c.listItem}
                   onClick={() => this.onWordNameClick( word.name )}
                 >
-                  <Link to={HOME_ROUTE}>{word.name}</Link>
+                  {word.name}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <span className={c.degree}>{notNil( word.degree ) ? word.degree / 2 : 0}×★</span>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
