@@ -168,7 +168,10 @@ export default mapStateAndStyle( {
               />
             )}
 
-            <TheTreeView mainRef={mainRef} />
+            <TheTreeView
+              mainRef={mainRef}
+              shallShowFilterSection={shallShowFilterSection}
+            />
             <TheAddButton />
 
             <TheAddDialog />

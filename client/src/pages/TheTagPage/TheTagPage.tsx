@@ -144,7 +144,7 @@ export default mapStateAndStyle()(
                 enableTag={false}
               />
             )}
-            {isTagsHome ? <TheTagsList shallShowFilterSection={shallShowFilterSection} mainRef={mainRef} /> : <TheTagWordsList />}
+            {isTagsHome ? <TheTagsList  mainRef={mainRef} /> : <TheTagWordsList shallShowFilterSection={shallShowFilterSection}/>}
             <TheTagFunctionDialogue />
             <TheWordFunctionDialogue />
             <TheRenameDialog />
