@@ -44,7 +44,8 @@ export default mapStateAndStyle()(
       const {
         sortType,
         isAscendingName,
-        isAscendingDegree
+        isAscendingDegree,
+        isAscendingCreateTime,
       } = selector.treePageState
       // sort-trees
       resTrees = resTrees.sort( ( a, b ) => sortBySize( a.name, b.name, isAscendingName ) )
@@ -54,7 +55,8 @@ export default mapStateAndStyle()(
       resWords = sortWords( resWords, {
         sortType,
         isAscendingName,
-        isAscendingDegree
+        isAscendingDegree,
+        isAscendingCreateTime,
       } )
 
       resWordIds = resWords.map( word => word.id )

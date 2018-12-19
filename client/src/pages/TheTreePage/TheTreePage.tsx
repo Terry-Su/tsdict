@@ -88,7 +88,7 @@ export default mapStateAndStyle( {
 
     onSortSectionChange = (
       sortType,
-      { isAscendingName, isAscendingDegree }
+      { isAscendingName, isAscendingDegree, isAscendingCreateTime }
     ) => {
       this.dispatch( { type: "treePage/UPDATE_SORT_TYPE", value: sortType } )
       this.dispatch( {
@@ -98,6 +98,10 @@ export default mapStateAndStyle( {
       this.dispatch( {
         type : "treePage/UPDATE_IS_ASCENDING_DEGREE",
         value: isAscendingDegree
+      } )
+      this.dispatch( {
+        type : "treePage/UPDATE_IS_ASCENDING_CREATE_TIME",
+        value: isAscendingCreateTime
       } )
     }
 

@@ -48,12 +48,14 @@ export default mapStateAndStyle()(
       const {
         sortType,
         isAscendingName,
-        isAscendingDegree
+        isAscendingDegree,
+        isAscendingCreateTime,
       } = selector.tagPageState
       res = sortWords( res, {
         sortType,
         isAscendingName,
-        isAscendingDegree
+        isAscendingDegree,
+        isAscendingCreateTime,
       } )
 
       return res

@@ -9,7 +9,7 @@ import CommonModelReducer from '@/utils/CommonModelReducer'
 import { isTreeItem } from '@/utils/getters'
 import getUniqueId from '@/utils/getUniqueId'
 import { removeArrayElement, removeArrayElementByIndex } from '@/utils/js'
-import { DictDataWord, DictDataWordDegree } from '@shared/__typings__/DictData'
+import { DictDataWord, DictDataWordDegree, Time } from '@shared/__typings__/DictData'
 
 import { getNodesTrees, getNodesWordIds } from './treePage'
 
@@ -297,12 +297,13 @@ export const createOnlineLink = ( {
 
 export const createWord = (
   name: string,
-  config: { note?: NoteData; degree?: DictDataWordDegree } = { degree: 0 }
+  config: { note?: NoteData; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 }
 ) => ( {
-  id    : getUniqueId(),
+  id        : getUniqueId(),
   name,
-  note  : config.note,
-  degree: config.degree
+  note      : config.note,
+  degree    : config.degree,
+  createTime: new Date().getTime()
 } )
 
 export const createTag = ( name: string, ids: string[] = [] ) => ( {

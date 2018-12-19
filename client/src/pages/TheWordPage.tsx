@@ -68,12 +68,14 @@ export default mapStateAndStyle( {
       const {
         sortType,
         isAscendingName,
-        isAscendingDegree
+        isAscendingDegree,
+        isAscendingCreateTime,
       } = selector.wordPageState
       res = sortWords( res, {
         sortType,
         isAscendingName,
-        isAscendingDegree
+        isAscendingDegree,
+        isAscendingCreateTime,
       } )
 
       return res
@@ -108,7 +110,7 @@ export default mapStateAndStyle( {
 
     onSortSectionChange = (
       sortType,
-      { isAscendingName, isAscendingDegree }
+      { isAscendingName, isAscendingDegree, isAscendingCreateTime }
     ) => {
       this.dispatch( { type: "wordPage/UPDATE_SORT_TYPE", value: sortType } )
       this.dispatch( {
@@ -118,6 +120,10 @@ export default mapStateAndStyle( {
       this.dispatch( {
         type : "wordPage/UPDATE_IS_ASCENDING_DEGREE",
         value: isAscendingDegree
+      } )
+      this.dispatch( {
+        type : "wordPage/UPDATE_IS_ASCENDING_CREATE_TIME",
+        value: isAscendingCreateTime
       } )
     }
 

@@ -9,7 +9,8 @@ import { Menu, MenuItem } from '@material-ui/core'
 
 export enum SortType {
   Name = "name",
-  Degree = "degree"
+  Degree = "degree",
+  CreateTime = 'createTime',
 }
 
 class Style extends GlobalStyle {}
@@ -17,6 +18,7 @@ class State {
   sortType: SortType = SortType.Name
   isAscendingName: boolean = true
   isAscendingDegree: boolean = true
+  isAscendingCreateTime: boolean = true
 }
 class Props extends DefaultProps {
   open: boolean = false
@@ -26,10 +28,11 @@ class Props extends DefaultProps {
   sortType: SortType
   isAscendingName: boolean
   isAscendingDegree: boolean
+  isAscendingCreateTime: boolean
 
   onChange = (
     sortType: SortType,
-    info: { isAscendingName: boolean; isAscendingDegree: boolean }
+    info: { isAscendingName: boolean; isAscendingDegree: boolean, isAscendingCreateTime: boolean }
   ) => {}
 }
 
@@ -73,15 +76,30 @@ export default mapStateAndStyle<Props>( { ... new Style() } )(
       }, this.triggerOnChange )
     }
 
+    onSortByCreateTimeClick = () => {
+      this.setState( prevState => {
+        return {
+          sortType             : SortType.CreateTime,
+          isAscendingCreateTime:
+            prevState.sortType === SortType.CreateTime ?
+              !prevState.isAscendingCreateTime :
+              prevState.isAscendingCreateTime
+        }
+      }, this.triggerOnChange )
+    }
+
     triggerOnChange = () => {
       const { onChange } = this.props
-      const { sortType, isAscendingName, isAscendingDegree } = this.state
+      const { sortType, isAscendingName, isAscendingDegree, isAscendingCreateTime } = this.state
       onChange &&
         onChange( sortType, {
           isAscendingName,
-          isAscendingDegree
+          isAscendingDegree,
+          isAscendingCreateTime,
         } )
     }
+
+    
 
     render() {
       const {
@@ -101,6 +119,10 @@ export default mapStateAndStyle<Props>( { ... new Style() } )(
         props.isAscendingDegree,
         state.isAscendingDegree
       )
+      const isAscendingCreateTime = getValueNotUndefined(
+        props.isAscendingCreateTime,
+        state.isAscendingCreateTime
+      )
       return (
         <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
           <MenuItem onClick={this.onSortByNameClick}>
@@ -110,6 +132,10 @@ export default mapStateAndStyle<Props>( { ... new Style() } )(
           <MenuItem onClick={this.onSortByDegreeClick}>
             Sort by Degree &nbsp;
             {getIcon( isAscendingDegree, sortType === SortType.Degree )}
+          </MenuItem>
+          <MenuItem onClick={this.onSortByCreateTimeClick}>
+            Sort by Create Time &nbsp;
+            {getIcon( isAscendingCreateTime, sortType === SortType.CreateTime )}
           </MenuItem>
         </Menu>
       )

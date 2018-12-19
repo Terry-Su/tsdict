@@ -6,6 +6,7 @@ export class WordPageState {
   sortType: SortType = SortType.Name
   isAscendingName: boolean = true
   isAscendingDegree: boolean = true
+  isAscendingCreateTime: boolean = true
 
   startDegree: DictDataWordDegree = 0
   endDegree: DictDataWordDegree = 10
@@ -22,6 +23,8 @@ export default {
       UPDATE_SORT_TYPE = this.UPDATE_STATE_KEY( 'sortType' )
       UPDATE_IS_ASCENDING_NAME = this.UPDATE_STATE_KEY( 'isAscendingName' )
       UPDATE_IS_ASCENDING_DEGREE = this.UPDATE_STATE_KEY( 'isAscendingDegree' )
+      UPDATE_IS_ASCENDING_CREATE_TIME = this.UPDATE_STATE_KEY( 'isAscendingCreateTime' )
+
 
       UPDATE_START_DEGREE = this.UPDATE_STATE_KEY( 'startDegree' )
       UPDATE_END_DEGREE = this.UPDATE_STATE_KEY( 'endDegree' )
