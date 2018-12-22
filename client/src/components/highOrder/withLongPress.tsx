@@ -42,6 +42,8 @@ export class LongPress extends Component<
         onMouseUp={this.onRelease}
         onTouchEnd={this.onRelease}
         onMouseOut={this.onRelease}
+        onMouseLeave={this.onRelease}
+        onTouchMove={this.onRelease}
       >
         {children}
       </div>
