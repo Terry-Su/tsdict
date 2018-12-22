@@ -99,7 +99,7 @@ export function cleanUselessMedias(words: DictDataWord[]) {
     const relativePaths = imageUrls.map(url => {
       try {
         url = new URL(url);
-        return url.pathname;
+        return decodeURIComponent(url.pathname);
       } catch (e) {
         console.log(e);
       }
