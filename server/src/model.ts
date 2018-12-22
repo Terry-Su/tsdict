@@ -10,7 +10,8 @@ import {
   CLIENT_PUBLIC,
   CLIENT_PUBLIC_INDEX,
   CLIENT_PUBLIC_APP_CACHE,
-  STORE_PHONETIC_SYMBOLS_FILE
+  STORE_PHONETIC_SYMBOLS_FILE,
+  RELATIVE_PHONETIC_SYMBOLS_FILE
 } from "./constants/paths";
 import * as bodyParser from "body-parser";
 import * as FS from "fs-extra";
@@ -50,7 +51,7 @@ app.get("/cache", (req, res) => {
                 return insert.image
               }
               if ( notNil( insert.video ) ) {
-                return insert.video
+                // return insert.video
               }
             })
         )
@@ -67,7 +68,6 @@ CACHE:
 index.html
 bundle.js
 ${urlsStr}
-
 #NETWORK:
 #*
 
@@ -133,8 +133,7 @@ app.post("/updateMedias", (req: express.Request, res: express.Response) => {
 });
 
 
-app.post( '/fetchPhoneticSymbol', (req, res) => {
-  const word: DictDataWord = req.body
+app.get( '/fetchPhoneticSymbol', (req, res) => {
   const data = FS.readJsonSync( STORE_PHONETIC_SYMBOLS_FILE )
-  res.send(data[word.name] || [])
+  res.send(data || [])
 } )

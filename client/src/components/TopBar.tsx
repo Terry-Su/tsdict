@@ -22,7 +22,7 @@ import Uploader from './Uploader/Uploader'
 export default mapStateAndStyle( {
   entry: {
     maxHeight: `${TOP_BAR_HEIGHT}px`,
-    minHeight: `${TOP_BAR_HEIGHT}px`,
+    minHeight: `${TOP_BAR_HEIGHT}px`
   },
   link: {
     fontSize      : "12px!important",
@@ -30,6 +30,13 @@ export default mapStateAndStyle( {
     "& span"      : {
       fontSize: "12px!important",
       color   : "white!important"
+    }
+  },
+  noLink: {
+    textDecoration: "none!important",
+    color         : "unset!important",
+    "& span"      : {
+      color: "unset!important"
     }
   }
 } )(
@@ -81,10 +88,15 @@ export default mapStateAndStyle( {
               const currentState = selector.state[ name ]
               const targetState = data[ name ]
 
-              dispatch( { type : `${name}/UPDATE_STATE`, value: notNil( targetState ) ? {
-                ...currentState,
-                ...targetState,
-              } : selector.state[ name ] } )
+              dispatch( {
+                type : `${name}/UPDATE_STATE`,
+                value: notNil( targetState ) ?
+                  {
+                      ...currentState,
+                      ...targetState
+                    } :
+                  selector.state[ name ]
+              } )
               dispatch( { type: `app/SHOW_PULL_SUCCESS` } )
             } )
         } )
@@ -111,7 +123,7 @@ export default mapStateAndStyle( {
     }
 
     onLinkClick = () => {
-      this.props.dispatch( { type: 'app/HIDE_CURRENT_WORD_PANEL' } )
+      this.props.dispatch( { type: "app/HIDE_CURRENT_WORD_PANEL" } )
     }
 
     render() {
@@ -119,22 +131,30 @@ export default mapStateAndStyle( {
       const { classes: c } = this.props
 
       return (
-        <AppBar position="static" className={ c.entry }>
+        <AppBar position="static" className={c.entry}>
           <Toolbar>
             {/* Buttons */}
             <Link to={HOME_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Home</IconButton>
             </Link>
-            <Link to={WORDS_ROUTE} className={c.link} onClick={this.onLinkClick}>
+            <Link
+              to={WORDS_ROUTE}
+              className={c.link}
+              onClick={this.onLinkClick}
+            >
               <IconButton>Words</IconButton>
             </Link>
             <Link to={TREE_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Tree</IconButton>
             </Link>
-            <Link to={TAGS_ROUTE} className={c.link} onClick={this.onLinkClick}>
+            {/* <Link to={TAGS_ROUTE} className={c.link} onClick={this.onLinkClick}>
               <IconButton>Tag</IconButton>
-            </Link>
-            <Link to={SETTING_ROUTE} className={c.link} onClick={this.onLinkClick}>
+            </Link> */}
+            <Link
+              to={SETTING_ROUTE}
+              className={c.link}
+              onClick={this.onLinkClick}
+            >
               <IconButton>Setting</IconButton>
             </Link>
 
@@ -143,6 +163,13 @@ export default mapStateAndStyle( {
               open={Boolean( anchorEl )}
               onClose={this.handleClose}
             >
+              <Link
+                className={c.noLink}
+                to={TAGS_ROUTE}
+                onClick={this.onLinkClick}
+              >
+                <MenuItem>Tag</MenuItem>
+              </Link>
               <MenuItem onClick={this.onExportClick}>Export</MenuItem>
 
               <div style={{ position: "relative" }}>
@@ -153,13 +180,9 @@ export default mapStateAndStyle( {
               <MenuItem onClick={this.onUpdateMediaClick}>
                 Update Media
               </MenuItem>
-              <MenuItem onClick={this.onPullClick}>
-                Pull
-              </MenuItem>
+              <MenuItem onClick={this.onPullClick}>Pull</MenuItem>
 
-              <MenuItem onClick={this.onPushClick}>
-                Push
-              </MenuItem>
+              <MenuItem onClick={this.onPushClick}>Push</MenuItem>
               {/* <MenuItem onClick={this.handleClose}></MenuItem> */}
             </Menu>
             <IconButton

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { Tree, TreeNode } from '@/__typings__'
 import BasicComponent from '@/components/BasicComponent'
 import FilterSection from '@/components/FilterSection'
 import SubTopbarLayout from '@/components/layouts/SubTopbarLayout'
@@ -7,7 +8,10 @@ import TopbarLayout from '@/components/layouts/TopbarLayout'
 import SortSection from '@/components/SortSection'
 import SubTopBar from '@/components/SubTopBar'
 import selector from '@/selectors'
-import { notNil } from '@/utils/lodash'
+import {
+    filterWordsByDegreeRange, filterWordsBySelectedTagIds, sortBySize, sortWords
+} from '@/shared/reorganizeItems'
+import { isPlainObject, isString, notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { scrollToTop } from '@/utils/scrollToTop'
 import { IconButton } from '@material-ui/core'
@@ -46,6 +50,51 @@ export default mapStateAndStyle( {
 
     get shallShowBackButton(): boolean {
       return notNil( selector.currentTreeIdAbove )
+    }
+
+    get reorganizedNodes(): TreeNode[] {
+      const { shallShowFilterSection } = this.state
+      const { nodes } = selector.currentTree
+      let res = [ ...nodes ]
+      let resTrees = res.filter( node => isPlainObject( node ) ) as Tree[]
+      let resWordIds = res.filter( node => isString( node ) ) as string[]
+      let resWords = resWordIds.map( id => selector.getWordByWordId( id ) )
+
+      // filter
+      if ( shallShowFilterSection ) {
+        const {
+          startDegree,
+          endDegree,
+          selectedTagIds
+        } = selector.treePageState
+        resWords = filterWordsBySelectedTagIds( resWords, selectedTagIds )
+        resWords = filterWordsByDegreeRange( resWords, startDegree, endDegree )
+      }
+
+      const {
+        sortType,
+        isAscendingName,
+        isAscendingDegree,
+        isAscendingCreateTime,
+      } = selector.treePageState
+      // sort-trees
+      resTrees = resTrees.sort( ( a, b ) => sortBySize( a.name, b.name, isAscendingName ) )
+
+      // sort-words
+      
+      resWords = sortWords( resWords, {
+        sortType,
+        isAscendingName,
+        isAscendingDegree,
+        isAscendingCreateTime,
+      } )
+
+      resWordIds = resWords.map( word => word.id )
+      res = [
+        ...resTrees,
+        ...resWordIds,
+      ]
+      return res
     }
 
     onBackClick = () => {
@@ -121,7 +170,7 @@ export default mapStateAndStyle( {
         isAddDialogOpen
       } = selector.treePageState
 
-      const { mainRef } = this
+      const { mainRef, reorganizedNodes } = this
 
       const { name } = selector.currentTree
 
@@ -135,7 +184,7 @@ export default mapStateAndStyle( {
                     <KeyboardBackspace onClick={this.onBackClick} />
                   )
                 }
-                center={shallShowBackButton ? name : "Tree"}
+                center={`${shallShowBackButton ? name : "Tree"}(${reorganizedNodes.length})`}
                 right={
                   <div>
                     <IconButton
@@ -174,7 +223,7 @@ export default mapStateAndStyle( {
 
             <TheTreeView
               mainRef={mainRef}
-              shallShowFilterSection={shallShowFilterSection}
+              reorganizedNodes={reorganizedNodes}
             />
             <TheAddButton />
 

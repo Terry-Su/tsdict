@@ -13,6 +13,8 @@ class Style extends GlobalStyle {}
 
 export default mapStateAndStyle<Props>( { ...new Style() } )(
   class ThePhoneticSymbol extends BasicComponent<Props, State> {
+    audioRef: any = React.createRef()
+
     state = { ...new State() }
 
     get possibleVoiceUrls(): string[] {
@@ -50,7 +52,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
     }
 
     onPronunceClick = () => {
-      this.possibleVoiceUrls
+      this.audioRef && this.audioRef.current && this.audioRef.current.play()
     }
 
     render() {
@@ -75,7 +77,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
             ) )
           )}
           <Button onClick={this.onPronunceClick}>🎤</Button>
-          <audio controls>
+          <audio ref={this.audioRef} controls style={{ display: 'none' }}>
             {possibleVoiceUrls.map( ( url, index ) => (
               <source key={index} src={url} />
             ) )}

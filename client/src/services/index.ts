@@ -2,7 +2,7 @@ import selector from '@/selectors'
 import request from '@/utils/request'
 
 const requestServer = ( url, ...args ) => request( `${selector.server}/${url}`, ...args )
-const post = ( url, data, config = {} ) => requestServer( url, {
+const post = ( url, data = {}, config = {} ) => requestServer( url, {
   method : 'post',
   headers: {
     "Content-Type": "application/json; charset=utf-8",
@@ -29,4 +29,4 @@ export const push = data => post( 'push', data )
 export const updateMedia = () => post( 'updateMedia', selector.currentWord )
 export const updateMedias = () => post( 'updateMedias', selector.coreState.words )
 
-export const fetchCurrentPhoneticSymbol = () => post( 'fetchPhoneticSymbol', selector.currentWord )
+export const fetchCurrentPhoneticSymbol = () => get( 'fetchPhoneticSymbol' ).then( resopnse => resopnse[ selector.currentWord.name ] || '' )

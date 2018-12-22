@@ -21,6 +21,7 @@ export const STORE_DICTS_1_HTML = resolve( STORE_DICTS, '1/html' )
 export const GET_STORE_DICTS_1_HTML_FILES = () => GLOB.sync( `${STORE_DICTS_1_HTML}/*` )
 
 
+export const RELATIVE_PHONETIC_SYMBOLS_FILE = 'phoneticSymbols/phoneticSymbols.json'
 export const STORE_PHONETIC_SYMBOLS_FILE = resolve( STORE_ROOT, 'phoneticSymbols/phoneticSymbols.json' )
 export const GET_STORE_PHONETIC_SYMBOLS_FILE = name => resolve( STORE_ROOT, `phoneticSymbols/${name}.json` )
 
