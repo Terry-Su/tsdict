@@ -184,7 +184,7 @@ export default mapStateAndStyle( {
           <SubTopbarLayout
             topbar={
               <SubTopBar
-              center="All Words"
+              center={`Words(${ reorganizedWords.length })`}
               right={
                 <div>
                   <IconButton
