@@ -3,8 +3,10 @@ import React, { Component } from 'react'
 import { Tag } from '@/__typings__'
 import AddTag from '@/components/AddTag'
 import BasicComponent, { DefaultProps } from '@/components/BasicComponent'
+import { createTag } from '@/models/core'
 import selector from '@/selectors'
 import { GlobalStyle } from '@/style/globalStyle'
+import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 
 class Props extends DefaultProps {}
@@ -16,7 +18,8 @@ export default mapStateAndStyle<Props>( { ... new Style() } )(
     state = { ...new State() }
 
     onAdd = ( tagName: string ) => {
-      const newTag = selector.getTagByTagName( tagName )
+      let newTag = selector.getTagByTagName( tagName )
+      newTag  = notNil( newTag ) ? newTag : createTag( tagName )
       this.props.dispatch( {
         type: "treePageAddDialog/ADD_TO_CURRENT_TAGS",
         newTag

@@ -77,7 +77,7 @@ export default mapStateAndStyle<Props>( { ... new Style() } )(
       const { potentialSuggestions } = this
       return (
         <div className={c.d_ib}>
-          {tags.map( tag => (
+          {tags.map( tag => tag && (
             <span key={tag.id}>
               <Chip label={tag.name} onDelete={ () => this.onChipDelete( tag ) } />
               &nbsp;&nbsp;
