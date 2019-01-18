@@ -36,11 +36,10 @@ class State {
 
 export default mapStateAndStyle( {
   listItem: {
-    cursor: "pointer",
     border: "1px solid #ddd"
   },
   degree: {
-    color: '#dfdfdf'
+    color: "#dfdfdf"
   }
 } )(
   class TheWordPage extends BasicComponent {
@@ -71,13 +70,13 @@ export default mapStateAndStyle( {
         sortType,
         isAscendingName,
         isAscendingDegree,
-        isAscendingCreateTime,
+        isAscendingCreateTime
       } = selector.wordPageState
       res = sortWords( res, {
         sortType,
         isAscendingName,
         isAscendingDegree,
-        isAscendingCreateTime,
+        isAscendingCreateTime
       } )
 
       return res
@@ -186,34 +185,33 @@ export default mapStateAndStyle( {
           <SubTopbarLayout
             topbar={
               <SubTopBar
-              center={`Words(${ reorganizedWords.length })`}
-              right={
-                <div>
-                  <IconButton
-                    color={shallShowFilterSection ? "primary" : "default"}
-                    onClick={this.onFilterButtonClick}
-                  >
-                    <FilterIcon />
-                  </IconButton>
-                  <IconButton onClick={this.onSortButtonClick}>
-                    <SortIcon />
-                  </IconButton>
-                  <SortSection
-                    anchorEl={sortAnchorEl}
-                    open={Boolean( sortAnchorEl )}
-                    onClose={this.onSortSectionClose}
-                    sortType={sortType}
-                    isAscendingName={isAscendingName}
-                    isAscendingDegree={isAscendingDegree}
-                    onChange={this.onSortSectionChange}
-                  />
-                </div>
-              }
-            />
+                center={`Words(${reorganizedWords.length})`}
+                right={
+                  <div>
+                    <IconButton
+                      color={shallShowFilterSection ? "primary" : "default"}
+                      onClick={this.onFilterButtonClick}
+                    >
+                      <FilterIcon />
+                    </IconButton>
+                    <IconButton onClick={this.onSortButtonClick}>
+                      <SortIcon />
+                    </IconButton>
+                    <SortSection
+                      anchorEl={sortAnchorEl}
+                      open={Boolean( sortAnchorEl )}
+                      onClose={this.onSortSectionClose}
+                      sortType={sortType}
+                      isAscendingName={isAscendingName}
+                      isAscendingDegree={isAscendingDegree}
+                      onChange={this.onSortSectionChange}
+                    />
+                  </div>
+                }
+              />
             }
-            mainRef={ this.mainRef }
+            mainRef={this.mainRef}
           >
-            
             {shallShowFilterSection && (
               <FilterSection
                 startDegree={startDegree}
@@ -223,20 +221,25 @@ export default mapStateAndStyle( {
                 onTagIdsChange={this.onFilterSectionTagIdsChange}
               />
             )}
-            <VirtualScrollingList
-              items={ reorganizedWords }
-              rowHeight={ 54 }
-              render={ ( {
-                virtualScrollingItem: word,
-                style,
-              } ) => <ListItem
-                style={style}
-                className={c.listItem}
-                onClick={() => this.onWordNameClick( word.name )}
-              >
-                {word.name}
+            <List style={{
+              width : '100%',
+              height: '100%',
+            }}>
+                         {/* {reorganizedWords.map( word => (
+                <ListItem key={word.id} className={c.listItem}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    cursor : "pointer"
+                  }}
+                  onClick={() => this.onWordNameClick( word.name )}
+                >
+                  {word.name}
+                </span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span className={c.degree}>{notNil( word.degree ) ? word.degree / 2 : 0}×★</span>
+                <span className={c.degree}>
+                  {notNil( word.degree ) ? word.degree / 2 : 0}×★
+                </span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button
                   variant="contained"
@@ -244,29 +247,39 @@ export default mapStateAndStyle( {
                 >
                   ...
                 </Button>
-              </ListItem> }
-            />
-            <List>
-            
-
-              {/* {reorganizedWords.map( word => (
-                <ListItem
-                  key={word.id}
-                  className={c.listItem}
-                  onClick={() => this.onWordNameClick( word.name )}
-                >
-                  {word.name}
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span className={c.degree}>{notNil( word.degree ) ? word.degree / 2 : 0}×★</span>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button
-                    variant="contained"
-                    onClick={event => this.onMoreClick( event, word )}
-                  >
-                    ...
-                  </Button>
-                </ListItem>
-              ) )} */}
+              </ListItem>
+                ) )} */}
+             
+              <VirtualScrollingList
+                items={reorganizedWords}
+                rowHeight={54}
+                render={( { virtualScrollingItem: word, style } ) => (
+                  <ListItem style={style} className={c.listItem}>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        cursor : "pointer"
+                      }}
+                      onClick={() => this.onWordNameClick( word.name )}
+                    >
+                      {word.name}
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span className={c.degree}>
+                      {notNil( word.degree ) ? word.degree / 2 : 0}×★
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>
+                    <Button
+                      variant="contained"
+                      onClick={event => this.onMoreClick( event, word )}
+                    >
+                      ...
+                    </Button>
+                    </div>
+                  </ListItem>
+                )}
+              />
             </List>
             <Menu
               anchorEl={wordMoreAnchorEl}
