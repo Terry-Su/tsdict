@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 
 import BasicComponent, { DefaultProps } from '@/components/BasicComponent'
 import withLongPress from '@/components/highOrder/withLongPress'
+import VirtualScrollingList from '@/components/VirtualScrollingList/VirtualScrollingList'
 import { HOME_ROUTE } from '@/constants/routes'
 import selector from '@/selectors'
 import {
@@ -79,9 +80,16 @@ export default mapStateAndStyle()(
     render() {
       const { reorganizedWords } = this
       return (
-        <List>
-          {reorganizedWords.map( word => (
-            <DecoratedListItem key={word.id} button onClick={ () => this.onWordClick( word ) } onLongPress={() => this.onItemLongPress( word ) }>
+        // <List>
+        //   {reorganizedWords.map( word => (
+            
+        //   ) )}
+        // </List>
+        <VirtualScrollingList
+        rowHeight={ 60 }
+        items={reorganizedWords}
+        render={( { style, virtualScrollingItem: word } ) => (
+          <DecoratedListItem style={style} button onClick={ () => this.onWordClick( word ) } onLongPress={() => this.onItemLongPress( word ) }>
               <ListItemAvatar>
                 <Avatar>
                   <InsertDriveFileIcon />
@@ -89,8 +97,8 @@ export default mapStateAndStyle()(
               </ListItemAvatar>
               <ListItemText primary={ word.name } />
             </DecoratedListItem>
-          ) )}
-        </List>
+        )}
+      />
       )
     }
   }

@@ -114,7 +114,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
               <Tabs
                 value={tabIndex}
                 onChange={this.handleTabChange}
-                scrollable
+                // scrollable
                 scrollButtons="on"
                 indicatorColor="primary"
                 textColor="primary"

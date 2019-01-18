@@ -1,5 +1,6 @@
 import { Link } from 'dva/router'
 import React, { Component } from 'react'
+import { AutoSizer, CellMeasurer, CellMeasurerCache, List as VirtualList } from 'react-virtualized'
 
 import { Tag } from '@/__typings__'
 import BasicComponent from '@/components/BasicComponent'
@@ -8,6 +9,7 @@ import SubTopbarLayout from '@/components/layouts/SubTopbarLayout'
 import TopbarLayout from '@/components/layouts/TopbarLayout'
 import SortSection, { SortType } from '@/components/SortSection'
 import SubTopBar from '@/components/SubTopBar'
+import VirtualScrollingList from '@/components/VirtualScrollingList/VirtualScrollingList'
 import { HOME_ROUTE } from '@/constants/routes'
 import selector from '@/selectors'
 import {
@@ -221,9 +223,33 @@ export default mapStateAndStyle( {
                 onTagIdsChange={this.onFilterSectionTagIdsChange}
               />
             )}
-
+            <VirtualScrollingList
+              items={ reorganizedWords }
+              rowHeight={ 54 }
+              render={ ( {
+                virtualScrollingItem: word,
+                style,
+              } ) => <ListItem
+                style={style}
+                className={c.listItem}
+                onClick={() => this.onWordNameClick( word.name )}
+              >
+                {word.name}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span className={c.degree}>{notNil( word.degree ) ? word.degree / 2 : 0}×★</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button
+                  variant="contained"
+                  onClick={event => this.onMoreClick( event, word )}
+                >
+                  ...
+                </Button>
+              </ListItem> }
+            />
             <List>
-              {reorganizedWords.map( word => (
+            
+
+              {/* {reorganizedWords.map( word => (
                 <ListItem
                   key={word.id}
                   className={c.listItem}
@@ -240,7 +266,7 @@ export default mapStateAndStyle( {
                     ...
                   </Button>
                 </ListItem>
-              ) )}
+              ) )} */}
             </List>
             <Menu
               anchorEl={wordMoreAnchorEl}

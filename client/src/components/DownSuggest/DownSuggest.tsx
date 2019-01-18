@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem'
 import Paper from '@material-ui/core/Paper'
 
 import BasicComponent, { DefaultProps } from '../BasicComponent'
+import VirtualScrollingList from '../VirtualScrollingList/VirtualScrollingList'
 
 class Props extends DefaultProps {
   suggestAlgorithm?: ( text: string, texts: string[] ) => string[]
@@ -33,6 +34,7 @@ export default mapStateAndStyle( {
     left     : 0,
     zIndex   : 100,
     width    : "100%",
+    height   : '300px',
     maxHeight: "300px",
     overflow : "auto"
   }
@@ -49,15 +51,20 @@ export default mapStateAndStyle( {
     }
 
     get suggestions(): string[] {
-      const { suggestAlgorithm, text, texts, enableTextsWhenEmpty, recentTexts } = this.props
+      const {
+        suggestAlgorithm,
+        text,
+        texts,
+        enableTextsWhenEmpty,
+        recentTexts
+      } = this.props
 
       if ( enableTextsWhenEmpty && text.trim() === "" ) {
         if ( notNil( recentTexts ) && recentTexts.length > 0 ) {
-          const filtered = recentTexts.filter( recentText => texts.includes( recentText ) )
-          return uniq( [
-            ...filtered,
-            ...texts,
-          ] )
+          const filtered = recentTexts.filter( recentText =>
+            texts.includes( recentText )
+          )
+          return uniq( [ ...filtered, ...texts ] )
         }
         return texts
       }
@@ -90,24 +97,27 @@ export default mapStateAndStyle( {
         shallShow &&
         has && (
           <Paper className={`${c.entry} ${className}`}>
-            <List>
-              {suggestions.map( ( suggestion, index ) => (
+            {/* <List> */}
+            <VirtualScrollingList
+              items={suggestions}
+              render={( { style, virtualScrollingItem: suggestion } ) => (
                 <ListItem
-                  key={index}
+                  style={style}
                   button
                   onClick={e => {
                     this.setState( { shallShow: false } )
                     onItemClick && onItemClick( suggestion, e )
                   }}
-                  onMouseDown={ e => {
+                  onMouseDown={e => {
                     this.setState( { shallShow: false } )
                     onItemMouseDown && onItemMouseDown( suggestion, e )
-                  } }
+                  }}
                 >
                   {suggestion}
                 </ListItem>
-              ) )}
-            </List>
+              )}
+            />
+            {/* </List> */}
           </Paper>
         )
       )

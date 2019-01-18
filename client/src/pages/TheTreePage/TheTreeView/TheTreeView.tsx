@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 
 import { Tree, TreeNode } from '@/__typings__'
 import { DefaultProps } from '@/components/BasicComponent'
+import VirtualScrollingList from '@/components/VirtualScrollingList/VirtualScrollingList'
 import TreeItem from '@/pages/TheTreePage/TheTreeView/TreeItem'
 import selector from '@/selectors'
 import {
@@ -22,36 +23,35 @@ class Props extends DefaultProps {
 
 export default mapStateAndStyle()(
   class TheTreeView extends Component<Props> {
-
     getTreeItem = ( node: TreeNode, mainRef: any ) => {
       if ( isPlainObject( node ) ) {
-        return <TreeItem tree={ node } mainRef={mainRef}/>
+        return <TreeItem tree={node} mainRef={mainRef} />
       }
       if ( isString( node ) ) {
         const wordId = node
         const word = selector.getWordByWordId( wordId )
-        return notNil( word ) ? <WordItem word={ word }/> : null
+        return notNil( word ) ? <WordItem word={word} /> : null
       }
     }
 
     render() {
       const { mainRef, reorganizedNodes } = this.props
       return (
-        <div>
-          <List>
-          {
-            reorganizedNodes.map( node => <div
-              key = {
-                isPlainObject( node ) ? ( node as Tree ).id : ( node as string )
-              }
-            >{this.getTreeItem( node, mainRef )}</div> )
-          }
-        </List>
-        </div>
+        <VirtualScrollingList
+            rowHeight={ 60 }
+            items={reorganizedNodes}
+            render={( { style, virtualScrollingItem: node } ) => (
+              <div
+                style={style}
+                // key = {
+                //   isPlainObject( node ) ? ( node as Tree ).id : ( node as string )
+                // }
+              >
+                {this.getTreeItem( node, mainRef )}
+              </div>
+            )}
+          />
       )
     }
   }
 )
-
-
-

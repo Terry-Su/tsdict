@@ -56,7 +56,7 @@ export default mapState(
           <Tabs
             value={ tabIndex }
              onChange={this.handleTabChange}
-            scrollable
+            // scrollable
             scrollButtons="on"
             indicatorColor="primary"
             textColor="primary"

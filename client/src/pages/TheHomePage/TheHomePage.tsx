@@ -71,35 +71,6 @@ export default mapState(
       const { tabIndex } = this.state
       return (
         <TopbarLayout isShowingCurrentWordPanel={true} enableCurrentWordPanelClose={false}>
-          {/* <TheSearch />
-          <br />
-          {shallShowWordPanel && (
-            <div>
-              <ThePhoneticSymbol />
-              <TheDegree />
-              <div>
-                <TheAddTag />
-              </div>
-
-              <Tabs
-                value={tabIndex}
-                onChange={this.handleTabChange}
-                scrollable
-                scrollButtons="on"
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab label="Note" />
-                <Tab label="links" />
-              </Tabs>
-              <br />
-
-              {tabIndex === 0 && (
-                <Note data={note} onChange={this.onNoteChange} />
-              )}
-              {tabIndex === 1 && <TheOnlineLinks />}
-            </div>
-          )} */}
         </TopbarLayout>
       )
     }
