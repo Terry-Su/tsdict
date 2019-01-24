@@ -124,7 +124,7 @@ export default mapStateAndStyle()(
               />
               <Input
                 defaultValue={link.url}
-                onChange={e => this.onUrlInputChange( index, e.taget.value )}
+                onChange={e => this.onUrlInputChange( index, e.target.value )}
                 enableClear
                 onClearMouseDown={() => this.onUrlInputChange( index, "" )}
               />
