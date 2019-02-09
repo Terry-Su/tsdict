@@ -17,6 +17,18 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 
     state = { ...new State() }
 
+    get cambridgeUrls(): string[] {
+      const {  name } = selector.currentWord
+      const tmp = `${name}_____`
+      const a = tmp.substring( 0, 1 )
+      const b = tmp.substring( 0, 3 )
+      const c = tmp.substring( 0, 5 )
+      const url = `https://dictionary.cambridge.org/us/media/english/us_pron/${ a }/${ b }/${ c }/${ name }.mp3`
+      return [
+        url
+      ]
+    }
+
     get possibleVoiceUrls(): string[] {
       const { name = "" } = selector.currentWord
       function template( string: string ) {
@@ -57,7 +69,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 
     render() {
       const { classes: c, dispatch } = this.props
-      const { p = [] } = selector.currentWord
+      const { p = [], name } = selector.currentWord
 
       const { possibleVoiceUrls } = this
       return (
@@ -78,9 +90,19 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           )}
           <Button onClick={this.onPronunceClick}>🎤</Button>
           <audio ref={this.audioRef} controls style={{ display: 'none' }}>
-            {possibleVoiceUrls.map( ( url, index ) => (
+            {/* {possibleVoiceUrls.map( ( url, index ) => (
               <source key={index} src={url} />
-            ) )}
+            ) )} */}
+
+            {/* # Rule1: from oxford dictionary, England accent*/}
+            {/* <source src={`https://s3.amazonaws.com/audio.oxforddictionaries.com/en/mp3/${name}_gb_1.mp3`} />
+            <source src={`https://s3.amazonaws.com/audio.oxforddictionaries.com/en/mp3/x${name}_gb_1.mp3`} /> */}
+
+            {/* # Rule2: from cambridge dictionary, American accent */}
+            {
+              this.cambridgeUrls.map( ( url, index ) => 
+                <source key={ index } src={ url } /> )
+            }
             {`Sorry, your browser doesn't support embedded videos.`}
           </audio>
         </div>
