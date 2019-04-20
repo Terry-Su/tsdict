@@ -18,9 +18,6 @@ module.exports = {
     semi: [
       "warn",
       "never",
-      {
-        beforeStatementContinuationChars: "never"
-      }
     ],
     "comma-dangle": [
       "warn",

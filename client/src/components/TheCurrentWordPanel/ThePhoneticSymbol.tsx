@@ -25,7 +25,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
       const c = tmp.substring( 0, 5 )
       const url = `https://dictionary.cambridge.org/us/media/english/us_pron/${ a }/${ b }/${ c }/${ name }.mp3`
       return [
-        url
+        url,
       ]
     }
 
@@ -53,12 +53,11 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 
     onClick = () => {
       fetchCurrentPhoneticSymbol().then(
-        ( data: string[] ) =>
-          data &&
+        ( data: string[] ) => data &&
           this.dispatch( {
             type: "core/UPDATE_WORD_P",
             word: selector.currentWord,
-            p   : [ data[ 0 ] ]
+            p   : [ data[ 0 ] ],
           } )
       )
     }
@@ -68,13 +67,16 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
     }
 
     render() {
+      if ( selector.currentWord == null ) {
+        return null
+      }
+
       const { classes: c, dispatch } = this.props
       const { p = [], name } = selector.currentWord
-
       const { possibleVoiceUrls } = this
       return (
         <div>
-          {p.length === 0 ? (
+          {/* {p.length === 0 ? (
             <Button onClick={this.onClick}>🎵</Button>
           ) : (
             p.map( ( html, index ) => (
@@ -87,7 +89,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
                 &nbsp;&nbsp;
               </span>
             ) )
-          )}
+          )} */}
           <Button onClick={this.onPronunceClick}>🎤</Button>
           <audio ref={this.audioRef} controls style={{ display: 'none' }}>
             {/* {possibleVoiceUrls.map( ( url, index ) => (
@@ -100,8 +102,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 
             {/* # Rule2: from cambridge dictionary, American accent */}
             {
-              this.cambridgeUrls.map( ( url, index ) => 
-                <source key={ index } src={ url } /> )
+              this.cambridgeUrls.map( ( url, index ) => <source key={ index } src={ url } /> )
             }
             {`Sorry, your browser doesn't support embedded videos.`}
           </audio>

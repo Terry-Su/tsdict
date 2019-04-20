@@ -16,24 +16,25 @@ import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { Button, IconButton, Tab, Tabs } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
+import IframeViewer from '../IframeViewer'
 import Note, { NoteData } from '../Note/Note'
 
 class Props extends DefaultProps {
-  enableClose: boolean
+  enableClose: boolean;
 }
 class State {
-  tabIndex: number = 0
+  tabIndex: number = 0;
 }
 class Style extends GlobalStyle {
   searchRow = {
-    display       : "flex",
+    display       : "inline-flex",
     justifyContent: "space-between",
-  }
+  };
 }
 
 export default mapStateAndStyle<Props>( { ...new Style() } )(
   class TheCurrentWordPanel extends BasicComponent<Props, State> {
-    state = { ...new State() }
+    state = { ...new State() };
 
     componentDidMount() {
       events.addHandler( EventTypes.keyDown, this.handleKeyDown )
@@ -41,27 +42,27 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 
     componentWillUnmount() {
       events.removeHandler( EventTypes.keyDown, this.handleKeyDown )
-      this.props.dispatch( { type: 'treePage/RESET_ACTIVE_WORD_IDS' } )
+      this.props.dispatch( { type: "treePage/RESET_ACTIVE_WORD_IDS" } )
     }
 
-    handleKeyDown = ( event ) => {
-      if ( event.key === 'Escape' || event.key === 'Backspace' ) {
+    handleKeyDown = event => {
+      if ( event.key === "Escape" || event.key === "Backspace" ) {
         this.handleClosePanelClick()
       }
-      
-      if( selector.canSwitchWord  ) {
-        if (  event.key === 'ArrowLeft' ) {
+
+      if ( selector.canSwitchWord ) {
+        if ( event.key === "ArrowLeft" ) {
           this.handlePrevClick()
         }
-        if ( event.key === 'ArrowRight' ) {
+        if ( event.key === "ArrowRight" ) {
           this.handleNextClick()
         }
       }
-    }
+    };
 
     handleClosePanelClick = () => {
       this.dispatch( { type: "app/HIDE_CURRENT_WORD_PANEL" } )
-    }
+    };
 
     onAddNoteClick = () => {
       const { currentWord: word } = selector
@@ -71,7 +72,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           word,
           value: "",
         } )
-    }
+    };
     onRemoveNoteClick = ( index: number ) => {
       const { currentWord: word } = selector
       notNil( word ) &&
@@ -80,7 +81,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           word,
           value: index,
         } )
-    }
+    };
 
     onNoteChange = async ( data: NoteData ) => {
       const { currentWord: word } = selector
@@ -99,18 +100,20 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
             value: newWord.note,
           } )
       }
-    }
+    };
 
     handleTabChange = ( event, tabIndex ) => {
       this.setState( {
         tabIndex,
       } )
-    }
-
+    };
 
     get prevId(): string {
-      return selector.appState.activeWordIds.find( ( id, index, arr ) => arr[ index + 1 ] === selector.currentWord.id )
+      return selector.appState.activeWordIds.find(
+        ( id, index, arr ) => arr[ index + 1 ] === selector.currentWord.id
+      )
     }
+
     handlePrevClick = () => {
       if ( this.prevId ) {
         this.props.dispatch( {
@@ -118,10 +121,12 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           value: this.prevId,
         } )
       }
-    }
+    };
 
     get nextId(): string {
-      return selector.appState.activeWordIds.find( ( id, index, arr ) => arr[ index - 1 ] === selector.currentWord.id )
+      return selector.appState.activeWordIds.find(
+        ( id, index, arr ) => arr[ index - 1 ] === selector.currentWord.id
+      )
     }
     handleNextClick = () => {
       if ( this.nextId ) {
@@ -130,7 +135,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           value: this.nextId,
         } )
       }
-    }
+    };
 
     render() {
       const { classes: c, dispatch, enableClose = true } = this.props
@@ -147,24 +152,35 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
       const { tabIndex } = this.state
       return (
         <StyledRoot>
-          <div className={c.searchRow}>
-            <TheSearch />
-            {enableClose && (
-              <IconButton onClick={this.handleClosePanelClick}>
-                <CloseIcon />
-              </IconButton>
-            )}
+          <div className="header">
+            <div className={c.searchRow}>
+              <TheSearch />
+              <ThePhoneticSymbol />
+            </div>
+            <div className="right">
+              {shallShowWordPanel && (
+                <>
+                  <TheDegree />
+                  <div className="tagsWrapper">
+                    <TheAddTag />
+                  </div>
+                </>
+              )}
+              {enableClose && (
+                <IconButton onClick={this.handleClosePanelClick}>
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </div>
           </div>
           <br />
           {shallShowWordPanel && (
-            <div>
-              <ThePhoneticSymbol />
-              <TheDegree />
-              <div>
-                <TheAddTag />
+            <div className="main">
+              <div className="contents">
+                <Note data={note} onChange={this.onNoteChange} />
+                <TheOnlineLinks />}
               </div>
-
-              <Tabs
+              {/* <Tabs
                 value={tabIndex}
                 onChange={this.handleTabChange}
                 // scrollable
@@ -175,23 +191,35 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
                 <Tab label="Note" />
                 <Tab label="links" />
               </Tabs>
-              <br />
+              <br /> */}
 
-              {tabIndex === 0 && (
+              {/* {tabIndex === 0 && (
                 <Note data={note} onChange={this.onNoteChange} />
               )}
-              {tabIndex === 1 && <TheOnlineLinks />}
+              {tabIndex === 1 && <TheOnlineLinks />} */}
 
-              {
-                canSwitchWord && <>
-                {
-                  this.prevId != null && <Button className="jumpButton prevButton" onClick={ this.handlePrevClick } variant="contained">{"<"}</Button>
-                }
-                {
-                  this.nextId != null && <Button className="jumpButton nextButton" onClick={ this.handleNextClick } variant="contained">{">"}</Button>
-                }
+              {canSwitchWord && (
+                <>
+                  {this.prevId != null && (
+                    <Button
+                      className="jumpButton prevButton"
+                      onClick={this.handlePrevClick}
+                      variant="contained"
+                    >
+                      {"<"}
+                    </Button>
+                  )}
+                  {this.nextId != null && (
+                    <Button
+                      className="jumpButton nextButton"
+                      onClick={this.handleNextClick}
+                      variant="contained"
+                    >
+                      {">"}
+                    </Button>
+                  )}
                 </>
-              }
+              )}
             </div>
           )}
         </StyledRoot>
@@ -201,14 +229,39 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 )
 
 const StyledRoot = styled.div`
-position: relative;
+  position: relative;
+
+  > .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > .right {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .tagsWrapper {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  .main {
+    width: 100%;
+    height: 100%;
+    .contents {
+      /* display: flex; */
+
+    }
+  }
 
   .jumpButton {
     position: fixed;
     top: 50%;
     font-size: 16px;
     color: grey;
-    padding:0;
+    padding: 0;
     opacity: 0.2;
 
     &:hover {

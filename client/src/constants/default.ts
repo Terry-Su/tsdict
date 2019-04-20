@@ -12,8 +12,8 @@ export const defaultOnlineLinks: OnlineLink[] = [
     url  : 'https://www.merriam-webster.com/dictionary/',
   },
   {
-    label: '1',
-    url  : '',
+    label: 'Dictionary',
+    url  : 'https://www.dictionary.com/browse/',
   },
   {
     label: '2',
@@ -22,10 +22,10 @@ export const defaultOnlineLinks: OnlineLink[] = [
   {
     label: '3',
     url  : '',
-  }
+  },
 ].map( item => ( {
   ...item,
-  id: getUniqueId()
+  id: getUniqueId(),
 } ) )
 
 
@@ -41,5 +41,5 @@ export const defaultWords: DictDataWord[] = [
 export const defaultTree: Tree = {
   name : 'root',
   id   : getUniqueId(),
-  nodes: []
+  nodes: [],
 }
