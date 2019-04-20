@@ -30,7 +30,7 @@ export default mapStateAndStyle()(
       if ( isString( node ) ) {
         const wordId = node
         const word = selector.getWordByWordId( wordId )
-        return notNil( word ) ? <WordItem word={word} /> : null
+        return notNil( word ) ? <WordItem word={word} wordIds={ this.props.reorganizedNodes } /> : null
       }
     }
 

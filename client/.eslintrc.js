@@ -1,13 +1,16 @@
 module.exports = {
+  root: true,
   env: {
-    browser: true,
-    commonjs: true,
-    es6: true,
     node: true
   },
-  parser: "typescript-eslint-parser",
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    sourceType: "module"
+    sourceType: "module",
+    ecmaFeatures: {
+      legacyDecorators: true
+    },
+    typescript: true,
+    jsx: true,
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",

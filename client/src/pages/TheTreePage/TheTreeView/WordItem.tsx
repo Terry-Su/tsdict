@@ -18,18 +18,17 @@ const DecoratedListItem: any = withLongPress( ListItem )
 export default mapStateAndStyle()(
   class WordItem extends Component<{
     word: DictDataWord
-
+    wordIds: string[]
     dispatch: Function
   }, any> {
     onClick = () => {
       const { word, dispatch } = this.props
       dispatch( {
         type : "app/UPDATE_SEARCHING",
-        value: word.name
+        value: word.name,
       } )
-      dispatch( {
-        type: "app/SHOW_CURRENT_WORD_PANEL",
-      } )
+      dispatch( { type: "app/SHOW_CURRENT_WORD_PANEL" } )
+      dispatch( { type: "app/UPDATE_ACTIVE_WORD_IDS", value: this.props.wordIds } )
     }
 
     onLongPress = () => {

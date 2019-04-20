@@ -12,7 +12,7 @@ import { updateMedia } from '@/services'
 import { GlobalStyle } from '@/style/globalStyle'
 import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
-import { IconButton, Tab, Tabs } from '@material-ui/core'
+import { Button, IconButton, Tab, Tabs } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
 import Note, { NoteData } from '../Note/Note'
@@ -82,6 +82,31 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
       } )
     }
 
+
+    get prevId(): string {
+      return selector.appState.activeWordIds.find( ( id, index, arr ) => arr[ index + 1 ] === selector.currentWord.id )
+    }
+    handlePrevClick = () => {
+      if ( this.prevId ) {
+        this.props.dispatch( {
+          type : "app/UPDATE_SEARCHING_BY_ID",
+          value: this.prevId,
+        } )
+      }
+    }
+
+    get nextId(): string {
+      return selector.appState.activeWordIds.find( ( id, index, arr ) => arr[ index - 1 ] === selector.currentWord.id )
+    }
+    handleNextClick = () => {
+      if ( this.nextId ) {
+        this.props.dispatch( {
+          type : "app/UPDATE_SEARCHING_BY_ID",
+          value: this.nextId,
+        } )
+      }
+    }
+
     render() {
       const { classes: c, dispatch, enableClose = true } = this.props
       const {
@@ -89,6 +114,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
         currentWord,
         shallShowWordPanel,
         appState,
+        isTreePage,
       } = selector
       const { searching } = appState
       const note = notNil( currentWord ) ? currentWord.note : null
@@ -130,8 +156,16 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
               )}
               {tabIndex === 1 && <TheOnlineLinks />}
 
-              <button className="nextButton">Next</button>
-              <button className="prevButton">Prev</button>
+              {
+                isTreePage && <>
+                {
+                  this.prevId != null && <Button className="jumpButton prevButton" onClick={ this.handlePrevClick } variant="contained">{"<"}</Button>
+                }
+                {
+                  this.nextId != null && <Button className="jumpButton nextButton" onClick={ this.handleNextClick } variant="contained">{">"}</Button>
+                }
+                </>
+              }
             </div>
           )}
         </StyledRoot>
@@ -141,5 +175,19 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
 )
 
 const StyledRoot = styled.div`
+position: relative;
 
+  .jumpButton {
+    position: fixed;
+    top: 50%;
+    font-size: 16px;
+    color: grey;
+    padding:0
+  }
+  .prevButton {
+    left: 10px;
+  }
+  .nextButton {
+    right: 10px;
+  }
 `

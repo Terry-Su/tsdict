@@ -36,12 +36,14 @@ class State {
   sortAnchorEl
 }
 
+
+
 export default mapStateAndStyle( {
   addButton: {
     position: "absolute",
     right   : "5%",
-    bottom  : "5%"
-  }
+    bottom  : "5%",
+  },
 } )(
   class TheTreePage extends BasicComponent {
     state = { ...new State() }
@@ -65,7 +67,7 @@ export default mapStateAndStyle( {
         const {
           startDegree,
           endDegree,
-          selectedTagIds
+          selectedTagIds,
         } = selector.treePageState
         resWords = filterWordsBySelectedTagIds( resWords, selectedTagIds )
         resWords = filterWordsByDegreeRange( resWords, startDegree, endDegree )
@@ -97,6 +99,11 @@ export default mapStateAndStyle( {
       return res
     }
 
+
+    componentWillUnmount() {
+      this.props.dispatch( { type: 'treePage/UPDATE_CURRENT_TREE_ID', value: null } )
+    }
+
     onBackClick = () => {
       this.props.dispatch( { type: "treePage/UPDATE_CURRENT_ID_TO_UPPER_ID" } )
       scrollToTop( this.mainRef.current )
@@ -104,7 +111,7 @@ export default mapStateAndStyle( {
 
     onFilterButtonClick = () => {
       this.setState( ( prevState: State ) => ( {
-        shallShowFilterSection: !prevState.shallShowFilterSection
+        shallShowFilterSection: !prevState.shallShowFilterSection,
       } ) )
       const main: any = this.mainRef.current
       // main.scrollTop = 0
@@ -125,13 +132,13 @@ export default mapStateAndStyle( {
 
     onSortButtonClick = e => {
       this.setState( {
-        sortAnchorEl: e.currentTarget
+        sortAnchorEl: e.currentTarget,
       } )
     }
 
     onSortSectionClose = () => {
       this.setState( {
-        sortAnchorEl: null
+        sortAnchorEl: null,
       } )
     }
 
@@ -142,15 +149,15 @@ export default mapStateAndStyle( {
       this.dispatch( { type: "treePage/UPDATE_SORT_TYPE", value: sortType } )
       this.dispatch( {
         type : "treePage/UPDATE_IS_ASCENDING_NAME",
-        value: isAscendingName
+        value: isAscendingName,
       } )
       this.dispatch( {
         type : "treePage/UPDATE_IS_ASCENDING_DEGREE",
-        value: isAscendingDegree
+        value: isAscendingDegree,
       } )
       this.dispatch( {
         type : "treePage/UPDATE_IS_ASCENDING_CREATE_TIME",
-        value: isAscendingCreateTime
+        value: isAscendingCreateTime,
       } )
     }
 
@@ -167,7 +174,7 @@ export default mapStateAndStyle( {
         startDegree,
         endDegree,
         selectedTagIds,
-        isAddDialogOpen
+        isAddDialogOpen,
       } = selector.treePageState
 
       const { mainRef, reorganizedNodes } = this

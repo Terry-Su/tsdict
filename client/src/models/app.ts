@@ -6,6 +6,9 @@ export class AppState {
   isShowingCurrentWordPanel: boolean = false
 
   searching: string = ""
+  activeWordIds: string[] = []
+
+  // # message
   isShowingMessage: boolean = false
   message: string = ""
   messageType: string = "success"
@@ -17,17 +20,24 @@ export class AppState {
 export default {
   namespace: "app",
   state    : {
-    ...new AppState()
+    ...new AppState(),
   },
   reducers: {
     ...new class extends CommonModelReducer {
       UPDATE_STATE = ( state, { value } ) => value
       UPDATE_SEARCHING = ( state, { value } ) => ( { ...state, searching: value } )
+      UPDATE_SEARCHING_BY_ID = ( state, { value: id } ) => {
+        const word = selector.getWordByWordId( id )
+        return ( { ...state, searching: word.name } )
+      }
 
       SHOW_CURRENT_WORD_PANEL = this.UPDATE_STATE_KEY_VALUE( 'isShowingCurrentWordPanel', true )
       HIDE_CURRENT_WORD_PANEL = this.UPDATE_STATE_KEY_VALUE( 'isShowingCurrentWordPanel', false )
 
-      // message
+
+      UPDATE_ACTIVE_WORD_IDS = this.UPDATE_STATE_KEY( 'activeWordIds' )
+
+      // # message
       // SHOW_MESSAGE   = state => ( { ...state, isShowingMessage: true } )
       HIDE_MESSAGE = state => ( { ...state, isShowingMessage: false } )
 
@@ -38,43 +48,37 @@ export default {
         ...state,
         isShowingMessage: true,
         message,
-        messageType
+        messageType,
       } )
 
-      SHOW_BACKUP_SUCCESS = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_BACKUP_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "success",
-          message    : "Backup successfully"
+          message    : "Backup successfully",
         } )
 
-      SHOW_BACKUP_FAIL = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_BACKUP_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "error",
-          message    : "Backup failed"
+          message    : "Backup failed",
         } )
 
-      SHOW_PULL_SUCCESS = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_PULL_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "success",
-          message    : "Pull successfully"
+          message    : "Pull successfully",
         } )
 
-      SHOW_PULL_FAIL = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_PULL_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "error",
-          message    : "Pull failed"
+          message    : "Pull failed",
         } )
 
-      SHOW_PUSH_SUCCESS = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_PUSH_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "success",
-          message    : "Push successfully"
+          message    : "Push successfully",
         } )
 
-      SHOW_PUSH_FAIL = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_PUSH_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "error",
-          message    : "Push failed"
+          message    : "Push failed",
         } )
 
       // SHOW_CLEAN_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
@@ -87,16 +91,14 @@ export default {
       //   message    : 'Clean media failed',
       // } )
 
-      SHOW_UPDATE_MEDIA_SUCCESS = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_UPDATE_MEDIA_SUCCESS = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "success",
-          message    : "Update media successfully"
+          message    : "Update media successfully",
         } )
 
-      SHOW_UPDATE_MEDIA_FAIL = state =>
-        this.COMMON_SHOW_MESSAGE( state, {
+      SHOW_UPDATE_MEDIA_FAIL = state => this.COMMON_SHOW_MESSAGE( state, {
           messageType: "error",
-          message    : "Update media failed"
+          message    : "Update media failed",
         } )
 
       ADD_TO_RECENT_ADDED_TAG_NAMES = ( state: AppState, { newName }: {newName: string} )=> {
@@ -105,9 +107,9 @@ export default {
         state.recentAddedTagNames = uniq( recentAddedTagNames )
         return { ...state }
       }
-    }()
+    }(),
   },
   effects: {
     
-  }
+  },
 }

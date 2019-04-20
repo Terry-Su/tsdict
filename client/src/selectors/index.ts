@@ -149,13 +149,16 @@ class Selector {
     const {
       server,
       isSameHostName,
-      port
+      port,
     } = this.settingState
     return isSameHostName ? `http://${location.hostname}:${port}` : server
   }
 
 
   // # tree page section
+  get isTreePage() {
+    return this.treePageState.currentTreeId != null
+  }
   get currentTree(): Tree {
     const { currentTreeId } = this.treePageState
     const current: Tree = new CalcTree( this.rootTree ).getTreeById( currentTreeId ) || this.rootTree

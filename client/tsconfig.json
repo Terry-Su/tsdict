@@ -14,8 +14,8 @@
         "../shared/*"
       ]
     },
-    "module": "es6",
-		"target": "es5",
+    "module": "esnext",
+		"target": "esnext",
 		"jsx": "react",
     "allowJs": true,
     "outDir": "../../build/",
@@ -23,7 +23,6 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "es2016"],
-    "esModuleInterop": true,
     "skipLibCheck": true,
   }
 }
