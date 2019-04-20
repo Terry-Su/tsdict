@@ -10,7 +10,8 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
-    "operator-linebreak": ["warn", "after"],
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     semi: [
       "warn",
       "never",
@@ -18,18 +19,28 @@ module.exports = {
         beforeStatementContinuationChars: "never"
       }
     ],
-
-    "no-const-assign": "warn",
-    "no-this-before-super": "warn",
-    "no-undef": "warn",
-    "no-unreachable": "warn",
-    "no-unused-vars": "warn",
-    "constructor-super": "warn",
-    "valid-typeof": "warn",
-    "no-console": "warn",
+    "comma-dangle": [
+      "warn",
+      {
+        arrays: "always-multiline",
+        objects: "always-multiline",
+        imports: "never",
+        exports: "never",
+        functions: "ignore"
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      { vars: "all", args: "after-used", ignoreRestSiblings: false }
+    ],
+    "brace-style": [
+      'warn',
+      "1tbs", { "allowSingleLine": true }
+    ],
+    "implicit-arrow-linebreak": ["warn", "beside"],
+    "arrow-body-style": ["warn", "as-needed"],
     "object-curly-spacing": ["warn", "always"],
     "array-bracket-spacing": ["warn", "always"],
-    "space-in-parens": ["warn", "always"],
     "block-spacing": ["warn", "always"],
     "computed-property-spacing": ["warn", "always"],
     "key-spacing": [
@@ -39,11 +50,8 @@ module.exports = {
         align: "colon"
       }
     ],
-    "space-in-parens": ["warn", "always"],
     "space-infix-ops": ["warn", { int32Hint: false }],
-    keyword: {
-      before: true,
-      after: true
-    }
+    "space-in-parens": ["warn", "always"],
+    "object-property-newline": ["warn", { "allowMultiplePropertiesPerLine": true }]
   }
 }

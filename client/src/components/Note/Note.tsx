@@ -1,8 +1,8 @@
 import 'quill/dist/quill.snow.css'
 
-import Delta from '_quill-delta@4.1.0@quill-delta'
 import { debounce } from 'lodash'
 import Quill from 'quill'
+import Delta from 'quill-delta'
 import React, { Component } from 'react'
 
 import mapStateAndStyle from '@/utils/mapStateAndStyle'

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import BasicComponent, { DefaultProps } from '@/components/BasicComponent'
 import TheAddTag from '@/components/TheCurrentWordPanel/TheAddTag'
@@ -25,7 +26,7 @@ class State {
 class Style extends GlobalStyle {
   searchRow = {
     display       : "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   }
 }
 
@@ -43,7 +44,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
         this.props.dispatch( {
           type : "core/UPDATE_WORD_ADD_ONE_NOTE",
           word,
-          value: ""
+          value: "",
         } )
     }
     onRemoveNoteClick = ( index: number ) => {
@@ -52,7 +53,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
         this.props.dispatch( {
           type : "core/UPDATE_WORD_REMOVE_ONE_NOTE",
           word,
-          value: index
+          value: index,
         } )
     }
 
@@ -62,7 +63,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
         this.props.dispatch( {
           type : "core/UPDATE_WORD_NOTE",
           word,
-          value: data
+          value: data,
         } )
 
         const newWord = await updateMedia()
@@ -70,14 +71,14 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           this.props.dispatch( {
             type : "core/UPDATE_WORD_NOTE",
             word,
-            value: newWord.note
+            value: newWord.note,
           } )
       }
     }
 
     handleTabChange = ( event, tabIndex ) => {
       this.setState( {
-        tabIndex
+        tabIndex,
       } )
     }
 
@@ -87,13 +88,13 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
         wordCanBeAdded: isNewWord,
         currentWord,
         shallShowWordPanel,
-        appState
+        appState,
       } = selector
       const { searching } = appState
       const note = notNil( currentWord ) ? currentWord.note : null
       const { tabIndex } = this.state
       return (
-        <div>
+        <StyledRoot>
           <div className={c.searchRow}>
             <TheSearch />
             {enableClose && (
@@ -128,10 +129,17 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
                 <Note data={note} onChange={this.onNoteChange} />
               )}
               {tabIndex === 1 && <TheOnlineLinks />}
+
+              <button className="nextButton">Next</button>
+              <button className="prevButton">Prev</button>
             </div>
           )}
-        </div>
+        </StyledRoot>
       )
     }
   }
 )
+
+const StyledRoot = styled.div`
+
+`

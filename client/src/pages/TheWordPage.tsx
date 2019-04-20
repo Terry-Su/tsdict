@@ -36,11 +36,11 @@ class State {
 
 export default mapStateAndStyle( {
   listItem: {
-    border: "1px solid #ddd"
+    border: "1px solid #ddd",
   },
   degree: {
-    color: "#dfdfdf"
-  }
+    color: "#dfdfdf",
+  },
 } )(
   class TheWordPage extends BasicComponent {
     state = { ...new State() }
@@ -59,7 +59,7 @@ export default mapStateAndStyle( {
         const {
           startDegree,
           endDegree,
-          selectedTagIds
+          selectedTagIds,
         } = selector.wordPageState
         res = filterWordsBySelectedTagIds( res, selectedTagIds )
         res = filterWordsByDegreeRange( res, startDegree, endDegree )
@@ -70,13 +70,13 @@ export default mapStateAndStyle( {
         sortType,
         isAscendingName,
         isAscendingDegree,
-        isAscendingCreateTime
+        isAscendingCreateTime,
       } = selector.wordPageState
       res = sortWords( res, {
         sortType,
         isAscendingName,
         isAscendingDegree,
-        isAscendingCreateTime
+        isAscendingCreateTime,
       } )
 
       return res
@@ -89,7 +89,7 @@ export default mapStateAndStyle( {
 
     onMoreClick = ( event, word ) => {
       this.setState( {
-        wordMoreAnchorEl: event.currentTarget
+        wordMoreAnchorEl: event.currentTarget,
       } )
       this.removingWord = word
     }
@@ -97,7 +97,7 @@ export default mapStateAndStyle( {
     onRemoveClick = () => {
       this.props.dispatch( {
         type : "core/REMOVE_WORD_AND_RELATED",
-        value: this.removingWord
+        value: this.removingWord,
       } )
       this.removingWord = null
       this.closeMenu()
@@ -105,7 +105,7 @@ export default mapStateAndStyle( {
 
     closeMenu = () => {
       this.setState( {
-        wordMoreAnchorEl: null
+        wordMoreAnchorEl: null,
       } )
     }
 
@@ -116,27 +116,27 @@ export default mapStateAndStyle( {
       this.dispatch( { type: "wordPage/UPDATE_SORT_TYPE", value: sortType } )
       this.dispatch( {
         type : "wordPage/UPDATE_IS_ASCENDING_NAME",
-        value: isAscendingName
+        value: isAscendingName,
       } )
       this.dispatch( {
         type : "wordPage/UPDATE_IS_ASCENDING_DEGREE",
-        value: isAscendingDegree
+        value: isAscendingDegree,
       } )
       this.dispatch( {
         type : "wordPage/UPDATE_IS_ASCENDING_CREATE_TIME",
-        value: isAscendingCreateTime
+        value: isAscendingCreateTime,
       } )
     }
 
     onSortButtonClick = e => {
       this.setState( {
-        sortAnchorEl: e.currentTarget
+        sortAnchorEl: e.currentTarget,
       } )
     }
 
     onFilterButtonClick = () => {
       this.setState( ( prevState: State ) => ( {
-        shallShowFilterSection: !prevState.shallShowFilterSection
+        shallShowFilterSection: !prevState.shallShowFilterSection,
       } ) )
       const main: any = this.mainRef.current
       // main.scrollTop = 0
@@ -145,7 +145,7 @@ export default mapStateAndStyle( {
 
     onSortSectionClose = () => {
       this.setState( {
-        sortAnchorEl: null
+        sortAnchorEl: null,
       } )
     }
 
@@ -167,7 +167,7 @@ export default mapStateAndStyle( {
       const {
         wordMoreAnchorEl,
         sortAnchorEl,
-        shallShowFilterSection
+        shallShowFilterSection,
       } = this.state
       const {
         sortType,
@@ -176,7 +176,7 @@ export default mapStateAndStyle( {
 
         startDegree,
         endDegree,
-        selectedTagIds
+        selectedTagIds,
       } = selector.wordPageState
       const { reorganizedWords } = this
 
@@ -225,31 +225,6 @@ export default mapStateAndStyle( {
               width : '100%',
               height: '100%',
             }}>
-                         {/* {reorganizedWords.map( word => (
-                <ListItem key={word.id} className={c.listItem}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    cursor : "pointer"
-                  }}
-                  onClick={() => this.onWordNameClick( word.name )}
-                >
-                  {word.name}
-                </span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span className={c.degree}>
-                  {notNil( word.degree ) ? word.degree / 2 : 0}×★
-                </span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button
-                  variant="contained"
-                  onClick={event => this.onMoreClick( event, word )}
-                >
-                  ...
-                </Button>
-              </ListItem>
-                ) )} */}
-             
               <VirtualScrollingList
                 items={reorganizedWords}
                 rowHeight={54}
@@ -258,7 +233,7 @@ export default mapStateAndStyle( {
                     <span
                       style={{
                         display: "inline-block",
-                        cursor : "pointer"
+                        cursor : "pointer",
                       }}
                       onClick={() => this.onWordNameClick( word.name )}
                     >

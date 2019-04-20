@@ -1,7 +1,5 @@
-import { DictDataWord } from "../../../shared/__typings__/DictData"
-import { TAG_IDS } from "../constants/shared"
-
-
+import { DictDataWord } from '../../../shared/__typings__/DictData'
+import { TAG_IDS } from '../constants/shared'
 
 export type WordId = string
 export type Tag = {
@@ -40,3 +38,4 @@ export interface OnlineLink {
 export interface Setting {
   server: string
 }
+

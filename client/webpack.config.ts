@@ -1,4 +1,6 @@
-import * as PATH from 'path'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import PATH from 'path'
 
 import {
     ENTRY, ENTRY_INDEX_CACHE, ENTRY_INDEX_HTML, ENTRY_MANIFEST_CACHE, ENTRY_SW, OUTPUT,
@@ -16,64 +18,71 @@ const webpackClientConfig = {
   entry: {
     [ OUTPUT_FILE_NAME ]: [
       ENTRY,
-      `webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000`
-    ]
+      `webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000`,
+    ],
   },
   output: {
     path      : OUTPUT,
     filename  : "[name]",
-    publicPath: "/"
+    publicPath: "/",
   },
   devtool: __DEV__ ? "source-map" : false,
   module : {
     rules: [
       {
         test: /\.ts|\.tsx$/,
-        use : {
-          loader: "ts-loader"
-        },
-        exclude: /node_modules/
+        use : [
+          {
+            loader : "ts-loader",
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use : [ "style-loader", "css-loader" ]
+        use : [ "style-loader", "css-loader" ],
       },
       {
         test: /\.scss$/,
         use : [
           "style-loader", // creates style nodes from JS strings
           "css-loader", // translates CSS into CommonJS
-          "sass-loader" // compiles Sass to CSS
-        ]
-      }
-    ]
+          "sass-loader", // compiles Sass to CSS
+        ],
+      },
+    ],
   },
   resolve: {
     alias: {
       '@'      : SRC,
       '@shared': SHARED, 
     },
-    extensions: [ ".tsx", ".ts", ".js" ]
+    extensions: [ ".tsx", ".ts", ".js" ],
   },
   plugins: [
     new CopyWebpackPlugin( [
       {
         from: ENTRY_INDEX_HTML,
-        to  : OUTPUT_INDEX_HTML
+        to  : OUTPUT_INDEX_HTML,
       },
       {
         from: ENTRY_INDEX_CACHE,
-        to  : OUTPUT_INDEX_CACHE
+        to  : OUTPUT_INDEX_CACHE,
       },
       {
         from: ENTRY_MANIFEST_CACHE,
-        to  : OUTPUT_MANIFEST_CACHE
+        to  : OUTPUT_MANIFEST_CACHE,
       },
     ] ),
+    new CleanWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
   ].concat( __DEV__ ? [ 
     new WriteFilePlugin(),
     new webpack.HotModuleReplacementPlugin(),
-  ] : [] )
+  ] : [] ),
 }
 
 export default webpackClientConfig

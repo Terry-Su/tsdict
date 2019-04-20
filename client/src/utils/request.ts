@@ -1,7 +1,7 @@
-import fetch from "dva/fetch"
+import fetch from 'dva/fetch'
 
 export default async function( url, options = {} ) {
-  const response = await fetch( url, options )
+  const response = await ( fetch as any )( url, options )
   return checkStatus( response ) ? response.json() : null
 }
 
