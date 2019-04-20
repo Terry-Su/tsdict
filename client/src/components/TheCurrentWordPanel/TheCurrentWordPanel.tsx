@@ -10,6 +10,7 @@ import TheSearch from '@/components/TheCurrentWordPanel/TheSearch'
 import selector from '@/selectors'
 import { updateMedia } from '@/services'
 import { GlobalStyle } from '@/style/globalStyle'
+import events, { EventTypes } from '@/utils/event'
 import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { Button, IconButton, Tab, Tabs } from '@material-ui/core'
@@ -34,7 +35,15 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
   class TheCurrentWordPanel extends BasicComponent<Props, State> {
     state = { ...new State() }
 
-    onClosePanelClick = () => {
+    componentDidMount() {
+      events.addHandler( EventTypes.keyDown, this.handleKeyDown )
+    }
+  
+    componentWillUnmount() {
+      events.removeHandler( EventTypes.keyDown, this.handleKeyDown )
+    }
+
+    handleClosePanelClick = () => {
       this.dispatch( { type: "app/HIDE_CURRENT_WORD_PANEL" } )
     }
 
@@ -107,6 +116,22 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
       }
     }
 
+    handleKeyDown = ( event ) => {
+      if ( event.key === 'Escape' ) {
+        this.handleClosePanelClick()
+      }
+      
+      if( selector.isTreePage ) {
+        if (  event.key === 'ArrowLeft' ) {
+          this.handlePrevClick()
+        }
+        if ( event.key === 'ArrowRight' ) {
+          this.handleNextClick()
+        }
+      }
+      
+    }
+
     render() {
       const { classes: c, dispatch, enableClose = true } = this.props
       const {
@@ -124,7 +149,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
           <div className={c.searchRow}>
             <TheSearch />
             {enableClose && (
-              <IconButton onClick={this.onClosePanelClick}>
+              <IconButton onClick={this.handleClosePanelClick}>
                 <CloseIcon />
               </IconButton>
             )}

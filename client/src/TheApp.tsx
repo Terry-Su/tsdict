@@ -11,9 +11,20 @@ import TheWordPage from '@/pages/TheWordPage'
 import selector from '@/selectors'
 import TheTestingComponent from '@/TheTestingComponent'
 
+import events, { EventTriggers, EventTypes } from './utils/event'
+
 const isTestingSingleComponent = !!TheTestingComponent
 
+
 export default class TheApp extends Component<any, any> {
+  componentDidMount() {
+    window.addEventListener( 'keydown', EventTriggers.keyDown )
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener( 'keydown', EventTriggers.keyDown )
+  }
+
   render() {
     const { isShowingMessage, message, messageType } = selector.appState
     const { classes: c } = this.props
@@ -23,7 +34,9 @@ export default class TheApp extends Component<any, any> {
       <div style={{
         width : '100%',
         height: '100%',
-      }} >
+      }    
+    } 
+      >
         <Route exact path={HOME_ROUTE} component={TheHomePage} />
         <Route exact path={WORDS_ROUTE} component={TheWordPage} />
         <Route exact path={TREE_ROUTE} component={TheTreePage} />

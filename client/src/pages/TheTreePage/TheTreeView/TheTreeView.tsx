@@ -9,6 +9,7 @@ import selector from '@/selectors'
 import {
     filterWordsByDegreeRange, filterWordsBySelectedTagIds, sortBySize, sortWords
 } from '@/shared/reorganizeItems'
+import events, { EventTypes } from '@/utils/event'
 import { notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { scrollToTop } from '@/utils/scrollToTop'

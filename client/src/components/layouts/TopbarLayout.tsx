@@ -20,7 +20,7 @@ export default mapStateAndStyle( {
     height   : `calc( 100% - ${TOP_BAR_HEIGHT}px )`,
     boxSizing: "border-box",
     padding  : "10px",
-    overflow : "auto"
+    overflow : "auto",
   },
   currentWordPanel: {
     position  : "absolute",
@@ -28,15 +28,15 @@ export default mapStateAndStyle( {
     width     : "calc( 100% - 20px )",
     height    : "calc( 100% - 20px )",
     overflow  : "auto",
-    background: "white"
-  }
+    background: "white",
+  },
 } )(
   class TopbarLayout extends BasicComponent<Props> {
     render() {
       const {
         classes: c,
         isShowingCurrentWordPanel: stateIsShowingCurrentWordPanel = false,
-        enableCurrentWordPanelClose
+        enableCurrentWordPanelClose,
       } = this.props
       const { isShowingCurrentWordPanel } = selector.appState
       return (

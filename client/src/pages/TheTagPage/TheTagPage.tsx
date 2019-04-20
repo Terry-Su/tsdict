@@ -7,6 +7,7 @@ import TopbarLayout from '@/components/layouts/TopbarLayout'
 import SortSection from '@/components/SortSection'
 import SubTopBar from '@/components/SubTopBar'
 import selector from '@/selectors'
+import events, { EventTypes } from '@/utils/event'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { scrollToTop } from '@/utils/scrollToTop'
 import { IconButton } from '@material-ui/core'
@@ -32,17 +33,32 @@ export default mapStateAndStyle()(
 
     mainRef= React.createRef()
 
+    componentDidMount() {
+      events.addHandler( EventTypes.keyDown, this.handleKeyDown )
+    }
+  
+    componentWillUnmount() {
+      events.removeHandler( EventTypes.keyDown, this.handleKeyDown )
+
+    }
+
+    handleKeyDown = e => {
+      if ( e.key === "Backspace" ) {
+        this.onBackClick()
+      }
+    }
+
     onBackClick = () => {
       this.props.dispatch( {
         type : "tagPage/UPDATE_CURRENT_TAG_ID",
-        value: null
+        value: null,
       } )
       scrollToTop( this.mainRef.current )
     }
 
     onFilterButtonClick = () => {
       this.setState( ( prevState: State ) => ( {
-        shallShowFilterSection: !prevState.shallShowFilterSection
+        shallShowFilterSection: !prevState.shallShowFilterSection,
       } ) )
       const main: any = this.mainRef.current
       // main.scrollTop = 0
@@ -59,13 +75,13 @@ export default mapStateAndStyle()(
 
     onSortButtonClick = e => {
       this.setState( {
-        sortAnchorEl: e.currentTarget
+        sortAnchorEl: e.currentTarget,
       } )
     }
 
     onSortSectionClose = () => {
       this.setState( {
-        sortAnchorEl: null
+        sortAnchorEl: null,
       } )
     }
 
@@ -76,15 +92,15 @@ export default mapStateAndStyle()(
       this.dispatch( { type: "tagPage/UPDATE_SORT_TYPE", value: sortType } )
       this.dispatch( {
         type : "tagPage/UPDATE_IS_ASCENDING_NAME",
-        value: isAscendingName
+        value: isAscendingName,
       } )
       this.dispatch( {
         type : "tagPage/UPDATE_IS_ASCENDING_DEGREE",
-        value: isAscendingDegree
+        value: isAscendingDegree,
       } )
       this.dispatch( {
         type : "tagPage/UPDATE_IS_ASCENDING_CREATE_TIME",
-        value: isAscendingCreateTime
+        value: isAscendingCreateTime,
       } )
     }
 

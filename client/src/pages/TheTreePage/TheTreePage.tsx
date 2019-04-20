@@ -11,6 +11,7 @@ import selector from '@/selectors'
 import {
     filterWordsByDegreeRange, filterWordsBySelectedTagIds, sortBySize, sortWords
 } from '@/shared/reorganizeItems'
+import events, { EventTypes } from '@/utils/event'
 import { isPlainObject, isString, notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { scrollToTop } from '@/utils/scrollToTop'
@@ -100,8 +101,20 @@ export default mapStateAndStyle( {
     }
 
 
+    componentDidMount() {
+      events.addHandler( EventTypes.keyDown, this.handleKeyDown )
+    }
+  
     componentWillUnmount() {
+      events.removeHandler( EventTypes.keyDown, this.handleKeyDown )
       this.props.dispatch( { type: 'treePage/UPDATE_CURRENT_TREE_ID', value: null } )
+
+    }
+
+    handleKeyDown = e => {
+      if ( e.key === "Backspace" ) {
+        this.onBackClick()
+      }
     }
 
     onBackClick = () => {
