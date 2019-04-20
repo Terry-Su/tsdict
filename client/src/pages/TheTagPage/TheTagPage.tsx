@@ -39,11 +39,11 @@ export default mapStateAndStyle()(
   
     componentWillUnmount() {
       events.removeHandler( EventTypes.keyDown, this.handleKeyDown )
-
+      this.props.dispatch( { type: 'treePage/RESET_ACTIVE_WORD_IDS' } )
     }
 
     handleKeyDown = e => {
-      if ( e.key === "Backspace" ) {
+      if ( [ 'Backspace', 'Escape', 'ArrowLeft' ].includes( e.key ) ) {
         this.onBackClick()
       }
     }

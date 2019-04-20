@@ -38,9 +38,25 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
     componentDidMount() {
       events.addHandler( EventTypes.keyDown, this.handleKeyDown )
     }
-  
+
     componentWillUnmount() {
       events.removeHandler( EventTypes.keyDown, this.handleKeyDown )
+      this.props.dispatch( { type: 'treePage/RESET_ACTIVE_WORD_IDS' } )
+    }
+
+    handleKeyDown = ( event ) => {
+      if ( event.key === 'Escape' || event.key === 'Backspace' ) {
+        this.handleClosePanelClick()
+      }
+      
+      if( selector.canSwitchWord  ) {
+        if (  event.key === 'ArrowLeft' ) {
+          this.handlePrevClick()
+        }
+        if ( event.key === 'ArrowRight' ) {
+          this.handleNextClick()
+        }
+      }
     }
 
     handleClosePanelClick = () => {
@@ -116,22 +132,6 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
       }
     }
 
-    handleKeyDown = ( event ) => {
-      if ( event.key === 'Escape' ) {
-        this.handleClosePanelClick()
-      }
-      
-      if( selector.isTreePage ) {
-        if (  event.key === 'ArrowLeft' ) {
-          this.handlePrevClick()
-        }
-        if ( event.key === 'ArrowRight' ) {
-          this.handleNextClick()
-        }
-      }
-      
-    }
-
     render() {
       const { classes: c, dispatch, enableClose = true } = this.props
       const {
@@ -140,6 +140,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
         shallShowWordPanel,
         appState,
         isTreePage,
+        canSwitchWord,
       } = selector
       const { searching } = appState
       const note = notNil( currentWord ) ? currentWord.note : null
@@ -182,7 +183,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
               {tabIndex === 1 && <TheOnlineLinks />}
 
               {
-                isTreePage && <>
+                canSwitchWord && <>
                 {
                   this.prevId != null && <Button className="jumpButton prevButton" onClick={ this.handlePrevClick } variant="contained">{"<"}</Button>
                 }
@@ -207,7 +208,12 @@ position: relative;
     top: 50%;
     font-size: 16px;
     color: grey;
-    padding:0
+    padding:0;
+    opacity: 0.2;
+
+    &:hover {
+      opacity: 1;
+    }
   }
   .prevButton {
     left: 10px;

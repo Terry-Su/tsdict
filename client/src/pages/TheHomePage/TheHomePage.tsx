@@ -12,7 +12,11 @@ import Tabs from '@material-ui/core/Tabs'
 export default mapState(
   class TheHomePage extends Component<any, any> {
     state = {
-      tabIndex: 0
+      tabIndex: 0,
+    }
+
+    componentDidMount() {
+      this.props.dispatch( { type: "app/UPDATE_ACTIVE_WORD_IDS", value: selector.reorganizedWordIds } )
     }
 
     onAddNoteClick = () => {
@@ -21,7 +25,7 @@ export default mapState(
         this.props.dispatch( {
           type : "core/UPDATE_WORD_ADD_ONE_NOTE",
           word,
-          value: ""
+          value: "",
         } )
     }
     onRemoveNoteClick = ( index: number ) => {
@@ -30,7 +34,7 @@ export default mapState(
         this.props.dispatch( {
           type : "core/UPDATE_WORD_REMOVE_ONE_NOTE",
           word,
-          value: index
+          value: index,
         } )
     }
 
@@ -40,7 +44,7 @@ export default mapState(
         this.props.dispatch( {
           type : "core/UPDATE_WORD_NOTE",
           word,
-          value: data
+          value: data,
         } )
 
         const newWord = await updateMedia()
@@ -48,14 +52,14 @@ export default mapState(
           this.props.dispatch( {
             type : "core/UPDATE_WORD_NOTE",
             word,
-            value: newWord.note
+            value: newWord.note,
           } )
       }
     }
 
     handleTabChange = ( event, tabIndex ) => {
       this.setState( {
-        tabIndex
+        tabIndex,
       } )
     }
 
@@ -65,7 +69,7 @@ export default mapState(
       const {
         wordCanBeAdded: isNewWord,
         currentWord,
-        shallShowWordPanel
+        shallShowWordPanel,
       } = selector
       const note = notNil( currentWord ) ? currentWord.note : null
       const { tabIndex } = this.state

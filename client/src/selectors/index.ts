@@ -10,6 +10,7 @@ import { TreePageState } from '@/models/treePage'
 import { TreePageAddDialogState } from '@/models/treePageAddDialog'
 import { TreePageSelectTreeDialogState } from '@/models/treePageSelectTreeDialog'
 import { WordPageState } from '@/models/wordPage'
+import { sortWords } from '@/shared/reorganizeItems'
 import { notNil } from '@/utils/lodash'
 import { DictDataWord } from '@shared/__typings__/DictData'
 
@@ -70,6 +71,11 @@ class Selector {
 
   get wordIds(): string[] {
     return this.coreState.words.map( ( { id } ) => id )
+  }
+
+  get reorganizedWordIds(): string[] {
+    const sortedWords = sortWords( this.coreState.words )
+    return sortedWords.map( v => v.id )
   }
 
   get wordNames(): string[] {
@@ -138,6 +144,10 @@ class Selector {
   get shallShowWordPanel() {
     const { searching } = this.appState
     return searching.trim() !== "" && !this.wordCanBeAdded
+  }
+
+  get canSwitchWord() {
+    return this.appState.activeWordIds.length > 0
   }
 
   

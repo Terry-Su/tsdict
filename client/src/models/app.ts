@@ -36,6 +36,7 @@ export default {
 
 
       UPDATE_ACTIVE_WORD_IDS = this.UPDATE_STATE_KEY( 'activeWordIds' )
+      RESET_ACTIVE_WORD_IDS = this.UPDATE_STATE_KEY_VALUE( 'activeWordIds', [] )
 
       // # message
       // SHOW_MESSAGE   = state => ( { ...state, isShowingMessage: true } )

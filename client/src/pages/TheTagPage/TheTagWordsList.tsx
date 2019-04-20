@@ -70,11 +70,14 @@ export default mapStateAndStyle()(
     onWordClick = word => {
       this.props.dispatch( {
         type : "app/UPDATE_SEARCHING",
-        value: word.name
+        value: word.name,
       } )
       this.props.dispatch( {
         type: "app/SHOW_CURRENT_WORD_PANEL",
       } )
+
+      const wordIds = this.reorganizedWords.map( v => v.id )
+      this.props.dispatch( { type: "app/UPDATE_ACTIVE_WORD_IDS", value: wordIds } )
     }
 
     render() {

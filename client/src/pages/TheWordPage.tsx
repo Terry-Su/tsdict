@@ -82,9 +82,16 @@ export default mapStateAndStyle( {
       return res
     }
 
+    componentWillUnmount() {
+      this.props.dispatch( { type: 'treePage/RESET_ACTIVE_WORD_IDS' } )
+    }
+
     onWordNameClick = value => {
-      this.props.dispatch( { type: "app/UPDATE_SEARCHING", value } )
-      this.props.dispatch( { type: "app/SHOW_CURRENT_WORD_PANEL" } )
+      const { dispatch } = this.props
+      dispatch( { type: "app/UPDATE_SEARCHING", value } )
+      dispatch( { type: "app/SHOW_CURRENT_WORD_PANEL" } )
+      const wordIds = this.reorganizedWords.map( v => v.id )
+      dispatch( { type: "app/UPDATE_ACTIVE_WORD_IDS", value: wordIds } )
     }
 
     onMoreClick = ( event, word ) => {
