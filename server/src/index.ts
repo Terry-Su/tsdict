@@ -1,7 +1,7 @@
-import * as express from 'express'
-import * as https from 'https'
-import * as FS from 'fs'
-import * as PATH from 'path'
+import express from 'express'
+import https from 'https'
+import FS from 'fs'
+import PATH from 'path'
 import { STORE_ROOT } from './constants/paths';
 import { PORT } from '../config';
 

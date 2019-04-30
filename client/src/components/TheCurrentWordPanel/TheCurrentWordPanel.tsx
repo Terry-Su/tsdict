@@ -178,7 +178,7 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
             <div className="main">
               <div className="contents">
                 <Note data={note} onChange={this.onNoteChange} />
-                <TheOnlineLinks />}
+                <TheOnlineLinks />
               </div>
               {/* <Tabs
                 value={tabIndex}

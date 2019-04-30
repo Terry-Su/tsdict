@@ -1,4 +1,4 @@
-import * as FS from 'fs-extra'
+import FS from 'fs-extra'
 
 export default function( base64Data: string, output: string ) {
   // data:image/jpeg;base64,

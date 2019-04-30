@@ -1,6 +1,6 @@
-import * as PATH from 'path'
-import * as moment from 'moment'
-import * as GLOB from 'glob'
+import PATH from 'path'
+import moment from 'moment'
+import GLOB from 'glob'
 import getUniqueId from '../utils/getUniqueId';
 import { notNil } from '../utils/lodash';
 const { resolve, relative } = PATH

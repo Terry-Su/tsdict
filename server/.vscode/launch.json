@@ -5,19 +5,37 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "args": [
-        "node_modules/jasmine/bin/jasmine",
-      ],
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector",
-      "env": {
-        "NODE_ENV": "development"
-      }
-    }
+      // "type": "node",
+      // "request": "launch",
+      // "name": "Launch Program",
+      // "args": [
+      //   "scripts/compressServerImages.command.ts",
+      //   "--dir",
+      //   "store/image"
+      // ],
+      // "runtimeArgs": [
+      //   "-r", 
+      //   "ts-node/register", 
+      // ],
+      // "cwd": "${workspaceRoot}",
+      // "protocol": "inspector",
+    },
+
+    // {
+    //   "type": "node",
+    //   "request": "launch",
+    //   "name": "Launch Program",
+    //   "args": [
+    //     "node_modules/jasmine/bin/jasmine",
+    //   ],
+    //   "runtimeArgs": ["-r", "ts-node/register"],
+    //   "cwd": "${workspaceRoot}",
+    //   "protocol": "inspector",
+    //   "env": {
+    //     "NODE_ENV": "development"
+    //   }
+    // },
+
 
   ]
 }

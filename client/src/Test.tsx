@@ -9,11 +9,7 @@ interface Props {
 }
 
 @State( 'foo', 'count' ) 
-@Selector( 'foo', 'countText' )
 @Action( 'foo', 'increase', 'decrease' )
-@State( 'bar', 'flag' )
-@Action( 'bar', 'test' )
-@Action( 'bar', 'SWITCH_FLAG' )
 export default class Test extends Component<Props> {
   count?: number
   decoratedCount?: number
@@ -27,7 +23,6 @@ export default class Test extends Component<Props> {
   test?: Function
 
   componentDidMount() {
-    this.increase( 1 )
     // this.props.test()
     // console.log( this.countText )
     // console.log( this )

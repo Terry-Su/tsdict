@@ -1,7 +1,7 @@
-import * as express from "express";
-import * as FS from "fs-extra";
-import * as FS_ORIGIN from "fs";
-import * as READLINE from "readline";
+import express from "express";
+import FS from "fs-extra";
+import FS_ORIGIN from "fs";
+import READLINE from "readline";
 import { JSDOM } from "jsdom";
 
 import {
@@ -23,7 +23,7 @@ import outputBase64Media from "./utils/outputBase64Media";
 import { URL } from "url";
 import { DictDataWord } from "../../shared/__typings__/DictData";
 import { getImageUrls } from "./getters";
-import * as PATH from "path";
+import PATH from "path";
 const trash = require("trash");
 
 export function backup(data) {

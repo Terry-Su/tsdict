@@ -17,4 +17,5 @@ export default class Foo {
     // this.bar.SWITCH_FLAG()
   }  
   decrease = count => { this.count = this.count - count }
+
 }
