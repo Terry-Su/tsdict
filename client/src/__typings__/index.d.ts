@@ -39,3 +39,10 @@ export interface Setting {
   server: string
 }
 
+
+export type TypeAction = {
+  type?: string
+  namespace: string
+  name: string
+  value?: any[]
+}

@@ -1,8 +1,8 @@
 export default function( files ): any {
-  const models = {}
+  const defaults = {}
   files.keys().forEach( key => {
     if ( key === "./index.ts" ) return
-    models[ key.replace( /(\.\/|\.ts)/g, "" ) ] = files( key ).default
+    defaults[ key.replace( /(\.\/|\.ts)/g, "" ) ] = files( key ).default
   } )
-  return models
+  return defaults
 }

@@ -67,7 +67,6 @@ app.get("/cache", (req, res) => {
 CACHE:
 index.html
 bundle.js
-${urlsStr}
 #NETWORK:
 #*
 

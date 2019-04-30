@@ -38,3 +38,6 @@ export default class BasicComponent<P extends {
     return this.props.dispatch
   }
 }
+
+
+

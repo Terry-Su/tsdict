@@ -77,12 +77,13 @@ const webpackClientConfig = {
         to  : OUTPUT_MANIFEST_CACHE,
       },
     ] ),
-    new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
   ].concat( __DEV__ ? [ 
     new WriteFilePlugin(),
     new webpack.HotModuleReplacementPlugin(),
-  ] : [] ),
+  ] : [
+    new CleanWebpackPlugin(),
+  ] ),
 }
 
 export default webpackClientConfig

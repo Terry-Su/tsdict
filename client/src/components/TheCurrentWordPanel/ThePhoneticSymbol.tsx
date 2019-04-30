@@ -76,20 +76,6 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
       const { possibleVoiceUrls } = this
       return (
         <div>
-          {/* {p.length === 0 ? (
-            <Button onClick={this.onClick}>🎵</Button>
-          ) : (
-            p.map( ( html, index ) => (
-              <span key={index}>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: html.replace( /<img.+>/, "" )
-                  }}
-                />
-                &nbsp;&nbsp;
-              </span>
-            ) )
-          )} */}
           <Button onClick={this.onPronunceClick}>🎤</Button>
           <audio ref={this.audioRef} controls style={{ display: 'none' }}>
             {/* {possibleVoiceUrls.map( ( url, index ) => (

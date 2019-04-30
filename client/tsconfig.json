@@ -15,7 +15,7 @@
       ]
     },
     "module": "esnext",
-		"target": "esnext",
+		"target": "es5",
 		"jsx": "react",
     "allowJs": true,
     "outDir": "../../build/",
@@ -24,5 +24,11 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "es2016"],
     "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "src/__typings__/**/*"
+    ]
   }
 }
