@@ -1,8 +1,12 @@
-import PATH from 'path'
-import moment from 'moment'
+import FS from 'fs-extra'
 import GLOB from 'glob'
-import getUniqueId from '../utils/getUniqueId';
-import { notNil } from '../utils/lodash';
+import moment from 'moment'
+import PATH from 'path'
+
+import getUniqueId from '../utils/getUniqueId'
+import { notNil } from '../utils/lodash'
+import numberToChars from '../utils/numberToChars'
+
 const { resolve, relative } = PATH
 
 export type Path = string
@@ -35,36 +39,36 @@ export const GET_BACKUP_CLIENT_DATA_UNIQUE_FILE = () => {
 
 export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
 
-export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = () => `${moment().format( 'YYYYMMDD-HHmmss' )}-${getUniqueId()}`
-
-export const GET_STORE_IMAGE_UNIQUE_FILE = () => {
-  const name = GET_STORE_IMAGE_UNIQUE_FILE_NAME()
-  return resolve( STORE_IMAGE, name )
+export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = () => {
+  let num = 0
+  let res = null
+  while ( res != null ) {
+    const name = numberToChars( num )
+    const possibleFiles = [
+      '.jpeg',
+      '.png',
+    ].map( v => PATH.resolve( STORE_IMAGE, `${name}${v}` ) )
+    if ( possibleFiles.every( v => ! FS.pathExistsSync( v ) ) ) {
+      res = name
+    }
+    num++
+  }
+  return res
 }
 
-export const GET_STORE_IMAGE_FILE_BY_NAME = name => {
-  return resolve( STORE_IMAGE, name )
-}
+export const GET_STORE_IMAGE_FILE_BY_NAME = name => resolve( STORE_IMAGE, name )
 
-export const GET_STORE_BACKUP_IMAGE_FILE_BY_NAME = name => {
-  return resolve( STORE_BACKUP_IMAGE, name )
-}
+export const GET_STORE_BACKUP_IMAGE_FILE_BY_NAME = name => resolve( STORE_BACKUP_IMAGE, name )
 
 
 export const GET_URL_RELATIVE_TO_STORE_ROOT = path => relative( STORE_ROOT, path )
 
 
-export const GET_STORE_IMAGE_FILES = () => {
-  return GLOB.sync( `${STORE_IMAGE}/**/*` )
-}
+export const GET_STORE_IMAGE_FILES = () => GLOB.sync( `${STORE_IMAGE}/**/*` )
 
-export const GET_STORE_AUDIO_FILES = () => {
-  return GLOB.sync( `${STORE_AUDIO}/**/*` )
-}
+export const GET_STORE_AUDIO_FILES = () => GLOB.sync( `${STORE_AUDIO}/**/*` )
 
-export const GET_STORE_VIDEO_FILES = () => {
-  return GLOB.sync( `${STORE_VIDEO}/**/*` )
-}
+export const GET_STORE_VIDEO_FILES = () => GLOB.sync( `${STORE_VIDEO}/**/*` )
 
 
 
