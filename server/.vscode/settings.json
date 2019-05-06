@@ -2,7 +2,7 @@
   "files.exclude": {
     "store/image": true,
     "store/backupImage": true,
-    // "store/backup": true,
+    "store/backup": true,
     "store/audio": true,
     "store/video": true,
     "store/dicts": true,
