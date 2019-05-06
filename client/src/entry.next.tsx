@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
-import ModelMap from './state'
+import ModelMap from './states'
 import Test from './Test'
 import { rootReducer } from './utils/redux'
 

@@ -34,9 +34,6 @@ function model( app ) {
 
   const storeLocal = localStore.getStore()
 
-  console.log( storeLocal )
-
-
   function getNewResModelsMapStatesWithStoreLocal( resModelsMap, storeLocal ) {
     try {
       if ( resModelsMap && storeLocal ) {

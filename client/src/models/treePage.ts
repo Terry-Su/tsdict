@@ -1,5 +1,5 @@
 import { isPlainObject } from 'lodash'
-import { isString } from 'util'
+import { isNumber } from 'util'
 
 import { Tree, TreeNode } from '@/__typings__'
 import { SortType } from '@/components/SortSection'
@@ -49,7 +49,7 @@ export class TreePageState {
 export default {
   namespace: "treePage",
   state    : {
-    ...new TreePageState()
+    ...new TreePageState(),
   },
   reducers: {
     ...new class extends CommonModelReducer {
@@ -61,18 +61,16 @@ export default {
       ) => {
         selector.currentTree.nodes.push( treeNode )
         return {
-          ...state
+          ...state,
         }
       }
 
-      ADD_TREE = ( state: TreePageState, { tree }: { tree: Tree } ) =>
-        this.ADD_TREE_NODE( state, {
-          treeNode: tree
+      ADD_TREE = ( state: TreePageState, { tree }: { tree: Tree } ) => this.ADD_TREE_NODE( state, {
+          treeNode: tree,
         } )
 
-      ADD_WORD_ID = ( state: TreePageState, { wordId }: { wordId: string } ) =>
-        this.ADD_TREE_NODE( state, {
-          treeNode: wordId
+      ADD_WORD_ID = ( state: TreePageState, { wordId }: { wordId: string } ) => this.ADD_TREE_NODE( state, {
+          treeNode: wordId,
         } )
 
       UPDATE_CURRENT_TREE_ID = this.UPDATE_STATE_KEY( "currentTreeId" )
@@ -116,9 +114,9 @@ export default {
       UPDATE_START_DEGREE = this.UPDATE_STATE_KEY( 'startDegree' )
       UPDATE_END_DEGREE = this.UPDATE_STATE_KEY( 'endDegree' )
       UPDATE_SELECTED_TAG_IDS = this.UPDATE_STATE_KEY( 'selectedTagIds' )
-    }()
+    }(),
   },
-  effects: {}
+  effects: {},
 }
 
 export const createTree = (
@@ -127,7 +125,7 @@ export const createTree = (
 ): Tree => ( {
   id   : getUniqueId(),
   name,
-  nodes: config.nodes
+  nodes: config.nodes,
 } )
 
 export function getNodesTrees( tree: Tree ): Tree[] {
@@ -135,7 +133,7 @@ export function getNodesTrees( tree: Tree ): Tree[] {
 }
 
 export function getNodesWordIds( tree: Tree ): string[] {
-  return tree.nodes.filter( node => isString( node ) ) as string[]
+  return tree.nodes.filter( node => isNumber( node ) ) as string[]
 }
 
 

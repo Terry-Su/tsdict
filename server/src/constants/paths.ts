@@ -21,6 +21,7 @@ export const STORE_VIDEO = resolve( STORE_ROOT, 'video' )
 export const STORE_DICTS = resolve( STORE_ROOT, 'dicts' )
 export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
 export const STORE_CURRENT_DATA_FILE_RENAME_IMAGE = resolve( STORE_ROOT, 'clientData-rename-image.json' )
+export const STORE_CURRENT_DATA_FILE_UPDATE_WORD_ID = resolve( STORE_ROOT, 'clientData-update-word-id.json' )
 
 
 export const STORE_DICTS_1_MDX_SOURCE = resolve( STORE_DICTS, '1/source' )

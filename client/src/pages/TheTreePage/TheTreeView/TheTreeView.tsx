@@ -1,4 +1,4 @@
-import { isPlainObject, isString } from 'lodash'
+import { isNumber, isPlainObject } from 'lodash'
 import React, { Component } from 'react'
 
 import { Tree, TreeNode } from '@/__typings__'
@@ -28,7 +28,7 @@ export default mapStateAndStyle()(
       if ( isPlainObject( node ) ) {
         return <TreeItem tree={node} mainRef={mainRef} />
       }
-      if ( isString( node ) ) {
+      if ( isNumber( node ) ) {
         const wordId = node
         const word = selector.getWordByWordId( wordId )
         return notNil( word ) ? <WordItem word={word} wordIds={ this.props.reorganizedNodes } /> : null

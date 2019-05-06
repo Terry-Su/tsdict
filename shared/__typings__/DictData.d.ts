@@ -7,7 +7,7 @@ export type DictDataWordDegree = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 export type Time = number
 
 export interface DictDataWord {
-  id: string,
+  id: number,
   name: string,
   note: NoteData,
 

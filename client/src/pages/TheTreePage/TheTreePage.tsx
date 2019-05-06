@@ -12,7 +12,7 @@ import {
     filterWordsByDegreeRange, filterWordsBySelectedTagIds, sortBySize, sortWords
 } from '@/shared/reorganizeItems'
 import events, { EventTypes } from '@/utils/event'
-import { isPlainObject, isString, notNil } from '@/utils/lodash'
+import { isNumber, isPlainObject, notNil } from '@/utils/lodash'
 import mapStateAndStyle from '@/utils/mapStateAndStyle'
 import { scrollToTop } from '@/utils/scrollToTop'
 import { IconButton } from '@material-ui/core'
@@ -60,8 +60,10 @@ export default mapStateAndStyle( {
       const { nodes } = selector.currentTree
       let res = [ ...nodes ]
       let resTrees = res.filter( node => isPlainObject( node ) ) as Tree[]
-      let resWordIds = res.filter( node => isString( node ) ) as string[]
+      let resWordIds = res.filter( node => isNumber( node ) ) as string[]
       let resWords = resWordIds.map( id => selector.getWordByWordId( id ) )
+
+      console.log( selector.currentTree )
 
       // filter
       if ( shallShowFilterSection ) {
