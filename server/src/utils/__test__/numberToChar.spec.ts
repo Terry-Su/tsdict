@@ -3,11 +3,11 @@ import numberToChars from '../numberToChars'
 describe( "numberToChars", function() {
   it( "", () => {
     const testing = [
+      [ 40, '12' ],
+      [ 38, '10' ],
       [ 0, '0' ],
       [ 10, 'a' ],
-      [ 36, '10' ],
-      [ 36 * 36, '100' ],
-      [ 1000, 'rs' ],
+      [ 38 * 38, '100' ],
     ]
     testing.forEach( v => {
       const res = numberToChars( v[ 0 ] )

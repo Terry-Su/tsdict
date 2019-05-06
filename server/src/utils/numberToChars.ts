@@ -1,4 +1,4 @@
-let basicString = '0123456789abcdefghijklmnopqrstuvwxyz'
+let basicString = '0123456789abcdefghijklmnopqrstuvwxyz-_'
 export default function numberToChars( num ): string {
   if ( num >= 0 ) {
     const { length } = basicString
@@ -7,8 +7,8 @@ export default function numberToChars( num ): string {
     // # get max power
     let divided = num
     let maxPower = 0
-    while ( divided >= 36 ) {
-      divided = Math.floor( divided / 36 )
+    while ( divided >= length ) {
+      divided = Math.floor( divided / length )
       maxPower++
     } 
 

@@ -2,7 +2,8 @@
   "include": [
     "src/**/*",
     "../shared/__typings__/**/*",
-    "config.ts"
+    "config.ts",
+    "scripts/**/*"
   ],
   "exclude": ["node_modules"],
   "compilerOptions": {

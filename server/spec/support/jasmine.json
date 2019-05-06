@@ -1,9 +1,10 @@
 {
   "spec_dir": "",
   "spec_files": [
-    "null/src/__test__/**/*[sS]pec.ts",
-    "src/utils/__test__/**/*[sS]pec.ts",
-    "null/scripts/**/*[sS]pec.ts"
+    "-src/__test__/**/*[sS]pec.ts",
+    "-src/utils/__test__/numberToChar.spec.ts",
+    "-scripts/**/*[sS]pec.ts",
+    "-scripts/__test__/renameImageNameInClientDataAndFileSystem.spec.ts"
   ],
   "helpers": [
     "helpers/**/*.js"

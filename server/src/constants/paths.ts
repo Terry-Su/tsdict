@@ -19,6 +19,9 @@ export const STORE_BACKUP_IMAGE = resolve( STORE_ROOT, 'backupImage' )
 export const STORE_AUDIO = resolve( STORE_ROOT, 'audio' )
 export const STORE_VIDEO = resolve( STORE_ROOT, 'video' )
 export const STORE_DICTS = resolve( STORE_ROOT, 'dicts' )
+export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
+export const STORE_CURRENT_DATA_FILE_RENAME_IMAGE = resolve( STORE_ROOT, 'clientData-rename-image.json' )
+
 
 export const STORE_DICTS_1_MDX_SOURCE = resolve( STORE_DICTS, '1/source' )
 export const STORE_DICTS_1_HTML = resolve( STORE_DICTS, '1/html' )
@@ -37,12 +40,11 @@ export const GET_BACKUP_CLIENT_DATA_UNIQUE_FILE = () => {
   return resolve( BACKUP, `clientData${ time }.json`  )
 }
 
-export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
 
 export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = () => {
   let num = 0
   let res = null
-  while ( res != null ) {
+  while ( res === null ) {
     const name = numberToChars( num )
     const possibleFiles = [
       '.jpeg',

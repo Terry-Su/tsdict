@@ -1,3 +1,7 @@
+import { AppState } from '@/models/app'
+import { CoreState } from '@/models/core'
+import { SettingState } from '@/models/setting'
+
 import { DictDataWord } from '../../../shared/__typings__/DictData'
 import { TAG_IDS } from '../constants/shared'
 
@@ -20,10 +24,14 @@ export type Tree = {
 }
 
 export interface ClientData {
-  words: DictDataWord[]
-  onlineLinks: OnlineLink[],
-  tags: Tag[]
-  tree: Tree
+  // words: DictDataWord[]
+  // onlineLinks: OnlineLink[],
+  // tags: Tag[]
+  // tree: Tree
+  app: AppState,
+  core: CoreState,
+  setting: SettingState,
+  
 }
 
 export interface OnlineLink {
