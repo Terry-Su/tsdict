@@ -1,4 +1,5 @@
-import { NoteData } from '@/components/Note/Note'
+import Delta from 'quill-delta'
+
 import { DictDataWord, DictDataWordDegree, Time } from '@shared/__typings__/DictData'
 
 export default class Word {
@@ -17,7 +18,7 @@ export default class Word {
   }
 
   get getNewWord( ) {
-    return ( name: string, config: { note?: NoteData; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ) => ( {
+    return ( name: string, config: { note?: Delta; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ) => ( {
         id        : this.availableId,
         name,
         note      : config.note,
@@ -26,7 +27,7 @@ export default class Word {
       } )
   }
 
-  ADD_WORD( name: string, config: { note?: NoteData; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ) {
+  ADD_WORD( name: string, config: { note?: Delta; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ) {
     const newWord: DictDataWord = this.getNewWord( name, config )
     this.words.push( newWord )
   }

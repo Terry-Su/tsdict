@@ -7,10 +7,11 @@ interface Props {
   
 }
 
-export default class Template extends Component<Props> {
+export default class TreePanel extends Component<Props> {
   render() {
     return (
       <StyledRoot>
+        TreePanel
       </StyledRoot>
     )
   }

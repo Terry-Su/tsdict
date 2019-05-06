@@ -5,7 +5,7 @@ import { reduxStore } from '@/entry'
 
 import { modelMap, modelsActionMap, modelsSelectorMap } from './redux'
 
-export const State = ( namespace, ...keys ) => ( TagetClass ) => connect( rootState => {
+export const States = ( namespace, ...keys ) => ( TagetClass ) => connect( rootState => {
   const state = rootState[ namespace ]  
   let res = {}
   for ( let key of keys ) {
@@ -20,7 +20,7 @@ export const State = ( namespace, ...keys ) => ( TagetClass ) => connect( rootSt
 } )( TagetClass )
 
 
-export const Selector = ( namespace, ...keys ) => ( TagetClass ) => connect( rootState => {
+export const Selectors = ( namespace, ...keys ) => ( TagetClass ) => connect( rootState => {
   const model = modelMap[ namespace ]
   const selectorMap = modelsSelectorMap[ namespace ]
   let res = {}
@@ -39,7 +39,7 @@ export const Selector = ( namespace, ...keys ) => ( TagetClass ) => connect( roo
 
 
 
-export const Action = ( namespace: string, ...keys ) => TagetClass => connect( null, () => {
+export const Actions = ( namespace: string, ...keys ) => TagetClass => connect( null, () => {
   const actionMap = modelsActionMap[ namespace ]
   const model = modelMap[ namespace ]
   let res = {}

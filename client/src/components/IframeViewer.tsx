@@ -1,68 +1,65 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
-import mapStateAndStyle from '@/utils/mapStateAndStyle'
+import { Actions, Selectors, States } from '@/utils/decorators'
 
-import ExitButton from './Button/ExitButton'
-import FullScreenButton from './Button/FullScreenButton'
+interface Props {
+  src?: string
+}
 
-export default mapStateAndStyle( {
-  entry: {
-    position: 'relative',
-    width   : '100%',
-    height  : '100%',
-  },
-  iframe: {
-    width : '100%',
-    height: '100%',
-  },
-  button: {
-    position: 'absolute',
-    right   : '5px',
-    top     : '5px',
-  },
-  fullScreen: {
-    position: 'fixed',
-    width   : '100%',
-    height  : '100%',
-    left    : '0',
-    top     : '0',
+class State {
+  isFullScreen: boolean = false
+}
+        
+export default class IframeViewer extends Component<Props, State> {
+  state = new State()
+  onExitButtonClick = () => {
+    this.setState( {
+      isFullScreen: false,
+    } )
   }
-} )(
-  class IframeViewer extends Component<any, any> {
-    constructor( props ) {
-      super( props )
 
-      this.state = {
-        isFullScreen: false
-      }
-    }
-
-    onExitButtonClick = () => {
-      this.setState( {
-        isFullScreen: false
-      } )
-    }
-
-    onFullScreenButtonClick = () => {
-      this.setState( {
-        isFullScreen: true
-      } )
-    }
-
-    render() {
-      const { classes: c, src } = this.props
-      const { isFullScreen } = this.state
-      return (
-        <div className={ `${c.entry} ${ isFullScreen ? c.fullScreen : '' }` }>
-          {
-            isFullScreen && <span className={c.button}><ExitButton onClick={ this.onExitButtonClick } /> </span>
+  onFullScreenButtonClick = () => {
+    this.setState( {
+      isFullScreen: true,
+    } )
+  }
+  render() {
+    const { isFullScreen } = this.state
+    const { src = '' } = this.props
+    return (
+      <StyledRoot isFullScreen={isFullScreen}>
+        {
+            isFullScreen && <button onClick={ this.onExitButtonClick }>X</button>
           }
           {
-            !isFullScreen && <span className={c.button}><FullScreenButton onClick={ this.onFullScreenButtonClick }/></span>
+            !isFullScreen && <button onClick={ this.onFullScreenButtonClick }>F</button>
           }
-          <iframe className={ c.iframe } src={src} frameBorder="0" />
-        </div>
-      )
-    }
+          <iframe src={src} frameBorder="0" />
+      </StyledRoot>
+    )
   }
-)
+}
+
+
+const StyledRoot: any = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  ${ ( props: any ) => props.isFullScreen ? `
+  position: fixed;
+  left: 0;
+  top: 0;
+  ` : `` }
+
+  >button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+
+  >iframe {
+    width: 100%;
+    height: 100%;
+  }
+`
