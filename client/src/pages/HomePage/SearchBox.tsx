@@ -13,15 +13,12 @@ export default class SearchBox extends Component<Props> {
   SET_SEARCHING_WORD_NAME?: Function
 
   onChange = ( event ) => {
-    // this.SET_SEARCHING_WORD_NAME( event.target.value )
-    // console.log( this.props )
     this.props.SET_SEARCHING_WORD_NAME( event.target.value )
   }
   render() {
-    console.log( 'rendered' )
     return (
       <StyledRoot>
-        <input defaultValue="test" onChange={ this.onChange }/>
+        <input onChange={ this.onChange }/>
       </StyledRoot>
     )
   }

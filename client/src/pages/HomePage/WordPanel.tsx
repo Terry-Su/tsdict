@@ -15,9 +15,8 @@ export default class WordPanel extends Component<Props> {
   render() {
     return (
       <StyledRoot>
-        { this.searchingWordName }
-        <Note />
-        {/* <div className="iframeViewerWrapper"><IframeViewer src={`https://bing.com/images/search?q=${ this.searchingWordName }`}/></div> */}
+        <Note data={null}/>
+        <div className="iframeViewerWrapper"><IframeViewer src={`https://bing.com/images/search?q=${ this.searchingWordName }`}/></div>
       </StyledRoot>
     )
   }

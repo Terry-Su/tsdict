@@ -5,12 +5,14 @@ import { SettingState } from '@/models/setting'
 import { DictDataWord } from '../../../shared/__typings__/DictData'
 import { TAG_IDS } from '../constants/shared'
 
-export type WordId = string
+export type TypeId = number
+export type WordId = number
 export type Tag = {
   id: string,
   name: string,
-  [ TAG_IDS ]: WordId[]
+  ids: WordId[]
 }
+export type TypeTag = Tag
 
 export type TreeNode = WordId | Tree
 
@@ -18,10 +20,12 @@ export type TreeNode = WordId | Tree
 // 1. Tree(like 'folder')
 // 2. WordId(like 'file')
 export type Tree = {
-  id: string,
+  id: number,
   name: string,
   nodes: TreeNode[]
 }
+
+export type TypeTree = Tree
 
 export interface ClientData {
   // words: DictDataWord[]

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { TreeSelection, TypeTreeColumn } from '@/__typings__/tree'
 import TreePanel from '@/components/TreePanel/TreePanel'
+import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import SearchBox from './SearchBox'
@@ -10,7 +12,22 @@ import WordPanel from './WordPanel'
 
 interface Props {}
 
+@Actions( 'tree', 'SET_TREE' )
+@Actions( 'word', 'SET_WORDS' )
+@Actions( 'tag', 'SET_TAGS' )
 export default class HomePage extends Component<Props> {
+  selections: TreeSelection[]
+  columns: TypeTreeColumn[]
+  SET_TREE?: Function
+  SET_WORDS?: Function
+  SET_TAGS?: Function
+  
+  async componentDidMount() {
+    const data: any = await appApi.pull()
+    this.SET_TREE( data.core.tree )
+    this.SET_WORDS( data.core.words )
+    this.SET_TAGS( data.core.tags )
+  }
   render() {
     return (
       <StyledRoot>

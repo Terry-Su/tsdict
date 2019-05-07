@@ -9,61 +9,63 @@ import styled from 'styled-components'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 interface Props {
-  data?: Delta
-  onChange?: ( content: Delta ) => void
+  data?: Delta;
+  onChange?: ( content: Delta ) => void;
 }
 
 export default class Note extends Component<Props> {
-  quill: Quill
-  rootRef: any = React.createRef()
+  quill: Quill;
+  rootRef: any = React.createRef();
   componentDidMount() {
     const { firstElementChild: container } = this.rootRef.current
-    const quill = this.quill = new Quill( container, {
+    const quill = ( this.quill = new Quill( container, {
       modules: {
         toolbar: [
           // [ { header: [ 1, 2, false ] } ],
-          [ 
-            'bold', 
-            'italic',
+          [
+            "bold",
+            "italic",
             //  'underline',
-            ],
-          [ 
-            'image',
-            'video',
           ],
+          [ "image", "video" ],
         ],
       },
-      placeholder: 'Compose an epic...',
-      theme      : 'snow',
-    } )
+      placeholder: "Compose an epic...",
+      theme      : "snow",
+    } ) )
 
     const debouncedOnChange = debounce( ( delta, oldDelta, source ) => {
       // if ( source === 'user' ) {
-        const content = quill.getContents()
-        this.props.onChange && this.props.onChange( content )
+      const content = quill.getContents()
+      this.props.onChange && this.props.onChange( content )
       // }
     }, 1000 )
 
-    quill.on( 'text-change', debouncedOnChange )
+    quill.on( "text-change", debouncedOnChange )
 
     this.quill.setContents( this.props.data )
   }
   componentDidUpdate() {
-    if ( JSON.stringify( this.props.data ) !== JSON.stringify( this.quill.getContents() ) ) {
+    if ( this.props.data == null ) {
+      this.quill.setContents( this.props.data )
+    } else if (
+      JSON.stringify( this.props.data ) !==
+      JSON.stringify( this.quill.getContents() )
+    ) {
       const cachedSelection = this.quill.getSelection()
-      this.quill.setContents( this.props.data ) 
+      this.quill.setContents( this.props.data )
       this.quill.setSelection( cachedSelection )
     }
   }
   render() {
     return (
-      <StyledRoot  ref={this.rootRef}
-      dangerouslySetInnerHTML={{
-        __html: `
-    <div>
-    </div>
-    `,
-      }}>
+      <StyledRoot>
+        <div
+          ref={this.rootRef}
+          dangerouslySetInnerHTML={{
+            __html: `<div></div>`,
+          }}
+        />
       </StyledRoot>
     )
   }

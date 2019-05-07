@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import HomePage from '@/pages/HomePage/HomePage'
 import GlobalStyle from '@/styles/GlobalStyle'
@@ -10,11 +11,20 @@ interface Props {
 
 export default class Test extends Component<Props> {
   render() {
-    return [
-      <HomePage key={0}/>,
-      // <React.Fragment key={1}>
-      //   <GlobalStyle />
-      // </React.Fragment>,
-    ]
+    return (
+      <StyledRoot>
+        <HomePage />,
+        <React.Fragment>
+        <GlobalStyle />
+        </React.Fragment>,
+      </StyledRoot>
+    )
+      
+      
   }
 }
+
+const StyledRoot = styled.div`
+  width: 100%;
+  height: 100%;
+`
