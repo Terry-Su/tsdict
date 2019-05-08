@@ -6,7 +6,7 @@ export default class App {
   word: Word
 
   origin: string = "http://localhost:3000"
-  searchingWordName: string = 'tick'
+  searchingWordName: string = 'a-'
 
   get searchingWord(): TypeWord {
     return this.word.getWordByName( this.searchingWordName )

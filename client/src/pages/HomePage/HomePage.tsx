@@ -12,35 +12,44 @@ import WordPanel from './WordPanel'
 
 interface Props {}
 
-@Actions( 'tree', 'SET_TREE' )
-@Actions( 'word', 'SET_WORDS' )
-@Actions( 'tag', 'SET_TAGS' )
+@Selectors( "review", "isReviewMode" )
+@States( "tree", "visibleTreePanel" )
+@Actions( "tree", "SET_TREE" )
+@Actions( "word", "SET_WORDS" )
+@Actions( "tag", "SET_TAGS" )
 export default class HomePage extends Component<Props> {
-  selections: TreeSelection[]
-  columns: TypeTreeColumn[]
-  SET_TREE?: Function
-  SET_WORDS?: Function
-  SET_TAGS?: Function
-  
+  isReviewMode: boolean;
+  visibleTreePanel: boolean;
+  selections: TreeSelection[];
+  columns: TypeTreeColumn[];
+  SET_TREE?: Function;
+  SET_WORDS?: Function;
+  SET_TAGS?: Function;
+
   async componentDidMount() {
     const data: any = await appApi.pull()
     this.SET_TREE( data.core.tree )
     this.SET_WORDS( data.core.words )
     this.SET_TAGS( data.core.tags )
   }
+
   render() {
     return (
-      <StyledRoot>
+      <StyledRoot visibleTreePanel={this.visibleTreePanel}>
         <div className="toolbarWrapper">
           <Toolbar />
         </div>
-        <div className="searchBoxWrapper">
-          <SearchBox />
-        </div>
-        <div className="bottomContainer">
-          <div className="treePanelWrapper">
-            <TreePanel />
+        {/* {! this.isReviewMode && ( */}
+          <div className="searchBoxWrapper">
+            <SearchBox />
           </div>
+        {/* )} */}
+        <div className="bottomContainer">
+          {this.visibleTreePanel && (
+            <div className="treePanelWrapper">
+              <TreePanel />
+            </div>
+          )}
           <div className="wordPanelWrapper">
             <WordPanel />
           </div>
@@ -50,7 +59,7 @@ export default class HomePage extends Component<Props> {
   }
 }
 
-const StyledRoot = styled.div`
+const StyledRoot: any = styled.div`
   width: 100%;
   height: 100%;
 
@@ -87,7 +96,7 @@ const StyledRoot = styled.div`
     > .wordPanelWrapper {
       box-sizing: border-box;
       display: flex;
-      width: 50%;
+      ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
     }
   }

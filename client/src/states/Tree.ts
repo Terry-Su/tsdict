@@ -4,14 +4,20 @@ import { NAME_TREE_ROOT } from '@/constants/names'
 import { CalcTree } from '@/utils/getters/tree'
 import { isPlainObject } from '@/utils/lodash'
 
+import Review from './Review'
 import Tag from './Tag'
 import Word from './Word'
 
 export default class Tree {
   word: Word;
-  tree: TypeTree;
   tag: Tag;
+  review: Review
+
+  tree: TypeTree;
   selections: TreeSelection[] = [];
+
+  visibleTreePanel: boolean = false
+
 
   get treeIds(): number[] {
     let ids = []
@@ -136,12 +142,20 @@ export default class Tree {
     }
   }
 
+  get shallShowTreePanel(): boolean {
+    return this.visibleTreePanel || this.review.isReviewMode
+  }
+
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
   };
   SET_SELECTIONS = ( selections: TreeSelection[] ) => {
     this.selections = selections
   };
+
+  SHOW_TREE_PANEL = () => { this.visibleTreePanel = true }
+  HIDE_TREE_PANEL = () => { this.visibleTreePanel = false }
+  TOOGLE_TREE_PANEL = () => { this.visibleTreePanel = ! this.visibleTreePanel }
 
   initialize() {
     if ( this.selections.length === 0 && this.tree ) {
