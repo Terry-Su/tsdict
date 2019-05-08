@@ -2,15 +2,15 @@ import 'quill/dist/quill.snow.css'
 
 import debounce from 'lodash/debounce'
 import Quill from 'quill'
-import Delta from 'quill-delta'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { TypeWordNote } from '@/__typings__/word'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 interface Props {
-  data?: Delta;
-  onChange?: ( content: Delta ) => void;
+  data?: TypeWordNote;
+  onChange?: ( content: TypeWordNote ) => void;
 }
 
 export default class Note extends Component<Props> {

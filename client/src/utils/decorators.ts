@@ -23,7 +23,9 @@ export const States = ( namespace, ...keys ) => ( TagetClass ) => connect( rootS
 export const Selectors = ( namespace, ...keys ) => ( TagetClass ) => connect( rootState => {
   const model = modelMap[ namespace ]
   const selectorMap = modelsSelectorMap[ namespace ]
-  let res = {}
+  let res = {
+    rootState,
+  }
   for ( let key of keys ) {
     const selector = selectorMap[ key ]
     if ( selector != null ) {
