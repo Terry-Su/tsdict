@@ -13,10 +13,10 @@ export default class Test extends Component<Props> {
   render() {
     return (
       <StyledRoot>
-        <HomePage />,
+        <HomePage />
         <React.Fragment>
         <GlobalStyle />
-        </React.Fragment>,
+        </React.Fragment>
       </StyledRoot>
     )
       

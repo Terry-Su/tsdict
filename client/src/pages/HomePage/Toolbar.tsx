@@ -1,31 +1,56 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { SyncData } from '@/__typings__/app'
+import { reduxStore } from '@/entry'
+import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 interface Props {
   
 }
 
+@Selectors( 'app', 'syncData' )
+@Actions( "tree", "SET_TREE" )
+@Actions( "word", "SET_WORDS" )
+@Actions( "tag", "SET_TAGS" )
+@Actions( 'app', 'TOOGLE_IFRAME', 'loadPulledData' )
 @Actions( 'review', 'enableReviewModeRandom', 'SET_REVIEW_MODE_NONE' )
 @Actions( 'tree', 'TOOGLE_TREE_PANEL' )
 export default class Toolbar extends Component<Props> {
+  syncData ?: any
+  loadPulledData?: Function
+  TOOGLE_IFRAME?: Function
   TOOGLE_TREE_PANEL?: Function
   enableReviewModeRandom?: Function
   SET_REVIEW_MODE_NONE?: Function
+  SET_TREE?: Function
+  SET_WORDS?: Function
+  SET_TAGS?: Function
+
+  handleClickPull = async () => {
+    const data: SyncData = await appApi.pull()
+    this.loadPulledData( data )
+  } 
+
+  handleClickPush = async () => {
+    appApi.push( this.syncData )
+  }
+
   render() {
     return (
       <StyledRoot>
         <button onClick={ () => this.TOOGLE_TREE_PANEL() }>Tree Panel</button>
         <button onClick={ () => this.enableReviewModeRandom() }>Random Review Mode</button>
         <button onClick={ () => this.SET_REVIEW_MODE_NONE() }>Exit Review Mode</button>
+        <button onClick={ () => this.TOOGLE_IFRAME() }>Iframe</button>
         <button>Save</button>
         <button>Setting</button>
         <button>Export</button>
         <button>Import</button>
         <button>Update Media</button>
-        <button>Pull</button>
-        <button>Push</button>
+        <button onClick={ this.handleClickPull }>Pull</button>
+        <button onClick={ this.handleClickPush }>Push</button>
       </StyledRoot>
     )
   }

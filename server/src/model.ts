@@ -80,7 +80,7 @@ app.post( "/backup", ( req: express.Request, res: express.Response ) => {
 app.post( "/pull", ( req: express.Request, res: express.Response ) => {
   let data
   try {
-    backup( req.body )
+    JSON.stringify( req.body ) !== '{}' && backup( req.body )
     data = FS.readJSONSync( STORE_CURRENT_DATA_FILE )
   } catch ( e ) {
     console.log( e )

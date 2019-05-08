@@ -16,8 +16,8 @@ export default class Tree {
   tree: TypeTree;
   selections: TreeSelection[] = [];
 
-  visibleTreePanel: boolean = false
-
+  visibleTreePanel: boolean = true
+  syncT: any;
 
   get treeIds(): number[] {
     let ids = []
@@ -140,10 +140,6 @@ export default class Tree {
       const targetCalcTree = self.composedCalcTree.getCalcTreeByTreeId( id )
       return targetCalcTree.selections
     }
-  }
-
-  get shallShowTreePanel(): boolean {
-    return this.visibleTreePanel || this.review.isReviewMode
   }
 
   SET_TREE = ( tree: TypeTree ) => {

@@ -7,40 +7,42 @@ import IframeViewer from '@/components/IframeViewer'
 import Note from '@/components/Note/Note'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
-interface Props {
-  
-}
+interface Props {}
 
-
-// @States( 'word', 'words' )
-@Actions( 'app', 'addWordBySearchingWordName', 'updateSearchingWordNote', 'deleteSearchingWord', 'updateSearchingWordDegree' )
-@Selectors( 'app', 'searchingWord' )
-@States( 'app', 'searchingWordName' )
+@Actions(
+  "app",
+  "addWordBySearchingWordName",
+  "updateSearchingWordNote",
+  "deleteSearchingWord",
+  "updateSearchingWordDegree"
+)
+@Selectors( "app", "searchingWord" )
+@States( "app", "searchingWordName", "visibleIframe" )
 export default class WordPanel extends Component<Props> {
-  searchingWordName?: string
-  searchingWord?: TypeWord
-  words?: TypeWord[]
-  addWordBySearchingWordName?: Function
-  updateSearchingWordNote?: Function
-  deleteSearchingWord?: Function
-  updateSearchingWordDegree?: Function
-
+  visibleIframe?: boolean;
+  searchingWordName?: string;
+  searchingWord?: TypeWord;
+  words?: TypeWord[];
+  addWordBySearchingWordName?: Function;
+  updateSearchingWordNote?: Function;
+  deleteSearchingWord?: Function;
+  updateSearchingWordDegree?: Function;
 
   handleAddClick = () => {
     this.addWordBySearchingWordName()
-  }
+  };
 
   handleDeleteClick = () => {
     this.deleteSearchingWord()
-  }
+  };
 
   handleNoteChange = ( newNote: TypeWordNote ) => {
     this.updateSearchingWordNote( newNote )
-  }
+  };
 
   handleDegreeChange = ( newDegree: TypeWordDegree ) => {
     this.updateSearchingWordDegree( newDegree )
-  }
+  };
 
   render() {
     const { searchingWord, searchingWordName } = this
@@ -48,16 +50,27 @@ export default class WordPanel extends Component<Props> {
     // console.log( this.words )
     return (
       <StyledRoot>
-        {
-          searchingWordName.trim() !== '' && searchingWord == null && <button onClick={this.handleAddClick}>Add</button>
-        }
-        { searchingWord != null && <>
-          <Degree degree={ searchingWord.degree } onChange={ this.handleDegreeChange }/>
-          <Note data={searchingWord.note} onChange={ this.handleNoteChange }/>
-          <button onClick={ this.handleDeleteClick }>Delete</button>
-        </>
-        }
-        <div className="iframeViewerWrapper"><IframeViewer src={`https://bing.com/images/search?q=${ this.searchingWordName }`}/></div>
+        {searchingWordName.trim() !== "" && searchingWord == null && (
+          <button onClick={this.handleAddClick}>Add</button>
+        )}
+        {searchingWord != null && (
+          <>
+            <Degree
+              degree={searchingWord.degree}
+              onChange={this.handleDegreeChange}
+            />
+            <Note data={searchingWord.note} onChange={this.handleNoteChange} />
+            <button onClick={this.handleDeleteClick}>Delete</button>
+          </>
+        )}
+        {this.visibleIframe && (
+          <div className="iframeViewerWrapper">
+            <IframeViewer
+              // src={`https://bing.com/images/search?q=${this.searchingWordName}`}
+              src={`https://dictionary.cambridge.org/dictionary/english/${this.searchingWordName}`}
+            />
+          </div>
+        )}
       </StyledRoot>
     )
   }
@@ -65,8 +78,8 @@ export default class WordPanel extends Component<Props> {
 
 const StyledRoot = styled.div`
   width: 100%;
-  
-  >.iframeViewerWrapper {
+
+  > .iframeViewerWrapper {
     width: 100%;
     height: 500px;
   }
