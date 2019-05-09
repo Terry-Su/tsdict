@@ -62,6 +62,7 @@ export default class App {
     this.word.deleteWordByName( this.searchingWordName )
   }
 
+  // # pull and push
   loadPulledData( data: SyncData ) {
     this.word.SET_WORDS( data.words )
     this.tree.SET_TREE( data.tree )

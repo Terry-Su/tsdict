@@ -12,12 +12,12 @@ import Word from './Word'
 export default class Tree {
   word: Word;
   tag: Tag;
-  review: Review
+  review: Review;
 
   tree: TypeTree;
   selections: TreeSelection[] = [];
 
-  visibleTreePanel: boolean = true
+  visibleTreePanel: boolean = true;
   syncT: any;
 
   get treeIds(): number[] {
@@ -91,29 +91,28 @@ export default class Tree {
 
   get columns(): TypeTreeColumn[] {
     const { composedCalcTree } = this
-    let res: TypeTreeColumn[] = [ ]
+    let res: TypeTreeColumn[] = []
 
     const { selections } = this
     let currentColumnIndex = 0
     let currentCalcTree: CalcTree = composedCalcTree
-    while ( currentCalcTree != null )  {
+    while ( currentCalcTree != null ) {
       // # add column
       const column = currentCalcTree.nodes.map( node => ( {
         type: node.type,
         id  : node.id,
       } ) )
-      res.push( column ) 
+      res.push( column )
 
       const currentSelection = selections[ currentColumnIndex ]
       if ( currentSelection == null ) {
         break
       }
       currentCalcTree = currentCalcTree.nodes.find(
-        node  => node.type === currentSelection.type && node.id === currentSelection.id
-      ) 
+        node => node.type === currentSelection.type && node.id === currentSelection.id
+      )
       currentColumnIndex++
     }
-
 
     return res
   }
@@ -143,55 +142,96 @@ export default class Tree {
     }
   }
 
+  // get getParentTreeById(): Function {
+  //   return ( id: TypeId ) => {
+  //     const parentId = this.composedCalcTree.getCalcTreeByTreeId( id ).parent.id
+  //     return this.getTreeById( parentId )
+  //   }
+  // }
+
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
   };
 
   SET_TREE_NAME = ( tree: TypeTree, newName: string ) => {
     tree.name = newName
-  }
+  };
 
   SET_SELECTIONS = ( selections: TreeSelection[] ) => {
     this.selections = selections
   };
 
   ADD_TREE = ( name: string, parentTree: TypeTree ) => {
-    name.trim() === '' && alert( 'Empty word name!' )
+    name.trim() === "" && alert( "Empty word name!" )
     const newTree = this.createTree( name )
     parentTree.nodes.push( newTree )
-  }
+  };
 
-  SHOW_TREE_PANEL = () => { this.visibleTreePanel = true }
-  HIDE_TREE_PANEL = () => { this.visibleTreePanel = false }
-  TOOGLE_TREE_PANEL = () => { this.visibleTreePanel = ! this.visibleTreePanel }
+  DELETE_TREE_BY_ID = ( treeId: TypeId ) => {
+    let foundTargetTree = false
+    const recur = ( treeNode: TreeNode ) => {
+      if ( isTreeNodeTree( treeNode ) ) {
+        const targetTree = ( treeNode as TypeTree ).nodes.find( node => ( node as TypeTree ).id === treeId )
+
+        if ( targetTree != null ) {
+          removeArrayElement( ( treeNode as TypeTree ).nodes, targetTree )
+          foundTargetTree = true
+        }  
+        
+        ! foundTargetTree && ( treeNode as TypeTree ).nodes.forEach( recur )
+      }
+    }
+
+    recur( this.tree )
+  };
+
+  SHOW_TREE_PANEL = () => {
+    this.visibleTreePanel = true
+  };
+  HIDE_TREE_PANEL = () => {
+    this.visibleTreePanel = false
+  };
+  TOOGLE_TREE_PANEL = () => {
+    this.visibleTreePanel = !this.visibleTreePanel
+  };
 
   initialize() {
     if ( this.selections.length === 0 && this.tree ) {
     }
   }
 
-  selectTree( id: string ) {
+  selectTree( id: TypeId ) {
     const newSelections = this.getSelectionsByTreeId( id )
     this.SET_SELECTIONS( newSelections )
   }
 
   deleteWordIdInTree( wordId: TypeId ) {
     const recur = ( treeNode: TreeNode ) => {
-        if ( isTreeNodeTree( treeNode ) ) {
-          let targetWordIds = [];
+      if ( isTreeNodeTree( treeNode ) ) {
+        let targetWordIds = [];
 
-          ( treeNode as TypeTree ).nodes.forEach( ( node, index ) => {
-            if ( isTreeNodeWord( node ) && ( ( node as TypeId ) === wordId ) ) {
-              targetWordIds.push( node )
-            }
-          } )
+        ( treeNode as TypeTree ).nodes.forEach( ( node, index ) => {
+          if ( isTreeNodeWord( node ) && ( node as TypeId ) === wordId ) {
+            targetWordIds.push( node )
+          }
+        } )
 
-          targetWordIds.forEach( targetWordId => {
-            removeArrayElement( ( treeNode as TypeTree ).nodes, targetWordId )
-          } );
+        targetWordIds.forEach( targetWordId => {
+          removeArrayElement( ( treeNode as TypeTree ).nodes, targetWordId )
+        } );
 
-          ( treeNode as TypeTree ).nodes.forEach( recur )
-        } 
+        ( treeNode as TypeTree ).nodes.forEach( recur )
+      }
     }
+
+    recur( this.tree )
+  }
+
+  renameTree( id: TypeId, newName: string ) {
+    if ( newName == null || newName.trim() === "" ) {
+      return
+    }
+    const tree = this.getTreeById( id )
+    tree != null && this.SET_TREE_NAME( tree, newName )
   }
 }

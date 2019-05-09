@@ -33,7 +33,8 @@ export default class WordPanel extends Component<Props> {
   };
 
   handleDeleteClick = () => {
-    this.deleteSearchingWord()
+    const confirmd = window.confirm( `Are you sure to delete the word "${ this.searchingWordName }"?` )
+    confirmd && this.deleteSearchingWord()
   };
 
   handleNoteChange = ( newNote: TypeWordNote ) => {

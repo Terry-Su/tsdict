@@ -13,6 +13,7 @@ import WordPanel from './WordPanel'
 
 interface Props {}
 
+@Actions( 'app', 'loadPulledData' )
 @Selectors( "review", "isReviewMode" )
 @States( "tree", "visibleTreePanel" )
 @Actions( "tree", "SET_TREE" )
@@ -23,15 +24,14 @@ export default class HomePage extends Component<Props> {
   visibleTreePanel?: boolean;
   selections?: TreeSelection[];
   columns?: TypeTreeColumn[];
+  loadPulledData?: Function;
   SET_TREE?: Function;
   SET_WORDS?: Function;
   SET_TAGS?: Function;
 
   async componentDidMount() {
-    // const data: any = await appApi.pull( reduxStore.getState() )
-    // this.SET_TREE( data.core.tree )
-    // this.SET_WORDS( data.core.words )
-    // this.SET_TAGS( data.core.tags )
+    const data: any = await appApi.pull()
+    this.loadPulledData( data )
   }
 
   render() {
