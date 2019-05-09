@@ -2,10 +2,14 @@ import Delta from 'quill-delta'
 
 import { TypeId } from '@/__typings__'
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import { removeArrayElement } from '@/utils/js'
 import { DictDataWord, DictDataWordDegree, Time } from '@shared/__typings__/DictData'
+
+import Tree from './Tree'
 
 export default class Word {
   words: TypeWord[] = []
+  tree: Tree
 
   get ids(): number[] {
     return this.words.map( v => v.id )
@@ -59,19 +63,19 @@ export default class Word {
     this.words.push( newWord )
   }
 
-  DELETE_WORD_BY_WORD_INDEX( index: number ) {
-    index > -1 && this.words.splice( index, index + 1 )
+  DELETE_WORD( word: TypeWord ) {
+    removeArrayElement( this.words, word )
   }
 
-  DELETE_WORD_BY_ID( id: TypeId ) {
-    const index = this.words.findIndex( word => word.id === id )
-    this.DELETE_WORD_BY_WORD_INDEX( index )
-  }
+  // DELETE_WORD_BY_ID( id: TypeId ) {
+  //   const index = this.words.findIndex( word => word.id === id )
+  //   this.DELETE_WORD( index )
+  // }
 
-  DELETE_WORD_BY_NAME( name: string ) {
-    const index = this.words.findIndex( word => word.name === name )
-    this.DELETE_WORD_BY_WORD_INDEX( index )
-  }
+  // DELETE_WORD_BY_NAME( name: string ) {
+  //   const index = this.words.findIndex( word => word.name === name )
+  //   this.DELETE_WORD( index )
+  // }
 
   SET_WORD_PROP( id: TypeId, prop: string, value: any ) {
     const word: TypeWord = this.getWordById( id )
@@ -88,4 +92,19 @@ export default class Word {
   SET_WORD_NOTE( id: TypeId, newNote: TypeWordNote ) { this.SET_WORD_PROP( id, 'note', newNote ) }
   SET_WORD_DEGREE( id: TypeId, newDegree: TypeWordDegree ) { this.SET_WORD_PROP( id, 'degree', newDegree ) }
   
+
+  deleteWord ( word: TypeWord ) {
+    this.DELETE_WORD( word )
+    this.tree.deleteWordIdInTree( word.id )
+  }
+
+  deleteWordById( id: TypeId ) {
+    const word = this.words.find( word => word.id === id )
+    this.deleteWord( word )
+  }
+
+  deleteWordByName( name ) {
+    const word = this.words.find( word => word.name === name )
+    this.deleteWord( word )
+  }
 }

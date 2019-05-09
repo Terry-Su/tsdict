@@ -12,6 +12,8 @@ export default class Review {
 
   reviewMode: ReviewMode = ReviewMode.None
 
+  reviewdCount: number = 0
+
   get isReviewMode(): boolean {
     return this.reviewMode !== ReviewMode.None
   }
@@ -26,6 +28,8 @@ export default class Review {
 
   SET_REVIEW_MODE_RANDOM = () => { this.reviewMode = ReviewMode.Random }
   SET_REVIEW_MODE_NONE = () => { this.reviewMode = ReviewMode.None }
+
+  INCREMENT_REVIEWD_COUNT = () => { this.reviewdCount = this.reviewdCount + 1 }
 
   enableReviewModeRandom = () => {
     this.SET_REVIEW_MODE_RANDOM()

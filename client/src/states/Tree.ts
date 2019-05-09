@@ -1,7 +1,8 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
 import { NAME_TREE_ROOT } from '@/constants/names'
-import { CalcTree } from '@/utils/getters/tree'
+import { CalcTree, isTreeNodeTree, isTreeNodeWord } from '@/utils/getters/tree'
+import { removeArrayElement } from '@/utils/js'
 import { isPlainObject } from '@/utils/lodash'
 
 import Review from './Review'
@@ -145,9 +146,20 @@ export default class Tree {
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
   };
+
+  SET_TREE_NAME = ( tree: TypeTree, newName: string ) => {
+    tree.name = newName
+  }
+
   SET_SELECTIONS = ( selections: TreeSelection[] ) => {
     this.selections = selections
   };
+
+  ADD_TREE = ( name: string, parentTree: TypeTree ) => {
+    name.trim() === '' && alert( 'Empty word name!' )
+    const newTree = this.createTree( name )
+    parentTree.nodes.push( newTree )
+  }
 
   SHOW_TREE_PANEL = () => { this.visibleTreePanel = true }
   HIDE_TREE_PANEL = () => { this.visibleTreePanel = false }
@@ -161,5 +173,25 @@ export default class Tree {
   selectTree( id: string ) {
     const newSelections = this.getSelectionsByTreeId( id )
     this.SET_SELECTIONS( newSelections )
+  }
+
+  deleteWordIdInTree( wordId: TypeId ) {
+    const recur = ( treeNode: TreeNode ) => {
+        if ( isTreeNodeTree( treeNode ) ) {
+          let targetWordIds = [];
+
+          ( treeNode as TypeTree ).nodes.forEach( ( node, index ) => {
+            if ( isTreeNodeWord( node ) && ( ( node as TypeId ) === wordId ) ) {
+              targetWordIds.push( node )
+            }
+          } )
+
+          targetWordIds.forEach( targetWordId => {
+            removeArrayElement( ( treeNode as TypeTree ).nodes, targetWordId )
+          } );
+
+          ( treeNode as TypeTree ).nodes.forEach( recur )
+        } 
+    }
   }
 }

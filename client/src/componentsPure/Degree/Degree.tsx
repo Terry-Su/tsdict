@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { TypeWordDegree } from '@/__typings__/word'
-import { LongPress } from '@/components/highOrder/withLongPress'
+import { LongPress } from '@/componentsPure/highOrder/withLongPress'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import Star from './Star'

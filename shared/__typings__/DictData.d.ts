@@ -1,4 +1,4 @@
-import { NoteData } from '../../client/src/components/Note/Note'
+import { NoteData } from '../../client/src/componentsPure/Note/Note'
 
 export { ClientData } from '../../client/src/__typings__/index'
 

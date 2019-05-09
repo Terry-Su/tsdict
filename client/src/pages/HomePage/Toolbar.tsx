@@ -15,14 +15,17 @@ interface Props {
 @Actions( "word", "SET_WORDS" )
 @Actions( "tag", "SET_TAGS" )
 @Actions( 'app', 'TOOGLE_IFRAME', 'loadPulledData' )
-@Actions( 'review', 'enableReviewModeRandom', 'SET_REVIEW_MODE_NONE' )
+@Actions( 'review', 'enableReviewModeRandom', 'SET_REVIEW_MODE_NONE', 'INCREMENT_REVIEWD_COUNT' )
 @Actions( 'tree', 'TOOGLE_TREE_PANEL' )
+@States( 'review', 'reviewdCount' )
 export default class Toolbar extends Component<Props> {
   syncData ?: any
+  reviewdCount ?: number
   loadPulledData?: Function
   TOOGLE_IFRAME?: Function
   TOOGLE_TREE_PANEL?: Function
   enableReviewModeRandom?: Function
+  INCREMENT_REVIEWD_COUNT?: Function
   SET_REVIEW_MODE_NONE?: Function
   SET_TREE?: Function
   SET_WORDS?: Function
@@ -37,11 +40,16 @@ export default class Toolbar extends Component<Props> {
     appApi.push( this.syncData )
   }
 
+  handleClickRandomReviewMode = () => {
+    this.enableReviewModeRandom()
+    this.INCREMENT_REVIEWD_COUNT()
+  }
+
   render() {
     return (
       <StyledRoot>
         <button onClick={ () => this.TOOGLE_TREE_PANEL() }>Tree Panel</button>
-        <button onClick={ () => this.enableReviewModeRandom() }>Random Review Mode</button>
+        <button onClick={ this.handleClickRandomReviewMode }>Random Review Mode { this.reviewdCount >= 2 && <span>(reviewd: { this.reviewdCount - 1 })</span> }</button>
         <button onClick={ () => this.SET_REVIEW_MODE_NONE() }>Exit Review Mode</button>
         <button onClick={ () => this.TOOGLE_IFRAME() }>Iframe</button>
         <button>Save</button>

@@ -1,5 +1,7 @@
+import { Position } from '@/__typings__'
 import { SyncData } from '@/__typings__/app'
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
 
 import Tag from './Tag'
 import Tree from './Tree'
@@ -13,6 +15,12 @@ export default class App {
   origin: string = "http://localhost:3000"
   searchingWordName: string = ''
   visibleIframe: boolean = false
+
+  // # right click menu
+  rightClickMenuItems: PopupMenuItem[] = []
+  rightClickMenuPosition: Position = { x: 0, y: 0 }
+  visibleRightClickMenu: boolean = false
+
 
   get syncData(): SyncData {
     return {
@@ -32,6 +40,12 @@ export default class App {
   HIDE_IFRAME = () => { this.visibleIframe = false }
   TOOGLE_IFRAME = () => { this.visibleIframe = ! this.visibleIframe }
 
+  // # right click menu
+  SET_RIGHT_CLICK_MENU_ITEMS = ( items: PopupMenuItem[] ) => { this.rightClickMenuItems = items }
+  SET_RIGHT_CLICK_MENU_POSITION = ( position: Position ) => { this.rightClickMenuPosition = position }
+  SHOW_RIGHT_CLICK_MENU = () => { this.visibleRightClickMenu = true }
+  HIDE_RIGHT_CLICK_MENU = () => { this.visibleRightClickMenu = false }
+
   addWordBySearchingWordName() {
     this.word.ADD_WORD( this.searchingWordName )
   }
@@ -45,12 +59,19 @@ export default class App {
   }
 
   deleteSearchingWord() {
-    this.word.DELETE_WORD_BY_NAME( this.searchingWordName )
+    this.word.deleteWordByName( this.searchingWordName )
   }
 
   loadPulledData( data: SyncData ) {
     this.word.SET_WORDS( data.words )
     this.tree.SET_TREE( data.tree )
     this.tag.SET_TAGS( data.tags )
+  }
+
+  // # right click menu
+  showRightClickMenu( items: PopupMenuItem[], event: MouseEvent ) {
+   this.SET_RIGHT_CLICK_MENU_ITEMS( items ) 
+   event != null && this.SET_RIGHT_CLICK_MENU_POSITION( { x: event.clientX, y: event.clientY } )
+   this.SHOW_RIGHT_CLICK_MENU()
   }
 }

@@ -58,3 +58,11 @@ export type TypeAction = {
   name: string
   value?: any[]
 }
+
+
+export interface Position {
+  x: number
+  y: number
+}
+
+export type TypePosition = Position

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
-import Degree from '@/components/Degree/Degree'
-import IframeViewer from '@/components/IframeViewer'
-import Note from '@/components/Note/Note'
+import Degree from '@/componentsPure/Degree/Degree'
+import IframeViewer from '@/componentsPure/IframeViewer'
+import Note from '@/componentsPure/Note/Note'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 interface Props {}

@@ -12,10 +12,12 @@ interface Props {
   columnIndex: number;
 }
 
+@Actions( 'app', 'showRightClickMenu' )
 @Selectors( "tree", "getTreeById" )
 @Actions( "tree", "selectTree" )
 export default class TreeItemTree extends Component<Props> {
   selections: TreeSelection[];
+  showRightClickMenu: Function;
   getTreeById: Function;
   selectTree: Function;
 
@@ -23,9 +25,16 @@ export default class TreeItemTree extends Component<Props> {
     return this.getTreeById( this.props.value.id ) || {}
   }
 
-  onClick = () => {
+  handleClick = () => {
     this.selectTree( this.props.value.id )
   };
+
+  handleRightClick = ( event: MouseEvent ) => {
+    event.preventDefault()
+    this.showRightClickMenu( [
+      // { text: 'test', handleClick() { console.log( 'click test' ) } },
+    ], event )
+  }
 
   render() {
     const { columnIndex } = this.props
@@ -35,7 +44,8 @@ export default class TreeItemTree extends Component<Props> {
         icon="T"
         text={this.tree.name}
         columnIndex={columnIndex}
-        onClick={this.onClick}
+        onClick={this.handleClick}
+        onContextMenu={ this.handleRightClick }
       />
     )
   }
