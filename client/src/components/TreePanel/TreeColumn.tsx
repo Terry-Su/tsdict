@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { TypeTreeColumn } from '@/__typings__/tree'
+import VirtualScrollingList from '@/componentsPure/VirtualScrollingList/VirtualScrollingList'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import TreeItem from './TreeItem'
@@ -16,9 +17,10 @@ export default class TreeColumn extends Component<Props> {
     const { column, columnIndex } = this.props
     return (
       <StyledRoot>
-        {
-          column.map( ( v, index ) => <TreeItem value={ v } columnIndex={columnIndex} key={ index } /> )
-        }
+        <VirtualScrollingList
+          items={ column }
+          render={ ( { style, virtualScrollingItem } ) => <TreeItem style={ style } value={ virtualScrollingItem } columnIndex={columnIndex} /> }
+        ></VirtualScrollingList>
       </StyledRoot>
     )
   }
@@ -26,4 +28,5 @@ export default class TreeColumn extends Component<Props> {
 
 const StyledRoot = styled.div`
   width: 100%;
+  height: 100%
 `

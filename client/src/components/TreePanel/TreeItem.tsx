@@ -10,13 +10,14 @@ import TreeItemWord from './TreeItemWord'
 interface Props {
   value: TypeTreeItem
   columnIndex: number
+  [prop: string]: any
 }
 
 export default class TreeItem extends Component<Props> {
   render() {
-    const { value, columnIndex } = this.props
+    const { value, columnIndex, ...rest } = this.props
     return (
-      <StyledRoot>
+      <StyledRoot { ...rest }>
         {
           value.type === TreeItemType.Tree ? <TreeItemTree value={value} columnIndex={columnIndex}/> : <TreeItemWord value={ value } columnIndex={columnIndex}/>
         }

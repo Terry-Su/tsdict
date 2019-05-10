@@ -83,7 +83,7 @@ const StyledRoot: any = styled.div`
   > .bottomContainer {
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: calc( 100% - 120px );
     display: flex;
     justify-content: space-between;
 
