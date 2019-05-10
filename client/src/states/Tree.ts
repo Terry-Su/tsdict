@@ -149,6 +149,15 @@ export default class Tree {
     }
   }
 
+  get getSelectionsByTag(): Function {
+    const self = this
+    return function ( tag: TypeTag ) {
+      const tagRootCalcTree = self.composedCalcTree.getCalcTreeByTreeId( TREE_TAG_ROOT )
+      const targetCalcTree = tagRootCalcTree.nodes.find( node => node.name === tag.name )
+      return targetCalcTree.selections
+    }
+  }
+
 
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
@@ -253,5 +262,8 @@ export default class Tree {
     targetWord != null && tree.nodes.push( targetWord.id )
   }
 
-  
+  selectTag( tag: TypeTag ) {
+    const newSelections = this.getSelectionsByTag( tag )
+    this.SET_SELECTIONS( newSelections )
+  }
 }

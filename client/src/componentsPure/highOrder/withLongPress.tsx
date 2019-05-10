@@ -35,7 +35,7 @@ export class LongPress extends Component<
   render() {
     const { className = "", children } = this.props
     return (
-      <div
+      <span
         className={className}
         onMouseDown={this.onPress}
         onTouchStart={this.onPress}
@@ -46,7 +46,7 @@ export class LongPress extends Component<
         onTouchMove={this.onRelease}
       >
         {children}
-      </div>
+      </span>
     )
   }
 }

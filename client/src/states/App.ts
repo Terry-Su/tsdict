@@ -1,4 +1,4 @@
-import { Position } from '@/__typings__'
+import { Position, TypeTag } from '@/__typings__'
 import { SyncData } from '@/__typings__/app'
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
@@ -13,7 +13,7 @@ export default class App {
   tag: Tag
 
   origin: string = "http://localhost:3000"
-  searchingWordName: string = ''
+  searchingWordName: string = 'tick'
   visibleIframe: boolean = false
 
   // # right click menu
@@ -32,6 +32,14 @@ export default class App {
 
   get searchingWord(): TypeWord {
     return this.word.getWordByName( this.searchingWordName )
+  }
+
+  get searchWordTags(): TypeTag[] {
+    return this.searchingWord != null ? this.tag.tags.filter( tag => tag.ids.includes( this.searchingWord.id ) ) : []
+  }
+
+  get searchWordTagsCanBeAdded(): TypeTag[] {
+    return this.tag.tags.filter( tag => ! this.searchWordTags.includes( tag ) )
   }
 
   SET_SEARCHING_WORD_NAME( searchingWordName: string ) { this.searchingWordName = searchingWordName }

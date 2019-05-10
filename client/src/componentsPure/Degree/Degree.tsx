@@ -65,7 +65,7 @@ export default class Degree extends Component<Props> {
   }
 }
 
-const StyledRoot = styled.div`
+const StyledRoot = styled.span`
   svg {
     cursor: pointer;
   }

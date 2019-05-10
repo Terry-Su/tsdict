@@ -7,6 +7,7 @@ export const isTreeNodeWord = ( tree: TreeNode ) => ! isTreeNodeTree( tree )
 export class CalcTree {
   type: TreeItemType
   id: TypeId
+  name?: string
   parent: CalcTree
   nodes: CalcTree[] = []
 
@@ -15,6 +16,7 @@ export class CalcTree {
     if ( isTreeNodeTree( tree ) ) {
       this.type = TreeItemType.Tree
       this.id = ( tree as TypeTree ).id
+      this.name = ( tree as TypeTree ).name
       this.nodes = ( tree as TypeTree ).nodes.map( node => new CalcTree( node, this ) )
     } else {
       this.type = TreeItemType.Word

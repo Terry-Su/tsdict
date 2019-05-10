@@ -9,7 +9,7 @@ import { Actions, Selectors, States } from '@/utils/decorators'
 
 import SearchBox from './SearchBox'
 import Toolbar from './Toolbar'
-import WordPanel from './WordPanel'
+import WordPanel from './WordPanel/WordPanel'
 
 interface Props {}
 
