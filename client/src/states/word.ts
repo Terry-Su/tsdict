@@ -5,11 +5,13 @@ import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
 import { removeArrayElement } from '@/utils/js'
 import { DictDataWord, DictDataWordDegree, Time } from '@shared/__typings__/DictData'
 
+import Tag from './Tag'
 import Tree from './Tree'
 
 export default class Word {
   words: TypeWord[] = []
   tree: Tree
+  tag: Tag
 
   get ids(): number[] {
     return this.words.map( v => v.id )
@@ -88,6 +90,7 @@ export default class Word {
   deleteWord ( word: TypeWord ) {
     this.DELETE_WORD( word )
     this.tree.DELETE_WORD_ID_IN_TREE( word.id )
+    this.tag.DELETE_WORD_ID_IN_TAGS( word.id )
   }
 
   deleteWordById( id: TypeId ) {

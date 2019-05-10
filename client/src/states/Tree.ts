@@ -1,6 +1,7 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
+import { TREE_TAG_ROOT } from '@/constants/ids'
 import { NAME_TREE_ROOT } from '@/constants/names'
 import { emptyString } from '@/utils/getters'
 import { CalcTree, isTreeNodeTree, isTreeNodeWord } from '@/utils/getters/tree'
@@ -45,7 +46,7 @@ export default class Tree {
   get createTree() {
     return (
       name: string,
-      config: { id?: number; nodes?: TreeNode[] } = { nodes: [] }
+      config: { id?: TypeId; nodes?: TreeNode[] } = { nodes: [] }
     ) => ( {
       id   : config.id != null ? config.id : this.availableTreeId,
       name,
@@ -61,16 +62,20 @@ export default class Tree {
     return tree
   }
 
+  get tagTreeIds(): TypeId[] {
+    return this.tag.tags.map( ( tag ,index ) => ( TREE_TAG_ROOT - 1 - index ) )
+  }
+
   get tagsTree(): TypeTree {
-    const baseId = -3
+    const baseId = TREE_TAG_ROOT
     const tagTrees = this.tag.tags.map( ( tag: TypeTag, index ) => this.createTree( tag.name, {
-        id   : baseId - 1 - index,
+        id   : this.tagTreeIds[ index ],
         nodes: tag.ids,
       } )
     )
     const tree = this.createTree( "Tags", {
       id   : baseId,
-      nodes: <TreeNode[]>this.word.ids,
+      nodes: <TreeNode[]>tagTrees,
     } )
     return tree
   }
@@ -143,13 +148,6 @@ export default class Tree {
       return targetCalcTree.selections
     }
   }
-
-  // get getParentTreeById(): Function {
-  //   return ( id: TypeId ) => {
-  //     const parentId = this.composedCalcTree.getCalcTreeByTreeId( id ).parent.id
-  //     return this.getTreeById( parentId )
-  //   }
-  // }
 
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree

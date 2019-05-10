@@ -6,11 +6,11 @@ import { DictDataWord } from '../../../shared/__typings__/DictData'
 import { TAG_IDS } from '../constants/shared'
 
 export type TypeId = number
-export type WordId = number
+export type WordId = TypeId
 export type Tag = {
-  id: string,
+  id: TypeId,
   name: string,
-  ids: WordId[]
+  ids: TypeId[]
 }
 export type TypeTag = Tag
 

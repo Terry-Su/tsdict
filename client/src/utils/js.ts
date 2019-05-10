@@ -1,6 +1,6 @@
 import { cloneDeep, findIndex, isEqual, isUndefined } from './lodash'
 
-export function removeArrayElement( array, element ) {
+export function removeArrayElement( array: any[], element: any ) {
   const index = findIndex( array, item => item === element )
 
   if ( index !== -1 ) {
