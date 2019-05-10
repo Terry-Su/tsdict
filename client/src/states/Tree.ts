@@ -1,7 +1,7 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
-import { TREE_ALL_WORDS, TREE_TAG_ROOT } from '@/constants/ids'
+import { TREE_ALL_WORDS, TREE_TAG_ROOT, TREE_TREE_ROOT } from '@/constants/ids'
 import { NAME_TREE_ROOT } from '@/constants/names'
 import { emptyString } from '@/utils/getters'
 import { CalcTree, isTreeNodeTree, isTreeNodeWord } from '@/utils/getters/tree'
@@ -66,7 +66,7 @@ export default class Tree {
     return this.tag.tags.map( ( tag ,index ) => ( TREE_TAG_ROOT - 1 - index ) )
   }
 
-  get tagsTree(): TypeTree {
+  get tagTrees(): TypeTree {
     const baseId = TREE_TAG_ROOT
     const tagTrees = this.tag.tags.map( ( tag: TypeTag, index ) => this.createTree( tag.name, {
         id   : this.tagTreeIds[ index ],
@@ -81,11 +81,11 @@ export default class Tree {
   }
 
   get composedTree(): TypeTree {
-    const nodes = [ this.allWordsTree, this.tree, this.tagsTree ].filter(
+    const nodes = [ this.allWordsTree, this.tree, this.tagTrees ].filter(
       v => v != null
     )
     const tree = this.createTree( NAME_TREE_ROOT, {
-      id: -1,
+      id: TREE_TREE_ROOT,
       nodes,
     } )
 
@@ -186,7 +186,11 @@ export default class Tree {
     recur( this.tree )
   };
 
-  DELETE_WORD_ID_IN_TREE( wordId: TypeId ) {
+  DELETE_WORD_ID_IN_TREE( wordId: TypeId, tree: TypeTree ) {
+    removeArrayElement( tree.nodes, wordId )
+  }
+
+  DELETE_WORD_ID_RECURVELY_IN_TREE( wordId: TypeId ) {
     const recur = ( treeNode: TreeNode ) => {
       if ( isTreeNodeTree( treeNode ) ) {
         let targetWordIds = [];

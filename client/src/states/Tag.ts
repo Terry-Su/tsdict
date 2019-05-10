@@ -59,7 +59,12 @@ export default class Tag {
     ! existed && tag.ids.push( wordId )
   }
 
-  DELETE_WORD_ID_IN_TAGS( wordId: TypeId ) {
+
+  DELETE_WORD_ID_IN_TAG( wordId: TypeId, tag: TypeTag ) {
+    removeArrayElement( tag.ids, wordId )
+  }
+
+  DELETE_WORD_ID_CONSTANTLY_IN_TAGS( wordId: TypeId ) {
     this.tags.forEach( tag => {
       const targetWordIds = tag.ids.filter( id => id === wordId )
       targetWordIds.forEach( targetWordId => {

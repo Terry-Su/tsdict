@@ -89,8 +89,8 @@ export default class Word {
 
   deleteWord ( word: TypeWord ) {
     this.DELETE_WORD( word )
-    this.tree.DELETE_WORD_ID_IN_TREE( word.id )
-    this.tag.DELETE_WORD_ID_IN_TAGS( word.id )
+    this.tree.DELETE_WORD_ID_RECURVELY_IN_TREE( word.id )
+    this.tag.DELETE_WORD_ID_CONSTANTLY_IN_TAGS( word.id )
   }
 
   deleteWordById( id: TypeId ) {
