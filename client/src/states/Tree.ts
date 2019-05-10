@@ -1,7 +1,7 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
-import { TREE_TAG_ROOT } from '@/constants/ids'
+import { TREE_ALL_WORDS, TREE_TAG_ROOT } from '@/constants/ids'
 import { NAME_TREE_ROOT } from '@/constants/names'
 import { emptyString } from '@/utils/getters'
 import { CalcTree, isTreeNodeTree, isTreeNodeWord } from '@/utils/getters/tree'
@@ -56,7 +56,7 @@ export default class Tree {
 
   get allWordsTree(): TypeTree {
     const tree = this.createTree( "All", {
-      id   : -2,
+      id   : TREE_ALL_WORDS,
       nodes: <TreeNode[]>this.word.ids,
     } )
     return tree
@@ -148,6 +148,7 @@ export default class Tree {
       return targetCalcTree.selections
     }
   }
+
 
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree

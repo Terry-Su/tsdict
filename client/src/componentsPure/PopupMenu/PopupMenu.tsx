@@ -33,6 +33,7 @@ export default class PopupMenu extends Component<Props> {
 
 const StyledRoot: any = styled.div`
   position: fixed;
+  z-index: 1000;
   ${
     ( props: { position: Position } ) => `
     left: ${ props.position.x }px;

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeItem } from '@/__typings__/tree'
-import { TREE_TAG_ROOT } from '@/constants/ids'
+import { TREE_ALL_WORDS, TREE_TAG_ROOT } from '@/constants/ids'
 import { Actions, Selectors, States } from '@/utils/decorators'
 import { notEmptyString } from '@/utils/getters'
 
@@ -52,6 +52,10 @@ export default class TreeItemTree extends Component<Props> {
 
   get isTagRootTree(): boolean {
     return this.tree.id === TREE_TAG_ROOT
+  }
+
+  get isTreeAllWords(): boolean {
+    return this.tree.id === TREE_ALL_WORDS
   }
 
   get tag(): TypeTag {
@@ -148,6 +152,8 @@ handleClick() {
       rightClickItems = tagRootRightClickItems
     } else if ( this.isTagTree ) {
       rightClickItems = tagRightClickItems
+    } else if ( this.isTreeAllWords ) {
+      
     } else {
       rightClickItems = treeClickItems
     }
