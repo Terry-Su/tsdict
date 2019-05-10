@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeItem } from '@/__typings__/tree'
 import { Actions, Selectors, States } from '@/utils/decorators'
+import { notEmptyString } from '@/utils/getters'
 
 import TreeItemBase from './TreeItemBase'
 
@@ -14,12 +15,13 @@ interface Props {
 
 @Actions( "app", "showRightClickMenu" )
 @Selectors( "tree", "getTreeById" )
-@Actions( "tree", "ADD_TREE", "DELETE_TREE_BY_ID", "selectTree", "renameTree" )
+@Actions( "tree", "ADD_TREE", "DELETE_TREE_BY_ID", "addTreeWordByName", "selectTree", "renameTree" )
 export default class TreeItemTree extends Component<Props> {
   selections?: TreeSelection[];
   showRightClickMenu?: Function;
   getTreeById?: Function;
   renameTree?: Function;
+  addTreeWordByName?: Function;
   DELETE_TREE_BY_ID?: Function;
   ADD_TREE?: Function;
   selectTree?: Function;
@@ -38,10 +40,17 @@ export default class TreeItemTree extends Component<Props> {
     this.showRightClickMenu(
       [
         {
+          text: "Add Word",
+          handleClick() {
+            const wordName = window.prompt( "Word Name" )
+            wordName != null && notEmptyString( wordName ) && self.addTreeWordByName( wordName, self.tree )
+          },
+        },
+        {
           text: "Add Folder",
           handleClick() {
             const treeName = window.prompt( "Tree Name" )
-            if ( treeName != null && treeName.trim() !== "" ) {
+            if ( treeName != null && notEmptyString( treeName ) ) {
               self.ADD_TREE( treeName, self.tree )
             }
           },
@@ -51,8 +60,8 @@ export default class TreeItemTree extends Component<Props> {
           handleClick() {
             const newName = window.prompt( "New Tree Name", self.tree.name )
             newName != null &&
-              newName.trim() !== "" &&
-              self.renameTree( self.props.value.id, newName )
+            notEmptyString( newName ) &&
+              self.renameTree( self.tree, newName )
           },
         },
         {

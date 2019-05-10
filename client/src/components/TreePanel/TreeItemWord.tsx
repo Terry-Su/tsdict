@@ -13,10 +13,13 @@ interface Props {
 
 
 @Selectors( "word", "getWordById" )
-@Actions( "app", "SET_SEARCHING_WORD_NAME" )
+@Actions( "app", "SET_SEARCHING_WORD_NAME", "showRightClickMenu" )
+@Actions( "word", "deleteWord" )
 export default class TreeItemWord extends Component<Props> {
+  deleteWord?: Function
   SET_SEARCHING_WORD_NAME?: Function
-  getWordById: Function;
+  getWordById?: Function
+  showRightClickMenu?: Function
 
   get word() {
     return this.getWordById( this.props.value.id )
@@ -24,6 +27,23 @@ export default class TreeItemWord extends Component<Props> {
 
   onClick = () => {
     this.SET_SEARCHING_WORD_NAME( this.word.name )
+  };
+
+  handleRightClick = ( event: MouseEvent ) => {
+    event.preventDefault()
+    const self = this
+    this.showRightClickMenu(
+      [
+        {
+          text: "Delete",
+          handleClick() {
+            const confirmd = window.confirm( `Are you sure to delete the word "${ self.word.name }"?` )
+            confirmd && self.deleteWord( self.word )
+          },
+        },
+      ],
+      event
+    )
   };
 
   render() {
@@ -36,6 +56,7 @@ export default class TreeItemWord extends Component<Props> {
         text={word.name}
         columnIndex={columnIndex}
         onClick={this.onClick}
+        onContextMenu={this.handleRightClick}
       />
     )
   }

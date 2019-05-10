@@ -50,32 +50,24 @@ export default class Word {
   SET_WORDS = ( words: TypeWord[]  ) => { this.words = words }
   REFRESH_WORDS = () => { this.words = [ ...this.words ] }
 
-  ADD_WORD( name: string = '', config: { note?: Delta; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ) {
+  ADD_WORD( name: string = '', config: { note?: Delta; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ): TypeWord {
     if ( name.trim() === '' ) {
-      return alert( 'Empty word name!' )
+      alert( 'Empty word name!' )
+      return null
     }
 
     const negativeWord = this.getWordByName( name )
     if ( negativeWord != null ) {
-      return alert( 'Word name exisited!' )
+      alert( 'Word name exisited!' )
+      return null
     }
-    const newWord: DictDataWord = this.createWord( name, config )
+    const newWord: TypeWord = this.createWord( name, config )
     this.words.push( newWord )
   }
 
   DELETE_WORD( word: TypeWord ) {
     removeArrayElement( this.words, word )
   }
-
-  // DELETE_WORD_BY_ID( id: TypeId ) {
-  //   const index = this.words.findIndex( word => word.id === id )
-  //   this.DELETE_WORD( index )
-  // }
-
-  // DELETE_WORD_BY_NAME( name: string ) {
-  //   const index = this.words.findIndex( word => word.name === name )
-  //   this.DELETE_WORD( index )
-  // }
 
   SET_WORD_PROP( id: TypeId, prop: string, value: any ) {
     const word: TypeWord = this.getWordById( id )
@@ -95,7 +87,7 @@ export default class Word {
 
   deleteWord ( word: TypeWord ) {
     this.DELETE_WORD( word )
-    this.tree.deleteWordIdInTree( word.id )
+    this.tree.DELETE_WORD_ID_IN_TREE( word.id )
   }
 
   deleteWordById( id: TypeId ) {

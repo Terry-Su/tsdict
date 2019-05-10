@@ -91,12 +91,12 @@ const dispatchUpdateReduxState = value => reduxStore.dispatch( { type: 'UPDATE',
     for ( let key in actionMap ) {
       const func = model[ key ].bind( model )
       const newFunc = ( ...args ) => {
-        const alreadyUpdatingReduxState = isUpdatingReduxState
+        const alreadyUpdatedReduxState = isUpdatingReduxState
         if ( ! isUpdatingReduxState ) { isUpdatingReduxState = true }
         func( ...args )
         const newState = getNewState( stateMap, model )
         mutableReduxState[ namespace ] = newState
-        if ( ! alreadyUpdatingReduxState ) {
+        if ( ! alreadyUpdatedReduxState ) {
           isUpdatingReduxState = false
           dispatchUpdateReduxState( mutableReduxState )
         }
@@ -124,47 +124,3 @@ export const rootReducer = ( state = modelsStateMap, action ) => {
   }
   return state
 }
-
-// export function generateRootReducer( Models: any[] ): any {
-//   let reducerMap = {}
-//   Models.forEach( Model => {
-//     const newName = Model.name.replace( /^./, Model.name[ 0 ].toLowerCase() )
-//     const initialState = modelsStateMap[ newName ]
-//     const actionMap = modelsActionMap[ newName ]
-//     let model = new Model()
-//     const getNewState = ( state, model  ) => {
-//       let newState = {}
-//       for ( let key in state ) {
-//         newState[ key ] = model[ key ]
-//       }
-//       return newState
-//     }
-//     const reducer = ( state = initialState, action: TypeAction ) => {
-//       const { namespace, name } = action
-//       if ( namespace === newName && actionMap[ name ] != null ) {
-//         for ( let key in state ) {
-//           model[ key ] = state[ key ]
-//         }
-//         const { value: args } = action
-//         model[ name ]( ...args )
-//         return getNewState( state, model )
-//       }
-
-//       return state
-//     }
-//     reducerMap[ newName ] = reducer
-//   } )
-  
-//   const rootReducer = ( state = modelsStateMap, action ) => {
-//     let res = {}
-//     if ( action.type === 'UPDATE' ) {
-//       for ( let key in modelsStateMap ) {
-//         res[ key ] = action.value[ key ]
-//       }
-//       return res
-//     }
-//     return state
-//   }
-
-//   return rootReducer
-// }

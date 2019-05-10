@@ -1,6 +1,8 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
+import { TypeWord } from '@/__typings__/word'
 import { NAME_TREE_ROOT } from '@/constants/names'
+import { emptyString } from '@/utils/getters'
 import { CalcTree, isTreeNodeTree, isTreeNodeWord } from '@/utils/getters/tree'
 import { removeArrayElement } from '@/utils/js'
 import { isPlainObject } from '@/utils/lodash'
@@ -185,27 +187,7 @@ export default class Tree {
     recur( this.tree )
   };
 
-  SHOW_TREE_PANEL = () => {
-    this.visibleTreePanel = true
-  };
-  HIDE_TREE_PANEL = () => {
-    this.visibleTreePanel = false
-  };
-  TOOGLE_TREE_PANEL = () => {
-    this.visibleTreePanel = !this.visibleTreePanel
-  };
-
-  initialize() {
-    if ( this.selections.length === 0 && this.tree ) {
-    }
-  }
-
-  selectTree( id: TypeId ) {
-    const newSelections = this.getSelectionsByTreeId( id )
-    this.SET_SELECTIONS( newSelections )
-  }
-
-  deleteWordIdInTree( wordId: TypeId ) {
+  DELETE_WORD_ID_IN_TREE( wordId: TypeId ) {
     const recur = ( treeNode: TreeNode ) => {
       if ( isTreeNodeTree( treeNode ) ) {
         let targetWordIds = [];
@@ -227,11 +209,46 @@ export default class Tree {
     recur( this.tree )
   }
 
-  renameTree( id: TypeId, newName: string ) {
+  SHOW_TREE_PANEL = () => {
+    this.visibleTreePanel = true
+  };
+  HIDE_TREE_PANEL = () => {
+    this.visibleTreePanel = false
+  };
+  TOOGLE_TREE_PANEL = () => {
+    this.visibleTreePanel = !this.visibleTreePanel
+  };
+
+  initialize() {
+    if ( this.selections.length === 0 && this.tree ) {
+    }
+  }
+
+  selectTree( id: TypeId ) {
+    const newSelections = this.getSelectionsByTreeId( id )
+    this.SET_SELECTIONS( newSelections )
+  }
+
+  renameTree( tree: TypeTree, newName: string ) {
     if ( newName == null || newName.trim() === "" ) {
       return
     }
-    const tree = this.getTreeById( id )
     tree != null && this.SET_TREE_NAME( tree, newName )
   }
+
+  addTreeWordByName( wordName: string, tree: TypeTree ) {
+    if ( wordName == null || emptyString( wordName ) ) { return }
+    
+    const word = this.word.getWordByName( wordName )
+    let targetWord: TypeWord
+    if ( word == null ) {
+      this.word.ADD_WORD( wordName )
+      targetWord = this.word.getWordByName( wordName )
+    } else {
+      targetWord = word
+    }
+    targetWord != null && tree.nodes.push( targetWord.id )
+  }
+
+  
 }
