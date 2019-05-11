@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { TypeWordNote } from '@/__typings__/word'
+import { MAX_PASTING_IMAGE_WIDTH } from '@/constants/numbers'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 interface Props {
@@ -47,21 +48,47 @@ export default class Note extends Component<Props> {
     if ( blob !== null ) {
       event.preventDefault()
       const reader = new FileReader()
-      reader.onload = function( event: any ) {
+      reader.onload = async function( event: any ) {
         const url = event.target.result
-        self.insertImage( url )
+        const compressedUrl: any = await self.resizeImage( url )
+        // console.log( compressedUrl )
+        self.insertImage( compressedUrl )
       }
       reader.readAsDataURL( blob )
     }
-  }
+  };
 
   insertImage( url: string ) {
     this.selection != null &&
-      this.quill.insertEmbed(
-        this.selection.index,
-        "image",
-        url
-      )
+      this.quill.insertEmbed( this.selection.index, "image", url )
+  }
+
+  resizeImage( url: string ) {
+    return new Promise( resolve => {
+      const image = new Image()
+      image.crossOrigin = "anonymous" 
+      image.onload = () => {
+        const { width, height } = image
+        if ( width > MAX_PASTING_IMAGE_WIDTH ) {
+          const compressRate = MAX_PASTING_IMAGE_WIDTH / width
+          const compressedWidth = width * compressRate
+          const compressedHeight = height * compressRate
+
+          const canvas: HTMLCanvasElement = document.createElement( "canvas" )
+          canvas.width = compressedWidth
+          canvas.height = compressedHeight
+          // document.body.prepend( canvas )
+          const ctx = canvas.getContext( "2d" )
+          ctx.drawImage( image, 0, 0, compressedWidth, compressedHeight )
+          const dataUrl = canvas.toDataURL()
+          // console.log( dataUrl )
+          resolve( dataUrl )
+        } else {
+          resolve( url )
+        }
+      }
+      image.src = url
+    } )
   }
 
   componentWillUnmount() {

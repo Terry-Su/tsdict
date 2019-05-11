@@ -1,0 +1,1 @@
+export let MAX_PASTING_IMAGE_WIDTH = 500
