@@ -22,12 +22,12 @@ const getNewState = ( state, model  ) => {
 const dispatchUpdateReduxState = value => reduxStore.dispatch( { type: 'UPDATE', value } )
 
 {
-  let modelKeys = []
-  for ( let key in ModelMap ) {
-    const Model = ModelMap[ key ]
-    const newKey = Model.name.replace( /^./, Model.name[ 0 ].toLowerCase() )
-    modelKeys.push[ key ]
-  }
+  // let modelKeys = []
+  // for ( let key in ModelMap ) {
+  //   const Model = ModelMap[ key ]
+  //   const newKey = Model.name.replace( /^./, Model.name[ 0 ].toLowerCase() )
+  //   modelKeys.push[ key ]
+  // }
   for ( let key in ModelMap ) {
     const Model = ModelMap[ key ]
     const model = new Model()
@@ -40,9 +40,9 @@ const dispatchUpdateReduxState = value => reduxStore.dispatch( { type: 'UPDATE',
     let selectorMap = {}
     let initialState = {}
     for ( let key in descriptorMap ) {
-      if ( modelKeys.includes( key ) ) {
-        continue
-      }
+      // if ( modelKeys.includes( key ) ) {
+      //   continue
+      // }
       const value = descriptorMap[ key ]
       const potential = value.value
       if ( typeof potential !== 'function' ) {

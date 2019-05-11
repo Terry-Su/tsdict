@@ -8,19 +8,18 @@ import Tree from './Tree'
 import Word from './Word'
 
 export default class App {
-  word: Word
-  tree: Tree
-  tag: Tag
+  word: Word;
+  tree: Tree;
+  tag: Tag;
 
-  origin: string = "http://localhost:3000"
-  searchingWordName: string = 'tick'
-  visibleIframe: boolean = false
+  origin: string = "http://localhost:3000";
+  searchingWordName: string = "tick";
+  visibleIframe: boolean = false;
 
   // # right click menu
-  rightClickMenuItems: PopupMenuItem[] = []
-  rightClickMenuPosition: Position = { x: 0, y: 0 }
-  visibleRightClickMenu: boolean = false
-
+  rightClickMenuItems: PopupMenuItem[] = [];
+  rightClickMenuPosition: Position = { x: 0, y: 0 };
+  visibleRightClickMenu: boolean = false;
 
   get syncData(): SyncData {
     return {
@@ -35,24 +34,42 @@ export default class App {
   }
 
   get searchWordTags(): TypeTag[] {
-    return this.searchingWord != null ? this.tag.tags.filter( tag => tag.ids.includes( this.searchingWord.id ) ) : []
+    return this.searchingWord != null
+      ? this.tag.tags.filter( tag => tag.ids.includes( this.searchingWord.id ) )
+      : []
   }
 
   get searchWordTagsCanBeAdded(): TypeTag[] {
-    return this.tag.tags.filter( tag => ! this.searchWordTags.includes( tag ) )
+    return this.tag.tags.filter( tag => !this.searchWordTags.includes( tag ) )
   }
 
-  SET_SEARCHING_WORD_NAME( searchingWordName: string ) { this.searchingWordName = searchingWordName }
+  SET_SEARCHING_WORD_NAME( searchingWordName: string ) {
+    this.searchingWordName = searchingWordName
+  }
 
-  SHOW_IFRAME = () => { this.visibleIframe = true }
-  HIDE_IFRAME = () => { this.visibleIframe = false }
-  TOOGLE_IFRAME = () => { this.visibleIframe = ! this.visibleIframe }
+  SHOW_IFRAME = () => {
+    this.visibleIframe = true
+  };
+  HIDE_IFRAME = () => {
+    this.visibleIframe = false
+  };
+  TOOGLE_IFRAME = () => {
+    this.visibleIframe = !this.visibleIframe
+  };
 
   // # right click menu
-  SET_RIGHT_CLICK_MENU_ITEMS = ( items: PopupMenuItem[] ) => { this.rightClickMenuItems = items }
-  SET_RIGHT_CLICK_MENU_POSITION = ( position: Position ) => { this.rightClickMenuPosition = position }
-  SHOW_RIGHT_CLICK_MENU = () => { this.visibleRightClickMenu = true }
-  HIDE_RIGHT_CLICK_MENU = () => { this.visibleRightClickMenu = false }
+  SET_RIGHT_CLICK_MENU_ITEMS = ( items: PopupMenuItem[] ) => {
+    this.rightClickMenuItems = items
+  };
+  SET_RIGHT_CLICK_MENU_POSITION = ( position: Position ) => {
+    this.rightClickMenuPosition = position
+  };
+  SHOW_RIGHT_CLICK_MENU = () => {
+    this.visibleRightClickMenu = true
+  };
+  HIDE_RIGHT_CLICK_MENU = () => {
+    this.visibleRightClickMenu = false
+  };
 
   addWordBySearchingWordName() {
     this.word.ADD_WORD( this.searchingWordName )
@@ -61,7 +78,7 @@ export default class App {
   updateSearchingWordNote( newNote: TypeWordNote ) {
     this.word.SET_WORD_NOTE( this.searchingWord.id, newNote )
   }
-  
+
   updateSearchingWordDegree( newDegree: TypeWordDegree ) {
     this.word.SET_WORD_DEGREE( this.searchingWord.id, newDegree )
   }
@@ -79,8 +96,32 @@ export default class App {
 
   // # right click menu
   showRightClickMenu( items: PopupMenuItem[], event: MouseEvent ) {
-   this.SET_RIGHT_CLICK_MENU_ITEMS( items ) 
-   event != null && this.SET_RIGHT_CLICK_MENU_POSITION( { x: event.clientX, y: event.clientY } )
-   this.SHOW_RIGHT_CLICK_MENU()
+    this.SET_RIGHT_CLICK_MENU_ITEMS( items )
+    event != null &&
+      this.SET_RIGHT_CLICK_MENU_POSITION( {
+        x: event.clientX,
+        y: event.clientY,
+      } )
+    this.SHOW_RIGHT_CLICK_MENU()
+  }
+
+  saveSearchingWordToCurrentSelectedTree() {
+    const { currentSelectedTree } = this.tree
+    if ( currentSelectedTree != null ) {
+      if ( this.tree.isTreeTree( currentSelectedTree ) ) {
+        this.tree.addTreeWordByName(
+          this.searchingWordName,
+          currentSelectedTree
+        )
+        return
+      } else if ( this.tree.isTagTree( currentSelectedTree ) ) {
+        const tag = this.tag.getTagByName( currentSelectedTree.name )
+        this.tag.addTagWordByName( tag, this.searchingWordName )
+        return
+      }
+    } else {
+      return alert( `No selected folder` )
+    }
+    alert( `Folder: "${ currentSelectedTree.name }" cannot be used for saving words` )
   }
 }

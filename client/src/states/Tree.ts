@@ -1,7 +1,7 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
-import { TREE_ALL_WORDS, TREE_TAG_ROOT, TREE_TREE_ROOT } from '@/constants/ids'
+import { TREE_ALL_WORDS, TREE_COMPOSED_TREE_ROOT, TREE_TAG_ROOT } from '@/constants/ids'
 import { NAME_TREE_ROOT } from '@/constants/names'
 import { emptyString } from '@/utils/getters'
 import { CalcTree, isTreeNodeTree, isTreeNodeWord } from '@/utils/getters/tree'
@@ -17,7 +17,7 @@ export default class Tree {
   tag: Tag;
   review: Review;
 
-  tree: TypeTree;
+  tree: TypeTree = null
   selections: TreeSelection[] = [];
 
   visibleTreePanel: boolean = true;
@@ -53,6 +53,30 @@ export default class Tree {
     } )
   }
 
+  get isTreeTree(): Function {
+    return ( tree: TypeTree ): boolean => this.treeIds.includes( tree.id )
+  }
+
+  get isTreeRootTree(): Function {
+    return ( tree: TypeTree ): boolean => tree === this.tree
+  }
+
+  get isComposedTreeRootTree(): Function {
+    return ( tree: TypeTree ): boolean => tree.id === TREE_COMPOSED_TREE_ROOT
+  }
+
+  get isTagTree(): Function {
+    return ( tree: TypeTree ): boolean => this.tagTreeIds.includes( tree.id )
+  }
+
+  get isTagRootTree(): Function {
+    return ( tree: TypeTree ): boolean => tree.id === TREE_TAG_ROOT
+  }
+
+  get isTreeAllWords(): Function {
+    return ( tree: TypeTree ): boolean => tree.id === TREE_ALL_WORDS
+  }
+
   get allWordsTree(): TypeTree {
     const tree = this.createTree( "All", {
       id   : TREE_ALL_WORDS,
@@ -84,7 +108,7 @@ export default class Tree {
       v => v != null
     )
     const tree = this.createTree( NAME_TREE_ROOT, {
-      id: TREE_TREE_ROOT,
+      id: TREE_COMPOSED_TREE_ROOT,
       nodes,
     } )
 
@@ -140,6 +164,7 @@ export default class Tree {
     }
   }
 
+  // # selections
   get getSelectionsByTreeId(): Function {
     const self = this
     return function( id: TypeId ) {
@@ -157,6 +182,21 @@ export default class Tree {
     }
   }
 
+  get currentSelectedTree(): TypeTree {
+    const potentialSelection = this.selections[ this.selections.length - 1 ]
+
+    if ( potentialSelection != null ) {
+      if ( potentialSelection.type === TreeItemType.Tree ) {
+        return this.getTreeById( potentialSelection.id )
+      } else {
+        const selection = this.selections[ this.selections.length - 2 ]
+        if ( selection ) {
+          return this.getTreeById( selection.id )
+        }
+      }
+    }
+    return null
+  }
 
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
@@ -175,6 +215,11 @@ export default class Tree {
     const newTree = this.createTree( name )
     parentTree.nodes.push( newTree )
   };
+
+  ADD_TREE_WORD_ID ( tree: TypeTree, wordId: TypeId ) {
+    const existed = tree.nodes.includes( wordId )
+    ! existed && tree.nodes.push( wordId )
+  }
 
   DELETE_TREE_BY_ID = ( treeId: TypeId ) => {
     let foundTargetTree = false
@@ -270,7 +315,7 @@ export default class Tree {
     } else {
       targetWord = word
     }
-    targetWord != null && tree.nodes.push( targetWord.id )
+    targetWord != null && this.ADD_TREE_WORD_ID( tree, targetWord.id )
   }
 
   selectTag( tag: TypeTag ) {

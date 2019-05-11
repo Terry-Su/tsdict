@@ -15,7 +15,13 @@ interface Props {
 }
 
 @Actions( "app", "showRightClickMenu" )
-@Actions( "tag", "ADD_TAG_BY_NAME", "addTagWordByName", "SET_TAG_NAME", "DELETE_TAG" )
+@Actions(
+  "tag",
+  "ADD_TAG_BY_NAME",
+  "addTagWordByName",
+  "SET_TAG_NAME",
+  "DELETE_TAG"
+)
 @Actions(
   "tree",
   "ADD_TREE",
@@ -25,38 +31,38 @@ interface Props {
   "renameTree"
 )
 @Selectors( "tag", "getTagByName" )
-@Selectors( "tree", "getTreeById", "tagTreeIds" )
-@States( 'tree', 'selections' )
+@Selectors(
+  "tree",
+  "getTreeById",
+  "tagTreeIds",
+  "isTreeTree",
+  "isTagTree",
+  "isTagRootTree",
+  "isTreeRootTree"
+)
+@States( "tree", "selections" )
 export default class TreeItemTree extends Component<Props> {
   selections?: TreeSelection[];
   tagTreeIds?: TypeId[];
-  getTagByName?: Function;
-  showRightClickMenu?: Function;
-  getTreeById?: Function;
-  renameTree?: Function;
-  addTreeWordByName?: Function;
   SET_TAG_NAME?: Function;
   DELETE_TAG?: Function;
   addTagWordByName?: Function;
   ADD_TAG_BY_NAME?: Function;
   DELETE_TREE_BY_ID?: Function;
   ADD_TREE?: Function;
+  isTreeTree?: Function;
+  isTagTree?: Function;
+  isTagRootTree?: Function;
+  isTreeRootTree?: Function;
+  getTagByName?: Function;
+  showRightClickMenu?: Function;
+  getTreeById?: Function;
+  renameTree?: Function;
+  addTreeWordByName?: Function;
   selectTree?: Function;
 
   get tree(): TypeTree {
     return this.getTreeById( this.props.value.id ) || {}
-  }
-
-  get isTagTree(): boolean {
-    return this.tagTreeIds.includes( this.tree.id )
-  }
-
-  get isTagRootTree(): boolean {
-    return this.tree.id === TREE_TAG_ROOT
-  }
-
-  get isTreeAllWords(): boolean {
-    return this.tree.id === TREE_ALL_WORDS
   }
 
   get tag(): TypeTag {
@@ -64,7 +70,10 @@ export default class TreeItemTree extends Component<Props> {
   }
 
   get isSelected(): boolean {
-    return this.selections.some( selection => selection.type === TreeItemType.Tree && selection.id === this.props.value.id )
+    return this.selections.some(
+      selection => selection.type === TreeItemType.Tree &&
+        selection.id === this.props.value.id
+    )
   }
 
   handleClick = () => {
@@ -99,13 +108,15 @@ export default class TreeItemTree extends Component<Props> {
             self.addTagWordByName( self.tag, wordName )
         },
       },
-      { text: "Rename",
-handleClick() {
-        const newName = window.prompt( "New Tag Name", self.tag.name )
+      {
+        text: "Rename",
+        handleClick() {
+          const newName = window.prompt( "New Tag Name", self.tag.name )
           newName != null &&
             notEmptyString( newName ) &&
             self.SET_TAG_NAME( self.tag, newName )
-      } },
+        },
+      },
       {
         text: "Delete",
         handleClick() {
@@ -114,7 +125,7 @@ handleClick() {
       },
     ]
 
-    const treeClickItems = [
+    const treeCommonRightClickItems = [
       {
         text: "Add Word",
         handleClick() {
@@ -142,6 +153,10 @@ handleClick() {
             self.renameTree( self.tree, newName )
         },
       },
+    ]
+
+    const treeNotRootRightClickItems = [
+      ...treeCommonRightClickItems,
       {
         text: "Delete",
         handleClick() {
@@ -153,17 +168,20 @@ handleClick() {
       },
     ]
 
-    if ( this.isTagRootTree ) {
+    const { tree } = this
+    if ( this.isTagRootTree( tree ) ) {
       rightClickItems = tagRootRightClickItems
-    } else if ( this.isTagTree ) {
+    } else if ( this.isTagTree( tree ) ) {
       rightClickItems = tagRightClickItems
-    } else if ( this.isTreeAllWords ) {
-      
-    } else {
-      rightClickItems = treeClickItems
+    } else if ( this.isTreeTree( tree ) ) {
+      if ( this.isTreeRootTree( tree ) ) {
+        rightClickItems = treeCommonRightClickItems
+      } else {
+        rightClickItems = treeNotRootRightClickItems
+      }
     }
 
-    this.showRightClickMenu( rightClickItems, event )
+    rightClickItems.length > 0 && this.showRightClickMenu( rightClickItems, event )
   };
 
   render() {
@@ -174,7 +192,7 @@ handleClick() {
         icon="T"
         text={this.tree.name}
         columnIndex={columnIndex}
-        isSelected={ this.isSelected }
+        isSelected={this.isSelected}
         onClick={this.handleClick}
         onContextMenu={this.handleRightClick}
       />
