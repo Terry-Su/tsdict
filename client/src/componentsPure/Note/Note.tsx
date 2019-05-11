@@ -34,26 +34,34 @@ export default class Note extends Component<Props> {
       theme      : "snow",
     } ) )
 
-    const debouncedOnChange = debounce( ( delta, oldDelta, source ) => {
-      // if ( source === 'user' ) {
+    // const debouncedOnChange = debounce( ( delta, oldDelta, source ) => {
+    //   // if ( source === 'user' ) {
+    //   const content = quill.getContents()
+    //   this.props.onChange && this.props.onChange( content )
+    //   // }
+    // }, 1000 )
+
+    // quill.on( "text-change", debouncedOnChange )
+
+    const { onChange, data } = this.props
+
+    quill.on( "text-change", () => {
       const content = quill.getContents()
-      this.props.onChange && this.props.onChange( content )
-      // }
-    }, 1000 )
+      onChange && onChange( content )
+    } )
 
-    quill.on( "text-change", debouncedOnChange )
-
-    this.quill.setContents( this.props.data )
+    this.quill.setContents( data )
   }
   componentDidUpdate() {
-    if ( this.props.data == null ) {
-      this.quill.setContents( this.props.data )
+    const { data } = this.props
+    if ( data == null ) {
+      this.quill.setContents( data )
     } else if (
-      JSON.stringify( this.props.data ) !==
+      JSON.stringify( data ) !==
       JSON.stringify( this.quill.getContents() )
     ) {
       const cachedSelection = this.quill.getSelection()
-      this.quill.setContents( this.props.data )
+      this.quill.setContents( data )
       this.quill.setSelection( cachedSelection )
     }
   }

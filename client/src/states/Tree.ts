@@ -20,7 +20,7 @@ export default class Tree {
   tree: TypeTree = null
   selections: TreeSelection[] = [];
 
-  visibleTreePanel: boolean = true;
+  visibleTreePanel: boolean = false;
 
   get treeIds(): number[] {
     let ids = []

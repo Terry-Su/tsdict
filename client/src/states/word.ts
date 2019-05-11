@@ -9,9 +9,9 @@ import Tag from './Tag'
 import Tree from './Tree'
 
 export default class Word {
-  words: TypeWord[] = []
-  tree: Tree
-  tag: Tag
+  words: TypeWord[] = [];
+  tree: Tree;
+  tag: Tag;
 
   get ids(): number[] {
     return this.words.map( v => v.id )
@@ -25,42 +25,58 @@ export default class Word {
     return num
   }
 
-  get createWord( ) {
-    return ( name: string, config: { note?: Delta; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ) => ( {
-        id        : this.availableId,
-        name,
-        note      : config.note,
-        degree    : config.degree,
-        createTime: new Date().getTime(),
-      } )
+  get createWord() {
+    return (
+      name: string,
+      config: {
+        note?: Delta;
+        degree?: DictDataWordDegree;
+        createTime?: Time;
+      } = { degree: 0 }
+    ) => ( {
+      id        : this.availableId,
+      name,
+      note      : config.note,
+      degree    : config.degree,
+      createTime: new Date().getTime(),
+    } )
   }
 
   get getWordById(): Function {
     const self = this
     return function( id: TypeId ): TypeWord {
-        return self.words.find( word => word.id === id )
-    } 
+      return self.words.find( word => word.id === id )
+    }
   }
 
   get getWordByName(): Function {
     const self = this
     return function( name: string ): TypeWord {
-        return self.words.find( word => word.name === name )
-    } 
+      return self.words.find( word => word.name === name )
+    }
   }
 
-  SET_WORDS = ( words: TypeWord[]  ) => { this.words = words }
-  REFRESH_WORDS = () => { this.words = [ ...this.words ] }
+  SET_WORDS = ( words: TypeWord[] ) => {
+    this.words = words
+  };
+  REFRESH_WORDS = () => {
+    this.words = [ ...this.words ]
+  };
 
-  ADD_WORD( name: string = '', config: { note?: Delta; degree?: DictDataWordDegree, createTime?: Time } = { degree: 0 } ): TypeWord {
-    if ( name.trim() === '' ) {
-      alert( 'Empty word name!' )
+  ADD_WORD(
+    name: string = "",
+    config: { note?: Delta; degree?: DictDataWordDegree; createTime?: Time } = {
+      degree: 0,
+    }
+  ): TypeWord {
+    if ( name.trim() === "" ) {
+      alert( "Empty word name!" )
       return null
     }
 
     const negativeWord = this.getWordByName( name )
     if ( negativeWord != null ) {
-      alert( 'Word name exisited!' )
+      alert( "Word name exisited!" )
       return null
     }
     const newWord: TypeWord = this.createWord( name, config )
@@ -71,23 +87,16 @@ export default class Word {
     removeArrayElement( this.words, word )
   }
 
-  SET_WORD_PROP( id: TypeId, prop: string, value: any ) {
-    const word: TypeWord = this.getWordById( id )
-    if ( word != null ) {
-      if ( word.hasOwnProperty( prop ) ) {
-        word[ prop ] = value
-        this.REFRESH_WORDS()
-      } else {
-        console.log( `Word "${word.name}" has no property: ${ prop }!` )
-      }
-    }
+  setWordNote( word: TypeWord, newNote: TypeWordNote ) {
+    word.note = newNote
+    this.REFRESH_WORDS()
+  }
+  setWordDegree( word: TypeWord, newDegree: TypeWordDegree ) {
+    word.degree = newDegree
+    this.REFRESH_WORDS()
   }
 
-  SET_WORD_NOTE( id: TypeId, newNote: TypeWordNote ) { this.SET_WORD_PROP( id, 'note', newNote ) }
-  SET_WORD_DEGREE( id: TypeId, newDegree: TypeWordDegree ) { this.SET_WORD_PROP( id, 'degree', newDegree ) }
-  
-
-  deleteWord ( word: TypeWord ) {
+  deleteWord( word: TypeWord ) {
     this.DELETE_WORD( word )
     this.tree.DELETE_WORD_ID_RECURVELY_IN_TREE( word.id )
     this.tag.DELETE_WORD_ID_CONSTANTLY_IN_TAGS( word.id )

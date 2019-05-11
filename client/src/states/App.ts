@@ -76,11 +76,11 @@ export default class App {
   }
 
   updateSearchingWordNote( newNote: TypeWordNote ) {
-    this.word.SET_WORD_NOTE( this.searchingWord.id, newNote )
+    this.word.setWordNote( this.searchingWord, newNote )
   }
 
   updateSearchingWordDegree( newDegree: TypeWordDegree ) {
-    this.word.SET_WORD_DEGREE( this.searchingWord.id, newDegree )
+    this.word.setWordDegree( this.searchingWord, newDegree )
   }
 
   deleteSearchingWord() {
