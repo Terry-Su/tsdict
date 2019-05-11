@@ -7,6 +7,7 @@ import READLINE from 'readline'
 import { URL } from 'url'
 
 import { DictDataWord } from '../../shared/__typings__/DictData'
+import compressImage from '../scripts/compressImage'
 import {
     GET_BACKUP_CLIENT_DATA_UNIQUE_FILE, GET_STORE_BACKUP_IMAGE_FILE_BY_NAME,
     GET_STORE_DICTS_1_HTML_FILES, GET_STORE_IMAGE_FILE_BY_NAME, GET_STORE_IMAGE_FILES,
@@ -23,68 +24,76 @@ export function backup( data ) {
   FS.outputJSONSync( GET_BACKUP_CLIENT_DATA_UNIQUE_FILE(), data )
 }
 
-// replace the media(image for example) url with server url instead of base64 url
+export async function pasteImage( word: DictDataWord, base64Url: string ) {
+  // more small size
+  const recommendedExtension = '.jpeg'
+  const availablePureFileName = GET_STORE_IMAGE_UNIQUE_FILE_NAME( word.name )
+  const compressedImageFile = GET_STORE_IMAGE_FILE_BY_NAME( `${availablePureFileName}${recommendedExtension}` ) 
+  await compressImage( base64Url, compressedImageFile )
+  return compressedImageFile
+}
+
+// # replace the media(image for example) url with server url instead of base64 url
 export function updateMedia( word: DictDataWord, req: express.Request ) {
-  const { note, name: wordName } = word
+//   const { note, name: wordName } = word
 
-  function replaceServerUrl( url: string ) {
-    const prefix = req.protocol + "://" + req.get( "host" )
-    const urlInfo = new URL( url )
-    return `${prefix}${urlInfo.pathname}`
-  }
+//   function replaceServerUrl( url: string ) {
+//     const prefix = req.protocol + "://" + req.get( "host" )
+//     const urlInfo = new URL( url )
+//     return `${prefix}${urlInfo.pathname}`
+//   }
 
-  function replaceImage( url ): string {
-    let resolvedUrl = url
-    const prefix = req.protocol + "://" + req.get( "host" )
+//   function replaceImage( url ): string {
+//     let resolvedUrl = url
+//     const prefix = req.protocol + "://" + req.get( "host" )
 
-    // resolve base64 url
-    if ( isBase64Url( url ) ) {
-      const extension = url
-        .replace( /^data:.+?\//, "" )
-        .replace( /;base64,.+/, "" )
+//     // resolve base64 url
+//     if ( isBase64Url( url ) ) {
+// const extension = url
+//   .replace( /^data:.+?\//, "" )
+//   .replace( /;base64,.+/, "" )
 
-      
-      const name = GET_STORE_IMAGE_UNIQUE_FILE_NAME()
-      const path = `${GET_STORE_IMAGE_FILE_BY_NAME( name )}.${extension}`
-      outputBase64Media( url, path )
+//       const name = GET_STORE_IMAGE_UNIQUE_FILE_NAME( wordName )
+//       const path = `${GET_STORE_IMAGE_FILE_BY_NAME( name )}.${extension}`
+//       outputBase64Media( url, path )
 
-      const backupPath = `${GET_STORE_BACKUP_IMAGE_FILE_BY_NAME(
-        name
-      )}.${extension}`
-      outputBase64Media( url, backupPath )
-      resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT( path )}`
-    }
+//       const backupPath = `${GET_STORE_BACKUP_IMAGE_FILE_BY_NAME(
+//         name
+//       )}.${extension}`
+//       outputBase64Media( url, backupPath )
+//       resolvedUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT( path )}`
+//     }
 
-    const res = replaceServerUrl( resolvedUrl )
-    return res
-  }
+//     const res = replaceServerUrl( resolvedUrl )
+//     return res
+//   }
 
-  if ( note ) {
-    const { ops } = note
-    note.ops = note.ops.map( ( item: any ) => {
-      if ( item.insert ) {
-        if ( item.insert.image ) {
-          const sourceUrl = item.insert.image
-          let url = sourceUrl
-          try {
-            url = replaceImage( sourceUrl )
-          } catch ( e ) {
-            console.log( e )
-          }
-          item.insert.image = url
-        }
-        if ( item.insert.video ) {
-          try {
-            item.insert.video = replaceServerUrl( item.insert.video )
-          } catch ( e ) {
-            console.log( e )
-          }
-        }
-      }
-      return item
-    } )
-  }
-  return word
+//   if ( note ) {
+//     const { ops } = note
+//     note.ops = note.ops.map( ( item: any ) => {
+//       if ( item.insert ) {
+//         if ( item.insert.image ) {
+//           const sourceUrl = item.insert.image
+//           let url = sourceUrl
+//           try {
+//             url = replaceImage( sourceUrl )
+//           } catch ( e ) {
+//             console.log( e )
+//           }
+//           item.insert.image = url
+//         }
+//         if ( item.insert.video ) {
+//           try {
+//             item.insert.video = replaceServerUrl( item.insert.video )
+//           } catch ( e ) {
+//             console.log( e )
+//           }
+//         }
+//       }
+//       return item
+//     } )
+//   }
+//   return word
 }
 
 export function cleanUselessMedias( words: DictDataWord[] ) {
@@ -175,12 +184,11 @@ export function generatePhoneticSymbols() {
             console.log( name, texts.length )
             // FS.outputJSONSync(GET_STORE_PHONETIC_SYMBOLS_FILE( name ), data);
           }
-         
         } )
       }
       if ( htmlFiles.length > 0 ) {
         run()
-      }else {
+      } else {
         FS.outputJSONSync( STORE_PHONETIC_SYMBOLS_FILE, data )
       }
     }, 0 )

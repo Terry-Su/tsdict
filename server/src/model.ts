@@ -7,7 +7,7 @@ import { URL } from 'url'
 
 import { DictDataWord } from '../../shared/__typings__/DictData'
 import app from './'
-import { backup, cleanUselessMedias, updateMedia } from './actions'
+import { backup, cleanUselessMedias, updateMedia, pasteImage } from './actions'
 import {
     CLIENT_PUBLIC, CLIENT_PUBLIC_APP_CACHE, CLIENT_PUBLIC_INDEX, GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
     GET_STORE_IMAGE_FILES, GET_URL_RELATIVE_TO_STORE_ROOT, RELATIVE_PHONETIC_SYMBOLS_FILE,
@@ -97,6 +97,20 @@ app.post( "/push", ( req: express.Request, res: express.Response ) => {
     backup( req.body )
     FS.outputJSONSync( STORE_CURRENT_DATA_FILE, req.body )
     res.send( true )
+    return
+  } catch ( e ) {
+    console.log( e )
+  }
+  res.send( null )
+} )
+
+app.post( "/pasteImage", async ( req: express.Request, res: express.Response ) => {
+  try {
+    const { base64Url, word } = req.body 
+    const imageFile = await pasteImage( word, base64Url )
+    const prefix = req.protocol + "://" + req.get( "host" )
+    const imageUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT( imageFile )}`
+    res.send( imageUrl )
     return
   } catch ( e ) {
     console.log( e )

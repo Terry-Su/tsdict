@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 import { TypeTag } from '@/__typings__'
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import Note from '@/components/Note/Note'
 import Degree from '@/componentsPure/Degree/Degree'
 import IframeViewer from '@/componentsPure/IframeViewer'
 import InputSuggested from '@/componentsPure/InputSuggested/InputSuggested'
-import Note from '@/componentsPure/Note/Note'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import WordPanelInputSuggested from './WordPanelInputSuggested'

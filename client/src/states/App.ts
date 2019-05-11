@@ -1,6 +1,7 @@
 import { Position, TypeTag } from '@/__typings__'
 import { SyncData } from '@/__typings__/app'
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import download from '@/assets/js/download'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
 
 import Tag from './Tag'
@@ -94,6 +95,12 @@ export default class App {
     this.tag.SET_TAGS( data.tags )
   }
 
+  export() {
+    const str = JSON.stringify( this.syncData )
+    const fileName = `tsdict.json`
+    download( str, fileName ) 
+  }
+
   // # right click menu
   showRightClickMenu( items: PopupMenuItem[], event: MouseEvent ) {
     this.SET_RIGHT_CLICK_MENU_ITEMS( items )
@@ -124,4 +131,6 @@ export default class App {
     }
     alert( `Folder: "${ currentSelectedTree.name }" cannot be used for saving words` )
   }
+
+  
 }

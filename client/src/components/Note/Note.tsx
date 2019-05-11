@@ -5,8 +5,9 @@ import Quill from 'quill'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { TypeWordNote } from '@/__typings__/word'
+import { TypeWord, TypeWordNote } from '@/__typings__/word'
 import { MAX_PASTING_IMAGE_WIDTH } from '@/constants/numbers'
+import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 interface Props {
@@ -14,10 +15,14 @@ interface Props {
   onChange?: ( content: TypeWordNote ) => void;
 }
 
+@Selectors( 'app', 'searchingWord' )
 export default class Note extends Component<Props> {
+  searchingWord?: TypeWord
+
   quill: Quill;
   toolbarRef: any = React.createRef();
   editorRef: any = React.createRef();
+
 
   get editor(): HTMLDivElement {
     return this.editorRef.current
@@ -41,6 +46,7 @@ export default class Note extends Component<Props> {
     let { items } = event.clipboardData || event.originalEvent.clipboardData
     let blob = null
     for ( let item of items ) {
+      console.log( item.type )
       if ( item.type.indexOf( "image" ) === 0 ) {
         blob = item.getAsFile()
       }
@@ -50,9 +56,11 @@ export default class Note extends Component<Props> {
       const reader = new FileReader()
       reader.onload = async function( event: any ) {
         const url = event.target.result
-        const compressedUrl: any = await self.resizeImage( url )
-        // console.log( compressedUrl )
-        self.insertImage( compressedUrl )
+        appApi.pasteImage( { word: self.searchingWord, base64Url: url } ).then( serverImageUrl => {
+          self.insertImage( serverImageUrl )
+        } ).catch( e => {
+          console.log( e )
+        } )
       }
       reader.readAsDataURL( blob )
     }

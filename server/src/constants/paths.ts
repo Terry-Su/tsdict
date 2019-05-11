@@ -43,7 +43,7 @@ export const GET_BACKUP_CLIENT_DATA_UNIQUE_FILE = () => {
 }
 
 
-export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = () => {
+export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = ( wordName: string ) => {
   let num = 0
   let res = null
   while ( res === null ) {
@@ -51,9 +51,11 @@ export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = () => {
     const possibleFiles = [
       '.jpeg',
       '.png',
-    ].map( v => PATH.resolve( STORE_IMAGE, `${name}${v}` ) )
+      '.jpg',
+      '.gif',
+    ].map( v => PATH.resolve( STORE_IMAGE, `${wordName}$${name}${v}` ) )
     if ( possibleFiles.every( v => ! FS.pathExistsSync( v ) ) ) {
-      res = name
+      res = `${wordName}$${name}`
     }
     num++
   }

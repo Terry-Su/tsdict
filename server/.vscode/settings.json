@@ -15,6 +15,6 @@
     { "language": "typescript", "autoFix": true },
   ],
 
-  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  // "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.hasSemicolon": false,
 }
