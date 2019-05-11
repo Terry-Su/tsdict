@@ -21,7 +21,6 @@ export default class Tree {
   selections: TreeSelection[] = [];
 
   visibleTreePanel: boolean = true;
-  syncT: any;
 
   get treeIds(): number[] {
     let ids = []
@@ -112,7 +111,7 @@ export default class Tree {
       res.push( column )
 
       const currentSelection = selections[ currentColumnIndex ]
-      if ( currentSelection == null ) {
+      if ( currentSelection == null || currentSelection.type === TreeItemType.Word ) {
         break
       }
       currentCalcTree = currentCalcTree.nodes.find(
@@ -238,6 +237,18 @@ export default class Tree {
 
   selectTree( id: TypeId ) {
     const newSelections = this.getSelectionsByTreeId( id )
+    this.SET_SELECTIONS( newSelections )
+  }
+
+  selectWord( wordId: TypeId, parentTree: TypeTree ) {
+    const parentTreeSelections = this.getSelectionsByTreeId( parentTree.id )
+    const newSelections = [
+      ...parentTreeSelections,
+      {
+        type: TreeItemType.Word,
+        id  : wordId,
+      },
+    ]
     this.SET_SELECTIONS( newSelections )
   }
 

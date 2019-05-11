@@ -11,6 +11,7 @@ interface Props {
   text: string;
   columnIndex: number;
   type: TreeItemType;
+  isSelected: boolean
   [propName: string]: any;
 }
 
@@ -35,9 +36,9 @@ export default class TreeItemBase extends Component<Props> {
   }
 
   render() {
-    const { icon, text, ...rest } = this.props
+    const { icon, text, isSelected, ...rest } = this.props
     return (
-      <StyledRoot {...rest}>
+      <StyledRoot isSelected={ isSelected } {...rest}>
         <span>{icon}</span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span>{text}</span>
@@ -46,11 +47,15 @@ export default class TreeItemBase extends Component<Props> {
   }
 }
 
-const StyledRoot = styled.div`
+const StyledRoot: any = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
   width: 100%;
   height: 50px;
   border: 1px solid #ddd;
+
+  ${ ( props: any ) => props.isSelected ? `
+  background: #ddd;
+  ` : `` }
 `

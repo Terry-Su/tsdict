@@ -14,8 +14,6 @@ interface Props {
   columnIndex: number;
 }
 
-@Selectors( "tag", "getTagByName" )
-@Selectors( "tree", "getTreeById", "tagTreeIds" )
 @Actions( "app", "showRightClickMenu" )
 @Actions( "tag", "ADD_TAG_BY_NAME", "addTagWordByName", "SET_TAG_NAME", "DELETE_TAG" )
 @Actions(
@@ -26,6 +24,9 @@ interface Props {
   "selectTree",
   "renameTree"
 )
+@Selectors( "tag", "getTagByName" )
+@Selectors( "tree", "getTreeById", "tagTreeIds" )
+@States( 'tree', 'selections' )
 export default class TreeItemTree extends Component<Props> {
   selections?: TreeSelection[];
   tagTreeIds?: TypeId[];
@@ -60,6 +61,10 @@ export default class TreeItemTree extends Component<Props> {
 
   get tag(): TypeTag {
     return this.getTagByName( this.tree.name )
+  }
+
+  get isSelected(): boolean {
+    return this.selections.some( selection => selection.type === TreeItemType.Tree && selection.id === this.props.value.id )
   }
 
   handleClick = () => {
@@ -169,6 +174,7 @@ handleClick() {
         icon="T"
         text={this.tree.name}
         columnIndex={columnIndex}
+        isSelected={ this.isSelected }
         onClick={this.handleClick}
         onContextMenu={this.handleRightClick}
       />

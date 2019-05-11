@@ -16,7 +16,7 @@ interface Props {
 
 @Actions( "app", "SET_SEARCHING_WORD_NAME", "showRightClickMenu" )
 @Actions( "tag", "DELETE_WORD_ID_IN_TAG" )
-@Actions( "tree", "DELETE_WORD_ID_IN_TREE" )
+@Actions( "tree", "DELETE_WORD_ID_IN_TREE", "selectWord" )
 @Selectors( "tag", "getTagByName" )
 @Selectors( "tree", "getTreeById", "tagTreeIds" )
 @Selectors( "word", "getWordById" )
@@ -31,15 +31,22 @@ export default class TreeItemWord extends Component<Props> {
   SET_SEARCHING_WORD_NAME?: Function
   getWordById?: Function
   showRightClickMenu?: Function
+  selectWord?: Function
 
   get word() {
     return this.getWordById( this.props.value.id )
   }
 
   get parentTree(): TypeTree {
-    const treeItem: TypeTreeItem = this.selections[ this.selections.length - 1 ]
-    if ( treeItem ) {
-      return this.getTreeById( treeItem.id )
+    let parentTreeItem: TypeTreeItem
+    const lastTreeItem: TypeTreeItem = this.selections[ this.selections.length - 1 ]
+    if ( lastTreeItem.type === TreeItemType.Tree ) {
+      parentTreeItem = lastTreeItem
+    } else {
+      parentTreeItem = this.selections[ this.selections.length - 2 ]
+    }
+    if ( parentTreeItem ) {
+      return this.getTreeById( parentTreeItem.id )
     }
     return null
   }
@@ -56,14 +63,18 @@ export default class TreeItemWord extends Component<Props> {
     return this.selections[ 0 ].id === TREE_TREE_ROOT
   }
 
+  get isSelected(): boolean {
+    return this.selections.some( selection => selection.type === TreeItemType.Word && selection.id === this.props.value.id )
+  }
+
   onClick = () => {
+    this.selectWord( this.props.value.id, this.parentTree )
     this.SET_SEARCHING_WORD_NAME( this.word.name )
   };
 
   handleRightClick = ( event: MouseEvent ) => {
     event.preventDefault()
     const self = this
-    console.log( this.parentTree )
     let rightClickItems = []
     
     if ( this.isParentTreeTagTree ) {
@@ -103,6 +114,7 @@ export default class TreeItemWord extends Component<Props> {
         icon="W"
         text={word.name}
         columnIndex={columnIndex}
+        isSelected={ this.isSelected }
         onClick={this.onClick}
         onContextMenu={this.handleRightClick}
       />
