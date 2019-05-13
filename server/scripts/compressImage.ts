@@ -10,7 +10,7 @@ export default async function compressImage(
   if ( /^data:.+?\//.test( imageSrc ) ) {
     // # base64 url
     const usefulUrl = imageSrc.replace( /^data\:.+?\;base64\,/, '' )
-    input = new Buffer( usefulUrl, "base64" )
+    input = Buffer.from( usefulUrl, "base64" )
   } else {
     // # url
     input = imageSrc
