@@ -29,11 +29,6 @@ export default class HomePage extends Component<Props> {
   SET_WORDS?: Function;
   SET_TAGS?: Function;
 
-  async componentDidMount() {
-    const data: any = await appApi.pull()
-    this.loadPulledData( data )
-  }
-
   render() {
     return (
       <StyledRoot visibleTreePanel={this.visibleTreePanel}>

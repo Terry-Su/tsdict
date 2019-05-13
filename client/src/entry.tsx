@@ -10,11 +10,6 @@ import { rootReducer } from './utils/redux'
 
 export const reduxStore = createStore( rootReducer )
 
-reduxStore.subscribe( () => {
-  localStore.setStore( reduxStore.getState() )
-} )
-
-
 const HotApp = hot( module )( App )
 
 render( <Provider store={reduxStore}><HotApp/></Provider>, document.getElementById( 'root' ) )

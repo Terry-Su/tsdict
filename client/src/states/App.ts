@@ -89,10 +89,14 @@ export default class App {
   }
 
   // # pull and push
-  loadPulledData( data: SyncData ) {
+  loadSyncData( data: SyncData ) {
     this.word.SET_WORDS( data.words )
     this.tree.SET_TREE( data.tree )
     this.tag.SET_TAGS( data.tags )
+  }
+
+  loadPulledData( data: SyncData ) {
+    this.loadSyncData( data )
   }
 
   export() {
