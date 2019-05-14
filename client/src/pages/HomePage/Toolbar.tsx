@@ -22,12 +22,14 @@ interface Props {}
   "review",
   "enableReviewModeRandom",
   "SET_REVIEW_MODE_NONE",
-  "INCREMENT_REVIEWD_COUNT"
+  "INCREMENT_REVIEWD_COUNT",
+  "TOOGLE_ONLY_WORKS_IN_SELECTED_TREE",
 )
 @Actions( "tree", "TOOGLE_TREE_PANEL" )
 @Selectors( "app", "syncData" )
-@States( "review", "reviewdCount" )
+@States( "review", "reviewdCount", "onlyWorksInSelectedTree" )
 export default class Toolbar extends Component<Props> {
+  onlyWorksInSelectedTree?: boolean;
   syncData?: any;
   reviewdCount?: number;
   TOOGLE_IFRAME?: Function;
@@ -37,6 +39,7 @@ export default class Toolbar extends Component<Props> {
   SET_TREE?: Function;
   SET_WORDS?: Function;
   SET_TAGS?: Function;
+  TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
   loadPulledData?: Function;
   enableReviewModeRandom?: Function;
   saveSearchingWordToCurrentSelectedTree?: Function;
@@ -66,6 +69,10 @@ export default class Toolbar extends Component<Props> {
             <span>(reviewd: {this.reviewdCount - 1})</span>
           )}
         </button>
+       <span>
+       <span>In Selected Tree</span>
+        <input type="checkbox" checked={ this.onlyWorksInSelectedTree } onChange={ () => this.TOOGLE_ONLY_WORKS_IN_SELECTED_TREE() }/>
+       </span>
         <button onClick={() => this.SET_REVIEW_MODE_NONE()}>
           Exit Review Mode
         </button>

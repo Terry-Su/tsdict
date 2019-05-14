@@ -24,9 +24,11 @@ export default class App {
 
   get syncData(): SyncData {
     return {
-      words: this.word.words,
-      tree : this.tree.tree,
-      tags : this.tag.tags,
+      words         : this.word.words,
+      tree          : this.tree.tree,
+      tags          : this.tag.tags,
+      // # app state
+      lastSelections: this.tree.lastSelections,
     }
   }
 
@@ -93,6 +95,9 @@ export default class App {
     this.word.SET_WORDS( data.words )
     this.tree.SET_TREE( data.tree )
     this.tag.SET_TAGS( data.tags )
+
+    // # app state
+    this.tree.setSelections( data.lastSelections || [] )
   }
 
   loadPulledData( data: SyncData ) {

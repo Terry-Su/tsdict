@@ -1,3 +1,5 @@
+import { object } from '_@types_prop-types@15.7.1@@types/prop-types'
+
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
 import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
@@ -19,8 +21,9 @@ export default class Tree {
 
   tree: TypeTree = null
   selections: TreeSelection[] = [];
+  lastSelections: TreeSelection[] = [];
 
-  visibleTreePanel: boolean = false;
+  visibleTreePanel: boolean = true;
 
   get treeIds(): number[] {
     let ids = []
@@ -198,6 +201,17 @@ export default class Tree {
     return null
   }
 
+  get currentSelectedWordIds(): TypeId[] {
+    if ( this.currentSelectedTree != null ) {
+      return this.currentSelectedTree.nodes.filter( node => isTreeNodeWord( node ) ) as TypeId[]
+    }
+    return []
+  }
+
+  get currentSelectedWords(): TypeWord[] {
+    return this.currentSelectedWordIds.map( wordId => this.word.words.find( word => word.id === wordId ) )
+  }
+
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
   };
@@ -210,6 +224,9 @@ export default class Tree {
     this.selections = selections
   };
 
+  SET_LAST_SELECTION = ( selections: TreeSelection[] ) => { this.lastSelections = selections }
+
+  
   ADD_TREE = ( name: string, parentTree: TypeTree ) => {
     name.trim() === "" && alert( "Empty word name!" )
     const newTree = this.createTree( name )
@@ -275,14 +292,20 @@ export default class Tree {
     this.visibleTreePanel = !this.visibleTreePanel
   };
 
+
   initialize() {
     if ( this.selections.length === 0 && this.tree ) {
     }
   }
 
+  setSelections( selections: TreeSelection[] ) {
+    this.SET_SELECTIONS( selections )
+    this.SET_LAST_SELECTION( selections )
+  }
+
   selectTree( id: TypeId ) {
     const newSelections = this.getSelectionsByTreeId( id )
-    this.SET_SELECTIONS( newSelections )
+    this.setSelections( newSelections )
   }
 
   selectWord( wordId: TypeId, parentTree: TypeTree ) {
@@ -294,7 +317,7 @@ export default class Tree {
         id  : wordId,
       },
     ]
-    this.SET_SELECTIONS( newSelections )
+    this.setSelections( newSelections )
   }
 
   renameTree( tree: TypeTree, newName: string ) {
@@ -320,6 +343,6 @@ export default class Tree {
 
   selectTag( tag: TypeTag ) {
     const newSelections = this.getSelectionsByTag( tag )
-    this.SET_SELECTIONS( newSelections )
+    this.setSelections( newSelections )
   }
 }
