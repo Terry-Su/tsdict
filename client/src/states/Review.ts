@@ -1,4 +1,6 @@
+import { TypeId } from '@/__typings__'
 import { ReviewMode } from '@/__typings__/review'
+import { removeArrayElement } from '@/utils/js'
 
 import App from './App'
 import Tree from './Tree'
@@ -14,6 +16,7 @@ export default class Review {
 
   reviewdCount: number = 0
   onlyWorksInSelectedTree: boolean = true
+  reviewedInSelectedTree: TypeId[] = []
 
   get isReviewMode(): boolean {
     return this.reviewMode !== ReviewMode.None
@@ -22,7 +25,7 @@ export default class Review {
   get randomReviewWordName(): string {
     let targetWords = []
     if ( this.onlyWorksInSelectedTree ) {
-      targetWords = this.tree.currentSelectedWords
+      targetWords = this.tree.currentSelectedWords.filter( word => ! this.reviewedInSelectedTree.includes( word.id ) )
     } else {
       targetWords = this.word.words.filter( word => word.note != null )
     }
@@ -44,11 +47,28 @@ export default class Review {
   DISABLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = true }
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = ! this.onlyWorksInSelectedTree }
 
-  enableReviewModeRandom = () => {
-    if ( this.randomReviewWordName != null ) {
-      this.app.SET_SEARCHING_WORD_NAME( this.randomReviewWordName )
-      // this.tree.HIDE_TREE_PANEL()
-      this.SET_REVIEW_MODE_RANDOM()
+  RESET_REVIEWD_IN_SELECTED_TREE = () => { this.reviewedInSelectedTree = [] }
+  ADD_REVIEWED_IN_SELECTED_TREE = ( wordId: TypeId ) => { this.reviewedInSelectedTree.push( wordId ) }
+  REMOVE_REVIEWED_IN_SELECTED_TREE = ( wordId: TypeId ) => { removeArrayElement( this.reviewedInSelectedTree, wordId )  }
+
+  addReviewedInSelectedTree = ( wordId: TypeId  ) => {
+    if ( ! this.reviewedInSelectedTree.includes( wordId ) ) {
+      if ( this.reviewedInSelectedTree.length + 1 === this.tree.currentSelectedWordIds.length ) {
+        this.RESET_REVIEWD_IN_SELECTED_TREE()
+        this.ADD_REVIEWED_IN_SELECTED_TREE( wordId )
+      } else {
+        this.ADD_REVIEWED_IN_SELECTED_TREE( wordId )
+      }
+    }
+  }
+
+  reviewRandom = () => {
+    this.reviewMode !== ReviewMode.Random && this.SET_REVIEW_MODE_RANDOM()
+    const { randomReviewWordName } = this
+    if ( randomReviewWordName != null ) {
+      this.app.SET_SEARCHING_WORD_NAME( randomReviewWordName )
+      const word = this.word.getWordByName( randomReviewWordName )
+      this.addReviewedInSelectedTree( word.id )
     }
   }
 }

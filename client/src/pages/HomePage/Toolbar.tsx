@@ -20,7 +20,7 @@ interface Props {}
 )
 @Actions(
   "review",
-  "enableReviewModeRandom",
+  "reviewRandom",
   "SET_REVIEW_MODE_NONE",
   "INCREMENT_REVIEWD_COUNT",
   "TOOGLE_ONLY_WORKS_IN_SELECTED_TREE",
@@ -41,7 +41,7 @@ export default class Toolbar extends Component<Props> {
   SET_TAGS?: Function;
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
   loadPulledData?: Function;
-  enableReviewModeRandom?: Function;
+  reviewRandom?: Function;
   saveSearchingWordToCurrentSelectedTree?: Function;
   export?: Function;
 
@@ -55,7 +55,7 @@ export default class Toolbar extends Component<Props> {
   };
 
   handleClickRandomReviewMode = () => {
-    this.enableReviewModeRandom()
+    this.reviewRandom()
     this.INCREMENT_REVIEWD_COUNT()
   };
 
@@ -64,7 +64,7 @@ export default class Toolbar extends Component<Props> {
       <StyledRoot>
         <button onClick={() => this.TOOGLE_TREE_PANEL()}>Tree Panel</button>
         <button onClick={this.handleClickRandomReviewMode}>
-          Random Review Mode{" "}
+          Random Review{" "}
           {this.reviewdCount >= 2 && (
             <span>(reviewd: {this.reviewdCount - 1})</span>
           )}

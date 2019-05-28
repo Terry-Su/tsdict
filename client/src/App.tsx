@@ -49,8 +49,6 @@ export default class Test extends Component<Props> {
         </React.Fragment>
       </StyledRoot>
     )
-      
-      
   }
 }
 

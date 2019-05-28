@@ -15,6 +15,7 @@ interface Props {
 }
 
 @Actions( "app", "showRightClickMenu" )
+@Actions( "review", "RESET_REVIEWD_IN_SELECTED_TREE" )
 @Actions(
   "tag",
   "ADD_TAG_BY_NAME",
@@ -50,6 +51,7 @@ export default class TreeItemTree extends Component<Props> {
   ADD_TAG_BY_NAME?: Function;
   DELETE_TREE_BY_ID?: Function;
   ADD_TREE?: Function;
+  RESET_REVIEWD_IN_SELECTED_TREE?: Function;
   isTreeTree?: Function;
   isTagTree?: Function;
   isTagRootTree?: Function;
@@ -78,6 +80,7 @@ export default class TreeItemTree extends Component<Props> {
 
   handleClick = () => {
     this.selectTree( this.props.value.id )
+    this.RESET_REVIEWD_IN_SELECTED_TREE()
   };
 
   handleRightClick = ( event: MouseEvent ) => {
