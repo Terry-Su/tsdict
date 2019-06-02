@@ -27,3 +27,13 @@ export function removeArrayElementByIndex( array, index: number ) {
 export function getValueNotUndefined( a: any, b: any ) {
   return isUndefined( a ) ? b : a
 }
+
+
+
+export function getRandomArrayElement( arr: any[] ) {
+  const { length } = arr
+  // [0, 1)
+  const randomRate = Math.random()
+  const index = Math.ceil( ( length - 1 ) * randomRate )
+  return arr[ index ]
+}

@@ -21,17 +21,20 @@ interface Props {}
 @Actions(
   "review",
   "reviewRandom",
+  "startStandardReview",
   "SET_REVIEW_MODE_NONE",
   "INCREMENT_REVIEWD_COUNT",
   "TOOGLE_ONLY_WORKS_IN_SELECTED_TREE",
 )
 @Actions( "tree", "TOOGLE_TREE_PANEL" )
+@Selectors( "review", "isStandardReviewMode" )
 @Selectors( "app", "syncData" )
 @States( "review", "reviewdCount", "onlyWorksInSelectedTree" )
 export default class Toolbar extends Component<Props> {
   onlyWorksInSelectedTree?: boolean;
   syncData?: any;
   reviewdCount?: number;
+  isStandardReviewMode?: boolean;
   TOOGLE_IFRAME?: Function;
   TOOGLE_TREE_PANEL?: Function;
   INCREMENT_REVIEWD_COUNT?: Function;
@@ -44,6 +47,7 @@ export default class Toolbar extends Component<Props> {
   reviewRandom?: Function;
   saveSearchingWordToCurrentSelectedTree?: Function;
   export?: Function;
+  startStandardReview?: Function;
 
   handleClickPull = async () => {
     const data: SyncData = await appApi.pull()
@@ -63,19 +67,30 @@ export default class Toolbar extends Component<Props> {
     return (
       <StyledRoot>
         <button onClick={() => this.TOOGLE_TREE_PANEL()}>Tree Panel</button>
-        <button onClick={this.handleClickRandomReviewMode}>
-          Random Review{" "}
-          {this.reviewdCount >= 2 && (
-            <span>(reviewd: {this.reviewdCount - 1})</span>
-          )}
-        </button>
-       <span>
-       <span>In Selected Tree</span>
-        <input type="checkbox" checked={ this.onlyWorksInSelectedTree } onChange={ () => this.TOOGLE_ONLY_WORKS_IN_SELECTED_TREE() }/>
-       </span>
-        <button onClick={() => this.SET_REVIEW_MODE_NONE()}>
-          Exit Review Mode
-        </button>
+        {!this.isStandardReviewMode && (
+          <>
+            <button onClick={this.handleClickRandomReviewMode}>
+              Random Review{" "}
+              {this.reviewdCount >= 2 && (
+                <span>(reviewd: {this.reviewdCount - 1})</span>
+              )}
+            </button>
+            <button onClick={ () => this.startStandardReview() }>Start Standard Review</button>
+          </>
+        )}
+        {this.isStandardReviewMode && (
+          <button onClick={() => this.SET_REVIEW_MODE_NONE()}>
+            Exit Standard Review
+          </button>
+        )}
+        <span>
+          <span>In Current Selected Tree</span>
+          <input
+            type="checkbox"
+            checked={this.onlyWorksInSelectedTree}
+            onChange={() => this.TOOGLE_ONLY_WORKS_IN_SELECTED_TREE()}
+          />
+        </span>
         <button onClick={() => this.TOOGLE_IFRAME()}>Iframe</button>
         <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
           Save Word to Selected Folder
@@ -91,4 +106,6 @@ export default class Toolbar extends Component<Props> {
   }
 }
 
-const StyledRoot = styled.div``
+const StyledRoot = styled.div`
+  font-size: 14px;
+`

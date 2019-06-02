@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import HomePage from '@/pages/HomePage/HomePage'
+import HomePage from '@/pages/HomePage'
 import GlobalStyle from '@/styles/GlobalStyle'
 import { Actions, Selectors, States } from '@/utils/decorators'
 

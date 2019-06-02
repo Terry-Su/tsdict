@@ -7,15 +7,15 @@ import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
-import SearchBox from './SearchBox'
-import Toolbar from './Toolbar'
-import WordPanel from './WordPanel/WordPanel'
+import SearchBox from './HomePage/SearchBox'
+import StandardReviewPanel from './HomePage/StandardReviewPanel'
+import Toolbar from './HomePage/Toolbar'
+import WordPanel from './HomePage/WordPanel/WordPanel'
 
 interface Props {}
 
-@Actions( 'app', 'loadPulledData' )
-@Selectors( "review", "isReviewMode" )
 @States( "tree", "visibleTreePanel" )
+@Selectors( "review", "isReviewMode", "isStandardReviewMode" )
 @Actions( "tree", "SET_TREE" )
 @Actions( "word", "SET_WORDS" )
 @Actions( "tag", "SET_TAGS" )
@@ -24,7 +24,7 @@ export default class HomePage extends Component<Props> {
   visibleTreePanel?: boolean;
   selections?: TreeSelection[];
   columns?: TypeTreeColumn[];
-  loadPulledData?: Function;
+  isStandardReviewMode?: boolean;
   SET_TREE?: Function;
   SET_WORDS?: Function;
   SET_TAGS?: Function;
@@ -36,9 +36,9 @@ export default class HomePage extends Component<Props> {
           <Toolbar />
         </div>
         {/* {! this.isReviewMode && ( */}
-          <div className="searchBoxWrapper">
-            <SearchBox />
-          </div>
+        <div className="searchBoxWrapper">
+          <SearchBox />
+        </div>
         {/* )} */}
         <div className="bottomContainer">
           {this.visibleTreePanel && (
@@ -46,9 +46,15 @@ export default class HomePage extends Component<Props> {
               <TreePanel />
             </div>
           )}
-          <div className="wordPanelWrapper">
-            <WordPanel />
-          </div>
+          {this.isStandardReviewMode ? (
+            <div className="standardReviewPanelWrapper">
+              <StandardReviewPanel />
+            </div>
+          ) : (
+            <div className="wordPanelWrapper">
+              <WordPanel />
+            </div>
+          )}
         </div>
       </StyledRoot>
     )
@@ -78,7 +84,7 @@ const StyledRoot: any = styled.div`
   > .bottomContainer {
     box-sizing: border-box;
     width: 100%;
-    height: calc( 100% - 120px );
+    height: calc(100% - 120px);
     display: flex;
     justify-content: space-between;
 
@@ -90,6 +96,13 @@ const StyledRoot: any = styled.div`
     }
 
     > .wordPanelWrapper {
+      box-sizing: border-box;
+      display: flex;
+      ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
+      border: 1px solid #ddd;
+    }
+
+    > .standardReviewPanelWrapper {
       box-sizing: border-box;
       display: flex;
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}

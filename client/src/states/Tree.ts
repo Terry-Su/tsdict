@@ -201,15 +201,15 @@ export default class Tree {
     return null
   }
 
-  get currentSelectedWordIds(): TypeId[] {
+  get currentSelectedTreeWordIds(): TypeId[] {
     if ( this.currentSelectedTree != null ) {
       return this.currentSelectedTree.nodes.filter( node => isTreeNodeWord( node ) ) as TypeId[]
     }
     return []
   }
 
-  get currentSelectedWords(): TypeWord[] {
-    return this.currentSelectedWordIds.map( wordId => this.word.words.find( word => word.id === wordId ) )
+  get currentSelectedTreeWords(): TypeWord[] {
+    return this.currentSelectedTreeWordIds.map( wordId => this.word.words.find( word => word.id === wordId ) )
   }
 
   SET_TREE = ( tree: TypeTree ) => {

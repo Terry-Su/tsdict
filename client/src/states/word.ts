@@ -1,7 +1,9 @@
 import Delta from 'quill-delta'
 
 import { TypeId } from '@/__typings__'
-import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import {
+    TypeWord, TypeWordDegree, TypeWordNextReviewTime, TypeWordNote, TypeWordReviewLevel
+} from '@/__typings__/word'
 import { removeArrayElement } from '@/utils/js'
 import { DictDataWord, DictDataWordDegree, Time } from '@shared/__typings__/DictData'
 
@@ -93,6 +95,18 @@ export default class Word {
   }
   setWordDegree( word: TypeWord, newDegree: TypeWordDegree ) {
     word.degree = newDegree
+    this.REFRESH_WORDS()
+  }
+  setWordReviewLevel( word: TypeWord, newReviewLevel: TypeWordReviewLevel  ) {
+    word.reviewLevel = newReviewLevel
+    this.REFRESH_WORDS()
+  }
+  resetWordReviewLevel( word: TypeWord ) {
+    word.reviewLevel = 1
+    this.REFRESH_WORDS()
+  }
+  setWordNextReviewTime( word: TypeWord, newNextReviewTime: TypeWordNextReviewTime  ) {
+    word.nextReviewTime = newNextReviewTime
     this.REFRESH_WORDS()
   }
 
