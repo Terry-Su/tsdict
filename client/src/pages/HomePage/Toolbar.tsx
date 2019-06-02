@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { SyncData } from '@/__typings__/app'
+import { StandardReviewedWordsInfoToday, StandardReviewStat } from '@/__typings__/review'
 import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
@@ -29,12 +30,14 @@ interface Props {}
 @Actions( "tree", "TOOGLE_TREE_PANEL" )
 @Selectors( "review", "isStandardReviewMode" )
 @Selectors( "app", "syncData" )
-@States( "review", "reviewdCount", "onlyWorksInSelectedTree" )
+@States( "review", "reviewdCount", "onlyWorksInSelectedTree", "standardStat", "standardReviewedWordsInfoToday" )
 export default class Toolbar extends Component<Props> {
   onlyWorksInSelectedTree?: boolean;
   syncData?: any;
   reviewdCount?: number;
   isStandardReviewMode?: boolean;
+  standardReviewedWordsInfoToday?: StandardReviewedWordsInfoToday;
+  standardStat?: StandardReviewStat;
   TOOGLE_IFRAME?: Function;
   TOOGLE_TREE_PANEL?: Function;
   INCREMENT_REVIEWD_COUNT?: Function;
@@ -63,10 +66,31 @@ export default class Toolbar extends Component<Props> {
     this.INCREMENT_REVIEWD_COUNT()
   };
 
+  handleStatClick = () => {
+    const { dayMap } = this.standardStat
+    const { today, wordIds } = this.standardReviewedWordsInfoToday
+
+    let str = `Reviewed words today: ${wordIds.length}
+    
+  Previous Statistics:
+  `
+
+    for ( let key in dayMap ) {
+      const { count } = dayMap[ key ]
+      if ( today !== key ) {
+        str = str + `${key.replace( /\-/g, '\/' )}: ${count}`
+      }
+    }
+
+
+    alert( str )
+  }
+
   render() {
     return (
       <StyledRoot>
         <button onClick={() => this.TOOGLE_TREE_PANEL()}>Tree Panel</button>
+        <button onClick={() => this.handleStatClick()}>Statistics</button>
         {!this.isStandardReviewMode && (
           <>
             <button onClick={this.handleClickRandomReviewMode}>

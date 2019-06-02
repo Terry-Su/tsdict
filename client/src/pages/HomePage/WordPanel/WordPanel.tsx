@@ -97,6 +97,7 @@ export default class WordPanel extends Component<Props> {
             </div>
             <Note data={searchingWord.note} onChange={this.handleNoteChange} />
             <button onClick={this.handleDeleteClick}>Delete</button>
+            <button>Reset Review(Current Review Level: { searchingWord.reviewLevel })</button>
           </>
         )}
         {this.visibleIframe && (

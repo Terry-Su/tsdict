@@ -4,6 +4,7 @@ import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
 import download from '@/assets/js/download'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
 
+import Review from './Review'
 import Tag from './Tag'
 import Tree from './Tree'
 import Word from './Word'
@@ -12,6 +13,7 @@ export default class App {
   word: Word;
   tree: Tree;
   tag: Tag;
+  review: Review;
 
   origin: string = "http://localhost:3000";
   searchingWordName: string = "tick";
@@ -24,11 +26,13 @@ export default class App {
 
   get syncData(): SyncData {
     return {
-      words         : this.word.words,
-      tree          : this.tree.tree,
-      tags          : this.tag.tags,
+      words                         : this.word.words,
+      tree                          : this.tree.tree,
+      tags                          : this.tag.tags,
       // # app state
-      lastSelections: this.tree.lastSelections,
+      lastSelections                : this.tree.lastSelections,
+      standardStat                  : this.review.standardStat,
+      standardReviewedWordsInfoToday: this.review.standardReviewedWordsInfoToday,
     }
   }
 
@@ -97,7 +101,15 @@ export default class App {
     this.tag.SET_TAGS( data.tags )
 
     // # app state
+    // ## tree
+    // ### last selections
     this.tree.setSelections( data.lastSelections || [] )
+
+    // ## review
+    // ### 
+    this.review.SET_STANDARD_STAT( data.standardStat )
+    // ### reviewed words info today
+    this.review.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY( data.standardReviewedWordsInfoToday )
   }
 
   loadPulledData( data: SyncData ) {

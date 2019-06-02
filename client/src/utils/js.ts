@@ -37,3 +37,8 @@ export function getRandomArrayElement( arr: any[] ) {
   const index = Math.ceil( ( length - 1 ) * randomRate )
   return arr[ index ]
 }
+
+// # format: '0000-00-00'
+export function getDateDayString( date: Date ) {
+  return date.toISOString().replace( /T.*/, '' )
+}

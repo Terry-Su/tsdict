@@ -1,8 +1,10 @@
 import { TypeId } from '@/__typings__'
-import { ReviewMode, StandardReviewData, StandardReviewDataStatistics } from '@/__typings__/review'
+import {
+    ReviewMode, StandardReviewedWordsInfoToday, StandardReviewStat, StandardReviewStatDayMap
+} from '@/__typings__/review'
 import { TypeWord, TypeWordReviewLevel } from '@/__typings__/word'
 import { MAX_WORD_REVIEW_LEVEL, TIME_ONE_MINUTE } from '@/constants/numbers'
-import { removeArrayElement } from '@/utils/js'
+import { getDateDayString, removeArrayElement } from '@/utils/js'
 import {
     getNextStandardReviewWord, standardReviewLevelToDurationMap
 } from '@/utils/review/reviewGetters'
@@ -21,16 +23,16 @@ export default class Review {
 
   reviewdCount: number = 0
   onlyWorksInSelectedTree: boolean = true
+
   
   // # for random review mode
   reviewedInSelectedTree: TypeId[] = []
 
   // # for standard review mode
   visibleReviewingWordContent: boolean = false
+  standardReviewedWordsInfoToday: StandardReviewedWordsInfoToday = null
+  standardStat: StandardReviewStat = null
 
-  // # standard review data
-  standardStatistics: StandardReviewDataStatistics = { dateMap: {} }
-  standardTreesData: StandardReviewData[] = []
 
   get isReviewMode(): boolean {
     return this.reviewMode !== ReviewMode.None
@@ -82,6 +84,14 @@ export default class Review {
 
   SHOW_REVIEWING_WORD_CONTENT = () => { this.visibleReviewingWordContent = true }
   HIDE_REVIEWING_WORD_CONTENT = () => { this.visibleReviewingWordContent = false }
+  SET_STANDARD_REVIEWED_WORDS_INFO_TODAY = ( info: StandardReviewedWordsInfoToday ) => { this.standardReviewedWordsInfoToday = info }
+  SET_STANDARD_REVIEWED_WORDS_INFO_TODAY_TODAY = ( time: string ) => { this.standardReviewedWordsInfoToday.today = time }
+  SET_STANDARD_REVIEWED_WORDS_INFO_TODAY_WORD_IDS = ( wordIds: TypeId[] ) => { this.standardReviewedWordsInfoToday.wordIds = wordIds }
+  ENSURE_STANDARD_REVIEWED_WORDS_INFO_TODAY = () => { if ( this.standardReviewedWordsInfoToday == null ) { this.standardReviewedWordsInfoToday = { today: getDateDayString( new Date() ), wordIds: [] } } }
+
+  SET_STANDARD_STAT = ( stat: StandardReviewStat ) => { this.standardStat = stat }
+  SET_STANDARD_STAT_DAY_MAP = ( dayMap: StandardReviewStatDayMap ) => { this.standardStat.dayMap = dayMap }
+  ENSURE_STANDARD_STAT = () => { if ( this.standardStat == null ) { this.standardStat = { dayMap: {} } } }
 
   addReviewedInSelectedTree = ( wordId: TypeId  ) => {
     if ( ! this.reviewedInSelectedTree.includes( wordId ) ) {
@@ -116,6 +126,8 @@ export default class Review {
   }
 
   switchToNextStandardReviewWord() {
+    console.log( this.standardReviewedWordsInfoToday )
+    console.log( this.standardStat )
     const { nextStandardReviewWord } = this
     this.nextStandardReviewWord != null && this.nextStandardReviewWord.nextReviewTime != null && console.log( new Date( this.nextStandardReviewWord.nextReviewTime ).toLocaleTimeString() )
     if ( nextStandardReviewWord != null ) {
@@ -135,21 +147,59 @@ export default class Review {
     }
   }
 
-  standardReviewWordFamiliar() {
-    this.ensureStandardReviewWordReviewLevel()
-    const { reviewingWord } = this
-    const { reviewLevel, nextReviewTime } = reviewingWord
-    let newReviewLevel
-    if ( reviewLevel == null ) {
-      newReviewLevel = 1
+
+  addWordToStandardReviewedWordsInfoToday( word ) {
+    this.ENSURE_STANDARD_REVIEWED_WORDS_INFO_TODAY()
+    const { standardReviewedWordsInfoToday } = this
+    const today = getDateDayString( new Date() )
+    if ( standardReviewedWordsInfoToday.today === today ) {
+      // # same day
+      const { wordIds } = standardReviewedWordsInfoToday
+      const newWordsIds = wordIds.includes( word.id ) ? wordIds : [ ...wordIds, word.id ]
+      this.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY_WORD_IDS( newWordsIds )
     } else {
-      newReviewLevel = reviewLevel < MAX_WORD_REVIEW_LEVEL ? ( reviewLevel + 1 ) : reviewLevel
+      // # different day
+      this.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY_TODAY( today )
+      const newWordsIds = [ word.id ]
+      this.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY_WORD_IDS( newWordsIds )
     }
-    this.word.setWordReviewLevel( reviewingWord, newReviewLevel as TypeWordReviewLevel )
+  }
+
+  updateStandardReviewStat() {
+    this.ENSURE_STANDARD_STAT()
+    const { standardReviewedWordsInfoToday } = this
+    const { dayMap: defaultDayMap } = this.standardStat
+    if ( standardReviewedWordsInfoToday != null ) {
+      const { today, wordIds } = standardReviewedWordsInfoToday
+      const dayMap: StandardReviewStatDayMap = {
+        ...defaultDayMap,
+        [ today ]: {
+          count: wordIds.length,
+        },
+      }
+      this.SET_STANDARD_STAT_DAY_MAP( dayMap )
+    }
+  }
+
+  standardReviewWordFamiliar() {
+    const { reviewingWord } = this
+    const { reviewLevel } = reviewingWord
+    if ( reviewLevel == null ) {
+      this.ensureStandardReviewWordReviewLevel()
+    } else {
+      const newReviewLevel = reviewLevel < MAX_WORD_REVIEW_LEVEL ? ( reviewLevel + 1 ) : reviewLevel
+      this.word.setWordReviewLevel( reviewingWord, newReviewLevel as TypeWordReviewLevel )
+    }
     const now = new Date().getTime()
-    const duration = ( standardReviewLevelToDurationMap[ newReviewLevel  ] || 0 )
+    const { reviewLevel: level } = this.reviewingWord
+    const duration = ( standardReviewLevelToDurationMap[ level  ] || 0 )
     const newNextReviewTime = now + duration
     this.word.setWordNextReviewTime( reviewingWord, newNextReviewTime )
+
+    // # stat
+    this.addWordToStandardReviewedWordsInfoToday( reviewingWord )
+    this.updateStandardReviewStat()
+
     this.switchToNextStandardReviewWord()
   }
 
@@ -161,11 +211,22 @@ export default class Review {
     const duration = ( standardReviewLevelToDurationMap[ reviewLevel  ] || 0 )
     const newNextReviewTime = now + duration
     this.word.setWordNextReviewTime( reviewingWord, newNextReviewTime )
+
+    // # stat
+    this.addWordToStandardReviewedWordsInfoToday( reviewingWord )
+    this.updateStandardReviewStat()
+
     this.switchToNextStandardReviewWord()
   }
 
   standardReviewWordUnfamiliar() {
-    this.word.resetWordReviewLevel( this.reviewingWord )  
+    const { reviewingWord } = this
+    this.word.resetWordReviewLevel( reviewingWord )  
+
+    // # stat
+    this.addWordToStandardReviewedWordsInfoToday( reviewingWord )
+    this.updateStandardReviewStat()
+    
     this.switchToNextStandardReviewWord()
   }
 }
