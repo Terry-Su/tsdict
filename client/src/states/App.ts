@@ -4,6 +4,7 @@ import { TypeWord, TypeWordDegree, TypeWordNote, TypeWordReviewLevel } from '@/_
 import download from '@/assets/js/download'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
 
+import Iframe from './Iframe'
 import Review from './Review'
 import Tag from './Tag'
 import Tree from './Tree'
@@ -14,6 +15,7 @@ export default class App {
   tree: Tree;
   tag: Tag;
   review: Review;
+  iframe: Iframe
 
   origin: string = "http://localhost:3000";
   searchingWordName: string = "";
@@ -33,6 +35,7 @@ export default class App {
       lastSelections                : this.tree.lastSelections,
       standardStat                  : this.review.standardStat,
       standardReviewedWordsInfoToday: this.review.standardReviewedWordsInfoToday,
+      iframeLinks                   : this.iframe.iframeLinks,
     }
   }
 
@@ -110,10 +113,13 @@ export default class App {
     this.tree.setSelections( data.lastSelections || [] )
 
     // ## review
-    // ### 
+    // ### stat
     this.review.SET_STANDARD_STAT( data.standardStat )
     // ### reviewed words info today
     this.review.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY( data.standardReviewedWordsInfoToday )
+
+    // ## iframe
+    data.iframeLinks != null && this.iframe.SET_IFRAME_LINKS( data.iframeLinks )
   }
 
   loadPulledData( data: SyncData ) {

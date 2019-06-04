@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { TreeSelection, TypeTreeColumn } from '@/__typings__/tree'
+import DialogIframeSetting from '@/components/dialogs/DialogIframeSetting'
 import TreePanel from '@/components/TreePanel/TreePanel'
 import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
@@ -56,6 +57,9 @@ export default class HomePage extends Component<Props> {
             </div>
           )}
         </div>
+
+        {/* # dialogs */}
+        <DialogIframeSetting />
       </StyledRoot>
     )
   }

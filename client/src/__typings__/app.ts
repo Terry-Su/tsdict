@@ -1,4 +1,5 @@
 import { TypeTag, TypeTree } from './'
+import { TypeIframeLink } from './iframe'
 import { StandardReviewedWordsInfoToday, StandardReviewStat } from './review'
 import { TreeSelection } from './tree'
 import { TypeWord } from './word'
@@ -13,4 +14,6 @@ export interface SyncData {
   // ## review
   standardStat: StandardReviewStat
   standardReviewedWordsInfoToday: StandardReviewedWordsInfoToday
+  // ## iframe
+  iframeLinks: TypeIframeLink[]
 }
