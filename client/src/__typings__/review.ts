@@ -6,7 +6,7 @@ export enum ReviewMode {
   Standard
 }
 
-export type ReviewLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+export type ReviewLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 
 export interface StandardReviewStatDayMap {
   // # dayTime format: '0000-00-00'

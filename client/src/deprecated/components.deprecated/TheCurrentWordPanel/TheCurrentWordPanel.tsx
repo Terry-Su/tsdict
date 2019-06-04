@@ -158,14 +158,14 @@ export default mapStateAndStyle<Props>( { ...new Style() } )(
               <ThePhoneticSymbol />
             </div>
             <div className="right">
-              {shallShowWordPanel && (
+              {/* {shallShowWordPanel && (
                 <>
                   <TheDegree />
                   <div className="tagsWrapper">
                     <TheAddTag />
                   </div>
                 </>
-              )}
+              )} */}
               {enableClose && (
                 <IconButton onClick={this.handleClosePanelClick}>
                   <CloseIcon />

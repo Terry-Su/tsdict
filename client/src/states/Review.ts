@@ -126,10 +126,7 @@ export default class Review {
   }
 
   switchToNextStandardReviewWord() {
-    console.log( this.standardReviewedWordsInfoToday )
-    console.log( this.standardStat )
     const { nextStandardReviewWord } = this
-    this.nextStandardReviewWord != null && this.nextStandardReviewWord.nextReviewTime != null && console.log( new Date( this.nextStandardReviewWord.nextReviewTime ).toLocaleTimeString() )
     if ( nextStandardReviewWord != null ) {
       this.app.SET_SEARCHING_WORD_NAME( nextStandardReviewWord.name )
       this.HIDE_REVIEWING_WORD_CONTENT()
@@ -181,6 +178,15 @@ export default class Review {
     }
   }
 
+  updateStandardReviewWordNextReviewTime() {
+    const { reviewingWord } = this
+    const now = new Date().getTime()
+    const { reviewLevel: level } = this.reviewingWord
+    const duration = ( standardReviewLevelToDurationMap[ level  ] || 0 )
+    const newNextReviewTime = now + duration
+    this.word.setWordNextReviewTime( reviewingWord, newNextReviewTime )
+  }
+
   standardReviewWordFamiliar() {
     const { reviewingWord } = this
     const { reviewLevel } = reviewingWord
@@ -190,11 +196,7 @@ export default class Review {
       const newReviewLevel = reviewLevel < MAX_WORD_REVIEW_LEVEL ? ( reviewLevel + 1 ) : reviewLevel
       this.word.setWordReviewLevel( reviewingWord, newReviewLevel as TypeWordReviewLevel )
     }
-    const now = new Date().getTime()
-    const { reviewLevel: level } = this.reviewingWord
-    const duration = ( standardReviewLevelToDurationMap[ level  ] || 0 )
-    const newNextReviewTime = now + duration
-    this.word.setWordNextReviewTime( reviewingWord, newNextReviewTime )
+    this.updateStandardReviewWordNextReviewTime()
 
     // # stat
     this.addWordToStandardReviewedWordsInfoToday( reviewingWord )
@@ -204,13 +206,11 @@ export default class Review {
   }
 
   standardReviewWordKnown() {
-    this.ensureStandardReviewWordReviewLevel()
     const { reviewingWord } = this
-    const { reviewLevel } = reviewingWord
-    const now = new Date().getTime()
-    const duration = ( standardReviewLevelToDurationMap[ reviewLevel  ] || 0 )
-    const newNextReviewTime = now + duration
-    this.word.setWordNextReviewTime( reviewingWord, newNextReviewTime )
+
+    this.ensureStandardReviewWordReviewLevel()
+    
+    this.updateStandardReviewWordNextReviewTime()
 
     // # stat
     this.addWordToStandardReviewedWordsInfoToday( reviewingWord )
@@ -222,6 +222,8 @@ export default class Review {
   standardReviewWordUnfamiliar() {
     const { reviewingWord } = this
     this.word.resetWordReviewLevel( reviewingWord )  
+
+    this.updateStandardReviewWordNextReviewTime()
 
     // # stat
     this.addWordToStandardReviewedWordsInfoToday( reviewingWord )

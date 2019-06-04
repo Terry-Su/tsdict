@@ -43,11 +43,11 @@ export default class Degree extends Component<Props> {
 
   onLongPress = () => {
     const { onChange } = this.props
-    onChange && onChange( 0 )
+    onChange && onChange( 1 )
   }
 
   render() {
-    const { degree = 0 } = this.props
+    const { degree = 1 } = this.props
     return (
       <LongPress onLongPress={this.onLongPress}>
         <StyledRoot>

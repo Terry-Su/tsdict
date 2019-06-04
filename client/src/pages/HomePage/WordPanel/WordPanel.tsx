@@ -18,7 +18,7 @@ interface Props {}
   "addWordBySearchingWordName",
   "updateSearchingWordNote",
   "deleteSearchingWord",
-  "updateSearchingWordDegree"
+  "updateSearchingWordReviewLevel"
 )
 @Actions( 'tree', 'selectTag' )
 @Selectors( "app", "searchingWord", "searchWordTags" )
@@ -37,7 +37,7 @@ export default class WordPanel extends Component<Props> {
   addWordBySearchingWordName?: Function;
   updateSearchingWordNote?: Function;
   deleteSearchingWord?: Function;
-  updateSearchingWordDegree?: Function;
+  updateSearchingWordReviewLevel?: Function;
 
   handleAddClick = () => {
     this.addWordBySearchingWordName()
@@ -55,7 +55,7 @@ export default class WordPanel extends Component<Props> {
   };
 
   handleDegreeChange = ( newDegree: TypeWordDegree ) => {
-    this.updateSearchingWordDegree( newDegree )
+    this.updateSearchingWordReviewLevel( newDegree )
   };
 
   handleClickTag = ( tag: TypeTag ) => {
@@ -82,7 +82,7 @@ export default class WordPanel extends Component<Props> {
           <>
             <div className="topbar">
               <Degree
-                degree={searchingWord.degree}
+                degree={searchingWord.reviewLevel}
                 onChange={this.handleDegreeChange}
               />
               <span className="tagsWrapper">

@@ -4,7 +4,7 @@ import { NoteData } from '../../client/src/componentsPure/Note/Note'
 export { ClientData } from '../../client/src/__typings__/index'
 
 export type DictDataWordDegree = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
-export type DictDataWordReviewLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+export type DictDataWordReviewLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 export type DictDataWordNextReviewTime = numebr
 
 export type Time = number

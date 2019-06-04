@@ -1,6 +1,6 @@
 import { Position, TypeTag } from '@/__typings__'
 import { SyncData } from '@/__typings__/app'
-import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import { TypeWord, TypeWordDegree, TypeWordNote, TypeWordReviewLevel } from '@/__typings__/word'
 import download from '@/assets/js/download'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
 
@@ -16,7 +16,7 @@ export default class App {
   review: Review;
 
   origin: string = "http://localhost:3000";
-  searchingWordName: string = "tick";
+  searchingWordName: string = "";
   visibleIframe: boolean = false;
 
   // # right click menu
@@ -88,6 +88,10 @@ export default class App {
 
   updateSearchingWordDegree( newDegree: TypeWordDegree ) {
     this.word.setWordDegree( this.searchingWord, newDegree )
+  }
+
+  updateSearchingWordReviewLevel( newDegree: TypeWordReviewLevel ) {
+    this.word.setWordReviewLevel( this.searchingWord, newDegree )
   }
 
   deleteSearchingWord() {
