@@ -16,7 +16,6 @@ interface Props {}
   "app",
   "TOOGLE_IFRAME",
   "loadPulledData",
-  "saveSearchingWordToCurrentSelectedTree",
   "export"
 )
 @Actions(
@@ -48,7 +47,6 @@ export default class Toolbar extends Component<Props> {
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
   loadPulledData?: Function;
   reviewRandom?: Function;
-  saveSearchingWordToCurrentSelectedTree?: Function;
   export?: Function;
   startStandardReview?: Function;
 
@@ -116,9 +114,7 @@ export default class Toolbar extends Component<Props> {
           />
         </span>
         <button onClick={() => this.TOOGLE_IFRAME()}>Iframe</button>
-        <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
-          Save Word to Selected Folder
-        </button>
+       
         <button>Setting</button>
         <button onClick={() => this.export()}>Export</button>
         <button>Import</button>

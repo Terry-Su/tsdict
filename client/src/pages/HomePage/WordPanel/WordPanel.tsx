@@ -18,7 +18,8 @@ interface Props {}
   "addWordBySearchingWordName",
   "updateSearchingWordNote",
   "deleteSearchingWord",
-  "updateSearchingWordReviewLevel"
+  "updateSearchingWordReviewLevel",
+  "saveSearchingWordToCurrentSelectedTree",
 )
 @Actions( 'tree', 'selectTag' )
 @Selectors( "app", "searchingWord", "searchWordTags" )
@@ -38,6 +39,7 @@ export default class WordPanel extends Component<Props> {
   updateSearchingWordNote?: Function;
   deleteSearchingWord?: Function;
   updateSearchingWordReviewLevel?: Function;
+  saveSearchingWordToCurrentSelectedTree?: Function;
 
   handleAddClick = () => {
     this.addWordBySearchingWordName()
@@ -76,7 +78,12 @@ export default class WordPanel extends Component<Props> {
     return (
       <StyledRoot>
         {searchingWordName.trim() !== "" && searchingWord == null && (
+          <>
           <button onClick={this.handleAddClick}>Add</button>
+          <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
+          Add to Selected Folder
+        </button>
+          </>
         )}
         {searchingWord != null && (
           <>
