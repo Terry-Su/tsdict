@@ -4,14 +4,15 @@ import { removeArrayElement } from '@/utils/js'
 export default class Iframe {
   iframeLinks: TypeIframeLink[] = [
     { label: 'Cambridge', url: `https://dictionary.cambridge.org/dictionary/english/` },
+    { label: 'Bing Image', url: `https://bing.com/images/search?q=` },
   ]
-  visibleDialogIframeSetting: boolean = true
+  visibleDialogIframeSetting: boolean = false
 
   SHOW_DIALOG_IFRAME_SETTING = () => { this.visibleDialogIframeSetting = true }
   HIDE_DIALOG_IFRAME_SETTING = () => { this.visibleDialogIframeSetting = false }
 
   SET_IFRAME_LINKS = ( iframeLinks: TypeIframeLink[] ) => { this.iframeLinks = iframeLinks }
-  RESET_IFRAME_LINKS = ( iframeLinks: TypeIframeLink[] ) => { this.iframeLinks = new Iframe().iframeLinks }
+  RESET_IFRAME_LINKS = () => { this.iframeLinks = new Iframe().iframeLinks }
   ADD_IFRAME_LINK = ( iframeLink: TypeIframeLink ) => { this.iframeLinks.push( iframeLink ); this.RERESH_IFRAME_LINKS() }
   DELETE_IFRAME_LINK = ( iframeLink: TypeIframeLink ) => { removeArrayElement( this.iframeLinks, iframeLink ); this.RERESH_IFRAME_LINKS() }
   RERESH_IFRAME_LINKS = () => { this.iframeLinks = [ ...this.iframeLinks ] }

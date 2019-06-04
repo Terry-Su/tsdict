@@ -18,8 +18,8 @@ export default class App {
   iframe: Iframe
 
   origin: string = "http://localhost:3000";
-  searchingWordName: string = "";
-  visibleIframe: boolean = false;
+  searchingWordName: string = "apple";
+  visibleIframe: boolean = true;
 
   // # right click menu
   rightClickMenuItems: PopupMenuItem[] = [];

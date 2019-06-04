@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { TypeTag } from '@/__typings__'
 import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import Iframes from '@/components/Iframes'
 import Note from '@/components/Note/Note'
 import Degree from '@/componentsPure/Degree/Degree'
 import IframeViewer from '@/componentsPure/IframeViewer'
@@ -109,12 +110,7 @@ export default class WordPanel extends Component<Props> {
         )}
         {this.visibleIframe && (
           <div className="iframeViewerWrapper">
-            <IframeViewer
-              // src={`https://bing.com/images/search?q=${this.searchingWordName}`}
-              src={`https://dictionary.cambridge.org/dictionary/english/${
-                this.searchingWordName
-              }`}
-            />
+            <Iframes />
           </div>
         )}
       </StyledRoot>

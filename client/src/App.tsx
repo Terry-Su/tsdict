@@ -25,12 +25,15 @@ export default class Test extends Component<Props> {
   loadSyncData: Function
 
 
-  componentDidMount() {
+  constructor( props ) {
+  // componentDidMount() {
+    super( props )
     const localCachedStore: SyncData = localStore.getStore()
     if ( localCachedStore != null ) {
       this.loadSyncData( localCachedStore )
     }
-
+  }
+  componentDidMount() {
     reduxStore.subscribe( () => {
       localStore.setStore( this.syncData )
     } )
