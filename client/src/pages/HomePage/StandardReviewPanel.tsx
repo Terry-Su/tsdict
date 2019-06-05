@@ -9,7 +9,6 @@ import WordPanel from './WordPanel/WordPanel'
 interface Props {}
 
 @States( "review", "visibleReviewingWordContent" )
-@Selectors( "review", "nextStandardReviewWord" )
 @Actions( "review", "SHOW_REVIEWING_WORD_CONTENT", 
 'standardReviewWordFamiliar',
 'standardReviewWordKnown',
@@ -17,7 +16,6 @@ interface Props {}
 )
 export default class StandardReviewPanel extends Component<Props> {
   visibleReviewingWordContent?: boolean;
-  nextStandardReviewWord?: TypeWord;
   SHOW_REVIEWING_WORD_CONTENT?: Function;
   standardReviewWordFamiliar?: Function;
   standardReviewWordKnown?: Function;

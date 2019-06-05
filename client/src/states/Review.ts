@@ -127,6 +127,7 @@ export default class Review {
 
   switchToNextStandardReviewWord() {
     const { nextStandardReviewWord } = this
+    console.log( 'switchToNextStandardReviewWord' )
     if ( nextStandardReviewWord != null ) {
       this.app.SET_SEARCHING_WORD_NAME( nextStandardReviewWord.name )
       this.HIDE_REVIEWING_WORD_CONTENT()

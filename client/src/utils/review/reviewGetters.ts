@@ -35,12 +35,17 @@ export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
       return getRandomArrayElement( wordsWithoutReviewLevel ) 
     } else {
       shouldReviewingNewWord = ! shouldReviewingNewWord
-      return getTargetWordWithReviewLevel( words )
+      const potentialTargetWord = getTargetWordWithReviewLevel( wordsWithReviewLevel )
+      if ( potentialTargetWord != null ) {
+        return potentialTargetWord
+      } else {
+        return getRandomArrayElement( wordsWithoutReviewLevel ) 
+      }
     }
   } else if ( existWordsWithoutReviewLevel && ! existWordsWithReviewLevel ) {
     return getRandomArrayElement( wordsWithoutReviewLevel ) 
   } else if ( ! existWordsWithoutReviewLevel && existWordsWithReviewLevel ) {
-    return getTargetWordWithReviewLevel( words )
+    return getTargetWordWithReviewLevel( wordsWithReviewLevel )
   }
   
   return null
