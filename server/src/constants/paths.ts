@@ -23,7 +23,8 @@ export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
 export const STORE_CURRENT_DATA_FILE_RENAME_IMAGE = resolve( STORE_ROOT, 'clientData-rename-image.json' )
 export const STORE_CURRENT_DATA_FILE_UPDATE_WORD_ID = resolve( STORE_ROOT, 'clientData-update-word-id.json' )
 export const STORE_CURRENT_DATA_FILE_UPDATE_TREE_ID = resolve( STORE_ROOT, 'clientData-update-tree-id.json' )
-
+// # dicts in store
+export const DICT_WEBSTER = resolve( STORE_DICTS, '1/integration' )
 
 export const STORE_DICTS_1_MDX_SOURCE = resolve( STORE_DICTS, '1/source' )
 export const STORE_DICTS_1_HTML = resolve( STORE_DICTS, '1/html' )
@@ -79,7 +80,9 @@ export const GET_STORE_VIDEO_FILES = () => GLOB.sync( `${STORE_VIDEO}/**/*` )
 
 
 
-// Client
+
+
+// # Client
 export const CLIENT_PUBLIC = resolve( __dirname, '../../../client/build' )
 export const CLIENT_PUBLIC_INDEX = resolve( CLIENT_PUBLIC, 'index.html' )
 export const CLIENT_PUBLIC_APP_CACHE = resolve( CLIENT_PUBLIC, 'cache.appcache' )

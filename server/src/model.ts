@@ -11,7 +11,7 @@ import { backup, cleanUselessMedias, updateMedia, pasteImage } from './actions'
 import {
     CLIENT_PUBLIC, CLIENT_PUBLIC_APP_CACHE, CLIENT_PUBLIC_INDEX, GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
     GET_STORE_IMAGE_FILES, GET_URL_RELATIVE_TO_STORE_ROOT, RELATIVE_PHONETIC_SYMBOLS_FILE,
-    STORE_CURRENT_DATA_FILE, STORE_PHONETIC_SYMBOLS_FILE, STORE_ROOT
+    STORE_CURRENT_DATA_FILE, STORE_PHONETIC_SYMBOLS_FILE, STORE_ROOT, DICT_WEBSTER
 } from './constants/paths'
 import { getImageUrls } from './getters'
 import isBase64Url from './utils/isBase64Url'
@@ -20,6 +20,7 @@ import outputBase64Media from './utils/outputBase64Media'
 
 app.use( express.static( STORE_ROOT ) )
 app.use( express.static( CLIENT_PUBLIC ) )
+app.use( express.static( DICT_WEBSTER ) )
 
 app.get( "/", ( req, res ) => {
   res.sendFile( CLIENT_PUBLIC_INDEX )
