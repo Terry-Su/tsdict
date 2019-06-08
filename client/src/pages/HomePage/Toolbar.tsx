@@ -70,20 +70,19 @@ export default class Toolbar extends Component<Props> {
     const { dayMap } = this.standardStat
     const { today, wordIds } = this.standardReviewedWordsInfoToday
 
-    let str = `Reviewed words today: ${wordIds.length}
+    let strToday = `Reviewed words today: ${wordIds.length}
     
-  Previous Statistics:
-  `
-
+Previous:\n`
+    
+    let strPrevious = ''
     for ( let key in dayMap ) {
       const { count } = dayMap[ key ]
       if ( today !== key ) {
-        str = str + `${key.replace( /\-/g, '\/' )}: ${count}`
+        strPrevious = `${key.replace( /\-/g, '\/' )}: ${count}\n` + strPrevious
       }
     }
 
-
-    alert( str )
+    alert( strToday + strPrevious )
   }
 
   render() {

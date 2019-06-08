@@ -19,7 +19,7 @@ export default class App {
 
   origin: string = "http://localhost:3000";
   searchingWordName: string = "apple";
-  visibleIframe: boolean = true;
+  visibleIframe: boolean = false;
 
   // # right click menu
   rightClickMenuItems: PopupMenuItem[] = [];

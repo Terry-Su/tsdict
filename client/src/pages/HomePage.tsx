@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { TreeSelection, TypeTreeColumn } from '@/__typings__/tree'
 import DialogIframeSetting from '@/components/dialogs/DialogIframeSetting'
+import Pronunciation from '@/components/Pronunciation'
 import TreePanel from '@/components/TreePanel/TreePanel'
 import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
@@ -49,10 +50,12 @@ export default class HomePage extends Component<Props> {
           )}
           {this.isStandardReviewMode ? (
             <div className="standardReviewPanelWrapper">
+              <Pronunciation />
               <StandardReviewPanel />
             </div>
           ) : (
             <div className="wordPanelWrapper">
+              <Pronunciation />
               <WordPanel />
             </div>
           )}
@@ -101,14 +104,14 @@ const StyledRoot: any = styled.div`
 
     > .wordPanelWrapper {
       box-sizing: border-box;
-      display: flex;
+      /* display: flex; */
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
     }
 
     > .standardReviewPanelWrapper {
       box-sizing: border-box;
-      display: flex;
+      /* display: flex; */
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
     }
