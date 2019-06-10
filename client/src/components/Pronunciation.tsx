@@ -26,7 +26,6 @@ export default class Pronunciation extends Component<Props> {
   }
 
   handleClickButton = () => {
-    console.log( this.audioRef.current ) 
     if ( this.audioRef && this.audioRef.current ) {
       this.audioRef.current.load()
       this.audioRef.current.play()
@@ -34,7 +33,6 @@ export default class Pronunciation extends Component<Props> {
   }
 
   render() {
-    console.log( this.cambridgeUrls )
     return (
       <StyledRoot>
         <button onClick={ this.handleClickButton }>Speak</button>

@@ -28,9 +28,18 @@ interface Props {}
 )
 @Actions( "tree", "TOOGLE_TREE_PANEL" )
 @Actions( "iframe", "SHOW_DIALOG_IFRAME_SETTING" )
-@Selectors( "review", "isStandardReviewMode" )
+@Selectors( 
+  "review", 
+  "isStandardReviewMode",
+  "wordsReviewCountInfo"
+)
 @Selectors( "app", "syncData" )
-@States( "review", "reviewdCount", "onlyWorksInSelectedTree", "standardStat", "standardReviewedWordsInfoToday" )
+@States( "review", 
+"reviewdCount", 
+"onlyWorksInSelectedTree", 
+"standardStat", 
+"standardReviewedWordsInfoToday",
+)
 export default class Toolbar extends Component<Props> {
   onlyWorksInSelectedTree?: boolean;
   syncData?: any;
@@ -38,6 +47,7 @@ export default class Toolbar extends Component<Props> {
   isStandardReviewMode?: boolean;
   standardReviewedWordsInfoToday?: StandardReviewedWordsInfoToday;
   standardStat?: StandardReviewStat;
+  wordsReviewCountInfo?: any;
   TOOGLE_IFRAME?: Function;
   TOOGLE_TREE_PANEL?: Function;
   INCREMENT_REVIEWD_COUNT?: Function;
@@ -70,10 +80,9 @@ export default class Toolbar extends Component<Props> {
     const { dayMap } = this.standardStat
     const { today, wordIds } = this.standardReviewedWordsInfoToday
 
-    let strToday = `Reviewed words today: ${wordIds.length}
+    let strToday = `Reviewed words today: ${wordIds.length}`
     
-Previous:\n`
-    
+    // # previous reviewed words stat
     let strPrevious = ''
     for ( let key in dayMap ) {
       const { count } = dayMap[ key ]
@@ -81,9 +90,26 @@ Previous:\n`
         strPrevious = `${key.replace( /\-/g, '\/' )}: ${count}\n` + strPrevious
       }
     }
+    // strPrevious = `Previous:\n${strPrevious}`
 
-    alert( strToday + strPrevious )
+    // # words count info
+    const {
+      notReviewedWordsCount,
+      reviewingWordsCount,
+      familiarWordsCount,
+      total,
+    } = this.wordsReviewCountInfo
+    const strCountInfo = `Total: ${ total }
+Not Reviewed: ${ notReviewedWordsCount }
+Known: ${ reviewingWordsCount }
+Familiar: ${ familiarWordsCount }
+`
+    alert( `${strToday}
+
+${strCountInfo}
+${strPrevious}` )
   }
+
 
   render() {
     return (

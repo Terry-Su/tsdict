@@ -69,6 +69,23 @@ export default class Review {
     return getNextStandardReviewWord( possibleWords )
   }
 
+  get wordsReviewCountInfo() {
+    let notReviewedWordsCount = 0
+    let reviewingWordsCount = 0
+    let familiarWordsCount = 0
+    for ( let word of this.word.words ) {
+      const { reviewLevel } = word
+      if ( reviewLevel == null ) { notReviewedWordsCount++ } else if ( reviewLevel < 5 ) { reviewingWordsCount++ } else { familiarWordsCount++ }
+    }
+    const { length: total } = this.word.words
+    return {
+      total,
+      notReviewedWordsCount,
+      reviewingWordsCount,
+      familiarWordsCount,
+    }
+  }
+
   SET_REVIEW_MODE_RANDOM = () => { this.reviewMode = ReviewMode.Random }
   SET_REVIEW_MODE_STANDARD = () => { this.reviewMode = ReviewMode.Standard }
   SET_REVIEW_MODE_NONE = () => { this.reviewMode = ReviewMode.None }

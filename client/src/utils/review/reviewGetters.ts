@@ -5,7 +5,7 @@ import {
 
 import { getRandomArrayElement } from '../js'
 
-// # get next standard review word algorithm
+// # the algorithm of getting next standard review word 
 let shouldReviewingNewWord: boolean = false
 export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
   // # words without `reviewLevel`
