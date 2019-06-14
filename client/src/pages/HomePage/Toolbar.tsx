@@ -103,6 +103,8 @@ export default class Toolbar extends Component<Props> {
 Not Reviewed: ${ notReviewedWordsCount }
 Known: ${ reviewingWordsCount }
 Familiar: ${ familiarWordsCount }
+
+Known+Familiar: ${ reviewingWordsCount + familiarWordsCount }
 `
     alert( `${strToday}
 
