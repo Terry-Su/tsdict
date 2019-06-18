@@ -63,6 +63,8 @@ export default class Toolbar extends Component<Props> {
   startStandardReview?: Function;
 
   handleClickPull = async () => {
+    const confirmResult = confirm( 'Are your really confirm to pull data from server? Current data will be replaced by pulled data.' )
+    if ( ! confirmResult ) { return }
     const data: SyncData = await appApi.pull()
     this.loadPulledData( data )
   };
@@ -109,6 +111,7 @@ Known+Familiar: ${ reviewingWordsCount + familiarWordsCount }
     alert( `${strToday}
 
 ${strCountInfo}
+
 ${strPrevious}` )
   }
 

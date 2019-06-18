@@ -137,6 +137,7 @@ export default class Review {
       this.app.SET_SEARCHING_WORD_NAME( nextStandardReviewWord.name )
       this.SET_REVIEW_MODE_STANDARD()
       this.HIDE_REVIEWING_WORD_CONTENT()
+      this.tree.HIDE_TREE_PANEL()
     } else {
       alert( 'No words to review temporarily' )
     }
