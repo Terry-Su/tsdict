@@ -12,6 +12,12 @@ export enum ReviewWordReviewedType {
   REVIEWED_AND_NOT_REVIEWED,
 }
 
+export enum ReviewWordWhetherWithNoteType {
+  WITH,
+  WITHOUT,
+  WITH_AND_WITHOUT
+}
+
 
 export type ReviewLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 

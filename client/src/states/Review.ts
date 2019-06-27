@@ -1,7 +1,7 @@
 import { TypeId } from '@/__typings__'
 import {
-    ReviewMode, ReviewWordReviewedType, StandardReviewedWordsInfoToday, StandardReviewStat,
-    StandardReviewStatDayMap
+    ReviewMode, ReviewWordReviewedType, ReviewWordWhetherWithNoteType,
+    StandardReviewedWordsInfoToday, StandardReviewStat, StandardReviewStatDayMap
 } from '@/__typings__/review'
 import { TypeWord, TypeWordReviewLevel } from '@/__typings__/word'
 import { MAX_WORD_REVIEW_LEVEL, TIME_ONE_MINUTE } from '@/constants/numbers'
@@ -22,10 +22,12 @@ export default class Review {
 
   reviewMode: ReviewMode = ReviewMode.None
   reviewWordReviewedType: ReviewWordReviewedType = ReviewWordReviewedType.REVIEWED_AND_NOT_REVIEWED
+  reviewWordWhetherWithNoteType: ReviewWordWhetherWithNoteType = ReviewWordWhetherWithNoteType.WITH_AND_WITHOUT
+
+  onlyWorksInSelectedTree: boolean = true
+
 
   reviewdCount: number = 0
-  onlyWorksInSelectedTree: boolean = true
-  isReviewingWordsWithoutNote: boolean = true
 
   
   // # for random review mode
@@ -51,12 +53,18 @@ export default class Review {
 
   get potentialReivewWords(): TypeWord[] {
     const res1 = this.onlyWorksInSelectedTree ? this.tree.currentSelectedTreeWords : this.word.words
-    const res2 = this.isReviewingWordsWithoutNote ? res1 : res1.filter( word => word.note != null )
-    const T = ReviewWordReviewedType
+    const T1 = ReviewWordWhetherWithNoteType
+    const res2Map = {
+      [ T1.WITH_AND_WITHOUT ]: res1,
+      [ T1.WITH ]            : res1.filter( word => word.note != null ),
+      [ T1.WITHOUT ]         : res1.filter( word => word.note == null ),
+    }
+    const res2 = res2Map[ this.reviewWordWhetherWithNoteType ]
+    const T2 = ReviewWordReviewedType
     const res3Map = {
-      [ T.REVIEWED_AND_NOT_REVIEWED ]: res2,
-      [ T.REVIEWED ]                 : res2.filter( word => word.reviewLevel != null ),
-      [ T.NOT_REVIEWED ]             : res2.filter( word => word.reviewLevel == null ),
+      [ T2.REVIEWED_AND_NOT_REVIEWED ]: res2,
+      [ T2.REVIEWED ]                 : res2.filter( word => word.reviewLevel != null ),
+      [ T2.NOT_REVIEWED ]             : res2.filter( word => word.reviewLevel == null ),
     }
     const res3 = res3Map[ this.reviewWordReviewedType ]
     return res3
@@ -100,11 +108,22 @@ export default class Review {
   get reviewWordReviewedTypeText() {
     const T = ReviewWordReviewedType
     const textMap = {
-      [ T.REVIEWED ]                 : 'Reviewing the reviewed',
-      [ T.NOT_REVIEWED ]             : 'Reviewing the not reviewed',
-      [ T.REVIEWED_AND_NOT_REVIEWED ]: 'Reviewing both the reviewd and the not reviewed',
+      [ T.REVIEWED ]                 : 'Reviewing the Teviewed',
+      [ T.NOT_REVIEWED ]             : 'Reviewing the Not Teviewed',
+      [ T.REVIEWED_AND_NOT_REVIEWED ]: 'Reviewing Both the Reviewd and the Not Reviewed',
     }
     return textMap[ this.reviewWordReviewedType ]
+  }
+
+  // # reviewWordWhetherWithNoteType
+  get reviewWordWhetherWithNoteTypeText() {
+    const T = ReviewWordWhetherWithNoteType
+    const textMap = {
+      [ T.WITH ]            : 'Reviewing Words with Note',
+      [ T.WITHOUT ]         : 'Reviewing Words without Note',
+      [ T.WITH_AND_WITHOUT ]: 'Reviewing Words with or without Note',
+    }
+    return textMap[ this.reviewWordWhetherWithNoteType ]
   }
 
   SET_REVIEW_MODE_RANDOM = () => { this.reviewMode = ReviewMode.Random }
@@ -116,10 +135,11 @@ export default class Review {
   DISABLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = true }
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = ! this.onlyWorksInSelectedTree }
 
-  // # isReviewingWordsWithoutNote
-  ENABLE_REVIEWING_WORDS_WITHOUT_NOTE = () => { this.isReviewingWordsWithoutNote = true }
-  DISABLE_REVIEWING_WORDS_WITHOUT_NOTE = () => { this.isReviewingWordsWithoutNote = false }
-  TOOGLE_REVIEWING_WORDS_WITHOUT_NOTE = () => { this.isReviewingWordsWithoutNote = ! this.isReviewingWordsWithoutNote }
+  // # reviewWordReviewedTypeText
+  SET_REVIEW_WORD_REVIEWED_TYPE = ( type: ReviewWordReviewedType ) => { this.reviewWordReviewedType = type }
+
+  // # reviewWordWhetherWithNoteType
+  SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE = ( type: ReviewWordWhetherWithNoteType ) => { this.reviewWordWhetherWithNoteType = type }
 
   RESET_REVIEWD_IN_SELECTED_TREE = () => { this.reviewedInSelectedTree = [] }
   ADD_REVIEWED_IN_SELECTED_TREE = ( wordId: TypeId ) => { this.reviewedInSelectedTree.push( wordId ) }
@@ -135,9 +155,6 @@ export default class Review {
   SET_STANDARD_STAT = ( stat: StandardReviewStat ) => { this.standardStat = stat }
   SET_STANDARD_STAT_DAY_MAP = ( dayMap: StandardReviewStatDayMap ) => { this.standardStat.dayMap = dayMap }
   ENSURE_STANDARD_STAT = () => { if ( this.standardStat == null ) { this.standardStat = { dayMap: {} } } }
-
-  // # reviewWordReviewedTypeText
-  SET_REVIEW_WORD_REVIEWED_TYPE = ( type: ReviewWordReviewedType ) => { this.reviewWordReviewedType = type }
 
   addReviewedInSelectedTree = ( wordId: TypeId  ) => {
     if ( ! this.reviewedInSelectedTree.includes( wordId ) ) {
@@ -284,5 +301,12 @@ export default class Review {
     const { reviewWordReviewedType: t } = this
     const T = ReviewWordReviewedType
     if ( t === T.REVIEWED_AND_NOT_REVIEWED ) { this.SET_REVIEW_WORD_REVIEWED_TYPE( T.REVIEWED ) } else if ( t === T.REVIEWED ) { this.SET_REVIEW_WORD_REVIEWED_TYPE( T.NOT_REVIEWED ) } else if ( t === T.NOT_REVIEWED ) { this.SET_REVIEW_WORD_REVIEWED_TYPE( T.REVIEWED_AND_NOT_REVIEWED ) }
+  }
+  
+  // # reviewWordReviewedType
+  switchReviewWordWhetherWithNoteType() {
+    const { reviewWordWhetherWithNoteType: t } = this
+    const T = ReviewWordWhetherWithNoteType
+    if ( t === T.WITH_AND_WITHOUT ) { this.SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE( T.WITH ) } else if ( t === T.WITH ) { this.SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE( T.WITHOUT ) } else if ( t === T.WITHOUT ) { this.SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE( T.WITH_AND_WITHOUT ) }
   }
 }

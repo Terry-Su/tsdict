@@ -25,8 +25,8 @@ interface Props {}
   "SET_REVIEW_MODE_NONE",
   "INCREMENT_REVIEWD_COUNT",
   "TOOGLE_ONLY_WORKS_IN_SELECTED_TREE",
-  "TOOGLE_REVIEWING_WORDS_WITHOUT_NOTE",
   "switchReviewWOrdReviewedType",
+  "switchReviewWordWhetherWithNoteType",
 )
 @Actions( "tree", "TOOGLE_TREE_PANEL" )
 @Actions( "iframe", "SHOW_DIALOG_IFRAME_SETTING" )
@@ -35,7 +35,8 @@ interface Props {}
   "isStandardReviewMode",
   "isReviewMode",
   "wordsReviewCountInfo",
-  'reviewWordReviewedTypeText'
+  'reviewWordReviewedTypeText',
+  'reviewWordWhetherWithNoteTypeText',
 )
 @Selectors( "app", "syncData" )
 @States( "review", 
@@ -56,6 +57,7 @@ export default class Toolbar extends Component<Props> {
   standardStat?: StandardReviewStat;
   wordsReviewCountInfo?: any;
   reviewWordReviewedTypeText?: any;
+  reviewWordWhetherWithNoteTypeText?: any;
   TOOGLE_IFRAME?: Function;
   TOOGLE_TREE_PANEL?: Function;
   INCREMENT_REVIEWD_COUNT?: Function;
@@ -64,13 +66,13 @@ export default class Toolbar extends Component<Props> {
   SET_WORDS?: Function;
   SET_TAGS?: Function;
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
-  TOOGLE_REVIEWING_WORDS_WITHOUT_NOTE?: Function;
   SHOW_DIALOG_IFRAME_SETTING?: Function;
   loadPulledData?: Function;
   reviewRandom?: Function;
   export?: Function;
   startStandardReview?: Function;
   switchReviewWOrdReviewedType?: Function;
+  switchReviewWordWhetherWithNoteType?: Function;
 
   handleClickPull = async () => {
     const confirmResult = confirm( 'Are your really confirm to pull data from server? Current data will be replaced by pulled data.' )
@@ -142,7 +144,8 @@ ${strPrevious}` )
             <button onClick={ () => this.startStandardReview() }>Start Standard Review</button>
           </>
         )}
-         <button onClick={ () => this.switchReviewWOrdReviewedType() }>{ this.reviewWordReviewedTypeText }</button>
+        <button onClick={ () => this.switchReviewWOrdReviewedType() }>{ this.reviewWordReviewedTypeText }</button>
+        <button onClick={ () => this.switchReviewWordWhetherWithNoteType() }>{ this.reviewWordWhetherWithNoteTypeText }</button>
         {this.isStandardReviewMode && (
           <button onClick={() => this.SET_REVIEW_MODE_NONE()}>
             Exit Standard Review
@@ -154,14 +157,6 @@ ${strPrevious}` )
             type="checkbox"
             checked={this.onlyWorksInSelectedTree}
             onChange={() => this.TOOGLE_ONLY_WORKS_IN_SELECTED_TREE()}
-          />
-        </span>
-        <span>
-          <span>Reivewing Words with or without Note</span>
-          <input
-            type="checkbox"
-            checked={this.isReviewingWordsWithoutNote}
-            onChange={() => this.TOOGLE_REVIEWING_WORDS_WITHOUT_NOTE()}
           />
         </span>
         <button onClick={() => this.TOOGLE_IFRAME()}>Iframe</button>
