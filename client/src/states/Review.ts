@@ -1,6 +1,7 @@
 import { TypeId } from '@/__typings__'
 import {
-    ReviewMode, StandardReviewedWordsInfoToday, StandardReviewStat, StandardReviewStatDayMap
+    ReviewMode, ReviewWordReviewedType, StandardReviewedWordsInfoToday, StandardReviewStat,
+    StandardReviewStatDayMap
 } from '@/__typings__/review'
 import { TypeWord, TypeWordReviewLevel } from '@/__typings__/word'
 import { MAX_WORD_REVIEW_LEVEL, TIME_ONE_MINUTE } from '@/constants/numbers'
@@ -20,9 +21,11 @@ export default class Review {
   
 
   reviewMode: ReviewMode = ReviewMode.None
+  reviewWordReviewedType: ReviewWordReviewedType = ReviewWordReviewedType.REVIEWED_AND_NOT_REVIEWED
 
   reviewdCount: number = 0
   onlyWorksInSelectedTree: boolean = true
+  isReviewingWordsWithoutNote: boolean = true
 
   
   // # for random review mode
@@ -46,16 +49,24 @@ export default class Review {
     return this.app.searchingWord
   }
 
-  get nextRandomReviewWord(): TypeWord {
-    let targetWords = []
-    if ( this.onlyWorksInSelectedTree ) {
-      targetWords = this.tree.currentSelectedTreeWords.filter( word => ! this.reviewedInSelectedTree.includes( word.id ) )
-    } else {
-      targetWords = this.word.words.filter( word => word.note != null )
+  get potentialReivewWords(): TypeWord[] {
+    const res1 = this.onlyWorksInSelectedTree ? this.tree.currentSelectedTreeWords : this.word.words
+    const res2 = this.isReviewingWordsWithoutNote ? res1 : res1.filter( word => word.note != null )
+    const T = ReviewWordReviewedType
+    const res3Map = {
+      [ T.REVIEWED_AND_NOT_REVIEWED ]: res2,
+      [ T.REVIEWED ]                 : res2.filter( word => word.reviewLevel != null ),
+      [ T.NOT_REVIEWED ]             : res2.filter( word => word.reviewLevel == null ),
     }
-    const maxIndex = targetWords.length - 1
+    const res3 = res3Map[ this.reviewWordReviewedType ]
+    return res3
+  }
+
+  get nextRandomReviewWord(): TypeWord {
+    const { potentialReivewWords } = this
+    const maxIndex = potentialReivewWords.length - 1
     const randomIndex = Math.ceil( Math.random() * maxIndex )
-    const word = targetWords[ randomIndex ]
+    const word = potentialReivewWords[ randomIndex ]
     if ( word != null ) {
       return word
     } else {
@@ -65,8 +76,7 @@ export default class Review {
 
   // # standard review
   get nextStandardReviewWord(): TypeWord {
-    let possibleWords = this.onlyWorksInSelectedTree ? this.tree.currentSelectedTreeWords : this.word.words.filter( word => word.note != null )
-    return getNextStandardReviewWord( possibleWords )
+    return getNextStandardReviewWord( this.potentialReivewWords )
   }
 
   get wordsReviewCountInfo() {
@@ -86,6 +96,17 @@ export default class Review {
     }
   }
 
+  // # reviewWordReviewedType
+  get reviewWordReviewedTypeText() {
+    const T = ReviewWordReviewedType
+    const textMap = {
+      [ T.REVIEWED ]                 : 'Reviewing the reviewed',
+      [ T.NOT_REVIEWED ]             : 'Reviewing the not reviewed',
+      [ T.REVIEWED_AND_NOT_REVIEWED ]: 'Reviewing both the reviewd and the not reviewed',
+    }
+    return textMap[ this.reviewWordReviewedType ]
+  }
+
   SET_REVIEW_MODE_RANDOM = () => { this.reviewMode = ReviewMode.Random }
   SET_REVIEW_MODE_STANDARD = () => { this.reviewMode = ReviewMode.Standard }
   SET_REVIEW_MODE_NONE = () => { this.reviewMode = ReviewMode.None }
@@ -94,6 +115,11 @@ export default class Review {
   ENABLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = true }
   DISABLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = true }
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE = () => { this.onlyWorksInSelectedTree = ! this.onlyWorksInSelectedTree }
+
+  // # isReviewingWordsWithoutNote
+  ENABLE_REVIEWING_WORDS_WITHOUT_NOTE = () => { this.isReviewingWordsWithoutNote = true }
+  DISABLE_REVIEWING_WORDS_WITHOUT_NOTE = () => { this.isReviewingWordsWithoutNote = false }
+  TOOGLE_REVIEWING_WORDS_WITHOUT_NOTE = () => { this.isReviewingWordsWithoutNote = ! this.isReviewingWordsWithoutNote }
 
   RESET_REVIEWD_IN_SELECTED_TREE = () => { this.reviewedInSelectedTree = [] }
   ADD_REVIEWED_IN_SELECTED_TREE = ( wordId: TypeId ) => { this.reviewedInSelectedTree.push( wordId ) }
@@ -109,6 +135,9 @@ export default class Review {
   SET_STANDARD_STAT = ( stat: StandardReviewStat ) => { this.standardStat = stat }
   SET_STANDARD_STAT_DAY_MAP = ( dayMap: StandardReviewStatDayMap ) => { this.standardStat.dayMap = dayMap }
   ENSURE_STANDARD_STAT = () => { if ( this.standardStat == null ) { this.standardStat = { dayMap: {} } } }
+
+  // # reviewWordReviewedTypeText
+  SET_REVIEW_WORD_REVIEWED_TYPE = ( type: ReviewWordReviewedType ) => { this.reviewWordReviewedType = type }
 
   addReviewedInSelectedTree = ( wordId: TypeId  ) => {
     if ( ! this.reviewedInSelectedTree.includes( wordId ) ) {
@@ -248,5 +277,12 @@ export default class Review {
     this.updateStandardReviewStat()
     
     this.switchToNextStandardReviewWord()
+  }
+
+  // # reviewWordReviewedType
+  switchReviewWOrdReviewedType() {
+    const { reviewWordReviewedType: t } = this
+    const T = ReviewWordReviewedType
+    if ( t === T.REVIEWED_AND_NOT_REVIEWED ) { this.SET_REVIEW_WORD_REVIEWED_TYPE( T.REVIEWED ) } else if ( t === T.REVIEWED ) { this.SET_REVIEW_WORD_REVIEWED_TYPE( T.NOT_REVIEWED ) } else if ( t === T.NOT_REVIEWED ) { this.SET_REVIEW_WORD_REVIEWED_TYPE( T.REVIEWED_AND_NOT_REVIEWED ) }
   }
 }
