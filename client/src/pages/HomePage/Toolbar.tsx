@@ -157,7 +157,7 @@ ${strPrevious}` )
           />
         </span>
         <span>
-          <span>Reivewing Words without Note</span>
+          <span>Reivewing Words with or without Note</span>
           <input
             type="checkbox"
             checked={this.isReviewingWordsWithoutNote}
