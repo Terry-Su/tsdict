@@ -11,7 +11,7 @@ const isAbsoluteUrl = url => {
 
 export default class BaseApi {
   get origin(): string {
-    return modelsStateMap[ 'app' ][ 'origin' ] || "http://localhost:3000"
+    return modelsStateMap[ 'setting' ][ 'origin' ] || location.origin
   }
 
   getTargetUrl( url ): string {

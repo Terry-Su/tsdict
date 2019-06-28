@@ -109,8 +109,9 @@ app.post( "/pasteImage", async ( req: express.Request, res: express.Response ) =
   try {
     const { base64Url, word } = req.body 
     const imageFile = await pasteImage( word, base64Url )
-    const prefix = req.protocol + "://" + req.get( "host" )
-    const imageUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT( imageFile )}`
+    // const prefix = req.protocol + "://" + req.get( "host" )
+    // const imageUrl = `${prefix}/${GET_URL_RELATIVE_TO_STORE_ROOT( imageFile )}`
+    const imageUrl = `/${GET_URL_RELATIVE_TO_STORE_ROOT( imageFile )}`
     res.send( imageUrl )
     return
   } catch ( e ) {

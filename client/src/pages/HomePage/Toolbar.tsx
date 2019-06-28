@@ -30,6 +30,7 @@ interface Props {}
 )
 @Actions( "tree", "TOOGLE_TREE_PANEL" )
 @Actions( "iframe", "SHOW_DIALOG_IFRAME_SETTING" )
+@Actions( "setting", "SHOW_DIALOG_SETTING" )
 @Selectors( 
   "review", 
   "isStandardReviewMode",
@@ -66,6 +67,7 @@ export default class Toolbar extends Component<Props> {
   SET_WORDS?: Function;
   SET_TAGS?: Function;
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
+  SHOW_DIALOG_SETTING?: Function;
   SHOW_DIALOG_IFRAME_SETTING?: Function;
   loadPulledData?: Function;
   reviewRandom?: Function;
@@ -161,7 +163,7 @@ ${strPrevious}` )
         </span>
         <button onClick={() => this.TOOGLE_IFRAME()}>Iframe</button>
        
-        <button>Setting</button>
+        <button onClick={ () => this.SHOW_DIALOG_SETTING() }>Setting</button>
         <button onClick={ () => this.SHOW_DIALOG_IFRAME_SETTING() }>Iframe Setting</button>
         <button onClick={() => this.export()}>Export</button>
         <button>Import</button>

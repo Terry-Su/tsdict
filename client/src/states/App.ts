@@ -17,7 +17,6 @@ export default class App {
   review: Review;
   iframe: Iframe
 
-  origin: string = "http://localhost:3000";
   searchingWordName: string = "apple";
   visibleIframe: boolean = true;
 

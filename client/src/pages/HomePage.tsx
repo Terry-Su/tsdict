@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { TreeSelection, TypeTreeColumn } from '@/__typings__/tree'
 import DialogIframeSetting from '@/components/dialogs/DialogIframeSetting'
+import DialogSetting from '@/components/dialogs/DialogSetting'
 import Pronunciation from '@/components/Pronunciation'
 import TreePanel from '@/components/TreePanel/TreePanel'
 import { reduxStore } from '@/entry'
@@ -63,6 +64,7 @@ export default class HomePage extends Component<Props> {
 
         {/* # dialogs */}
         <DialogIframeSetting />
+        <DialogSetting />
       </StyledRoot>
     )
   }
