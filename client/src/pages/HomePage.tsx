@@ -78,7 +78,7 @@ const StyledRoot: any = styled.div`
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    height: 60px;
+    min-height: 60px;
     border: 1px solid #ddd;
   }
 

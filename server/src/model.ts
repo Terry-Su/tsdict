@@ -28,29 +28,28 @@ app.get( "/", ( req, res ) => {
 
 app.get( "/cache", ( req, res ) => {
   const storeImageFiles = GET_STORE_IMAGE_FILES()
-
-  // const urls = storeImageFiles.map( path => `${req.protocol}/${req.get('host')}/${PATH.relative(STORE_ROOT, path)}` )
-  let urls = []
-  try {
-    const clientData = FS.readJSONSync( STORE_CURRENT_DATA_FILE )
-    urls = flatten(
-      clientData.core.words
-        .filter( ( { note } ) => notNil( note ) && notNil( note.ops ) )
-        .map( ( { note } ) => note.ops
-            .filter( ( { insert }: any ) => insert && ( insert.image || insert.video ) )
-            .map( ( { insert }: any ) => {
-              if ( notNil( insert.image ) ) {
-                return insert.image
-              }
-              if ( notNil( insert.video ) ) {
-                // return insert.video
-              }
-            } )
-        )
-    )
-  } catch ( e ) {
-    console.log( e )
-  }
+  const urls = storeImageFiles.map( path => `${req.protocol}://${req.get( 'host' )}/${PATH.relative( STORE_ROOT, path )}` ).map( raw => encodeURI( raw ) )
+  // let urls = []
+  // try {
+  //   const clientData = FS.readJSONSync( STORE_CURRENT_DATA_FILE )
+  //   urls = flatten(
+  //     clientData.words
+  //       .filter( ( { note } ) => notNil( note ) && notNil( note.ops ) )
+  //       .map( ( { note } ) => note.ops
+  //           .filter( ( { insert }: any ) => insert && ( insert.image || insert.video ) )
+  //           .map( ( { insert }: any ) => {
+  //             if ( notNil( insert.image ) ) {
+  //               return insert.image
+  //             }
+  //             if ( notNil( insert.video ) ) {
+  //               // return insert.video
+  //             }
+  //           } )
+  //       )
+  //   )
+  // } catch ( e ) {
+  //   console.log( e )
+  // }
 
   const urlsStr = urls.join( "\n" )
 
@@ -62,8 +61,11 @@ bundle.js
 #NETWORK:
 #*
 
+${urlsStr}
+
 # Version, used to update source
-# 1.0.0-3`
+# 1.0.0-4`
+
   res.send( text )
 } )
 

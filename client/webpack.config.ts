@@ -68,10 +68,10 @@ const webpackClientConfig = {
         from: ENTRY_INDEX_HTML,
         to  : OUTPUT_INDEX_HTML,
       },
-      {
-        from: ENTRY_INDEX_CACHE,
-        to  : OUTPUT_INDEX_CACHE,
-      },
+      // {
+      //   from: ENTRY_INDEX_CACHE,
+      //   to  : OUTPUT_INDEX_CACHE,
+      // },
       {
         from: ENTRY_MANIFEST_CACHE,
         to  : OUTPUT_MANIFEST_CACHE,
