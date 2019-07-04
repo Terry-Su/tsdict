@@ -108,8 +108,8 @@ export default class Review {
   get reviewWordReviewedTypeText() {
     const T = ReviewWordReviewedType
     const textMap = {
-      [ T.REVIEWED ]                 : 'Reviewing the Teviewed',
-      [ T.NOT_REVIEWED ]             : 'Reviewing the Not Teviewed',
+      [ T.REVIEWED ]                 : 'Reviewing the Reviewed',
+      [ T.NOT_REVIEWED ]             : 'Reviewing the Not Reviewed',
       [ T.REVIEWED_AND_NOT_REVIEWED ]: 'Reviewing Both the Reviewd and the Not Reviewed',
     }
     return textMap[ this.reviewWordReviewedType ]

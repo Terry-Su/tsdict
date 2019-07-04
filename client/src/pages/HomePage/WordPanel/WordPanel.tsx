@@ -25,6 +25,7 @@ interface Props {}
 @Actions( 'tree', 'selectTag' )
 @Selectors( "app", "searchingWord", "searchWordTags" )
 @States( "app", "searchingWordName", "visibleIframe" )
+@States( "word", "visibleWordPanel" )
 export default class WordPanel extends Component<Props> {
   state = {
     visibleInputSuggested: false,
@@ -32,6 +33,7 @@ export default class WordPanel extends Component<Props> {
 
   searchWordTags?: TypeTag[];
   visibleIframe?: boolean;
+  visibleWordPanel?: boolean;
   searchingWordName?: string;
   searchingWord?: TypeWord;
   words?: TypeWord[];
@@ -77,7 +79,7 @@ export default class WordPanel extends Component<Props> {
     const { searchingWord, searchingWordName } = this
     const { visibleInputSuggested } = this.state
     return (
-      <StyledRoot>
+      this.visibleWordPanel &&  <StyledRoot>
         {searchingWordName.trim() !== "" && searchingWord == null && (
           <>
           <button onClick={this.handleAddClick}>Add</button>

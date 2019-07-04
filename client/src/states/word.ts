@@ -11,9 +11,12 @@ import Tag from './Tag'
 import Tree from './Tree'
 
 export default class Word {
-  words: TypeWord[] = [];
   tree: Tree;
   tag: Tag;
+
+  words: TypeWord[] = [];
+  visibleWordPanel: boolean = true
+  
 
   get ids(): number[] {
     return this.words.map( v => v.id )
@@ -88,6 +91,10 @@ export default class Word {
   DELETE_WORD( word: TypeWord ) {
     removeArrayElement( this.words, word )
   }
+
+
+  // # visibleWordPanel
+  TOOGLE_WORD_PANEL() { this.visibleWordPanel = ! this.visibleWordPanel }
 
   setWordNote( word: TypeWord, newNote: TypeWordNote ) {
     word.note = newNote

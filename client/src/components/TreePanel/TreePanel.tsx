@@ -38,4 +38,5 @@ export default class TreePanel extends Component<Props> {
 const StyledRoot = styled.div`
   display: flex;
   width: 100%;
+  height: 100%;
 `

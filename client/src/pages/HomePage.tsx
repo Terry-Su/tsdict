@@ -17,6 +17,7 @@ import WordPanel from './HomePage/WordPanel/WordPanel'
 
 interface Props {}
 
+@States( "word", "visibleWordPanel" )
 @States( "tree", "visibleTreePanel" )
 @Selectors( "review", "isReviewMode", "isStandardReviewMode" )
 @Actions( "tree", "SET_TREE" )
@@ -25,6 +26,7 @@ interface Props {}
 export default class HomePage extends Component<Props> {
   isReviewMode?: boolean;
   visibleTreePanel?: boolean;
+  visibleWordPanel?: boolean;
   selections?: TreeSelection[];
   columns?: TypeTreeColumn[];
   isStandardReviewMode?: boolean;
@@ -55,10 +57,12 @@ export default class HomePage extends Component<Props> {
               <StandardReviewPanel />
             </div>
           ) : (
-            <div className="wordPanelWrapper">
-              <Pronunciation />
-              <WordPanel />
-            </div>
+            this.visibleWordPanel && (
+              <div className="wordPanelWrapper">
+                <Pronunciation />
+                <WordPanel />
+              </div>
+            )
           )}
         </div>
 
@@ -97,18 +101,33 @@ const StyledRoot: any = styled.div`
     display: flex;
     justify-content: space-between;
 
+    @media (max-width: 576px) {
+      display: block;
+    }
+
     > .treePanelWrapper {
       box-sizing: border-box;
       display: flex;
-      width: 50%;
+      /* width: 50%; */
+      /* height: 50; */
+      flex: 1;
       border: 1px solid #ddd;
+
+      @media (max-width: 576px) {
+        min-height: 200px;
+        height: 33%;
+      }
     }
 
     > .wordPanelWrapper {
+      flex: 1;
       box-sizing: border-box;
       /* display: flex; */
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
+      @media (max-width: 576px) {
+       width: 100%;
+      }
     }
 
     > .standardReviewPanelWrapper {
@@ -116,6 +135,9 @@ const StyledRoot: any = styled.div`
       /* display: flex; */
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
+      @media (max-width: 576px) {
+        height: 100%;
+      }
     }
   }
 `

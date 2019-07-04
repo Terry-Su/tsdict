@@ -10,7 +10,7 @@ import { Actions, Selectors, States } from '@/utils/decorators'
 interface Props {}
 
 @Actions( "tree", "SET_TREE" )
-@Actions( "word", "SET_WORDS" )
+@Actions( "word", "SET_WORDS", "TOOGLE_WORD_PANEL" )
 @Actions( "tag", "SET_TAGS" )
 @Actions(
   "app",
@@ -61,6 +61,7 @@ export default class Toolbar extends Component<Props> {
   reviewWordWhetherWithNoteTypeText?: any;
   TOOGLE_IFRAME?: Function;
   TOOGLE_TREE_PANEL?: Function;
+  TOOGLE_WORD_PANEL?: Function;
   INCREMENT_REVIEWD_COUNT?: Function;
   SET_REVIEW_MODE_NONE?: Function;
   SET_TREE?: Function;
@@ -84,6 +85,8 @@ export default class Toolbar extends Component<Props> {
   };
 
   handleClickPush = async () => {
+    const confirmResult = confirm( 'Are you sure to push current data to server?' )
+    if ( ! confirmResult ) { return }
     appApi.push( this.syncData )
   };
 
@@ -134,6 +137,7 @@ ${strPrevious}` )
     return (
       <StyledRoot>
         <button onClick={() => this.TOOGLE_TREE_PANEL()}>Tree Panel</button>
+        <button onClick={() => this.TOOGLE_WORD_PANEL()}>Word Panel</button>
         <button onClick={() => this.handleStatClick()}>Statistics</button>
         {!this.isStandardReviewMode && (
           <>
@@ -176,5 +180,5 @@ ${strPrevious}` )
 }
 
 const StyledRoot = styled.div`
-  font-size: 14px;
+    
 `
