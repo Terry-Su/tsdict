@@ -150,7 +150,7 @@ export default class Note extends Component<Props> {
             <button className="ql-video" />
           </span>
         </div>
-        <div ref={this.editorRef} />
+        <div ref={this.editorRef} className="editor"/>
       </StyledRoot>
     )
   }
@@ -158,4 +158,8 @@ export default class Note extends Component<Props> {
 
 const StyledRoot = styled.div`
   width: 100%;
+
+  .editor {
+    font-size: 16px;
+  }
 `

@@ -87,7 +87,8 @@ export default class Toolbar extends Component<Props> {
   handleClickPush = async () => {
     const confirmResult = confirm( 'Are you sure to push current data to server?' )
     if ( ! confirmResult ) { return }
-    appApi.push( this.syncData )
+    await appApi.push( this.syncData )
+    alert( 'Pushed Successfully!' )
   };
 
   handleClickRandomReviewMode = () => {
