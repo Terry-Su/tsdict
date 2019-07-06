@@ -16,6 +16,7 @@ interface Props {}
   "app",
   "TOOGLE_IFRAME",
   "loadPulledData",
+  "importDataByDataStr",
   "export"
 )
 @Actions(
@@ -71,6 +72,7 @@ export default class Toolbar extends Component<Props> {
   SHOW_DIALOG_SETTING?: Function;
   SHOW_DIALOG_IFRAME_SETTING?: Function;
   loadPulledData?: Function;
+  importDataByDataStr?: Function;
   reviewRandom?: Function;
   export?: Function;
   startStandardReview?: Function;
@@ -133,6 +135,22 @@ ${strCountInfo}
 ${strPrevious}` )
   }
 
+  handleImportChange( event: any ) {
+    const fileInput = event.target
+    try {
+      const reader = new FileReader()
+      
+      reader.onload = ( event: any ) => {
+        // Reset value so that uploading file which has 
+        // the same name next time still triggers change event
+        fileInput.value = ''
+
+        const str = event.target.result
+        this.importDataByDataStr( str )
+      }
+      reader.readAsText( event.target.files[ 0 ] )
+    } catch ( e ) {}
+  }
 
   render() {
     return (
@@ -171,7 +189,11 @@ ${strPrevious}` )
         <button onClick={ () => this.SHOW_DIALOG_SETTING() }>Setting</button>
         <button onClick={ () => this.SHOW_DIALOG_IFRAME_SETTING() }>Iframe Setting</button>
         <button onClick={() => this.export()}>Export</button>
-        <button>Import</button>
+        
+        <label className="importInputLabel">
+          <input type="file"  id="fileInput" name="upload" onChange={ this.handleImportChange }/>
+          Import
+        </label>
         <button>Update Media</button>
         <button onClick={this.handleClickPull}>Pull</button>
         <button onClick={this.handleClickPush}>Push</button>

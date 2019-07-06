@@ -125,6 +125,11 @@ export default class App {
     this.loadSyncData( data )
   }
 
+  importDataByDataStr( dataStr: string ) {
+    const data: SyncData = JSON.parse( dataStr )
+    this.loadSyncData( data )
+  }
+
   export() {
     const str = JSON.stringify( this.syncData )
     const fileName = `tsdict.json`

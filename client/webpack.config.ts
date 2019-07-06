@@ -3,9 +3,9 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import PATH from 'path'
 
 import {
-    ENTRY, ENTRY_INDEX_CACHE, ENTRY_INDEX_HTML, ENTRY_MANIFEST_CACHE, ENTRY_SW, OUTPUT,
-    OUTPUT_FILE_NAME, OUTPUT_INDEX_CACHE, OUTPUT_INDEX_HTML, OUTPUT_MANIFEST_CACHE, OUTPUT_SW,
-    SHARED, SRC
+    ENTRY, ENTRY_INDEX_CACHE, ENTRY_INDEX_HTML, ENTRY_MANIFEST_CACHE, ENTRY_OFFLINE_HTML, ENTRY_SW,
+    OUTPUT, OUTPUT_FILE_NAME, OUTPUT_INDEX_CACHE, OUTPUT_INDEX_HTML, OUTPUT_MANIFEST_CACHE,
+    OUTPUT_OFFLINE_HTML, OUTPUT_SW, SHARED, SRC
 } from './script/constants'
 import { __DEV__ } from './script/global'
 
@@ -67,6 +67,10 @@ const webpackClientConfig = {
       {
         from: ENTRY_INDEX_HTML,
         to  : OUTPUT_INDEX_HTML,
+      },
+      {
+        from: ENTRY_OFFLINE_HTML,
+        to  : OUTPUT_OFFLINE_HTML,
       },
       // {
       //   from: ENTRY_INDEX_CACHE,
