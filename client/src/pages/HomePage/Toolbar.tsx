@@ -135,7 +135,7 @@ ${strCountInfo}
 ${strPrevious}` )
   }
 
-  handleImportChange( event: any ) {
+  handleImportChange = ( event: any ) => {
     const fileInput = event.target
     try {
       const reader = new FileReader()
