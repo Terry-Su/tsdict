@@ -4,8 +4,42 @@
     <meta charset="UTF-8">
     <title></title>
   </head>
+  <style>
+    html, body, iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
   <body>
+    <iframe id="tsdict"></iframe>
     Hello Electron!    
   </body>
+  <script>
+    const { app } = require('electron').remote
+    const { clipboard } = require('electron').remote
+    let text = clipboard.readText()
+    const runDict = (wordName = 'welcome') => {
+      const iframe = document.getElementById('tsdict')
+      iframe.src = `http://localhost:3600?shouldPullDataFromServer=true&serverOrigin=http://localhost:3000&searchingWord=${wordName}`
+    }
+    const watch = () => {
+      setTimeout( () => {
+        const newText = clipboard.readText()
+        if ( newText !== text ) {
+          text = newText
+          if ( newText.length <= 32 ) {
+            app.mainWindow.setAlwaysOnTop( true )
+            runDict( newText )
+            app.mainWindow.setAlwaysOnTop( false )
+          }
+        }
+        watch()
+      }, 500 )
+    }
+    runDict()
+    watch()
 
+  </script>
 </html>

@@ -8,6 +8,7 @@ import { Actions, Selectors, States } from '@/utils/decorators'
 import { SyncData } from './__typings__/app'
 import RightClickMenu from './components/RightClickMenu'
 import { reduxStore } from './entry'
+import appApi from './services/modules/appApi'
 import localStore from './store/localStore'
 
 interface Props {
@@ -15,14 +16,18 @@ interface Props {
 }
 
 
-@Actions( 'app', 'HIDE_RIGHT_CLICK_MENU', 'loadSyncData' )
 @Selectors( 'app', 'syncData' )
 @States( 'app', 'visibleRightClickMenu' )
+@Actions( 'app', 'HIDE_RIGHT_CLICK_MENU', 'SET_SEARCHING_WORD_NAME', 'loadSyncData', 'loadPulledData' )
+@Actions( 'setting', 'SET_ORIGIN' )
 export default class Test extends Component<Props> {
   syncData: SyncData
   visibleRightClickMenu: boolean
   HIDE_RIGHT_CLICK_MENU: Function
+  SET_ORIGIN: Function
+  SET_SEARCHING_WORD_NAME: Function
   loadSyncData: Function
+  loadPulledData: Function
 
 
   constructor( props ) {
@@ -37,6 +42,22 @@ export default class Test extends Component<Props> {
     reduxStore.subscribe( () => {
       localStore.setStore( this.syncData )
     } )
+    this.initializeByUrlParams()
+  }
+
+  async initializeByUrlParams() {
+    const { searchParams } = new URL( location.href )
+    const shouldPullDataFromServer = searchParams.get( 'shouldPullDataFromServer' )
+    const serverOrigin = searchParams.get( 'serverOrigin' )
+    const searchingWord = searchParams.get( 'searchingWord' )
+    if ( shouldPullDataFromServer && serverOrigin != null ) {
+      this.SET_ORIGIN( serverOrigin )
+      const data: SyncData = await appApi.pull()
+      this.loadPulledData( data )
+    }
+    if ( searchingWord != null ) {
+      this.SET_SEARCHING_WORD_NAME( searchingWord )
+    }
   }
 
   handleClick = () => {

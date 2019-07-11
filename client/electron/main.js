@@ -27,6 +27,7 @@ function createWindow () {
     slashes: true
   }))
 
+  app.mainWindow = mainWindow
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
