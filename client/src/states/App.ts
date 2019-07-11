@@ -3,8 +3,10 @@ import { SyncData } from '@/__typings__/app'
 import { TypeWord, TypeWordDegree, TypeWordNote, TypeWordReviewLevel } from '@/__typings__/word'
 import download from '@/assets/js/download'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
+import appApi from '@/services/modules/appApi'
 
 import Iframe from './Iframe'
+import Message from './Message'
 import Review from './Review'
 import Tag from './Tag'
 import Tree from './Tree'
@@ -16,6 +18,7 @@ export default class App {
   tag: Tag;
   review: Review;
   iframe: Iframe
+  message: Message
 
   searchingWordName: string = "apple";
   visibleIframe: boolean = true;
@@ -24,6 +27,9 @@ export default class App {
   rightClickMenuItems: PopupMenuItem[] = [];
   rightClickMenuPosition: Position = { x: 0, y: 0 };
   visibleRightClickMenu: boolean = false;
+
+  // # popup mode
+  isPopupDictMode: boolean = false
 
   get syncData(): SyncData {
     return {
@@ -79,6 +85,10 @@ export default class App {
   HIDE_RIGHT_CLICK_MENU = () => {
     this.visibleRightClickMenu = false
   };
+
+  // # popup dict mdoe
+  ENABLE_POPUP_DICT_MODE = () => { this.isPopupDictMode = true }
+  DISABLE_POPUP_DICT_MODE = () => { this.isPopupDictMode = false }
 
   addWordBySearchingWordName() {
     this.word.ADD_WORD( this.searchingWordName )
@@ -147,7 +157,7 @@ export default class App {
     this.SHOW_RIGHT_CLICK_MENU()
   }
 
-  saveSearchingWordToCurrentSelectedTree() {
+  async saveSearchingWordToCurrentSelectedTree() {
     const { currentSelectedTree } = this.tree
     if ( currentSelectedTree != null ) {
       if ( this.tree.isTreeTree( currentSelectedTree ) ) {
@@ -155,12 +165,15 @@ export default class App {
           this.searchingWordName,
           currentSelectedTree
         )
-        return
       } else if ( this.tree.isTagTree( currentSelectedTree ) ) {
         const tag = this.tag.getTagByName( currentSelectedTree.name )
         this.tag.addTagWordByName( tag, this.searchingWordName )
-        return
       }
+      if ( this.isPopupDictMode ) {
+        await appApi.push( this.syncData )
+        this.message.showMessage( 'Updates have already pushed to server!' )
+      }
+      return
     } else {
       return alert( `No selected folder` )
     }

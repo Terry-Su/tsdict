@@ -103,6 +103,9 @@ export default class WordPanel extends Component<Props> {
                 visibleInputSuggested && <WordPanelInputSuggested onConfirm={ this.handleConfirmInputSuggested }/>
               }
               <button onClick={ this.handleClickAddTagBtn }>+Tag</button>
+              <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
+                Add to Selected Folder
+              </button>
               </span>
             </div>
             <Note data={searchingWord.note} onChange={this.handleNoteChange} />
