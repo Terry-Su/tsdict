@@ -146,14 +146,10 @@ export default class TreeItemTree extends Component<Props> {
       {
         text: "Add Words",
         async handleClick() {
-          // const str = prompt( `Word names(seperated by 'Enter'):` )
-          // const str = await self.confirm()
-          // console.log( 'str', str )
-          console.log( self.confirm() )
-          return
-          // if ( str.trim() === '' ) { return }
-          // const wordNames = str.split( '\n' ).map( str => str.trim() )
-          // wordNames.forEach( wordName => self.addTreeWordByName( wordName, self.tree ) )
+          const str = await self.confirm( `Word names(seperated by 'Enter'):` )
+          if ( str.trim() === '' ) { return }
+          const wordNames = str.split( '\n' ).filter( str => str.trim() !== '' ).map( str => str.trim() )
+          wordNames.forEach( wordName => self.addTreeWordByName( wordName, self.tree ) )
         },
       },
       {
