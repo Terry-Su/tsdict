@@ -16,4 +16,6 @@ export interface SyncData {
   standardReviewedWordsInfoToday: StandardReviewedWordsInfoToday
   // ## iframe
   iframeLinks: TypeIframeLink[]
+  // ## setting
+  origin: string
 }

@@ -10,7 +10,7 @@ import { Actions, Selectors, States } from '@/utils/decorators'
 interface Props {}
 
 @Actions( "tree", "SET_TREE" )
-@Actions( "word", "SET_WORDS", "TOOGLE_WORD_PANEL" )
+@Actions( "word", "ADD_WORD","SET_WORDS", "TOOGLE_WORD_PANEL" )
 @Actions( "tag", "SET_TAGS" )
 @Actions(
   "app",
@@ -67,6 +67,7 @@ export default class Toolbar extends Component<Props> {
   SET_REVIEW_MODE_NONE?: Function;
   SET_TREE?: Function;
   SET_WORDS?: Function;
+  ADD_WORD?: Function;
   SET_TAGS?: Function;
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
   SHOW_DIALOG_SETTING?: Function;
@@ -79,11 +80,19 @@ export default class Toolbar extends Component<Props> {
   switchReviewWOrdReviewedType?: Function;
   switchReviewWordWhetherWithNoteType?: Function;
 
+  hanldeImportBatchClick = () => {
+    const str = prompt()
+    if ( str.trim() === '' ) { return }
+    const wordNames = str.split( '\n' ).map( str => str.trim() )
+    wordNames.forEach( wordName => this.ADD_WORD( wordName ) )
+  }
+
   handleClickPull = async () => {
     const confirmResult = confirm( 'Are your really confirm to pull data from server? Current data will be replaced by pulled data.' )
     if ( ! confirmResult ) { return }
     const data: SyncData = await appApi.pull()
     this.loadPulledData( data )
+    alert( 'Pulled Successfully!' )
   };
 
   handleClickPush = async () => {
@@ -194,7 +203,8 @@ ${strPrevious}` )
           <input type="file"  id="fileInput" name="upload" onChange={ this.handleImportChange }/>
           Import
         </label>
-        <button>Update Media</button>
+        <button onClick={this.hanldeImportBatchClick}>Import Batch</button>
+        {/* <button>Update Media</button> */}
         <button onClick={this.handleClickPull}>Pull</button>
         <button onClick={this.handleClickPush}>Push</button>
       </StyledRoot>

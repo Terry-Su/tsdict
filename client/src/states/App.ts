@@ -8,6 +8,7 @@ import appApi from '@/services/modules/appApi'
 import Iframe from './Iframe'
 import Message from './Message'
 import Review from './Review'
+import Setting from './Setting'
 import Tag from './Tag'
 import Tree from './Tree'
 import Word from './Word'
@@ -18,6 +19,7 @@ export default class App {
   tag: Tag;
   review: Review;
   iframe: Iframe
+  setting: Setting
   message: Message
 
   searchingWordName: string = "apple";
@@ -41,6 +43,7 @@ export default class App {
       standardStat                  : this.review.standardStat,
       standardReviewedWordsInfoToday: this.review.standardReviewedWordsInfoToday,
       iframeLinks                   : this.iframe.iframeLinks,
+      origin                        : this.setting.origin,
     }
   }
 
@@ -129,6 +132,10 @@ export default class App {
 
     // ## iframe
     data.iframeLinks != null && this.iframe.SET_IFRAME_LINKS( data.iframeLinks )
+
+    // ## setting
+    const origin = data.origin != null ? data.origin : location.origin
+    this.setting.SET_ORIGIN( origin )
   }
 
   loadPulledData( data: SyncData ) {

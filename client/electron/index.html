@@ -22,7 +22,7 @@
     let text = clipboard.readText()
     const runDict = (wordName = 'welcome') => {
       const iframe = document.getElementById('tsdict')
-      iframe.src = `http://localhost:3600?&isPopupDictMode=true&&serverOrigin=http://localhost:3000&searchingWord=${wordName}`
+      iframe.src = `http://localhost:3000?&isPopupDictMode=true&&serverOrigin=http://localhost:3000&searchingWord=${wordName}`
     }
     const watch = () => {
       setTimeout( () => {
