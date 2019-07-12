@@ -31,6 +31,10 @@ interface Props {
   "selectTree",
   "renameTree"
 )
+@Actions(
+  "dialog",
+  "confirm"
+)
 @Selectors( "tag", "getTagByName" )
 @Selectors(
   "tree",
@@ -62,6 +66,7 @@ export default class TreeItemTree extends Component<Props> {
   renameTree?: Function;
   addTreeWordByName?: Function;
   selectTree?: Function;
+  confirm?: Function;
 
   get tree(): TypeTree {
     return this.getTreeById( this.props.value.id ) || {}
@@ -136,6 +141,19 @@ export default class TreeItemTree extends Component<Props> {
           wordName != null &&
             notEmptyString( wordName ) &&
             self.addTreeWordByName( wordName, self.tree )
+        },
+      },
+      {
+        text: "Add Words",
+        async handleClick() {
+          // const str = prompt( `Word names(seperated by 'Enter'):` )
+          // const str = await self.confirm()
+          // console.log( 'str', str )
+          console.log( self.confirm() )
+          return
+          // if ( str.trim() === '' ) { return }
+          // const wordNames = str.split( '\n' ).map( str => str.trim() )
+          // wordNames.forEach( wordName => self.addTreeWordByName( wordName, self.tree ) )
         },
       },
       {

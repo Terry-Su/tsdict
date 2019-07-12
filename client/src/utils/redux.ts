@@ -93,13 +93,14 @@ const dispatchUpdateReduxState = value => reduxStore.dispatch( { type: 'UPDATE',
       const newFunc = ( ...args ) => {
         const alreadyUpdatedReduxState = isUpdatingReduxState
         if ( ! isUpdatingReduxState ) { isUpdatingReduxState = true }
-        func( ...args )
+        const result = func( ...args )
         const newState = getNewState( stateMap, model )
         mutableReduxState[ namespace ] = newState
         if ( ! alreadyUpdatedReduxState ) {
           isUpdatingReduxState = false
           dispatchUpdateReduxState( mutableReduxState )
         }
+        return result
       }
       model[ key ] = newFunc
     }

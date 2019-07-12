@@ -8,6 +8,7 @@ import GlobalStyle from '@/styles/GlobalStyle'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import { SyncData } from './__typings__/app'
+import DialogConfirm from './components/dialogs/DialogConfirm'
 import Message from './components/messages/Message'
 import RightClickMenu from './components/RightClickMenu'
 import { reduxStore } from './entry'
@@ -85,6 +86,7 @@ export default class Test extends Component<Props> {
         {/* # dialogs */}
         <DialogIframeSetting />
         <DialogSetting />
+        <DialogConfirm />
 
         {/* messages */}
         <Message />
