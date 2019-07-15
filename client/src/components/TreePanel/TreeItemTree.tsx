@@ -149,7 +149,9 @@ export default class TreeItemTree extends Component<Props> {
           const str = await self.confirm( `Word names(seperated by 'Enter'):` )
           if ( str.trim() === '' ) { return }
           const wordNames = str.split( '\n' ).filter( str => str.trim() !== '' ).map( str => str.trim() )
-          wordNames.forEach( wordName => self.addTreeWordByName( wordName, self.tree ) )
+          wordNames.forEach( wordName => window[ 'requestIdleCallback' ](
+            () => self.addTreeWordByName( wordName, self.tree )
+          ) )
         },
       },
       {
