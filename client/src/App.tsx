@@ -20,6 +20,7 @@ interface Props {}
 
 @Selectors( "app", "syncData" )
 @States( "app", "visibleRightClickMenu", "isPopupDictMode" )
+@States( "dialog", "visibleDialogConfirm" )
 @Actions(
   "app",
   "HIDE_RIGHT_CLICK_MENU",
@@ -33,6 +34,7 @@ export default class Test extends Component<Props> {
   syncData: SyncData;
   visibleRightClickMenu: boolean;
   isPopupDictMode: boolean;
+  visibleDialogConfirm: boolean;
   HIDE_RIGHT_CLICK_MENU: Function;
   SET_ORIGIN: Function;
   SET_SEARCHING_WORD_NAME: Function;
@@ -86,7 +88,7 @@ export default class Test extends Component<Props> {
         {/* # dialogs */}
         <DialogIframeSetting />
         <DialogSetting />
-        <DialogConfirm />
+        { this.visibleDialogConfirm && <DialogConfirm /> }
 
         {/* messages */}
         <Message />

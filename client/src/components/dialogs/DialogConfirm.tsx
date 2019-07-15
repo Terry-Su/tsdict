@@ -25,6 +25,10 @@ export default class DialogConfirm extends Component {
     tmpValue: "",
   };
 
+  componentDidMount() {
+    console.log( "componentDidMount" )
+  }
+
   handleClickConfirm = () => {
     this.SET_DIALOG_CONFIRM_VALUE( this.state.tmpValue )
     this.HIDE_DIALOG_CONFIRM()
@@ -32,23 +36,21 @@ export default class DialogConfirm extends Component {
 
   render() {
     return (
-      this.visibleDialogConfirm && (
-        <Dialog visible={this.visibleDialogConfirm} visibleCloseButton={false}>
-          <StyledRoot>
-            <p>{this.dialogConfirmDesc}</p>
-            <textarea
-              value={this.state.tmpValue}
-              onChange={e => this.setState( { tmpValue: e.target.value } )}
-            />
-            <br />
-            <div>
-              <button onClick={this.handleClickConfirm}>Confirm</button>
-              &nbsp;
-              <button onClick={() => this.HIDE_DIALOG_CONFIRM()}>Cancel</button>
-            </div>
-          </StyledRoot>
-        </Dialog>
-      )
+      <Dialog visible={this.visibleDialogConfirm} visibleCloseButton={false}>
+        <StyledRoot>
+          <p>{this.dialogConfirmDesc}</p>
+          <textarea
+            value={this.state.tmpValue}
+            onChange={e => this.setState( { tmpValue: e.target.value } )}
+          />
+          <br />
+          <div>
+            <button onClick={this.handleClickConfirm}>Confirm</button>
+            &nbsp;
+            <button onClick={() => this.HIDE_DIALOG_CONFIRM()}>Cancel</button>
+          </div>
+        </StyledRoot>
+      </Dialog>
     )
   }
 }
