@@ -149,9 +149,15 @@ export default class TreeItemTree extends Component<Props> {
           const str = await self.confirm( `Word names(seperated by 'Enter'):` )
           if ( str.trim() === '' ) { return }
           const wordNames = str.split( '\n' ).filter( str => str.trim() !== '' ).map( str => str.trim() )
-          wordNames.forEach( wordName => window[ 'requestIdleCallback' ](
-            () => self.addTreeWordByName( wordName, self.tree )
-          ) )
+          const runByIndex = ( index: number ) => window[ 'requestIdleCallback' ](
+            () => {
+              const wordName = wordNames[ index ]
+              if ( wordName == null ) { return }
+              self.addTreeWordByName( wordName, self.tree )
+              runByIndex( index + 1 )
+            }
+          ) 
+          runByIndex( 0 )
         },
       },
       {
