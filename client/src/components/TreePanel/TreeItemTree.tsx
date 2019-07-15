@@ -31,10 +31,7 @@ interface Props {
   "selectTree",
   "renameTree"
 )
-@Actions(
-  "dialog",
-  "confirm"
-)
+@Actions( "dialog", "confirm" )
 @Selectors( "tag", "getTagByName" )
 @Selectors(
   "tree",
@@ -147,16 +144,23 @@ export default class TreeItemTree extends Component<Props> {
         text: "Add Words",
         async handleClick() {
           const str = await self.confirm( `Word names(seperated by 'Enter'):` )
-          if ( str.trim() === '' ) { return }
-          const wordNames = str.split( '\n' ).filter( str => str.trim() !== '' ).map( str => str.trim() )
-          const runByIndex = ( index: number ) => window[ 'requestIdleCallback' ](
-            () => {
-              const wordName = wordNames[ index ]
-              if ( wordName == null ) { return }
-              self.addTreeWordByName( wordName, self.tree )
-              runByIndex( index + 1 )
-            }
-          ) 
+          if ( str.trim() === "" ) {
+            return
+          }
+          const wordNames = str
+            .split( "\n" )
+            .filter( str => str.trim() !== "" )
+            .map( str => str.trim() )
+          const runByIndex = ( index: number ) => window[ "requestIdleCallback" ]( () => {
+              setTimeout( () => {
+                const wordName = wordNames[ index ]
+                if ( wordName == null ) {
+                  return
+                }
+                self.addTreeWordByName( wordName, self.tree )
+                runByIndex( index + 1 )
+              }, 0 )
+            } )
           runByIndex( 0 )
         },
       },
@@ -206,7 +210,8 @@ export default class TreeItemTree extends Component<Props> {
       }
     }
 
-    rightClickItems.length > 0 && this.showRightClickMenu( rightClickItems, event )
+    rightClickItems.length > 0 &&
+      this.showRightClickMenu( rightClickItems, event )
   };
 
   render() {
