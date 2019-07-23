@@ -16,14 +16,23 @@
     <iframe id="tsdict"></iframe>
     Hello Electron!    
   </body>
+  <script src="config.js"></script>
   <script>
     const { app } = require('electron').remote
     const { clipboard } = require('electron').remote
     let text = clipboard.readText()
+    const iframe = document.getElementById('tsdict')
+    const currentOrigin = window['tsdictOrigin']
     const runDict = (wordName = 'welcome') => {
-      const iframe = document.getElementById('tsdict')
-      iframe.src = `http://localhost:3000?&isPopupDictMode=true&&serverOrigin=http://localhost:3000&searchingWord=${wordName}`
+      iframe.src = `${currentOrigin}?&isPopupDictMode=true&searchingWord=${wordName}&serverOrigin=${currentOrigin}`
     }
+
+    const update = (searchingWordName) => {
+      iframe.contentWindow.postMessage( {
+        searchingWordName
+      }, "*" )
+    }
+    
     const watch = () => {
       setTimeout( () => {
         const newText = clipboard.readText()
@@ -31,7 +40,8 @@
           text = newText
           if ( newText.length <= 32 ) {
             app.mainWindow.setAlwaysOnTop( true )
-            runDict( newText )
+            // runDict( newText )
+            update( newText )
             app.mainWindow.setAlwaysOnTop( false )
           }
         }
