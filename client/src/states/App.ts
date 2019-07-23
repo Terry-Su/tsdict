@@ -22,7 +22,7 @@ export default class App {
   setting: Setting
   message: Message
 
-  searchingWordName: string = "apple";
+  searchingWordName: string = "";
   visibleIframe: boolean = true;
 
   // # right click menu

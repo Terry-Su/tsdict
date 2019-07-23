@@ -62,14 +62,15 @@ export default class Test extends Component<Props> {
     const serverOrigin = searchParams.get( "serverOrigin" )
     const searchingWord = searchParams.get( "searchingWord" )
     const isPopupDictMode = searchParams.get( "isPopupDictMode" )
-    if ( serverOrigin != null ) {
-      this.SET_ORIGIN( serverOrigin )
-    }
+
     if ( isPopupDictMode != null ) {
       this.ENABLE_POPUP_DICT_MODE()
 
       const data: SyncData = await appApi.pull()
       this.loadPulledData( data )
+    }
+    if ( serverOrigin != null ) {
+      this.SET_ORIGIN( serverOrigin )
     }
     if ( searchingWord != null ) {
       this.SET_SEARCHING_WORD_NAME( searchingWord )
