@@ -70,8 +70,12 @@ export default class TreeItemWord extends Component<Props> {
   }
 
   onClick = () => {
-    this.selectWord( this.props.value.id, this.parentTree )
     this.SET_SEARCHING_WORD_NAME( this.word.name )
+    const { requestIdleCallback } = window as any
+    !requestIdleCallback && this.selectWord( this.props.value.id, this.parentTree )
+    if ( requestIdleCallback ) {
+      requestIdleCallback( () => this.selectWord( this.props.value.id, this.parentTree ) )
+    }
   };
 
   handleRightClick = ( event: MouseEvent ) => {
