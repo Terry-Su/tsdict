@@ -80,6 +80,10 @@ export default class TreeItemTree extends Component<Props> {
     )
   }
 
+  get label(): string {
+    return `${this.tree.name} ${this.tree.nodes.length}`
+  }
+
   handleClick = () => {
     this.selectTree( this.props.value.id )
     this.RESET_REVIEWD_IN_SELECTED_TREE()
@@ -220,7 +224,7 @@ export default class TreeItemTree extends Component<Props> {
       <TreeItemBase
         type={TreeItemType.Tree}
         icon="T"
-        text={this.tree.name}
+        text={this.label}
         columnIndex={columnIndex}
         isSelected={this.isSelected}
         onClick={this.handleClick}
