@@ -50,7 +50,7 @@ export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
       if (
         word.reviewLevel === targetWord.reviewLevel &&
         word.nextReviewTime <= now &&
-        word.nextReviewTime < targetWord.nextReviewTime
+        word.nextReviewTime >= targetWord.nextReviewTime
       ) {
         targetWord = word
       }
