@@ -42,13 +42,13 @@ export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
         continue
       }
       // # words with lower level first
-      if ( word.reviewLevel < targetWord.reviewLevel ) {
-        targetWord = word
-        continue
-      }
+      // if ( word.reviewLevel < targetWord.reviewLevel ) {
+      //   targetWord = word
+      //   continue
+      // }
       // # for words with same level, ones with earlier review time first
       if (
-        word.reviewLevel === targetWord.reviewLevel &&
+        // word.reviewLevel === targetWord.reviewLevel &&
         word.nextReviewTime <= now &&
         word.nextReviewTime >= targetWord.nextReviewTime
       ) {
