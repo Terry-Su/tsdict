@@ -196,7 +196,7 @@ ${strPrevious}` )
         <button onClick={() => this.export()}>Export</button>
         
         <label className="importInputLabel">
-          <input type="file"  id="fileInput" name="upload" onChange={ this.handleImportChange }/>
+          <input type="file"  className="fileInput" name="upload" onChange={ this.handleImportChange }/>
           Import
         </label>
         {/* <button>Update Media</button> */}
@@ -208,5 +208,12 @@ ${strPrevious}` )
 }
 
 const StyledRoot = styled.div`
-    
+  .importInputLabel {
+    padding: 2px 4px;
+    background: #dfdfdf;
+    border: 1px solid grey;
+    .fileInput {
+      display: none;
+    }
+  }
 `
