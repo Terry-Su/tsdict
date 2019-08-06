@@ -184,6 +184,7 @@ export default class Review {
       this.SET_REVIEW_MODE_STANDARD()
       this.HIDE_REVIEWING_WORD_CONTENT()
       this.tree.HIDE_TREE_PANEL()
+      this.app.pronunceSearchingWord()
     } else {
       alert( 'No words to review temporarily' )
     }
@@ -194,6 +195,7 @@ export default class Review {
     if ( nextStandardReviewWord != null ) {
       this.app.SET_SEARCHING_WORD_NAME( nextStandardReviewWord.name )
       this.HIDE_REVIEWING_WORD_CONTENT()
+      this.app.pronunceSearchingWord()
     } else {
       alert( 'No words to review temporarily' )
       this.SET_REVIEW_MODE_NONE()

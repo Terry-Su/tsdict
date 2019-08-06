@@ -8,8 +8,10 @@ interface Props {
 }
 
 @States( "app", "searchingWordName" )
+@Actions( "app", "SET_PRONUNCIATION_PLAYER" )
 export default class Pronunciation extends Component<Props> {
   searchingWordName?: string
+  SET_PRONUNCIATION_PLAYER?: Function
 
   audioRef: any = React.createRef()
 
@@ -25,7 +27,17 @@ export default class Pronunciation extends Component<Props> {
     ]
   }
 
-  handleClickButton = () => {
+  get youdaoUrls(): string[] {
+    const { searchingWordName } = this
+    const url = `http://dict.youdao.com/dictvoice?audio=${searchingWordName}&type=2` 
+    return [ url ]
+  }
+
+  componentDidMount() {
+    this.SET_PRONUNCIATION_PLAYER( this.audioRef.current )
+  }
+
+  handleHoverButton = () => {
     if ( this.audioRef && this.audioRef.current ) {
       this.audioRef.current.load()
       this.audioRef.current.play()
@@ -35,8 +47,11 @@ export default class Pronunciation extends Component<Props> {
   render() {
     return (
       <StyledRoot>
-        <button onClick={ this.handleClickButton }>Speak</button>
+        <button onClick={ this.handleHoverButton } onMouseOver={ this.handleHoverButton }>Speak</button>
         <audio ref={this.audioRef} controls>
+            {
+              this.youdaoUrls.map( ( url, index ) => <source key={ index } src={ url } /> )
+            }
             {
               this.cambridgeUrls.map( ( url, index ) => <source key={ index } src={ url } /> )
             }

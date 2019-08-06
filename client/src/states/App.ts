@@ -33,6 +33,9 @@ export default class App {
   // # popup mode
   isPopupDictMode: boolean = false
 
+  // # pronunciation player
+  pronunciationPlayer = null
+
   get syncData(): SyncData {
     return {
       words                         : this.word.words,
@@ -92,6 +95,10 @@ export default class App {
   // # popup dict mdoe
   ENABLE_POPUP_DICT_MODE = () => { this.isPopupDictMode = true }
   DISABLE_POPUP_DICT_MODE = () => { this.isPopupDictMode = false }
+
+
+  // # pronunciation player
+  SET_PRONUNCIATION_PLAYER = value => { this.pronunciationPlayer = value }
 
   addWordBySearchingWordName() {
     this.word.ADD_WORD( this.searchingWordName )
@@ -185,6 +192,14 @@ export default class App {
       return alert( `No selected folder` )
     }
     alert( `Folder: "${ currentSelectedTree.name }" cannot be used for saving words` )
+  }
+
+  // # pronunciation player
+  pronunceSearchingWord() {
+    if ( this.pronunciationPlayer ) {
+      this.pronunciationPlayer.load() 
+      this.pronunciationPlayer.play()  
+    }
   }
 
   
