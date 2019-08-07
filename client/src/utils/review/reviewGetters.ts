@@ -9,11 +9,16 @@ import { getRandomArrayElement } from '../js'
 let shouldReviewingNewWord: boolean = false
 export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
   // # words without `reviewLevel`
-  const wordsWithoutReviewLevel = words.filter(
-    word => word.reviewLevel == null
-  )
+  let wordsWithoutReviewLevel = []
+  let wordsWithReviewLevel = []
+  words.forEach( word => {
+    if ( word.reviewLevel == null ) {
+      wordsWithoutReviewLevel.push( word )
+    } else {
+      wordsWithReviewLevel.push( word )
+    }
+  } )
   const existWordsWithoutReviewLevel = wordsWithoutReviewLevel.length > 0
-  const wordsWithReviewLevel = words.filter( word => word.reviewLevel != null )
   const existWordsWithReviewLevel = wordsWithReviewLevel.length > 0
   const getTargetWordWithReviewLevel = ( words: TypeWord[] ) => {
     // # get the word whose next review time
