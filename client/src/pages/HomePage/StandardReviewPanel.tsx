@@ -14,20 +14,39 @@ interface Props {}
 'standardReviewWordKnown',
 'standardReviewWordUnfamiliar',
 )
+@Actions( "app", "pronunceSearchingWord" )
 export default class StandardReviewPanel extends Component<Props> {
   visibleReviewingWordContent?: boolean;
   SHOW_REVIEWING_WORD_CONTENT?: Function;
   standardReviewWordFamiliar?: Function;
   standardReviewWordKnown?: Function;
   standardReviewWordUnfamiliar?: Function;
+  pronunceSearchingWord?: Function;
 
   componentDidMount() {
     
   }
 
+  handleKeyPress = ( { charCode, altKey } ) => {
+    console.log( { charCode } )
+    // if ( altKey ) {
+      if ( charCode === 49 ) {
+        this.SHOW_REVIEWING_WORD_CONTENT()
+      } else if ( charCode === 50 ) {
+        this.standardReviewWordFamiliar()
+      } else if ( charCode === 51 ) {
+        this.standardReviewWordKnown()
+      } else if ( charCode === 52 ) {
+        this.standardReviewWordUnfamiliar()
+      } else if ( charCode === 53 ) {
+        this.pronunceSearchingWord()
+      }
+    // }
+  }
+
   render() {
     return (
-      <StyledRoot>
+      <StyledRoot onKeyPress={this.handleKeyPress} tabIndex={1}>
         <div className="featurePanel">
           <button onClick={() => this.standardReviewWordFamiliar()}>
             Familiar

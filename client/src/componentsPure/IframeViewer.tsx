@@ -35,7 +35,7 @@ export default class IframeViewer extends Component<Props, State> {
           {
             !isFullScreen && <button onClick={ this.onFullScreenButtonClick }>F</button>
           }
-          <iframe src={src} frameBorder="0" />
+          <iframe src={src} frameBorder="0" tabIndex={-1}/>
       </StyledRoot>
     )
   }
