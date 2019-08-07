@@ -212,6 +212,27 @@ export default class Tree {
     return this.currentSelectedTreeWordIds.map( wordId => this.word.words.find( word => word.id === wordId ) )
   }
 
+  get currentSelectedTreeRecursivelyChildrenWords(): TypeWord[] {
+    let wordIds: TypeId[] = [] 
+    const { currentSelectedTree } = this
+    if ( currentSelectedTree ) {
+      const recur = ( tree: TypeTree ) => {
+        if ( tree.nodes && tree.nodes.length > 0 ) {
+          const childWordIds: TypeId[] = <TypeId[]>tree.nodes.filter( isTreeNodeWord )
+          if ( childWordIds.length > 0 ) {
+            wordIds = wordIds.concat( childWordIds )
+          }
+          const childTrees = tree.nodes.filter( isTreeNodeTree )
+          childTrees.forEach( recur )
+        }
+      }
+      recur( currentSelectedTree )
+    }
+    const res = wordIds.map( wordId => this.word.words.find( word => word.id === wordId ) )
+    return res
+  }
+
+
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree
   };

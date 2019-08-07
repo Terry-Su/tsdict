@@ -52,7 +52,7 @@ export default class Review {
   }
 
   get potentialReivewWords(): TypeWord[] {
-    const res1 = this.onlyWorksInSelectedTree ? this.tree.currentSelectedTreeWords : this.word.words
+    const res1 = this.onlyWorksInSelectedTree ? this.tree.currentSelectedTreeRecursivelyChildrenWords : this.word.words
     const T1 = ReviewWordWhetherWithNoteType
     const res2Map = {
       [ T1.WITH_AND_WITHOUT ]: res1,
