@@ -107,6 +107,7 @@ export default class Toolbar extends Component<Props> {
     const { dayMap } = this.standardStat
     const { today, wordIds } = this.standardReviewedWordsInfoToday
 
+    console.log( dayMap )
     let strToday = `Reviewed words today: ${wordIds.length}`
     
     // # previous reviewed words stat

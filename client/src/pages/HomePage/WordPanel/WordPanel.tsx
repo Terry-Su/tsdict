@@ -9,6 +9,7 @@ import Degree from '@/componentsPure/Degree/Degree'
 import IframeViewer from '@/componentsPure/IframeViewer'
 import InputSuggested from '@/componentsPure/InputSuggested/InputSuggested'
 import { Actions, Selectors, States } from '@/utils/decorators'
+import { CalcTree } from '@/utils/getters/tree'
 
 import WordPanelInputSuggested from './WordPanelInputSuggested'
 
@@ -26,6 +27,7 @@ interface Props {}
 @Selectors( "app", "searchingWord", "searchWordTags" )
 @States( "app", "searchingWordName", "visibleIframe" )
 @States( "word", "visibleWordPanel" )
+@Selectors( "tree", "rootCalcTree" )
 export default class WordPanel extends Component<Props> {
   state = {
     visibleInputSuggested: false,
@@ -38,6 +40,7 @@ export default class WordPanel extends Component<Props> {
   searchingWord?: TypeWord;
   words?: TypeWord[];
   selectTag?: Function;
+  rootCalcTree?: CalcTree;
   addWordBySearchingWordName?: Function;
   updateSearchingWordNote?: Function;
   deleteSearchingWord?: Function;
@@ -73,6 +76,11 @@ export default class WordPanel extends Component<Props> {
 
   handleConfirmInputSuggested = () => {
     this.setState( { visibleInputSuggested: false } )
+  }
+
+  handleClickShowTrees = () => {
+    const trees = this.rootCalcTree.queryTreesByWordId( this.searchingWord.id )
+    alert( trees.map( tree => tree.pathName ).join( '\n\n' ) )
   }
 
   render() {
@@ -111,6 +119,7 @@ export default class WordPanel extends Component<Props> {
             <Note data={searchingWord.note} onChange={this.handleNoteChange} />
             <button onClick={this.handleDeleteClick}>Delete</button>
             <button>Reset Review(Current Review Level: { searchingWord.reviewLevel })</button>
+            <button onClick={ this.handleClickShowTrees }>Show Trees</button>
           </>
         )}
         {this.visibleIframe && (

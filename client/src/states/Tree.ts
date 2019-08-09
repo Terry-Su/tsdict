@@ -106,6 +106,10 @@ export default class Tree {
     return tree
   }
 
+  get rootCalcTree(): CalcTree {
+    return new CalcTree( this.tree )
+  }
+
   get composedTree(): TypeTree {
     const nodes = [ this.allWordsTree, this.tree, this.tagTrees ].filter(
       v => v != null

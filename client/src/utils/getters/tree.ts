@@ -1,4 +1,4 @@
-import { TreeNode, TypeId, TypeTree } from '@/__typings__'
+import { TreeNode, TypeId, TypeTree, WordId } from '@/__typings__'
 import { TreeItemType } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
 
@@ -25,6 +25,14 @@ export class CalcTree {
     }
   }
 
+  get wordNodes(): CalcTree[] {
+    return this.nodes.filter( node => node.type === TreeItemType.Word )
+  } 
+
+  get treeNodes(): CalcTree[] {
+    return this.nodes.filter( node => node.type === TreeItemType.Tree )
+  }
+
   get selections() {
     let res = [ {
       id  : this.id,
@@ -43,6 +51,18 @@ export class CalcTree {
     return res
   }
 
+  get pathName(): string {
+    let trees: CalcTree[] = [ this ]
+    const recur = ( tree: CalcTree ) => {
+      if ( tree.parent != null ) {
+        trees.unshift( tree.parent )
+        recur( tree.parent )
+      }
+    }
+    recur( this )
+    return trees.map( tree => tree.name ).join( '/' )
+  }
+
   getCalcTreeByTreeId( id: TypeId ): CalcTree {
     let res = null
     const recur = ( tree: CalcTree ) => {
@@ -51,6 +71,20 @@ export class CalcTree {
             res = tree
          }
          res == null && tree.nodes.forEach( recur )
+      }
+    }
+    recur( this )
+    return res
+  }
+
+  queryTreesByWordId( wordId: WordId ) {
+    let res: CalcTree[] = []
+    const recur = ( tree: CalcTree ) => {
+      const hasFound = tree.wordNodes.length > 0 && tree.wordNodes.some( node => node.id === wordId )
+      if ( hasFound ) {
+        res.push( tree )
+      } else {
+        tree.treeNodes.forEach( recur )
       }
     }
     recur( this )

@@ -27,7 +27,7 @@ export default class StandardReviewPanel extends Component<Props> {
     
   }
 
-  handleKeyPress = ( { charCode, altKey } ) => {
+  handleReviewButtonSectionKeyPress = ( { charCode, altKey } ) => {
     console.log( { charCode } )
     // if ( altKey ) {
       if ( charCode === 49 ) {
@@ -46,8 +46,8 @@ export default class StandardReviewPanel extends Component<Props> {
 
   render() {
     return (
-      <StyledRoot onKeyPress={this.handleKeyPress} tabIndex={1}>
-        <div className="featurePanel">
+      <StyledRoot>
+        <div onKeyPress={this.handleReviewButtonSectionKeyPress} className="featurePanel" tabIndex={0}>
           <button onClick={() => this.standardReviewWordFamiliar()}>
             Familiar
           </button>
