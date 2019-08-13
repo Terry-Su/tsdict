@@ -10,6 +10,7 @@ import IframeViewer from '@/componentsPure/IframeViewer'
 import InputSuggested from '@/componentsPure/InputSuggested/InputSuggested'
 import { Actions, Selectors, States } from '@/utils/decorators'
 import { CalcTree } from '@/utils/getters/tree'
+import { debounce } from '@/utils/lodash'
 
 import WordPanelInputSuggested from './WordPanelInputSuggested'
 
@@ -58,9 +59,10 @@ export default class WordPanel extends Component<Props> {
     confirmd && this.deleteSearchingWord()
   };
 
-  handleNoteChange = ( newNote: TypeWordNote ) => {
+  handleNoteChange = debounce( ( newNote: TypeWordNote ) => {
+    console.log( newNote )
     this.updateSearchingWordNote( newNote )
-  };
+  }, 600 )
 
   handleDegreeChange = ( newDegree: TypeWordDegree ) => {
     this.updateSearchingWordReviewLevel( newDegree )
