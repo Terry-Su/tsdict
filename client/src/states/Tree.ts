@@ -19,7 +19,7 @@ export default class Tree {
   tag: Tag;
   review: Review;
 
-  tree: TypeTree = null
+  tree: TypeTree = this.createTree( 'Root' )
   selections: TreeSelection[] = [];
   lastSelections: TreeSelection[] = [];
 

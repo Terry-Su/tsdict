@@ -2,7 +2,7 @@ import { TreeNode, TypeId, TypeTree, WordId } from '@/__typings__'
 import { TreeItemType } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
 
-export const isTreeNodeTree = ( tree: TreeNode ) => typeof tree === 'object'
+export const isTreeNodeTree = ( tree: TreeNode ) => tree != null && typeof tree === 'object'
 export const isTreeNodeWord = ( tree: TreeNode ) => ! isTreeNodeTree( tree )
 
 export class CalcTree {

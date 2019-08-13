@@ -123,7 +123,7 @@ export default class App {
   // # pull and push
   loadSyncData( data: SyncData ) {
     this.word.SET_WORDS( data.words )
-    this.tree.SET_TREE( data.tree )
+    this.tree.SET_TREE( data.tree || this.tree.createTree( 'Root' ) )
     this.tag.SET_TAGS( data.tags )
 
     // # app state
