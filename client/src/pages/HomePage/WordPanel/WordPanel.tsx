@@ -60,7 +60,6 @@ export default class WordPanel extends Component<Props> {
   };
 
   handleNoteChange = debounce( ( newNote: TypeWordNote ) => {
-    console.log( newNote )
     this.updateSearchingWordNote( newNote )
   }, 600 )
 

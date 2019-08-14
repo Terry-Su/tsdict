@@ -125,11 +125,12 @@ export default class Note extends Component<Props> {
     this.quill.setContents( data )
   }
 
-  componentDidUpdate() {
+  componentDidUpdate( prevProps ) {
     const { data } = this.props
     if ( data == null ) {
       this.quill.setContents( data )
     } else if (
+      prevProps.data !== this.props.data &&
       JSON.stringify( data ) !== JSON.stringify( this.quill.getContents() )
     ) {
       const cachedSelection = this.selection

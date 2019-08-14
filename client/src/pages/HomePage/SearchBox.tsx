@@ -24,7 +24,7 @@ export default class SearchBox extends Component<Props> {
     }
   }
 
-  debouncedSetSearchingWordName = debounce( value => this.SET_SEARCHING_WORD_NAME( value ), 200 )
+  debouncedSetSearchingWordName = debounce( value => this.SET_SEARCHING_WORD_NAME( value ), 400 )
 
   onChange =  ( event ) => {
     this.setState( { valueProxy: event.target.value }, () => {
