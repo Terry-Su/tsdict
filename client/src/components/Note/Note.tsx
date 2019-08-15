@@ -117,7 +117,7 @@ export default class Note extends Component<Props> {
 
     const { onChange, data } = this.props
 
-    quill.on( "text-change", () => {
+    quill.on( "text-change", ( a, b, c ) => {
       const content = quill.getContents()
       onChange && onChange( content )
     } )

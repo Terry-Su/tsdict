@@ -99,7 +99,7 @@ export default class Test extends Component<Props> {
   }
 
   handleClick = () => {
-    this.HIDE_RIGHT_CLICK_MENU()
+    this.visibleRightClickMenu && this.HIDE_RIGHT_CLICK_MENU()
   };
   render() {
     return (

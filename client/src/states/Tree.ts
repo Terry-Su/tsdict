@@ -236,6 +236,24 @@ export default class Tree {
     return res
   }
 
+  get getTreeRecursiveChidlrenWordNodesNotReviewedLength() {
+    return ( tree: TypeTree ): number => {
+      let res = 0
+      const recur = ( tree: TypeTree ) => {
+        tree.nodes.filter( isTreeNodeWord ).forEach( wordId => {
+          const word = this.word.words.find( item => item.id === wordId )
+          console.log( word.degree )
+          if ( word && ( word.degree == null || word.degree === 0 ) ) {
+            res++
+          }
+        } )
+        tree.nodes.filter( isTreeNodeTree ).forEach( recur )
+      }
+      recur( tree )
+      return res
+    }
+  }
+
 
   SET_TREE = ( tree: TypeTree ) => {
     this.tree = tree

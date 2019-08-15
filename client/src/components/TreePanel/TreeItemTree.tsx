@@ -6,6 +6,7 @@ import { TreeItemType, TreeSelection, TypeTreeItem } from '@/__typings__/tree'
 import { TREE_ALL_WORDS, TREE_TAG_ROOT } from '@/constants/ids'
 import { Actions, Selectors, States } from '@/utils/decorators'
 import { notEmptyString } from '@/utils/getters'
+import { CalcTree } from '@/utils/getters/tree'
 
 import TreeItemBase from './TreeItemBase'
 
@@ -42,10 +43,13 @@ interface Props {
   "isTagRootTree",
   "isTreeRootTree"
 )
-@States( "tree", "selections" )
-export default class TreeItemTree extends Component<Props> {
+@States( "tree", "selections",  )
+@Selectors( "tree", "rootCalcTree", "getTreeRecursiveChidlrenWordNodesNotReviewedLength" )
+export default class TreeItemTree extends React.PureComponent<Props> {
   selections?: TreeSelection[];
   tagTreeIds?: TypeId[];
+  rootCalcTree?: CalcTree;
+  getTreeRecursiveChidlrenWordNodesNotReviewedLength?: Function;
   SET_TAG_NAME?: Function;
   DELETE_TAG?: Function;
   addTagWordByName?: Function;
@@ -79,6 +83,10 @@ export default class TreeItemTree extends Component<Props> {
         selection.id === this.props.value.id
     )
   }
+
+  // get recursiveChidlrenWordNodesNotReviewedLength(): number {
+  //   return this.getTreeRecursiveChidlrenWordNodesNotReviewedLength( this.tree )
+  // }
 
   get label(): string {
     return `${this.tree.name} ${this.tree.nodes.length}`
