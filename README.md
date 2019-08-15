@@ -1,2 +1,2 @@
 # tsdict
-An flexible and abundant dict
+A flexible and abundant dict
