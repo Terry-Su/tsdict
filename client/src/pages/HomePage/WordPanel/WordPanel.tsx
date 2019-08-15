@@ -115,12 +115,12 @@ export default class WordPanel extends Component<Props> {
               <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
                 Add to Selected Folder
               </button>
+              <button>Reset Review(Current Review Level: { searchingWord.reviewLevel })</button>
+              <button onClick={ this.handleClickShowTrees }>Show Trees</button>
+              <button onClick={this.handleDeleteClick}>Delete</button>
               </span>
             </div>
             <Note data={searchingWord.note} onChange={this.handleNoteChange} />
-            <button onClick={this.handleDeleteClick}>Delete</button>
-            <button>Reset Review(Current Review Level: { searchingWord.reviewLevel })</button>
-            <button onClick={ this.handleClickShowTrees }>Show Trees</button>
           </>
         )}
         {this.visibleIframe && (

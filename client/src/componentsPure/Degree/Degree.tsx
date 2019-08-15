@@ -66,6 +66,8 @@ export default class Degree extends Component<Props> {
 }
 
 const StyledRoot = styled.span`
+  display: inline-block;
+  width: 125px;
   svg {
     cursor: pointer;
   }

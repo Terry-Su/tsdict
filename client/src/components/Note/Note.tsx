@@ -36,6 +36,14 @@ export default class Note extends Component<Props> {
     return this.quill.getSelection()
   }
 
+  get content(): any {
+    return this.quill && this.quill.getContents()
+  }
+
+  get isEmptyContent(): boolean {
+    return this.content == null || ( this.content.ops && [ '↵', '\n' ].some( char => char === this.content.ops[ 0 ].insert ) )
+  }
+
   componentDidMount() {
     this.initQuill()
     this.editor.addEventListener( "paste", this.listenerPaste )
@@ -46,7 +54,7 @@ export default class Note extends Component<Props> {
     let { items } = event.clipboardData || event.originalEvent.clipboardData
     let blob = null
     for ( let item of items ) {
-      console.log( item.type )
+      // console.log( item.type )
       if ( item.type.indexOf( "image" ) === 0 ) {
         blob = item.getAsFile()
       }
@@ -141,7 +149,7 @@ export default class Note extends Component<Props> {
   render() {
     return (
       <StyledRoot>
-        <div ref={this.toolbarRef}>
+        <div ref={this.toolbarRef} hidden={this.isEmptyContent}>
           <span className="ql-formats">
             <button className="ql-bold" />
             <button className="ql-italic" />
@@ -162,5 +170,6 @@ const StyledRoot = styled.div`
 
   .editor {
     font-size: 16px;
+    border: 1px solid grey;
   }
 `
