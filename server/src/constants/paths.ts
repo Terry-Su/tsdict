@@ -19,6 +19,7 @@ export const STORE_BACKUP_IMAGE = resolve( STORE_ROOT, 'backupImage' )
 export const STORE_AUDIO = resolve( STORE_ROOT, 'audio' )
 export const STORE_VIDEO = resolve( STORE_ROOT, 'video' )
 export const STORE_DICTS = resolve( STORE_ROOT, 'dicts' )
+export const STORE_DOWNLOAD_DICT_PAGES = resolve( STORE_ROOT, 'dictPages' )
 export const STORE_CURRENT_DATA_FILE = resolve( STORE_ROOT, 'clientData.json' )
 export const STORE_CURRENT_DATA_FILE_RENAME_IMAGE = resolve( STORE_ROOT, 'clientData-rename-image.json' )
 export const STORE_CURRENT_DATA_FILE_UPDATE_WORD_ID = resolve( STORE_ROOT, 'clientData-update-word-id.json' )
@@ -77,7 +78,8 @@ export const GET_STORE_AUDIO_FILES = () => GLOB.sync( `${STORE_AUDIO}/**/*` )
 
 export const GET_STORE_VIDEO_FILES = () => GLOB.sync( `${STORE_VIDEO}/**/*` )
 
-
+// # dict url
+export const PATH_DICT_URL_TXT = resolve( __dirname, '../../dictUrl.txt' )
 
 
 

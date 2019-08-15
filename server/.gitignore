@@ -4,6 +4,9 @@ build
 dist
 bundle.js
 
+# dict url
+dictUrl.txt
+
 # Dependencies
 node_modules
 
@@ -12,7 +15,6 @@ node_modules
 
 # system
 .DS_Store
-
 
 
 

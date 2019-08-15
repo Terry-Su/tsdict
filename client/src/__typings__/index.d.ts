@@ -28,14 +28,13 @@ export type Tree = {
 export type TypeTree = Tree
 
 export interface ClientData {
-  // words: DictDataWord[]
+  words: DictDataWord[]
   // onlineLinks: OnlineLink[],
-  // tags: Tag[]
-  // tree: Tree
-  app: AppState,
-  core: CoreState,
-  setting: SettingState,
-  
+  tags: Tag[]
+  tree: Tree
+  // app: AppState,
+  // core: CoreState,
+  // setting: SettingState,
 }
 
 export interface OnlineLink {

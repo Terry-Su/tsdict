@@ -11,12 +11,14 @@ import { backup, cleanUselessMedias, updateMedia, pasteImage } from './actions'
 import {
     CLIENT_PUBLIC, CLIENT_PUBLIC_APP_CACHE, CLIENT_PUBLIC_INDEX, GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
     GET_STORE_IMAGE_FILES, GET_URL_RELATIVE_TO_STORE_ROOT, RELATIVE_PHONETIC_SYMBOLS_FILE,
-    STORE_CURRENT_DATA_FILE, STORE_PHONETIC_SYMBOLS_FILE, STORE_ROOT, DICT_WEBSTER
+    STORE_CURRENT_DATA_FILE, STORE_PHONETIC_SYMBOLS_FILE, STORE_ROOT, DICT_WEBSTER, PATH_DICT_URL_TXT
 } from './constants/paths'
 import { getImageUrls } from './getters'
 import isBase64Url from './utils/isBase64Url'
 import { notNil } from './utils/lodash'
 import outputBase64Media from './utils/outputBase64Media'
+import fetch from 'isomorphic-fetch'
+import { JSDOM } from 'jsdom'
 
 app.use( express.static( STORE_ROOT ) )
 app.use( express.static( CLIENT_PUBLIC ) )
@@ -144,4 +146,19 @@ app.post( "/updateMedias", ( req: express.Request, res: express.Response ) => {
 app.get( '/fetchPhoneticSymbol', ( req, res ) => {
   const data = FS.readJsonSync( STORE_PHONETIC_SYMBOLS_FILE )
   res.send( data || [] )
+} )
+
+// # dicts
+app.get( '/word', async ( req, res ) => {
+  let dictUrl = ''
+  try {
+    dictUrl = FS.readFileSync( PATH_DICT_URL_TXT, { encoding: 'utf8' } )
+  } catch ( e ) {}
+  const word = req.query.word
+  const composedUrl = `${dictUrl}/${word}`
+  const html = await fetch( composedUrl ).then( response => response.text() )
+  const dom = new JSDOM( html )
+  const { document } = dom.window
+  const dictionaryDom = document.getElementsByClassName( 'dictionary' )[ 0 ]
+  res.send( `${document.head.outerHTML}\n${dictionaryDom.outerHTML}` )
 } )
