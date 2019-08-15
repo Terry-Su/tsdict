@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import express from 'express'
 import FS from 'fs-extra'
-import { STORE_DOWNLOAD_DICT_PAGES, STORE_CURRENT_DATA_FILE } from '../src/constants/paths'
+import { STORE_DOWNLOAD_DICT_PAGES, STORE_CURRENT_DATA_FILE, PATH_DICT_URL_TXT } from '../src/constants/paths'
 import PATH from 'path'
 import GLOB from 'glob'
 import { ClientData } from '../../client/src/__typings__'
@@ -36,10 +36,15 @@ const usefulWordNames = wordNames.filter( wordName => ! fileNames.includes( enco
   ( async () => {
     let count = 0
     let total = usefulWordNames.length
+    console.log( `Start Downloading, Total: ${total}` )
+    let dictUrl = ''
+    try {
+      dictUrl = FS.readFileSync( PATH_DICT_URL_TXT, { encoding: 'utf8' } )
+    } catch ( e ) {}
     for ( let wordName of usefulWordNames ) {
-      await download( wordName, `https://www.ldoceonline.com/dictionary/${encodeURIComponent( wordName )}` )
+      await download( wordName, `${dictUrl}${encodeURIComponent( wordName )}` )
       count++
-      console.log( `${count}/${total}  (${ count * 100 / total}%)` )
+      console.log( `${count}/${total}  (${ ( count * 100 / total ).toFixed( 2 ) }%)` )
     }
     console.log( 'All Downloaded!' )
   } )()
