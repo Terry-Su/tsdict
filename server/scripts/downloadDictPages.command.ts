@@ -10,13 +10,28 @@ import { JSDOM } from 'jsdom'
 const download = async ( wordName, pageUrl ) => {
   const fileName = `${encodeURIComponent( wordName )}.html`
   const filePath = PATH.resolve( STORE_DOWNLOAD_DICT_PAGES, fileName )
-  const html = await fetch( pageUrl ).then( response => response.text() )
+  // # get html
+  const html: any = await Promise.resolve( new Promise( ( resolve, reject ) => {
+    // let timer = setTimeout( () => resolve( null ), 10000 * 5 )
+    fetch( pageUrl ).then( response => resolve( response.text() ) ).catch( () => {
+      // clearTimeout( timer )
+      resolve( null )
+    } )
+  } ) )
+  if ( html == null ) { return }
+  // # get output string
   let outputStr = html
   try {
     const dom = new JSDOM( html )
     const { document } = dom.window
     const dictionaryDom = document.getElementsByClassName( 'dictionary' )[ 0 ]
-    outputStr = `${document.head.outerHTML}\n${dictionaryDom.outerHTML}`
+    // # remove preconect links
+    const preconnectedLinks = Array.from( document.querySelectorAll( "link[rel='preconnect']" ) )
+    preconnectedLinks.forEach( ( link: any ) => link.remove() )
+    outputStr = `<head>
+    <link rel="stylesheet" href="https://d27ucmmhxk51xv.cloudfront.net/common.css?version=1.1.89">
+</head>
+${dictionaryDom.outerHTML}`
   } catch( e ) {}
   
   FS.writeFileSync( filePath, outputStr, { encoding: 'utf8' } )
@@ -36,15 +51,31 @@ const usefulWordNames = wordNames.filter( wordName => ! fileNames.includes( enco
   ( async () => {
     let count = 0
     let total = usefulWordNames.length
+    let downloadCountEveryTime = 10000
     console.log( `Start Downloading, Total: ${total}` )
     let dictUrl = ''
     try {
       dictUrl = FS.readFileSync( PATH_DICT_URL_TXT, { encoding: 'utf8' } )
     } catch ( e ) {}
-    for ( let wordName of usefulWordNames ) {
-      await download( wordName, `${dictUrl}${encodeURIComponent( wordName )}` )
-      count++
-      console.log( `${count}/${total}  (${ ( count * 100 / total ).toFixed( 2 ) }%)` )
+
+    const downloadFromRange = ( startIndex, endIndex ) => {
+      let promises = []
+      for ( let i = startIndex; i <= endIndex; i++ ) {
+        const wordName = usefulWordNames[ i ]
+        if( wordName == null ) { continue }
+        const promise = new Promise( async resolve => {
+          await download( wordName, `${dictUrl}${encodeURIComponent( wordName )}` )
+          count++
+          console.log( `${count}/${total}  (${ ( count * 100 / total ).toFixed( 2 ) }%)` )
+          resolve()
+        } )
+        promises.push( promise )
+      }
+      return Promise.all( promises )
+    }
+
+    for ( let i = 0; i < total; i += downloadCountEveryTime ) {
+      await downloadFromRange( i, i + downloadCountEveryTime - 1 )
     }
     console.log( 'All Downloaded!' )
   } )()

@@ -22,7 +22,7 @@ import { JSDOM } from 'jsdom'
 
 app.use( express.static( STORE_ROOT ) )
 app.use( express.static( CLIENT_PUBLIC ) )
-app.use( express.static( DICT_WEBSTER ) )
+// app.use( express.static( DICT_WEBSTER ) )
 
 app.get( "/", ( req, res ) => {
   res.sendFile( CLIENT_PUBLIC_INDEX )
