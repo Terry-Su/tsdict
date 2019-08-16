@@ -84,9 +84,9 @@ export default class TreeItemTree extends React.PureComponent<Props> {
     )
   }
 
-  // get recursiveChidlrenWordNodesNotReviewedLength(): number {
-  //   return this.getTreeRecursiveChidlrenWordNodesNotReviewedLength( this.tree )
-  // }
+  get recursiveChidlrenWordNodesNotReviewedLength(): number {
+    return this.getTreeRecursiveChidlrenWordNodesNotReviewedLength( this.tree )
+  }
 
   get label(): string {
     return `${this.tree.name} ${this.tree.nodes.length}`
@@ -192,6 +192,12 @@ export default class TreeItemTree extends React.PureComponent<Props> {
           newName != null &&
             notEmptyString( newName ) &&
             self.renameTree( self.tree, newName )
+        },
+      },
+      {
+        text       : "Show Not Reviewed Count",
+        handleClick: () => {
+          alert( this.recursiveChidlrenWordNodesNotReviewedLength )
         },
       },
     ]

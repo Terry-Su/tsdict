@@ -8,7 +8,7 @@ import { ClientData } from '../../client/src/__typings__'
 import { JSDOM } from 'jsdom'
 
 const download = async ( wordName, pageUrl ) => {
-  const fileName = `${encodeURIComponent( wordName )}.html`
+  const fileName = `${wordName}.html`
   const filePath = PATH.resolve( STORE_DOWNLOAD_DICT_PAGES, fileName )
   // # get html
   const html: any = await Promise.resolve( new Promise( ( resolve, reject ) => {
@@ -32,7 +32,9 @@ const download = async ( wordName, pageUrl ) => {
     <link rel="stylesheet" href="https://d27ucmmhxk51xv.cloudfront.net/common.css?version=1.1.89">
 </head>
 ${dictionaryDom.outerHTML}`
-  } catch( e ) {}
+  } catch( e ) {
+    outputStr = ''
+  }
   
   FS.writeFileSync( filePath, outputStr, { encoding: 'utf8' } )
 }
@@ -45,7 +47,7 @@ const fileNames = filePaths.filter( filePath => FS.statSync( filePath ).isFile()
 const clientData: ClientData = FS.readJSONSync( STORE_CURRENT_DATA_FILE )
 const words = clientData.words
 const wordNames = words.map( word => word.name )
-const usefulWordNames = wordNames.filter( wordName => ! fileNames.includes( encodeURIComponent( wordName ) ) )
+const usefulWordNames = wordNames.filter( wordName => ! fileNames.includes( wordName ) )
 
 {
   ( async () => {

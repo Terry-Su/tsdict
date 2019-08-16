@@ -242,8 +242,7 @@ export default class Tree {
       const recur = ( tree: TypeTree ) => {
         tree.nodes.filter( isTreeNodeWord ).forEach( wordId => {
           const word = this.word.words.find( item => item.id === wordId )
-          console.log( word.degree )
-          if ( word && ( word.degree == null || word.degree === 0 ) ) {
+          if ( word && ( word.reviewLevel == null ) ) {
             res++
           }
         } )

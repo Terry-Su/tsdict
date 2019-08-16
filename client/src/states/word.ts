@@ -35,15 +35,15 @@ export default class Word {
       name: string,
       config: {
         note?: Delta;
-        degree?: DictDataWordDegree;
+        reviewLevel?: DictDataWordDegree;
         createTime?: Time;
-      } = { degree: 0 }
+      }
     ) => ( {
-      id        : this.availableId,
+      id         : this.availableId,
       name,
-      note      : config.note,
-      degree    : config.degree,
-      createTime: new Date().getTime(),
+      note       : config.note,
+      reviewLevel: config.reviewLevel,
+      createTime : new Date().getTime(),
     } )
   }
 
