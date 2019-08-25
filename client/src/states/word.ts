@@ -1,11 +1,12 @@
 import Delta from 'quill-delta'
 
 import { TypeId } from '@/__typings__'
+import { ReviewLevel } from '@/__typings__/review'
 import {
-    TypeWord, TypeWordDegree, TypeWordNextReviewTime, TypeWordNote, TypeWordReviewLevel
+    TypeWord, TypeWordNextReviewTime, TypeWordNote, TypeWordReviewLevel
 } from '@/__typings__/word'
 import { removeArrayElement } from '@/utils/js'
-import { DictDataWord, DictDataWordDegree, Time } from '@shared/__typings__/DictData'
+import { DictDataWord, Time } from '@shared/__typings__/DictData'
 
 import Tag from './Tag'
 import Tree from './Tree'
@@ -35,7 +36,7 @@ export default class Word {
       name: string,
       config: {
         note?: Delta;
-        reviewLevel?: DictDataWordDegree;
+        reviewLevel?: ReviewLevel;
         createTime?: Time;
       }
     ) => ( {
@@ -70,8 +71,8 @@ export default class Word {
 
   ADD_WORD(
     name: string = "",
-    config: { note?: Delta; degree?: DictDataWordDegree; createTime?: Time } = {
-      degree: 0,
+    config: { note?: Delta; degree?: ReviewLevel; createTime?: Time } = {
+      degree: null,
     }
   ): TypeWord {
     if ( name.trim() === "" ) {
@@ -98,10 +99,6 @@ export default class Word {
 
   setWordNote( word: TypeWord, newNote: TypeWordNote ) {
     word.note = newNote
-    this.REFRESH_WORDS()
-  }
-  setWordDegree( word: TypeWord, newDegree: TypeWordDegree ) {
-    word.degree = newDegree
     this.REFRESH_WORDS()
   }
   setWordReviewLevel( word: TypeWord, newReviewLevel: TypeWordReviewLevel  ) {

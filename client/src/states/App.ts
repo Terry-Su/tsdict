@@ -1,6 +1,6 @@
 import { Position, TypeTag } from '@/__typings__'
 import { SyncData } from '@/__typings__/app'
-import { TypeWord, TypeWordDegree, TypeWordNote, TypeWordReviewLevel } from '@/__typings__/word'
+import { TypeWord, TypeWordNote, TypeWordReviewLevel } from '@/__typings__/word'
 import download from '@/assets/js/download'
 import { PopupMenuItem } from '@/componentsPure/PopupMenu/PopupMenu'
 import appApi from '@/services/modules/appApi'
@@ -35,6 +35,9 @@ export default class App {
 
   // # pronunciation player
   pronunciationPlayer = null
+
+  // # dev book mode
+  isDevBookMode: boolean = false
 
   get syncData(): SyncData {
     return {
@@ -100,16 +103,17 @@ export default class App {
   // # pronunciation player
   SET_PRONUNCIATION_PLAYER = value => { this.pronunciationPlayer = value }
 
+
+  // # dev book mode
+  ENABLE_DEV_BOOK_MODE = () => { this.isDevBookMode = true }
+  DIABLE_DEV_BOOK_MODE = () => { this.isDevBookMode = false }
+
   addWordBySearchingWordName() {
     this.word.ADD_WORD( this.searchingWordName )
   }
 
   updateSearchingWordNote( newNote: TypeWordNote ) {
     this.word.setWordNote( this.searchingWord, newNote )
-  }
-
-  updateSearchingWordDegree( newDegree: TypeWordDegree ) {
-    this.word.setWordDegree( this.searchingWord, newDegree )
   }
 
   updateSearchingWordReviewLevel( newDegree: TypeWordReviewLevel ) {

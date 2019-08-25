@@ -149,7 +149,7 @@ export default class Note extends Component<Props> {
   render() {
     return (
       <StyledRoot>
-        <div ref={this.toolbarRef} hidden={this.isEmptyContent}>
+        <div ref={this.toolbarRef} hidden={false && this.isEmptyContent}>
           <span className="ql-formats">
             <button className="ql-bold" />
             <button className="ql-italic" />

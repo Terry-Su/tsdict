@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { TypeTag } from '@/__typings__'
-import { TypeWord, TypeWordDegree, TypeWordNote } from '@/__typings__/word'
+import { ReviewLevel } from '@/__typings__/review'
+import { TypeWord, TypeWordNote } from '@/__typings__/word'
 import Iframes from '@/components/Iframes'
 import Note from '@/components/Note/Note'
 import Degree from '@/componentsPure/Degree/Degree'
@@ -63,7 +64,7 @@ export default class WordPanel extends Component<Props> {
     this.updateSearchingWordNote( newNote )
   }, 600 )
 
-  handleDegreeChange = ( newDegree: TypeWordDegree ) => {
+  handleDegreeChange = ( newDegree: ReviewLevel ) => {
     this.updateSearchingWordReviewLevel( newDegree )
   };
 

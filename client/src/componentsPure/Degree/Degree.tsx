@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { TypeWordDegree } from '@/__typings__/word'
+import { ReviewLevel } from '@/__typings__/review'
 import { LongPress } from '@/componentsPure/highOrder/withLongPress'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import Star from './Star'
 
-const MAX_DEGREE: TypeWordDegree = 10
+const MAX_DEGREE: ReviewLevel = 10
 const STARS_COUNT = MAX_DEGREE / 2
 let starsCountArray = Array.apply( 0, new Array( STARS_COUNT ) )
 
 interface Props {
-  degree?: TypeWordDegree
+  degree?: ReviewLevel
   onChange?: Function
 }
 
-function getStartCount( number: number, degree: TypeWordDegree ) {
+function getStartCount( number: number, degree: ReviewLevel ) {
+  if ( degree == null ) { return 0 }
   const target = 2 * number
   if ( target <= degree ) {
     return 2
@@ -47,7 +48,7 @@ export default class Degree extends Component<Props> {
   }
 
   render() {
-    const { degree = 0 } = this.props
+    const { degree } = this.props
     return (
       <LongPress onLongPress={this.onLongPress}>
         <StyledRoot>

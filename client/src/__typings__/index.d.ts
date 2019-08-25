@@ -4,6 +4,7 @@ import { SettingState } from '@/models/setting'
 
 import { DictDataWord } from '../../../shared/__typings__/DictData'
 import { TAG_IDS } from '../constants/shared'
+import { TypeWord } from './word'
 
 export type TypeId = number
 export type WordId = TypeId
@@ -28,7 +29,7 @@ export type Tree = {
 export type TypeTree = Tree
 
 export interface ClientData {
-  words: DictDataWord[]
+  words: TypeWord[]
   // onlineLinks: OnlineLink[],
   tags: Tag[]
   tree: Tree
