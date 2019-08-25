@@ -11,12 +11,11 @@ interface Props {
 }
 
 
-@States( 'tree', 'tree', 'selections' )
+@States( 'tree', 'tree' )
 @Selectors( 'tree', 'columns' )
 @Actions( 'tree', 'initialize' )
 export default class TreePanel extends Component<Props> {
   tree: TypeTree
-  selections: TreeSelection[]
   initialize: Function
   columns: TypeTreeColumn[]
 

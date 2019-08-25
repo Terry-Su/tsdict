@@ -40,7 +40,6 @@ export default class WordPanel extends Component<Props> {
   visibleWordPanel?: boolean;
   searchingWordName?: string;
   searchingWord?: TypeWord;
-  words?: TypeWord[];
   selectTag?: Function;
   rootCalcTree?: CalcTree;
   addWordBySearchingWordName?: Function;

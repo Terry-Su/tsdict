@@ -16,9 +16,7 @@ interface Props {
 }
 
 @States( "tree", "selections" )
-@Selectors( "tree", "columns" )
 export default class TreeItemBase extends Component<Props> {
-  columns: TreeColumn[]
   selections: TreeSelection[];
 
   get columnSelection(): TreeSelection {

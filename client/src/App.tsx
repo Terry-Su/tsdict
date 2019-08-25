@@ -12,6 +12,7 @@ import DialogConfirm from './components/dialogs/DialogConfirm'
 import Message from './components/messages/Message'
 import RightClickMenu from './components/RightClickMenu'
 import { reduxStore } from './entry'
+import DevBookPage from './pages/DevBookPage'
 import PopupDictPage from './pages/PopupDictPage'
 import appApi from './services/modules/appApi'
 import localStore from './store/localStore'
@@ -19,7 +20,7 @@ import localStore from './store/localStore'
 interface Props {}
 
 @Selectors( "app", "syncData" )
-@States( "app", "visibleRightClickMenu", "isPopupDictMode" )
+@States( "app", "visibleRightClickMenu", "isPopupDictMode", "isDevBookMode" )
 @States( "dialog", "visibleDialogConfirm" )
 @Actions(
   "app",
@@ -35,6 +36,7 @@ export default class Test extends Component<Props> {
   visibleRightClickMenu: boolean;
   isPopupDictMode: boolean;
   visibleDialogConfirm: boolean;
+  isDevBookMode: Boolean;
   HIDE_RIGHT_CLICK_MENU: Function;
   SET_ORIGIN: Function;
   SET_SEARCHING_WORD_NAME: Function;
@@ -103,6 +105,7 @@ export default class Test extends Component<Props> {
   };
   render() {
     return (
+      ! this.isDevBookMode ?
       <StyledRoot onClick={this.handleClick}>
         {this.visibleRightClickMenu && <RightClickMenu />}
         {!this.isPopupDictMode ? <HomePage /> : <PopupDictPage />}
@@ -118,7 +121,8 @@ export default class Test extends Component<Props> {
         <React.Fragment>
           <GlobalStyle />
         </React.Fragment>
-      </StyledRoot>
+      </StyledRoot> :
+      <DevBookPage />
     )
   }
 }

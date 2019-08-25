@@ -25,8 +25,6 @@ export default class HomePage extends Component<Props> {
   isReviewMode?: boolean;
   visibleTreePanel?: boolean;
   visibleWordPanel?: boolean;
-  selections?: TreeSelection[];
-  columns?: TypeTreeColumn[];
   isStandardReviewMode?: boolean;
   SET_TREE?: Function;
   SET_WORDS?: Function;

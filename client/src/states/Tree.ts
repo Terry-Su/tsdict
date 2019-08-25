@@ -150,7 +150,6 @@ export default class Tree {
       )
       currentColumnIndex++
     }
-
     return res
   }
 
