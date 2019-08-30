@@ -4,12 +4,13 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+    // # app
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
       "args": [
-        "scripts/downloadDictPages.command.ts",
+        "src/index.ts",
       ],
       "runtimeArgs": [
         "-r", 
@@ -19,6 +20,23 @@
       "protocol": "inspector",
     },
 
+    // # scripts
+    // {
+    //   "type": "node",
+    //   "request": "launch",
+    //   "name": "Launch Program",
+    //   "args": [
+    //     "scripts/downloadDictPages.command.ts",
+    //   ],
+    //   "runtimeArgs": [
+    //     "-r", 
+    //     "ts-node/register", 
+    //   ],
+    //   "cwd": "${workspaceRoot}",
+    //   "protocol": "inspector",
+    // },
+
+    // # jasmine
     // {
     //   "type": "node",
     //   "request": "launch",

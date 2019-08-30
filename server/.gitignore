@@ -7,6 +7,9 @@ bundle.js
 # dict url
 dictUrl.txt
 
+# customConfig
+customConfig.ts
+
 # store
 store
 

@@ -6,12 +6,18 @@ import PATH from 'path'
 import getUniqueId from '../utils/getUniqueId'
 import { notNil } from '../utils/lodash'
 import numberToChars from '../utils/numberToChars'
+import getCustomConfig from '../utils/getCustomConfig'
 
 const { resolve, relative } = PATH
 
 export type Path = string
 
-export const STORE_ROOT = resolve( __dirname, '../../store' )
+const potentialStoreRoot = resolve( __dirname, '../../store' )
+
+const customConfig = getCustomConfig()
+
+const { SYNC_STORE_PATH } = customConfig
+export const STORE_ROOT = SYNC_STORE_PATH != null ? SYNC_STORE_PATH : potentialStoreRoot
 const BACKUP = resolve( STORE_ROOT, 'backup' )
 
 export const STORE_IMAGE = resolve( STORE_ROOT, 'image' )
