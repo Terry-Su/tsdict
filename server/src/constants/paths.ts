@@ -85,7 +85,7 @@ export const GET_STORE_AUDIO_FILES = () => GLOB.sync( `${STORE_AUDIO}/**/*` )
 export const GET_STORE_VIDEO_FILES = () => GLOB.sync( `${STORE_VIDEO}/**/*` )
 
 // # dict url
-export const PATH_DICT_URL_TXT = resolve( __dirname, '../../dictUrl.txt' )
+export const PATH_DICT_URL_TXT = resolve( STORE_ROOT, 'dictUrl.txt' )
 
 
 
