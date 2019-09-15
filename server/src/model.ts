@@ -162,3 +162,8 @@ app.get( '/word', async ( req, res ) => {
   const dictionaryDom = document.getElementsByClassName( 'dictionary' )[ 0 ]
   res.send( `${document.head.outerHTML}\n${dictionaryDom.outerHTML}` )
 } )
+
+// # specific dict
+app.get( `*/d27ucmmhxk51xv.cloudfront.net/common.css`, ( req, res ) => {
+  console.log( req )
+} )

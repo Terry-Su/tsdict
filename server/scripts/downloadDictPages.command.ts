@@ -29,7 +29,7 @@ const download = async ( wordName, pageUrl ) => {
     const preconnectedLinks = Array.from( document.querySelectorAll( "link[rel='preconnect']" ) )
     preconnectedLinks.forEach( ( link: any ) => link.remove() )
     outputStr = `<head>
-    <link rel="stylesheet" href="https://d27ucmmhxk51xv.cloudfront.net/common.css?version=1.1.89">
+    <link rel="stylesheet" href="https://d27ucmmhxk51xv.cloudfront.net/common.css">
 </head>
 ${dictionaryDom.outerHTML}`
   } catch( e ) {
