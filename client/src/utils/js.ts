@@ -40,5 +40,14 @@ export function getRandomArrayElement( arr: any[] ) {
 
 // # format: '0000-00-00'
 export function getDateDayString( date: Date ) {
-  return date.toISOString().replace( /T.*/, '' )
+  // return date.toISOString().replace( /T.*/, '' )
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const theDate = date.getDate()
+
+  function getTwoNumberString( number ) {
+    return number >= 10 ? `${number}` : `0${number}` 
+  }
+
+  return `${year}-${getTwoNumberString( month )}-${getTwoNumberString( theDate )}`
 }
