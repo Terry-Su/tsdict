@@ -22,7 +22,7 @@ export default class App {
   setting: Setting
   message: Message
 
-  searchingWordName: string = "";
+  searchingWordName: string = '';
   visibleIframe: boolean = true;
 
   // # right click menu
@@ -39,58 +39,63 @@ export default class App {
   // # dev book mode
   isDevBookMode: boolean = false
 
-  get syncData(): SyncData {
+  get syncData (): SyncData {
     return {
-      words                         : this.word.words,
-      tree                          : this.tree.tree,
-      tags                          : this.tag.tags,
+      words: this.word.words,
+      tree: this.tree.tree,
+      tags: this.tag.tags,
       // # app state
-      lastSelections                : this.tree.lastSelections,
-      standardStat                  : this.review.standardStat,
+      lastSelections: this.tree.lastSelections,
+      standardStat: this.review.standardStat,
       standardReviewedWordsInfoToday: this.review.standardReviewedWordsInfoToday,
-      iframeLinks                   : this.iframe.iframeLinks,
-      origin                        : this.setting.origin,
+      iframeLinks: this.iframe.iframeLinks,
+      origin: this.setting.origin
     }
   }
 
-  get searchingWord(): TypeWord {
-    return this.word.getWordByName( this.searchingWordName )
+  get searchingWord (): TypeWord {
+    return this.word.getWordByName(this.searchingWordName)
   }
 
-  get searchWordTags(): TypeTag[] {
+  get searchWordTags (): TypeTag[] {
     return this.searchingWord != null
-      ? this.tag.tags.filter( tag => tag.ids.includes( this.searchingWord.id ) )
+      ? this.tag.tags.filter(tag => tag.ids.includes(this.searchingWord.id))
       : []
   }
 
-  get searchWordTagsCanBeAdded(): TypeTag[] {
-    return this.tag.tags.filter( tag => !this.searchWordTags.includes( tag ) )
+  get searchWordTagsCanBeAdded (): TypeTag[] {
+    return this.tag.tags.filter(tag => !this.searchWordTags.includes(tag))
   }
 
-  SET_SEARCHING_WORD_NAME( searchingWordName: string ) {
+  SET_SEARCHING_WORD_NAME (searchingWordName: string) {
     this.searchingWordName = searchingWordName
   }
 
   SHOW_IFRAME = () => {
     this.visibleIframe = true
   };
+
   HIDE_IFRAME = () => {
     this.visibleIframe = false
   };
+
   TOOGLE_IFRAME = () => {
     this.visibleIframe = !this.visibleIframe
   };
 
   // # right click menu
-  SET_RIGHT_CLICK_MENU_ITEMS = ( items: PopupMenuItem[] ) => {
+  SET_RIGHT_CLICK_MENU_ITEMS = (items: PopupMenuItem[]) => {
     this.rightClickMenuItems = items
   };
-  SET_RIGHT_CLICK_MENU_POSITION = ( position: Position ) => {
+
+  SET_RIGHT_CLICK_MENU_POSITION = (position: Position) => {
     this.rightClickMenuPosition = position
   };
+
   SHOW_RIGHT_CLICK_MENU = () => {
     this.visibleRightClickMenu = true
   };
+
   HIDE_RIGHT_CLICK_MENU = () => {
     this.visibleRightClickMenu = false
   };
@@ -99,112 +104,108 @@ export default class App {
   ENABLE_POPUP_DICT_MODE = () => { this.isPopupDictMode = true }
   DISABLE_POPUP_DICT_MODE = () => { this.isPopupDictMode = false }
 
-
   // # pronunciation player
   SET_PRONUNCIATION_PLAYER = value => { this.pronunciationPlayer = value }
-
 
   // # dev book mode
   ENABLE_DEV_BOOK_MODE = () => { this.isDevBookMode = true }
   DIABLE_DEV_BOOK_MODE = () => { this.isDevBookMode = false }
 
-  addWordBySearchingWordName() {
-    this.word.ADD_WORD( this.searchingWordName )
+  addWordBySearchingWordName () {
+    this.word.ADD_WORD(this.searchingWordName)
   }
 
-  updateSearchingWordNote( newNote: TypeWordNote ) {
-    this.word.setWordNote( this.searchingWord, newNote )
+  updateSearchingWordNote (newNote: TypeWordNote) {
+    this.word.setWordNote(this.searchingWord, newNote)
   }
 
-  updateSearchingWordReviewLevel( newDegree: TypeWordReviewLevel ) {
-    this.word.setWordReviewLevel( this.searchingWord, newDegree )
+  updateSearchingWordReviewLevel (newDegree: TypeWordReviewLevel) {
+    this.word.setWordReviewLevel(this.searchingWord, newDegree)
   }
 
-  deleteSearchingWord() {
-    this.word.deleteWordByName( this.searchingWordName )
+  deleteSearchingWord () {
+    this.word.deleteWordByName(this.searchingWordName)
   }
 
   // # pull and push
-  loadSyncData( data: SyncData ) {
-    this.word.SET_WORDS( data.words )
-    this.tree.SET_TREE( data.tree || this.tree.createTree( 'Root' ) )
-    this.tag.SET_TAGS( data.tags )
+  loadSyncData (data: SyncData) {
+    this.word.SET_WORDS(data.words)
+    this.tree.SET_TREE(data.tree || this.tree.createTree('Root'))
+    this.tag.SET_TAGS(data.tags)
 
     // # app state
     // ## tree
     // ### last selections
-    this.tree.setSelections( data.lastSelections || [] )
+    this.tree.setSelections(data.lastSelections || [])
 
     // ## review
     // ### stat
-    this.review.SET_STANDARD_STAT( data.standardStat )
+    this.review.SET_STANDARD_STAT(data.standardStat)
     // ### reviewed words info today
-    this.review.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY( data.standardReviewedWordsInfoToday )
+    this.review.SET_STANDARD_REVIEWED_WORDS_INFO_TODAY(data.standardReviewedWordsInfoToday)
 
     // ## iframe
-    data.iframeLinks != null && this.iframe.SET_IFRAME_LINKS( data.iframeLinks )
+    data.iframeLinks != null && this.iframe.SET_IFRAME_LINKS(data.iframeLinks)
 
     // ## setting
     const origin = data.origin != null ? data.origin : location.origin
-    this.setting.SET_ORIGIN( origin )
+    this.setting.SET_ORIGIN(origin)
   }
 
-  loadPulledData( data: SyncData ) {
-    this.loadSyncData( data )
+  loadPulledData (data: SyncData) {
+    this.loadSyncData(data)
   }
 
-  importDataByDataStr( dataStr: string ) {
-    const data: SyncData = JSON.parse( dataStr )
-    this.loadSyncData( data )
+  importDataByDataStr (dataStr: string) {
+    const data: SyncData = JSON.parse(dataStr)
+    this.loadSyncData(data)
   }
 
-  export() {
-    const str = JSON.stringify( this.syncData )
-    const fileName = `tsdict.json`
-    download( str, fileName ) 
+  export () {
+    const str = JSON.stringify(this.syncData)
+    const fileName = 'tsdict.json'
+    download(str, fileName)
   }
 
   // # right click menu
-  showRightClickMenu( items: PopupMenuItem[], event: MouseEvent ) {
-    this.SET_RIGHT_CLICK_MENU_ITEMS( items )
+  showRightClickMenu (items: PopupMenuItem[], event: MouseEvent) {
+    this.SET_RIGHT_CLICK_MENU_ITEMS(items)
     event != null &&
-      this.SET_RIGHT_CLICK_MENU_POSITION( {
+      this.SET_RIGHT_CLICK_MENU_POSITION({
         x: event.clientX,
-        y: event.clientY,
-      } )
+        y: event.clientY
+      })
     this.SHOW_RIGHT_CLICK_MENU()
   }
 
-  async saveSearchingWordToCurrentSelectedTree() {
+  async saveSearchingWordToCurrentSelectedTree () {
     const { currentSelectedTree } = this.tree
-    if ( currentSelectedTree != null ) {
-      if ( this.tree.isTreeTree( currentSelectedTree ) ) {
+    if (currentSelectedTree != null) {
+      if (this.tree.isTreeTree(currentSelectedTree)) {
         this.tree.addTreeWordByName(
           this.searchingWordName,
           currentSelectedTree
         )
-      } else if ( this.tree.isTagTree( currentSelectedTree ) ) {
-        const tag = this.tag.getTagByName( currentSelectedTree.name )
-        this.tag.addTagWordByName( tag, this.searchingWordName )
+      } else if (this.tree.isTagTree(currentSelectedTree)) {
+        const tag = this.tag.getTagByName(currentSelectedTree.name)
+        this.tag.addTagWordByName(tag, this.searchingWordName)
       }
-      if ( this.isPopupDictMode ) {
-        await appApi.push( this.syncData )
-        this.message.showMessage( 'Updates have already pushed to server!' )
+      if (this.isPopupDictMode) {
+        await appApi.push(this.syncData)
+        this.message.showMessage('Updates have already pushed to server!')
       }
       return
     } else {
-      return alert( `No selected folder` )
+      return alert('No selected folder')
     }
-    alert( `Folder: "${ currentSelectedTree.name }" cannot be used for saving words` )
+    alert(`Folder: "${currentSelectedTree.name}" cannot be used for saving words`)
   }
 
   // # pronunciation player
-  pronunceSearchingWord() {
-    if ( this.pronunciationPlayer ) {
-      this.pronunciationPlayer.load() 
-      this.pronunciationPlayer.play()  
+  pronunceSearchingWord () {
+    if (this.pronunciationPlayer) {
+      this.pronunciationPlayer.load()
+      this.pronunciationPlayer.play()
     }
   }
-
-  
 }

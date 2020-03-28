@@ -1,12 +1,18 @@
 {
-  "eslint.autoFixOnSave": true,
   "eslint.validate": [
-    { "language": "javascript", "autoFix": true },
-    { "language": "javascriptreact", "autoFix": true },
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
+      "javascript",
+      "javascriptReact",
+      "typescript",
+      "typescriptReact",
   ],
-
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+  },
+  "javascript.format.enable": false,
+  "eslint.format.enable": true,
+  "editor.tabSize": 2,
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.hasSemicolon": false,
 }
+
+
