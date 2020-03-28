@@ -17,11 +17,12 @@ import PopupDictPage from './pages/PopupDictPage'
 import appApi from './services/modules/appApi'
 import localStore from './store/localStore'
 
-interface Props {}
+interface Props { }
 
-@Selectors( "app", "syncData" )
-@States( "app", "visibleRightClickMenu", "isPopupDictMode", "isDevBookMode" )
-@States( "dialog", "visibleDialogConfirm" )
+@Selectors("app", "syncData")
+@States("app",
+  "visibleRightClickMenu", "isPopupDictMode", "isDevBookMode")
+@States("dialog", "visibleDialogConfirm")
 @Actions(
   "app",
   "HIDE_RIGHT_CLICK_MENU",
@@ -30,7 +31,8 @@ interface Props {}
   "loadSyncData",
   "loadPulledData"
 )
-@Actions( "setting", "SET_ORIGIN" )
+@Actions("word", "updateWordMapByWords")
+@Actions("setting", "SET_ORIGIN")
 export default class Test extends Component<Props> {
   syncData: SyncData;
   visibleRightClickMenu: boolean;
@@ -43,57 +45,59 @@ export default class Test extends Component<Props> {
   ENABLE_POPUP_DICT_MODE: Function;
   loadSyncData: Function;
   loadPulledData: Function;
+  updateWordMapByWords: Function;
 
-  constructor( props ) {
+  constructor(props) {
     // componentDidMount() {
-    super( props )
+    super(props)
     const localCachedStore: SyncData = localStore.getStore()
-    if ( localCachedStore != null ) {
-      this.loadSyncData( localCachedStore )
+    if (localCachedStore != null) {
+      this.loadSyncData(localCachedStore)
     }
+    this.updateWordMapByWords()
   }
   componentDidMount() {
-    reduxStore.subscribe( () => {
-      localStore.setStore( this.syncData )
-    } )
+    reduxStore.subscribe(() => {
+      localStore.setStore(this.syncData)
+    })
     this.initializeByUrlParams()
   }
 
   async initializeByUrlParams() {
-    const { searchParams } = new URL( location.href )
-    const serverOrigin = searchParams.get( "serverOrigin" )
-    const searchingWord = searchParams.get( "searchingWord" )
-    const isPopupDictMode = searchParams.get( "isPopupDictMode" )
-    if ( serverOrigin != null ) {
-      this.SET_ORIGIN( serverOrigin )
+    const { searchParams } = new URL(location.href)
+    const serverOrigin = searchParams.get("serverOrigin")
+    const searchingWord = searchParams.get("searchingWord")
+    const isPopupDictMode = searchParams.get("isPopupDictMode")
+    if (serverOrigin != null) {
+      this.SET_ORIGIN(serverOrigin)
     }
 
-    const pullDataAndSetSearchingWord = async ( searchingWordName: string ) => {
+    const pullDataAndSetSearchingWord = async (searchingWordName: string) => {
       const data: SyncData = await appApi.pull()
-      this.loadPulledData( data )
-
-      if ( serverOrigin != null ) {
-        this.SET_ORIGIN( serverOrigin )
+      this.loadPulledData(data)
+      this.updateWordMapByWords()
+      if (serverOrigin != null) {
+        this.SET_ORIGIN(serverOrigin)
       }
-      if ( searchingWord != null ) {
-        this.SET_SEARCHING_WORD_NAME( searchingWordName )
+      if (searchingWord != null) {
+        this.SET_SEARCHING_WORD_NAME(searchingWordName)
       }
     }
 
-    if ( isPopupDictMode != null ) {
+    if (isPopupDictMode != null) {
       this.ENABLE_POPUP_DICT_MODE()
-      await pullDataAndSetSearchingWord( searchingWord )
+      await pullDataAndSetSearchingWord(searchingWord)
     }
-   
+
 
     // # listen to message
-    if ( isPopupDictMode ) {
-      window.onmessage = async ( e ) => {
-        console.log( 'e.data', e.data )
-        if ( e.data != null ) {
+    if (isPopupDictMode) {
+      window.onmessage = async (e) => {
+        console.log('e.data', e.data)
+        if (e.data != null) {
           const { searchingWordName } = e.data
-          if ( searchingWordName != null ) {
-            await pullDataAndSetSearchingWord( searchingWordName )
+          if (searchingWordName != null) {
+            await pullDataAndSetSearchingWord(searchingWordName)
           }
         }
       }
@@ -105,24 +109,24 @@ export default class Test extends Component<Props> {
   };
   render() {
     return (
-      ! this.isDevBookMode ?
-      <StyledRoot onClick={this.handleClick}>
-        {this.visibleRightClickMenu && <RightClickMenu />}
-        {!this.isPopupDictMode ? <HomePage /> : <PopupDictPage />}
+      !this.isDevBookMode ?
+        <StyledRoot onClick={this.handleClick}>
+          {this.visibleRightClickMenu && <RightClickMenu />}
+          {!this.isPopupDictMode ? <HomePage /> : <PopupDictPage />}
 
-        {/* # dialogs */}
-        <DialogIframeSetting />
-        <DialogSetting />
-        { this.visibleDialogConfirm && <DialogConfirm /> }
+          {/* # dialogs */}
+          <DialogIframeSetting />
+          <DialogSetting />
+          {this.visibleDialogConfirm && <DialogConfirm />}
 
-        {/* messages */}
-        <Message />
+          {/* messages */}
+          <Message />
 
-        <React.Fragment>
-          <GlobalStyle />
-        </React.Fragment>
-      </StyledRoot> :
-      <DevBookPage />
+          <React.Fragment>
+            <GlobalStyle />
+          </React.Fragment>
+        </StyledRoot> :
+        <DevBookPage />
     )
   }
 }

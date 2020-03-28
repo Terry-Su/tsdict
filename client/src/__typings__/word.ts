@@ -13,5 +13,5 @@ export type TypeWordReviewLevel = DictDataWordReviewLevel
 export type TypeWordNextReviewTime = DictDataWordNextReviewTime
 
 export type TypeWordMap = {
-    [wordName: string]: TypeWord
+    [id: number]: TypeWord
 }

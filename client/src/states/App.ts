@@ -112,7 +112,7 @@ export default class App {
   DIABLE_DEV_BOOK_MODE = () => { this.isDevBookMode = false }
 
   addWordBySearchingWordName () {
-    this.word.ADD_WORD(this.searchingWordName)
+    this.word.addWord(this.searchingWordName)
   }
 
   updateSearchingWordNote (newNote: TypeWordNote) {

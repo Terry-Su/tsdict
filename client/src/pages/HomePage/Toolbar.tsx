@@ -10,7 +10,7 @@ import { Actions, Selectors, States } from '@/utils/decorators'
 interface Props {}
 
 @Actions( "tree", "SET_TREE" )
-@Actions( "word", "SET_WORDS", "TOOGLE_WORD_PANEL" )
+@Actions( "word", "SET_WORDS", "TOOGLE_WORD_PANEL", "updateWordMapByWords" )
 @Actions( "tag", "SET_TAGS" )
 @Actions(
   "app",
@@ -78,6 +78,7 @@ export default class Toolbar extends Component<Props> {
   startStandardReview?: Function;
   switchReviewWOrdReviewedType?: Function;
   switchReviewWordWhetherWithNoteType?: Function;
+  updateWordMapByWords?: Function;
 
   hanldeImportBatchClick = () => {
     
@@ -88,6 +89,7 @@ export default class Toolbar extends Component<Props> {
     if ( ! confirmResult ) { return }
     const data: SyncData = await appApi.pull()
     this.loadPulledData( data )
+    this.updateWordMapByWords()
     alert( 'Pulled Successfully!' )
   };
 

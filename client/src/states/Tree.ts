@@ -380,7 +380,7 @@ export default class Tree {
     const word = this.word.getWordByName(wordName)
     let targetWord: TypeWord
     if (word == null) {
-      this.word.ADD_WORD(wordName)
+      this.word.addWord(wordName)
       targetWord = this.word.getWordByName(wordName)
     } else {
       targetWord = word

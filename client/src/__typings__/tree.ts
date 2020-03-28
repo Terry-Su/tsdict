@@ -1,8 +1,8 @@
 import { TypeId } from './'
 
 export enum TreeItemType {
-  Tree,
-  Word
+  Tree = 0,
+  Word = 1
 }
 export interface TypeTreeItem {
   type: TreeItemType
