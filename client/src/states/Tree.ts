@@ -1,5 +1,5 @@
 import { TreeNode, TypeId, TypeTag, TypeTree } from '@/__typings__'
-import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem } from '@/__typings__/tree'
+import { TreeItemType, TreeSelection, TypeTreeColumn, TypeTreeItem, SORT_TYPES } from '@/__typings__/tree'
 import { TypeWord } from '@/__typings__/word'
 import { TREE_ALL_WORDS, TREE_COMPOSED_TREE_ROOT, TREE_TAG_ROOT } from '@/constants/ids'
 import { NAME_TREE_ROOT } from '@/constants/names'
@@ -28,7 +28,7 @@ export default class Tree {
    * 1: sort by level
    * 2: sort by create time
    */
-  sortType:number = 0
+  sortType:SORT_TYPES = 0
 
   get treeIds (): number[] {
     const ids = []

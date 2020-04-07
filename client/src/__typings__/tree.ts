@@ -12,3 +12,9 @@ export type TreeColumn = TypeTreeItem[]
 export type TypeTreeColumn = TreeColumn
 
 export type TreeSelection = TypeTreeItem
+
+export enum SORT_TYPES {
+  CREATE_TIME = 0,
+  LEVEL = 1,
+  LETTER = 2,
+}

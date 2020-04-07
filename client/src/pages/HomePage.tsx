@@ -12,6 +12,7 @@ import SearchBox from './HomePage/SearchBox'
 import StandardReviewPanel from './HomePage/StandardReviewPanel'
 import Toolbar from './HomePage/Toolbar'
 import WordPanel from './HomePage/WordPanel/WordPanel'
+import FolderPanel from '@/components/FolderPanel'
 
 interface Props {}
 
@@ -45,6 +46,7 @@ export default class HomePage extends Component<Props> {
           {this.visibleTreePanel && (
             <div className="treePanelWrapper">
               <TreePanel />
+              {/* <FolderPanel /> */}
             </div>
           )}
           {this.isStandardReviewMode ? (

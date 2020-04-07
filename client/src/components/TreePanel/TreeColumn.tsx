@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import { TypeTreeColumn, TreeItemType } from '@/__typings__/tree'
+import { TypeTreeColumn, TreeItemType, SORT_TYPES } from '@/__typings__/tree'
 import VirtualScrollingList from '@/componentsPure/VirtualScrollingList/VirtualScrollingList'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import TreeItem from './TreeItem'
+import { TypeWord } from '@/__typings__/word'
 
 interface Props {
   column: TypeTreeColumn
@@ -13,7 +14,9 @@ interface Props {
 }
 
 @Selectors( 'word', 'getWordById' )
+@States( 'tree', 'sortType' )
 export default class TreeColumn extends Component<Props> {
+  sortType?: SORT_TYPES
   getWordById?: Function
 
   render() {
@@ -21,7 +24,14 @@ export default class TreeColumn extends Component<Props> {
     const sortedColumn = column.sort( (a, b) => {
       if ( b.type === TreeItemType.Tree && a.type === TreeItemType.Word) { return 1 }
       else if ( a.type === TreeItemType.Word && b.type === TreeItemType.Word ) {
-        return this.getWordById(a.id).name[0] >= this.getWordById(b.id).name[0] ? 1 : -1
+        switch ( this.sortType ) {
+          case SORT_TYPES.CREATE_TIME: 
+            return
+          case SORT_TYPES.LEVEL: 
+            return this.getWordById(a.id).reviewLevel >= this.getWordById(b.id).reviewLevel ? 1 : -1 
+          case SORT_TYPES.LETTER:
+            return this.getWordById(a.id).name[0] >= this.getWordById(b.id).name[0] ? 1 : -1
+        }
       }
     } )
     return (

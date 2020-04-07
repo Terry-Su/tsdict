@@ -7,13 +7,12 @@ interface Props {
   
 }
 
-export default class Template extends Component<Props> {
-  render() {
-    return (
-      <StyledRoot>
-      </StyledRoot>
-    )
-  }
+export default function Template( {}: Props ) {
+  return (
+    <StyledRoot>
+      Template
+    </StyledRoot>
+  )
 }
 
 const StyledRoot = styled.div``

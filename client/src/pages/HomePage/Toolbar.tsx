@@ -6,12 +6,13 @@ import { StandardReviewedWordsInfoToday, StandardReviewStat } from '@/__typings_
 import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
+import { SORT_TYPES } from '@/__typings__/tree'
 
-interface Props {}
+interface Props { }
 
-@Actions( "tree", "SET_TREE" )
-@Actions( "word", "SET_WORDS", "TOOGLE_WORD_PANEL", "updateWordMapByWords" )
-@Actions( "tag", "SET_TAGS" )
+@Actions("tree", "SET_TREE", `SET_SORT_TYPE`)
+@Actions("word", "SET_WORDS", "TOOGLE_WORD_PANEL", "updateWordMapByWords")
+@Actions("tag", "SET_TAGS")
 @Actions(
   "app",
   "TOOGLE_IFRAME",
@@ -29,26 +30,30 @@ interface Props {}
   "switchReviewWOrdReviewedType",
   "switchReviewWordWhetherWithNoteType",
 )
-@Actions( "tree", "TOOGLE_TREE_PANEL" )
-@Actions( "iframe", "SHOW_DIALOG_IFRAME_SETTING" )
-@Actions( "setting", "SHOW_DIALOG_SETTING" )
-@Selectors( 
-  "review", 
+@Actions("tree", "TOOGLE_TREE_PANEL")
+@Actions("iframe", "SHOW_DIALOG_IFRAME_SETTING")
+@Actions("setting", "SHOW_DIALOG_SETTING")
+@Selectors(
+  "review",
   "isStandardReviewMode",
   "isReviewMode",
   "wordsReviewCountInfo",
   'reviewWordReviewedTypeText',
   'reviewWordWhetherWithNoteTypeText',
 )
-@Selectors( "app", "syncData" )
-@States( "review", 
-"reviewdCount", 
-"onlyWorksInSelectedTree", 
-"isReviewingWordsWithoutNote", 
-"standardStat", 
-"standardReviewedWordsInfoToday",
+@Selectors("app", "syncData")
+@States("review",
+  "reviewdCount",
+  "onlyWorksInSelectedTree",
+  "isReviewingWordsWithoutNote",
+  "standardStat",
+  "standardReviewedWordsInfoToday",
+)
+@States("tree",
+  "sortType",
 )
 export default class Toolbar extends Component<Props> {
+  sortType?: SORT_TYPES;
   onlyWorksInSelectedTree?: boolean;
   isReviewingWordsWithoutNote?: boolean;
   syncData?: any;
@@ -71,6 +76,7 @@ export default class Toolbar extends Component<Props> {
   TOOGLE_ONLY_WORKS_IN_SELECTED_TREE?: Function;
   SHOW_DIALOG_SETTING?: Function;
   SHOW_DIALOG_IFRAME_SETTING?: Function;
+  SET_SORT_TYPE?: Function;
   loadPulledData?: Function;
   importDataByDataStr?: Function;
   reviewRandom?: Function;
@@ -81,23 +87,23 @@ export default class Toolbar extends Component<Props> {
   updateWordMapByWords?: Function;
 
   hanldeImportBatchClick = () => {
-    
+
   }
 
   handleClickPull = async () => {
-    const confirmResult = confirm( 'Are your really confirm to pull data from server? Current data will be replaced by pulled data.' )
-    if ( ! confirmResult ) { return }
+    const confirmResult = confirm('Are your really confirm to pull data from server? Current data will be replaced by pulled data.')
+    if (!confirmResult) { return }
     const data: SyncData = await appApi.pull()
-    this.loadPulledData( data )
+    this.loadPulledData(data)
     this.updateWordMapByWords()
-    alert( 'Pulled Successfully!' )
+    alert('Pulled Successfully!')
   };
 
   handleClickPush = async () => {
-    const confirmResult = confirm( 'Are you sure to push current data to server?' )
-    if ( ! confirmResult ) { return }
-    await appApi.push( this.syncData )
-    alert( 'Pushed Successfully!' )
+    const confirmResult = confirm('Are you sure to push current data to server?')
+    if (!confirmResult) { return }
+    await appApi.push(this.syncData)
+    alert('Pushed Successfully!')
   };
 
   handleClickRandomReviewMode = () => {
@@ -110,13 +116,13 @@ export default class Toolbar extends Component<Props> {
     const { today, wordIds = [] } = this.standardReviewedWordsInfoToday || {}
 
     let strToday = `Reviewed words today: ${wordIds.length}`
-    
+
     // # previous reviewed words stat
     let strPrevious = ''
-    for ( let key in dayMap ) {
-      const { count } = dayMap[ key ]
-      if ( today !== key ) {
-        strPrevious = `${key.replace( /\-/g, '\/' )}: ${count}\n` + strPrevious
+    for (let key in dayMap) {
+      const { count } = dayMap[key]
+      if (today !== key) {
+        strPrevious = `${key.replace(/\-/g, '\/')}: ${count}\n` + strPrevious
       }
     }
     // strPrevious = `Previous:\n${strPrevious}`
@@ -128,35 +134,35 @@ export default class Toolbar extends Component<Props> {
       familiarWordsCount,
       total,
     } = this.wordsReviewCountInfo
-    const strCountInfo = `Total: ${ total }
-Not Reviewed: ${ notReviewedWordsCount }
-Known: ${ reviewingWordsCount }
-Familiar: ${ familiarWordsCount }
+    const strCountInfo = `Total: ${total}
+Not Reviewed: ${ notReviewedWordsCount}
+Known: ${ reviewingWordsCount}
+Familiar: ${ familiarWordsCount}
 
-Known+Familiar: ${ reviewingWordsCount + familiarWordsCount }
+Known+Familiar: ${ reviewingWordsCount + familiarWordsCount}
 `
-    alert( `${strToday}
+    alert(`${strToday}
 
 ${strCountInfo}
 
-${strPrevious}` )
+${strPrevious}`)
   }
 
-  handleImportChange = ( event: any ) => {
+  handleImportChange = (event: any) => {
     const fileInput = event.target
     try {
       const reader = new FileReader()
-      
-      reader.onload = ( event: any ) => {
+
+      reader.onload = (event: any) => {
         // Reset value so that uploading file which has 
         // the same name next time still triggers change event
         fileInput.value = ''
 
         const str = event.target.result
-        this.importDataByDataStr( str )
+        this.importDataByDataStr(str)
       }
-      reader.readAsText( event.target.files[ 0 ] )
-    } catch ( e ) {}
+      reader.readAsText(event.target.files[0] )
+    } catch (e) { }
   }
 
   render() {
@@ -173,11 +179,11 @@ ${strPrevious}` )
                 <span>(reviewd: {this.reviewdCount - 1})</span>
               )}
             </button>
-            <button onClick={ () => this.startStandardReview() }>Start Standard Review</button>
+            <button onClick={() => this.startStandardReview()}>Start Standard Review</button>
           </>
         )}
-        <button onClick={ () => this.switchReviewWOrdReviewedType() }>{ this.reviewWordReviewedTypeText }</button>
-        <button onClick={ () => this.switchReviewWordWhetherWithNoteType() }>{ this.reviewWordWhetherWithNoteTypeText }</button>
+        <button onClick={() => this.switchReviewWOrdReviewedType()}>{this.reviewWordReviewedTypeText}</button>
+        <button onClick={() => this.switchReviewWordWhetherWithNoteType()}>{this.reviewWordWhetherWithNoteTypeText}</button>
         {this.isStandardReviewMode && (
           <button onClick={() => this.SET_REVIEW_MODE_NONE()}>
             Exit Standard Review
@@ -192,13 +198,23 @@ ${strPrevious}` )
           />
         </span>
         <button onClick={() => this.TOOGLE_IFRAME()}>Iframe</button>
-       
-        <button onClick={ () => this.SHOW_DIALOG_SETTING() }>Setting</button>
-        <button onClick={ () => this.SHOW_DIALOG_IFRAME_SETTING() }>Iframe Setting</button>
+
+        <button onClick={() => this.SHOW_DIALOG_SETTING()}>Setting</button>
+        <button onClick={() => this.SHOW_DIALOG_IFRAME_SETTING()}>Iframe Setting</button>
+        <select value={this.sortType} onChange={ (e) => { this.SET_SORT_TYPE( +e.target.value ) } }>
+          {[
+            { label: 'Sort by create time', value: SORT_TYPES.CREATE_TIME },
+            { label: 'Sort by level', value: SORT_TYPES.LEVEL },
+            { label: 'Sort by letter', value: SORT_TYPES.LETTER }
+          ].map((v, index) =>
+            <option key={index} value={v.value}>{v.label}</option>
+          )}
+        </select>
+
         <button onClick={() => this.export()}>Export</button>
-        
+
         <label className="importInputLabel">
-          <input type="file"  className="fileInput" name="upload" onChange={ this.handleImportChange }/>
+          <input type="file" className="fileInput" name="upload" onChange={this.handleImportChange} />
           Import
         </label>
         {/* <button>Update Media</button> */}
