@@ -138,6 +138,7 @@ export default class Note extends Component<Props> {
                   const file = fileInput.files[0];
                   // file type is only image.
                   if (/^image\//.test(file.type)) {
+                    if ( file.type !== 'image/gif' && file.type !== 'image/webp' ) { alert('Only supports uploading gif or webp!'); return }
                     const formData = new FormData()
                     formData.append( 'file', file )
                     formData.append( 'word', JSON.stringify(self.searchingWord) )

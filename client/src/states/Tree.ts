@@ -28,7 +28,7 @@ export default class Tree {
    * 1: sort by level
    * 2: sort by create time
    */
-  sortType:SORT_TYPES = 0
+  sortType:SORT_TYPES = SORT_TYPES.LEVEL
 
   get treeIds (): number[] {
     const ids = []
