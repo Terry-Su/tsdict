@@ -147,7 +147,6 @@ app.post( "/uploadGif", ( req: express.Request, res: express.Response ) => {
     const imageUrl = `/${GET_URL_RELATIVE_TO_STORE_BIG_FILE( outputPath )}`
     res.send( imageUrl )
   } )
-  console.log( req.body )
 } )
 
 // # replace the media(image for example) url with server url instead of base64 url

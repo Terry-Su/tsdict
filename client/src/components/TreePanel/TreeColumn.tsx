@@ -28,7 +28,12 @@ export default class TreeColumn extends Component<Props> {
           case SORT_TYPES.CREATE_TIME: 
             return
           case SORT_TYPES.LEVEL: 
-            return this.getWordById(a.id).reviewLevel >= this.getWordById(b.id).reviewLevel ? 1 : -1 
+            const levelA = this.getWordById(a.id).reviewLevel
+            const levelB = this.getWordById(b.id).reviewLevel
+            return (
+              ( levelA != null && levelB == null ) ||
+              levelA >= levelB
+            ) ? 1 : -1 
           case SORT_TYPES.LETTER:
             return this.getWordById(a.id).name[0] >= this.getWordById(b.id).name[0] ? 1 : -1
         }
