@@ -47,7 +47,9 @@ export default class Pronunciation extends Component<Props> {
   render() {
     return (
       <StyledRoot>
-        <button onClick={ this.handleHoverButton } onMouseOver={ this.handleHoverButton }>Speak</button>
+        <button onClick={ this.handleHoverButton }
+        // onMouseOver={ this.handleHoverButton }
+        >Speak</button>
         <audio ref={this.audioRef} controls>
             {
               this.youdaoUrls.map( ( url, index ) => <source key={ index } src={ url } /> )

@@ -23,7 +23,7 @@ export default class App {
   message: Message
 
   searchingWordName: string = '';
-  visibleIframe: boolean = true;
+  visibleIframe: boolean = false;
 
   // # right click menu
   rightClickMenuItems: PopupMenuItem[] = [];

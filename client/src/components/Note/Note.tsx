@@ -63,7 +63,7 @@ export default class Note extends Component<Props> {
       event.preventDefault()
       const reader = new FileReader()
       reader.onload = async function( event: any ) {
-        const url = event.target.result
+        const url = event.target.result 
         appApi.pasteImage( { word: self.searchingWord, base64Url: url } ).then( serverImageUrl => {
           self.insertImage( serverImageUrl )
         } ).catch( e => {
@@ -112,11 +112,51 @@ export default class Note extends Component<Props> {
   }
 
   initQuill() {
+    const self = this
     const quill = ( this.quill = new Quill( this.editor, {
       modules: {
         // # reference: https://quilljs.com/docs/formats/
         toolbar: {
           container: this.toolbar,
+          handlers: {
+            image(e) {
+              console.log( `image event`, e )
+              let fileInput = this.container.querySelector('input.ql-image[type=file]');
+              if ( fileInput == null ) {
+                
+                /**
+                 * Step1. select local image
+                 *
+                 */
+              const selectLocalImage = () => {
+                fileInput = document.createElement('input');
+                fileInput.setAttribute('type', 'file');
+                fileInput.click();
+              
+                // Listen upload local image and save to server
+                fileInput.onchange = () => {
+                  const file = fileInput.files[0];
+                  // file type is only image.
+                  if (/^image\//.test(file.type)) {
+                    const formData = new FormData()
+                    formData.append( 'file', file )
+                    formData.append( 'word', JSON.stringify(self.searchingWord) )
+                    appApi.uploadGif( formData ).then( url => {
+                      // push image url to rich editor.
+                      const range = self.quill.getSelection();
+                      self.quill.insertEmbed(range.index, 'image', url);
+                    } )
+                  } else {
+                    console.warn('You could only upload images.');
+                  }
+                };
+              }
+            
+            
+              selectLocalImage()
+              }
+            }
+          }
         },
       },
       placeholder: "Compose an epic...",

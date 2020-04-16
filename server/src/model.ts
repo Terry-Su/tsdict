@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
-import FS from 'fs-extra'
+import FS, { fstat } from 'fs-extra'
 import { flatten } from 'lodash'
 import PATH from 'path'
 import { URL } from 'url'
@@ -11,7 +11,11 @@ import { backup, cleanUselessMedias, updateMedia, pasteImage } from './actions'
 import {
     CLIENT_PUBLIC, CLIENT_PUBLIC_APP_CACHE, CLIENT_PUBLIC_INDEX, GET_BACKUP_CLIENT_DATA_UNIQUE_FILE,
     GET_STORE_IMAGE_FILES, GET_URL_RELATIVE_TO_STORE_ROOT, RELATIVE_PHONETIC_SYMBOLS_FILE,
-    STORE_CURRENT_DATA_FILE, STORE_PHONETIC_SYMBOLS_FILE, STORE_ROOT, DICT_WEBSTER, PATH_DICT_URL_TXT
+    STORE_CURRENT_DATA_FILE, STORE_PHONETIC_SYMBOLS_FILE, STORE_ROOT, DICT_WEBSTER, PATH_DICT_URL_TXT,
+    STORE_BIG_FILE_GIF,
+    STORE_BIG_FILE,
+    GET_URL_RELATIVE_TO_STORE_BIG_FILE,
+    GET_STORE_BIG_FILE_GIF_UNIQUE_FILE_NAME
 } from './constants/paths'
 import { getImageUrls } from './getters'
 import isBase64Url from './utils/isBase64Url'
@@ -19,9 +23,10 @@ import { notNil } from './utils/lodash'
 import outputBase64Media from './utils/outputBase64Media'
 import fetch from 'isomorphic-fetch'
 import { JSDOM } from 'jsdom'
-
+import formidable from 'formidable'
 app.use( express.static( STORE_ROOT ) )
 app.use( express.static( CLIENT_PUBLIC ) )
+app.use( express.static( STORE_BIG_FILE ) )
 // app.use( express.static( DICT_WEBSTER ) )
 
 app.get( "/", ( req, res ) => {
@@ -122,6 +127,27 @@ app.post( "/pasteImage", async ( req: express.Request, res: express.Response ) =
     console.log( e )
   }
   res.send( null )
+} )
+
+app.post( "/uploadGif", ( req: express.Request, res: express.Response ) => {
+  const form = new formidable( { multiples: true, maxFileSize: 1 * 1024 * 1024 * 1024 } )
+  form.parse( req, ( err, fields, files ) => {
+    if ( err ) {
+      console.log( err )
+      res.end( 'Upload failed!' )
+    }
+    const { word: wordDataString } = fields
+    const word = JSON.parse( wordDataString )
+    const { file } = files
+    FS.ensureDirSync( STORE_BIG_FILE_GIF )
+    const avaiableName = GET_STORE_BIG_FILE_GIF_UNIQUE_FILE_NAME( word.name )
+    const extension = file.type.replace( /.*\//g, '' )
+    const outputPath = PATH.resolve( STORE_BIG_FILE_GIF, `${avaiableName}.${extension}` )
+    FS.moveSync( file.path, outputPath, { overwrite: true } )
+    const imageUrl = `/${GET_URL_RELATIVE_TO_STORE_BIG_FILE( outputPath )}`
+    res.send( imageUrl )
+  } )
+  console.log( req.body )
 } )
 
 // # replace the media(image for example) url with server url instead of base64 url

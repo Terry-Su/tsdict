@@ -1,26 +1,26 @@
 import { TypeWord, TypeWordNextReviewTime, TypeWordReviewLevel } from '@/__typings__/word'
 import {
-    MAX_WORD_REVIEW_LEVEL, TIME_ONE_DAY, TIME_ONE_HOUR, TIME_ONE_MINUTE
+  MAX_WORD_REVIEW_LEVEL, TIME_ONE_DAY, TIME_ONE_HOUR, TIME_ONE_MINUTE
 } from '@/constants/numbers'
 
 import { getRandomArrayElement } from '../js'
 
 // # the algorithm of getting next standard review word
 let shouldReviewingNewWord: boolean = false
-export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
+export const getNextStandardReviewWord = (words: TypeWord[]) => {
   // # words without `reviewLevel`
-  let wordsWithoutReviewLevel = []
-  let wordsWithReviewLevel = []
-  words.forEach( word => {
-    if ( word.reviewLevel == null ) {
-      wordsWithoutReviewLevel.push( word )
+  const wordsWithoutReviewLevel = []
+  const wordsWithReviewLevel = []
+  words.forEach(word => {
+    if (word.reviewLevel == null) {
+      wordsWithoutReviewLevel.push(word)
     } else {
-      wordsWithReviewLevel.push( word )
+      wordsWithReviewLevel.push(word)
     }
-  } )
+  })
   const existWordsWithoutReviewLevel = wordsWithoutReviewLevel.length > 0
   const existWordsWithReviewLevel = wordsWithReviewLevel.length > 0
-  const getTargetWordWithReviewLevel = ( words: TypeWord[] ) => {
+  const getTargetWordWithReviewLevel = (words: TypeWord[]) => {
     // # get the word whose next review time
     // # is most earlier than now
     const now = new Date().getTime()
@@ -28,21 +28,21 @@ export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
     const filteredWords = words.filter(
       word => word.reviewLevel !== MAX_WORD_REVIEW_LEVEL
     )
-    for ( let word of filteredWords ) {
+    for (const word of filteredWords) {
       // # skip words without qualified review level
-      if ( word.reviewLevel == null ) {
+      if (word.reviewLevel == null) {
         continue
       }
 
       // # if word's next review time is null, return it immediately
-      if ( word.nextReviewTime == null ) {
+      if (word.nextReviewTime == null) {
         return word
       }
-      
-      if ( word.nextReviewTime > now ) { continue }
+
+      if (word.nextReviewTime > now) { continue }
 
       // # initialize
-      if ( targetWord == null ) {
+      if (targetWord == null) {
         targetWord = word
         continue
       }
@@ -63,25 +63,25 @@ export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
     return targetWord
   }
 
-  if ( existWordsWithoutReviewLevel && existWordsWithReviewLevel ) {
-    if ( shouldReviewingNewWord ) {
+  if (existWordsWithoutReviewLevel && existWordsWithReviewLevel) {
+    if (shouldReviewingNewWord) {
       shouldReviewingNewWord = !shouldReviewingNewWord
-      return getRandomArrayElement( wordsWithoutReviewLevel )
+      return getRandomArrayElement(wordsWithoutReviewLevel)
     } else {
       shouldReviewingNewWord = !shouldReviewingNewWord
       const potentialTargetWord = getTargetWordWithReviewLevel(
         wordsWithReviewLevel
       )
-      if ( potentialTargetWord != null ) {
+      if (potentialTargetWord != null) {
         return potentialTargetWord
       } else {
-        return getRandomArrayElement( wordsWithoutReviewLevel )
+        return getRandomArrayElement(wordsWithoutReviewLevel)
       }
     }
-  } else if ( existWordsWithoutReviewLevel && !existWordsWithReviewLevel ) {
-    return getRandomArrayElement( wordsWithoutReviewLevel )
-  } else if ( !existWordsWithoutReviewLevel && existWordsWithReviewLevel ) {
-    return getTargetWordWithReviewLevel( wordsWithReviewLevel )
+  } else if (existWordsWithoutReviewLevel && !existWordsWithReviewLevel) {
+    return getRandomArrayElement(wordsWithoutReviewLevel)
+  } else if (!existWordsWithoutReviewLevel && existWordsWithReviewLevel) {
+    return getTargetWordWithReviewLevel(wordsWithReviewLevel)
   }
 
   return null
@@ -90,14 +90,14 @@ export const getNextStandardReviewWord = ( words: TypeWord[] ) => {
 export const standardReviewLevelToDurationMap: {
   [propName: number]: number;
 } = {
-  1                        : 5 * TIME_ONE_MINUTE,
-  2                        : 30 * TIME_ONE_MINUTE,
-  3                        : 12 * TIME_ONE_HOUR,
-  4                        : 1 * TIME_ONE_DAY,
-  5                        : 2 * TIME_ONE_DAY,
-  6                        : 4 * TIME_ONE_DAY,
-  7                        : 7 * TIME_ONE_DAY,
-  8                        : 15 * TIME_ONE_DAY,
-  9                        : 30 * TIME_ONE_DAY,
-  [ MAX_WORD_REVIEW_LEVEL ]: 365 * TIME_ONE_DAY,
+  1: 5 * TIME_ONE_MINUTE,
+  2: 30 * TIME_ONE_MINUTE,
+  3: 12 * TIME_ONE_HOUR,
+  4: 1 * TIME_ONE_DAY,
+  5: 2 * TIME_ONE_DAY,
+  6: 4 * TIME_ONE_DAY,
+  7: 7 * TIME_ONE_DAY,
+  8: 15 * TIME_ONE_DAY,
+  9: 30 * TIME_ONE_DAY,
+  [MAX_WORD_REVIEW_LEVEL]: 365 * TIME_ONE_DAY
 }

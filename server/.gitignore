@@ -12,6 +12,7 @@ customConfig.ts
 
 # store
 store
+storeBigFile
 
 # Dependencies
 node_modules

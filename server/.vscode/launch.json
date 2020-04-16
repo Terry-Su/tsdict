@@ -5,28 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     // # app
-    // {
-    //   "type": "node",
-    //   "request": "launch",
-    //   "name": "Launch Program",
-    //   "args": [
-    //     "src/index.ts",
-    //   ],
-    //   "runtimeArgs": [
-    //     "-r", 
-    //     "ts-node/register", 
-    //   ],
-    //   "cwd": "${workspaceRoot}",
-    //   "protocol": "inspector",
-    // },
-
-    // # scripts
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
       "args": [
-        "scripts/downloadDictPages.command.ts",
+        "src/index.ts",
       ],
       "runtimeArgs": [
         "-r", 
@@ -35,6 +19,22 @@
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
     },
+
+    // # scripts
+    // {
+    //   "type": "node",
+    //   "request": "launch",
+    //   "name": "Launch Program",
+    //   "args": [
+    //     "scripts/downloadDictPages.command.ts",
+    //   ],
+    //   "runtimeArgs": [
+    //     "-r", 
+    //     "ts-node/register", 
+    //   ],
+    //   "cwd": "${workspaceRoot}",
+    //   "protocol": "inspector",
+    // },
 
     // # jasmine
     // {

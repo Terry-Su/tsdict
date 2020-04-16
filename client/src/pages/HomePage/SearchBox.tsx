@@ -44,6 +44,7 @@ export default class SearchBox extends Component<Props> {
 const StyledRoot = styled.div`
   width: 100%;
   >input {
+    box-sizing: border-box;
     width: 100%;
     height: 30px;
   }

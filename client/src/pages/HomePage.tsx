@@ -121,6 +121,7 @@ const StyledRoot: any = styled.div`
       /* display: flex; */
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
+      overflow: auto;
       @media (max-width: 576px) {
        width: 100%;
       }
