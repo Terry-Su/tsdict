@@ -119,8 +119,7 @@ export default class Note extends Component<Props> {
         toolbar: {
           container: this.toolbar,
           handlers: {
-            image(e) {
-              console.log( `image event`, e )
+            image() {
               let fileInput = this.container.querySelector('input.ql-image[type=file]');
               if ( fileInput == null ) {
                 

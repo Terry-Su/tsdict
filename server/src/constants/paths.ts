@@ -63,6 +63,7 @@ const GET_IMAGE_UNIQUE_FILE_NAME = ( wordName: string, dir: string ) => {
       '.png',
       '.jpg',
       '.gif',
+      '.webp',
     ].map( v => PATH.resolve( dir, `${wordName}$${name}${v}` ) )
     if ( possibleFiles.every( v => ! FS.pathExistsSync( v ) ) ) {
       res = `${wordName}$${name}`
