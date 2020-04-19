@@ -76,7 +76,7 @@ export default class VoiceReviewPanel extends Component<Props> {
   render() {
     const { isDisplayingExplanation } = this.state
     return (
-      <StyledRoot>
+      <StyledRoot isDisplayingExplanation={isDisplayingExplanation}>
         <header onClick={this.handleClickHeader}>
           <div className="title">
             <button className="back-button" onClick={this.handleClickBack}>Back</button>
@@ -84,12 +84,10 @@ export default class VoiceReviewPanel extends Component<Props> {
               {get(this.voiceReviewingWord, 'name')}
             </span>
           </div>
-          {isDisplayingExplanation &&
-          <div className="explanation">
+          <StyledDiv className="explanation" hidden={!isDisplayingExplanation}>
             {/* Word Explanation... */}
             <NoteReadonly ref={this.noteReadOnlyRef} data={get(this.voiceReviewingWord, 'note')} />
-          </div>
-           }
+          </StyledDiv>
         </header>
         <main>
           {!isDisplayingExplanation && <>
@@ -107,7 +105,7 @@ export default class VoiceReviewPanel extends Component<Props> {
   }
 }
 
-const StyledRoot = styled.div`
+const StyledRoot:any = styled.div`
 width: 100%;
 height: 100%;
 >header {
@@ -122,6 +120,7 @@ height: 100%;
     align-items: center;
     width:100%;
     height: 80px;
+    ${(props: any) => !props.isDisplayingExplanation ? 'height: 100%;' : ''}
     >.back-button {
       position: absolute;
       left: 5px;
@@ -130,6 +129,7 @@ height: 100%;
     }
   }
   >.explanation {
+    flex: 1;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -152,3 +152,4 @@ height: 100%;
   }
 }
 `
+const StyledDiv:any = styled.div``

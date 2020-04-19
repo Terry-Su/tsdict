@@ -29,7 +29,7 @@ export default class Pronunciation extends Component<Props> {
 
   get youdaoUrls(): string[] {
     const { searchingWordName } = this
-    const url = `http://dict.youdao.com/dictvoice?audio=${searchingWordName}&type=2` 
+    const url = `http://dict.youdao.com/dictvoice?audio=${searchingWordName}&type=0` 
     return [ url ]
   }
 

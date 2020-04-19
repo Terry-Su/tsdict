@@ -52,5 +52,5 @@ export default class TreeColumn extends Component<Props> {
 
 const StyledRoot = styled.div`
   width: 100%;
-  height: 100%
+  height: calc(100% - 2px);
 `

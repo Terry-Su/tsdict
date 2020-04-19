@@ -167,6 +167,10 @@ const StyledRoot: any = styled.div`
       flex: 1;
       border: 1px solid #ddd;
       overflow: auto;
+      @media (max-width: 576px) { 
+        flex: unset;
+        height: 200px;
+      }
     }
 
     > .wordPanelWrapper {
@@ -188,8 +192,13 @@ const StyledRoot: any = styled.div`
       } */
     }
     >.voiceReviewPanelWrapper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      flex: 1;
       width: 100%;
       height: 100%;
+      background: #fff;
     }
   }
 `

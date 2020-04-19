@@ -14,10 +14,15 @@ export default class Audio extends Component<Props> {
   
   audioRef: any = React.createRef()
   get audio(): HTMLAudioElement { return this.audioRef.current }
-
+  componentDidMount() {
+    console.log( `this.audio.playbackRate`, this.audio && this.audio.playbackRate )
+  }
   componentDidUpdate(prevProps) {
     if ( prevProps.available !== this.available ) {
-      this.available && this.audio.play()
+      if ( this.available ) {
+        this.audio.playbackRate = 0.9
+        this.audio.play()
+      }
     }
   }
 
@@ -25,7 +30,7 @@ export default class Audio extends Component<Props> {
     return (
       <StyledRoot hidden>
         {this.available &&<audio ref={ this.audioRef }>
-          <source src={`http://dict.youdao.com/dictvoice?audio=${encodeURIComponent(this.text)}&type=2`}/>
+          <source src={`http://dict.youdao.com/dictvoice?audio=${encodeURIComponent(this.text)}&type=0`}/>
           <source src={`http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=8&text=${encodeURIComponent(this.text)}`}/>
         </audio>
         }
