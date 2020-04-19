@@ -25,8 +25,8 @@ export default class Audio extends Component<Props> {
     return (
       <StyledRoot hidden>
         {this.available &&<audio ref={ this.audioRef }>
-          <source src={`http://dict.youdao.com/dictvoice?audio=${this.text}&type=2`}/>
-          <source src={`http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=8&text=${this.text}`}/>
+          <source src={`http://dict.youdao.com/dictvoice?audio=${encodeURIComponent(this.text)}&type=2`}/>
+          <source src={`http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=8&text=${encodeURIComponent(this.text)}`}/>
         </audio>
         }
       </StyledRoot>
