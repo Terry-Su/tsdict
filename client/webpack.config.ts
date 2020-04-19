@@ -14,7 +14,8 @@ const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const webpackClientConfig = {
-  mode: __DEV__ ? 'development' : 'production',
+  // mode: __DEV__ ? 'development' : 'production',
+  mode: __DEV__ ? 'production' : 'production',
   entry: {
     [OUTPUT_FILE_NAME]: [
       ENTRY,

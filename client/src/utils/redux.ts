@@ -18,9 +18,9 @@ const getNewState = (state, model) => {
   }
   return newState
 }
-const dispatchUpdateReduxState = value => reduxStore.dispatch({ type: 'UPDATE', value })
+const dispatchUpdateReduxState = value => reduxStore.dispatch({ type: 'UPDATE', value });
 
-{
+(function () {
   // let modelKeys = []
   // for ( let key in ModelMap ) {
   //   const Model = ModelMap[ key ]
@@ -31,7 +31,7 @@ const dispatchUpdateReduxState = value => reduxStore.dispatch({ type: 'UPDATE', 
     const Model = ModelMap[key]
     const model = new Model()
 
-    const newKey = Model.name.replace(/^./, Model.name[0].toLowerCase())
+    const newKey = key.replace(/^./, key[0].toLowerCase())
     modelMap[newKey] = model
 
     const descriptorMap = Object.getOwnPropertyDescriptors(model)
@@ -104,7 +104,7 @@ const dispatchUpdateReduxState = value => reduxStore.dispatch({ type: 'UPDATE', 
       model[key] = newFunc
     }
   }
-}
+})()
 
 export {
   modelMap,
