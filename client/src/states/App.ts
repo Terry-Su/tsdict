@@ -47,6 +47,7 @@ export default class App {
       tree: this.tree.tree,
       tags: this.tag.tags,
       // # app state
+      searchingWordName: this.searchingWordName,
       lastSelections: this.tree.lastSelections,
       standardStat: this.review.standardStat,
       standardReviewedWordsInfoToday: this.review.standardReviewedWordsInfoToday,
@@ -69,7 +70,7 @@ export default class App {
     return this.tag.tags.filter(tag => !this.searchWordTags.includes(tag))
   }
 
-  SET_SEARCHING_WORD_NAME (searchingWordName: string) {
+  SET_SEARCHING_WORD_NAME (searchingWordName: string = '') {
     this.searchingWordName = searchingWordName
   }
 
@@ -140,6 +141,8 @@ export default class App {
     this.tag.SET_TAGS(data.tags)
 
     // # app state
+    // ## searchingWordName
+    this.SET_SEARCHING_WORD_NAME(data.searchingWordName)
     // ## tree
     // ### last selections
     this.tree.setSelections(data.lastSelections || [])

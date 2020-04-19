@@ -10,6 +10,7 @@ export interface SyncData {
   tags: TypeTag[]
   // # app state
   // ## app
+  searchingWordName: string
   lastSelections: TreeSelection[]
   // ## review
   standardStat: StandardReviewStat
