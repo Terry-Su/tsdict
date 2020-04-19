@@ -36,6 +36,9 @@ export default class App {
   // # pronunciation player
   pronunciationPlayer = null
 
+  // # data server connection available
+  availableDataServer: boolean = false
+
   // # dev book mode
   isDevBookMode: boolean =
   //  true
@@ -109,6 +112,10 @@ export default class App {
 
   // # pronunciation player
   SET_PRONUNCIATION_PLAYER = value => { this.pronunciationPlayer = value }
+
+  // # data server connection available
+  ENABLE_DATA_SERVER_AVAILABLE = () => { this.availableDataServer = true }
+  DISABLE_DATA_SERVER_AVAILABLE = () => { this.availableDataServer = false }
 
   // # dev book mode
   ENABLE_DEV_BOOK_MODE = () => { this.isDevBookMode = true }

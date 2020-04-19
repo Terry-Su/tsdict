@@ -20,8 +20,7 @@ const { SYNC_STORE_PATH } = customConfig
 export const STORE_ROOT = SYNC_STORE_PATH != null ? SYNC_STORE_PATH : potentialStoreRoot
 const BACKUP = resolve( STORE_ROOT, 'backup' )
 
-export const STORE_BIG_FILE = resolve( __dirname, '../../storeBigFile' )
-export const STORE_BIG_FILE_GIF = resolve( STORE_BIG_FILE, 'gif' )
+export const STORE_GIF = resolve( STORE_ROOT, 'gif' )
 export const STORE_IMAGE = resolve( STORE_ROOT, 'image' )
 export const STORE_BACKUP_IMAGE = resolve( STORE_ROOT, 'backupImage' )
 export const STORE_AUDIO = resolve( STORE_ROOT, 'audio' )
@@ -75,7 +74,7 @@ const GET_IMAGE_UNIQUE_FILE_NAME = ( wordName: string, dir: string ) => {
 
 export const GET_STORE_IMAGE_UNIQUE_FILE_NAME = ( wordName: string ) => GET_IMAGE_UNIQUE_FILE_NAME( wordName, STORE_IMAGE )
 
-export const GET_STORE_BIG_FILE_GIF_UNIQUE_FILE_NAME = ( wordName: string ) => GET_IMAGE_UNIQUE_FILE_NAME( wordName, STORE_BIG_FILE_GIF )
+export const GET_STORE_GIF_UNIQUE_FILE_NAME = ( wordName: string ) => GET_IMAGE_UNIQUE_FILE_NAME( wordName, STORE_GIF )
 
 export const GET_STORE_IMAGE_FILE_BY_NAME = name => resolve( STORE_IMAGE, name )
 
@@ -83,8 +82,6 @@ export const GET_STORE_BACKUP_IMAGE_FILE_BY_NAME = name => resolve( STORE_BACKUP
 
 
 export const GET_URL_RELATIVE_TO_STORE_ROOT = path => relative( STORE_ROOT, path )
-
-export const GET_URL_RELATIVE_TO_STORE_BIG_FILE = path => relative( STORE_BIG_FILE, path )
 
 
 export const GET_STORE_IMAGE_FILES = () => GLOB.sync( `${STORE_IMAGE}/**/*` )

@@ -66,19 +66,19 @@ export default class Test extends Component<Props> {
 
   async initializeByUrlParams() {
     const { searchParams } = new URL(location.href)
-    const serverOrigin = searchParams.get("serverOrigin")
+    const origin = searchParams.get("origin")
     const searchingWord = searchParams.get("searchingWord")
     const isPopupDictMode = searchParams.get("isPopupDictMode")
-    if (serverOrigin != null) {
-      this.SET_ORIGIN(serverOrigin)
+    if (origin != null) {
+      this.SET_ORIGIN(origin)
     }
 
     const pullDataAndSetSearchingWord = async (searchingWordName: string) => {
       const data: SyncData = await appApi.pull()
       this.loadPulledData(data)
       this.updateWordMapByWords()
-      if (serverOrigin != null) {
-        this.SET_ORIGIN(serverOrigin)
+      if (origin != null) {
+        this.SET_ORIGIN(origin)
       }
       if (searchingWord != null) {
         this.SET_SEARCHING_WORD_NAME(searchingWordName)

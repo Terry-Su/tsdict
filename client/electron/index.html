@@ -24,7 +24,7 @@
     const iframe = document.getElementById('tsdict')
     const currentOrigin = window['tsdictOrigin']
     const runDict = (wordName = 'welcome') => {
-      iframe.src = `${currentOrigin}?&isPopupDictMode=true&searchingWord=${wordName}&serverOrigin=${currentOrigin}`
+      iframe.src = `${currentOrigin}?&isPopupDictMode=true&searchingWord=${wordName}&origin=${currentOrigin}`
     }
 
     const update = (searchingWordName) => {

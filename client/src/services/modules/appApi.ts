@@ -11,6 +11,7 @@ export interface PasteImageRequest {
 export type UploadFigRequest = FormData
 
 class AppApi extends BaseApi {
+  testConnection = () => this.handledGet('/test-connection')
   pull = (data?: SyncData) => this.handledPost('/pull', data)
   push = (data: SyncData) => this.handledPost('/push', data)
   pasteImage = (data: PasteImageRequest) => this.handledPost('/pasteImage', data)

@@ -21,7 +21,7 @@ export default class DialogSetting extends Component {
       <Dialog visible={ this.visibleDialogSetting } onClose={ () => this.HIDE_DIALOG_SETTING() }>
         <StyledRoot>
           <div>
-          Server Url:  <input value={this.origin} onChange={ e => this.SET_ORIGIN( e.target.value ) }/>
+           Database Origin:  <input value={this.origin} onChange={ e => this.SET_ORIGIN( e.target.value ) }/>
           </div>
         </StyledRoot>
       </Dialog>

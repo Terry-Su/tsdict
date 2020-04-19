@@ -14,13 +14,10 @@ export default class Audio extends Component<Props> {
   
   audioRef: any = React.createRef()
   get audio(): HTMLAudioElement { return this.audioRef.current }
-  componentDidMount() {
-    console.log( `this.audio.playbackRate`, this.audio && this.audio.playbackRate )
-  }
   componentDidUpdate(prevProps) {
     if ( prevProps.available !== this.available ) {
       if ( this.available ) {
-        this.audio.playbackRate = 0.9
+        this.audio.playbackRate = 0.8
         this.audio.play()
       }
     }

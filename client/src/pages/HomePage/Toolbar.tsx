@@ -16,6 +16,8 @@ interface Props { }
 @Actions(
   "app",
   "TOOGLE_IFRAME",
+  "ENABLE_DATA_SERVER_AVAILABLE",
+  "DISABLE_DATA_SERVER_AVAILABLE",
   "loadPulledData",
   "importDataByDataStr",
   "export"
@@ -42,7 +44,7 @@ interface Props { }
   'reviewWordReviewedTypeText',
   'reviewWordWhetherWithNoteTypeText',
 )
-@Selectors("app", "syncData")
+@Selectors("app", "syncData",)
 @States("review",
   "reviewdCount",
   "onlyWorksInSelectedTree",
@@ -53,7 +55,11 @@ interface Props { }
 @States("tree",
   "sortType",
 )
+@States( `setting`, `origin` )
+@States( `app`, `availableDataServer` )
 export default class Toolbar extends Component<Props> {
+  origin?: string;
+  availableDataServer?: boolean;
   sortType?: SORT_TYPES;
   onlyWorksInSelectedTree?: boolean;
   isReviewingWordsWithoutNote?: boolean;
@@ -78,6 +84,8 @@ export default class Toolbar extends Component<Props> {
   SHOW_DIALOG_SETTING?: Function;
   SHOW_DIALOG_IFRAME_SETTING?: Function;
   SET_SORT_TYPE?: Function;
+  ENABLE_DATA_SERVER_AVAILABLE?: Function;
+  DISABLE_DATA_SERVER_AVAILABLE?: Function;
   loadPulledData?: Function;
   importDataByDataStr?: Function;
   reviewRandom?: Function;
@@ -87,6 +95,26 @@ export default class Toolbar extends Component<Props> {
   switchReviewWOrdReviewedType?: Function;
   switchReviewWordWhetherWithNoteType?: Function;
   updateWordMapByWords?: Function;
+
+  componentDidMount() {
+    this.testDataServerConnection()
+  }
+
+  componentDidUpdate( prevProps ) {
+    if ( prevProps.origin !== this.origin ) {
+      this.testDataServerConnection()
+    }
+  }
+
+  testDataServerConnection = () => {
+    appApi.testConnection().then( () => {
+      console.log('connected')
+      this.ENABLE_DATA_SERVER_AVAILABLE()
+    } ).catch( () => {
+      console.log('not connected')
+      this.DISABLE_DATA_SERVER_AVAILABLE()
+    } )
+  }
 
   hanldeImportBatchClick = () => {
 
@@ -223,6 +251,10 @@ ${strPrevious}`)
         {/* <button>Update Media</button> */}
         <button onClick={this.handleClickPull}>Pull</button>
         <button onClick={this.handleClickPush}>Push</button>
+        <div className="connection-status-wrapper">
+          <span className={`dot ${this.availableDataServer ? 'available' : ''}`}></span>
+        <span className="text">Data server { this.availableDataServer ? 'Available' : 'Unavailable' }</span>
+        </div>
       </StyledRoot>
     )
   }
@@ -235,6 +267,22 @@ const StyledRoot = styled.div`
     border: 1px solid grey;
     .fileInput {
       display: none;
+    }
+  }
+  .connection-status-wrapper {
+    display: inline-flex;
+    align-items: center;
+    min-height: 100%;
+    margin-left: 10px;
+    >.dot {
+      width: 6px;
+      height: 6px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: red;
+      &.available {
+        background: green;
+      }
     }
   }
 `
