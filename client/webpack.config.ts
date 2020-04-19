@@ -19,7 +19,11 @@ const webpackClientConfig = {
   entry: {
     [OUTPUT_FILE_NAME]: [
       ENTRY,
-      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'
+      ...(
+        __DEV__ ? [
+          'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'
+        ] : []
+      )
     ]
   },
   output: {
@@ -81,9 +85,9 @@ const webpackClientConfig = {
         from: ENTRY_MANIFEST_CACHE,
         to: OUTPUT_MANIFEST_CACHE
       }
-    ]),
-    new ForkTsCheckerWebpackPlugin()
+    ])
   ].concat(__DEV__ ? [
+    new ForkTsCheckerWebpackPlugin(),
     new WriteFilePlugin(),
     new webpack.HotModuleReplacementPlugin()
   ] : [

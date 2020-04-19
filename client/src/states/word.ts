@@ -90,6 +90,11 @@ export default class Word {
   SET_WORD_MAP_KEY_VALUE = (key: number, value: TypeWord) => { this.wordMap[key] = value }
   REMOVE_WORD_MAP_KEY = (key: number) => { delete this.wordMap[key] }
 
+  updateWords = (words: TypeWord[]) => {
+    this.SET_WORDS(words)
+    this.updateWordMapByWords()
+  }
+
   addWord (
     name: string = '',
     config: { note?: Delta; degree?: ReviewLevel; createTime?: Time } = {
