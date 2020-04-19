@@ -35,13 +35,29 @@ export default class HomePage extends Component<Props> {
   SET_TAGS?: Function;
   exitReview?: Function;
 
+  state = {
+    mobileVisibleToolbar: false
+  }
+
   render() {
+    const { mobileVisibleToolbar } = this.state
     return (
       <StyledRoot visibleTreePanel={this.visibleTreePanel}>
         {!this.isReviewMode &&
-          <div className="toolbarWrapper">
+          <>
+          <div className={ `toolbarWrapper ${mobileVisibleToolbar ? `` : `m-hide`}` }>
+            <div className="only-m-show exit-toolbar-wrapper">
+              <button onClick={() => this.setState( { mobileVisibleToolbar: false } )}>Back</button>
+            </div>
             <Toolbar />
           </div>
+          {
+            !mobileVisibleToolbar &&
+            <div className="only-m-show show-toolbar-button-wrapper">
+                <button onClick={ () => this.setState({ mobileVisibleToolbar: true }) }>Toolbar</button>
+            </div>
+          }
+          </>
         }
         {!this.isReviewMode &&
           <div className="searchBoxWrapper">
@@ -62,7 +78,6 @@ export default class HomePage extends Component<Props> {
           ) : (
             this.visibleWordPanel && (
               <div className="wordPanelWrapper">
-                <Pronunciation />
                 <WordPanel />
               </div>
             )
@@ -82,10 +97,25 @@ export default class HomePage extends Component<Props> {
 }
 
 const StyledRoot: any = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+
+  @media (max-width: 576px) {
+    .show-toolbar-button-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 30px;
+      >button {
+        /* width: 100%; */
+        /* height: 100%; */
+      }
+    }
+  }
 
   > .toolbarWrapper {
     box-sizing: border-box;
@@ -93,6 +123,21 @@ const StyledRoot: any = styled.div`
     align-items: center;
     min-height: 60px;
     border: 1px solid #ddd;
+    @media (max-width: 576px) { 
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      .exit-toolbar-wrapper {
+        display: flex;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
   }
 
   > .searchBoxWrapper {
@@ -110,11 +155,10 @@ const StyledRoot: any = styled.div`
     /* height: calc(100% - 120px); */
     display: flex;
     justify-content: space-between;
-
     @media (max-width: 576px) {
-      display: block;
+      flex-direction: column;
+      height: calc(100% - 30px - 60px);
     }
-
     > .treePanelWrapper {
       box-sizing: border-box;
       display: flex;
@@ -122,34 +166,26 @@ const StyledRoot: any = styled.div`
       /* height: 50; */
       flex: 1;
       border: 1px solid #ddd;
-
-      @media (max-width: 576px) {
-        min-height: 200px;
-        height: 33%;
-      }
+      overflow: auto;
     }
 
     > .wordPanelWrapper {
       flex: 1;
       box-sizing: border-box;
       /* display: flex; */
-      ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
       overflow: auto;
-      @media (max-width: 576px) {
-       width: 100%;
-      }
+      
     }
 
     > .standardReviewPanelWrapper {
       box-sizing: border-box;
       height: 100%;
       /* display: flex; */
-      ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
-      @media (max-width: 576px) {
+      /* @media (max-width: 576px) {
         height: 100%;
-      }
+      } */
     }
     >.voiceReviewPanelWrapper {
       width: 100%;

@@ -16,5 +16,12 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px!important;
     margin: 5px;
   }
+
+  /* # mobile */
+  .only-m-show { display: none; }
+  @media (max-width: 576px) { 
+    .only-m-show { display: block; }
+    .m-hide { display: none!important; }
+  }
 `
 export default GlobalStyle

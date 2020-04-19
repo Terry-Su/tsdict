@@ -14,6 +14,7 @@ import { CalcTree } from '@/utils/getters/tree'
 import { debounce } from '@/utils/lodash'
 
 import WordPanelInputSuggested from './WordPanelInputSuggested'
+import Pronunciation from '@/components/Pronunciation'
 
 interface Props {}
 
@@ -101,30 +102,35 @@ export default class WordPanel extends Component<Props> {
           </>
         )}
         {searchingWord != null && (
-          <>
+          <div className="main">
             <div className="topbar">
+              <Pronunciation />
+              &nbsp;
               <Degree
                 degree={searchingWord.reviewLevel}
                 onChange={this.handleDegreeChange}
               />
               <span className="tagsWrapper">
-              {
-                this.searchWordTags.map( ( tag, index ) => <button onClick={() => this.handleClickTag( tag )} key={index}>{ tag.name }</button> )
-              }
-              {
-                visibleInputSuggested && <WordPanelInputSuggested onConfirm={ this.handleConfirmInputSuggested }/>
-              }
-              <button onClick={ this.handleClickAddTagBtn }>+Tag</button>
+                {
+                  this.searchWordTags.map( ( tag, index ) => <button onClick={() => this.handleClickTag( tag )} key={index}>{ tag.name }</button> )
+                }
+                {
+                  visibleInputSuggested && <WordPanelInputSuggested onConfirm={ this.handleConfirmInputSuggested }/>
+                }
+                <button onClick={ this.handleClickAddTagBtn }>+Tag</button>
+              </span>
+              
+            </div>
+            <div className="bottom">
+              <Note data={searchingWord.note} onChange={this.handleNoteChange} />
               <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
                 Add to Selected Folder
               </button>
               <button>Reset Review(Current Review Level: { searchingWord.reviewLevel })</button>
               <button onClick={ this.handleClickShowTrees }>Show Trees</button>
               <button onClick={this.handleDeleteClick}>Delete</button>
-              </span>
             </div>
-            <Note data={searchingWord.note} onChange={this.handleNoteChange} />
-          </>
+          </div>
         )}
         {this.visibleIframe && (
           <div className="iframeViewerWrapper">
@@ -139,14 +145,28 @@ export default class WordPanel extends Component<Props> {
 const StyledRoot = styled.div`
   width: 100%;
 
-  > .topbar {
+  >.main {
     display: flex;
-    align-items: center;
-
-    >.tagsWrapper {
-      margin: 0 0 0 10px;
+    flex-direction: column;
+    @media (max-width: 576px) { 
+      /* flex-direction: column-reverse; */
+    }
+    > .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      >.tagsWrapper {
+        margin: 0 0 0 10px;
+      }
+    }
+    >.bottom {
+      flex: 1;
+      overflow: auto;
     }
   }
+
+  
+  
 
   > .iframeViewerWrapper {
     width: 100%;

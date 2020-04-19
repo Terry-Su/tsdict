@@ -47,5 +47,7 @@ const StyledRoot = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: 30px;
+    text-align: center;
+    font-size:20px;
   }
 `
