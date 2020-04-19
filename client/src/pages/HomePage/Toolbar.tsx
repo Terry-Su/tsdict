@@ -24,6 +24,7 @@ interface Props { }
   "review",
   "reviewRandom",
   "startStandardReview",
+  "startVoiceReview",
   "SET_REVIEW_MODE_NONE",
   "INCREMENT_REVIEWD_COUNT",
   "TOOGLE_ONLY_WORKS_IN_SELECTED_TREE",
@@ -82,6 +83,7 @@ export default class Toolbar extends Component<Props> {
   reviewRandom?: Function;
   export?: Function;
   startStandardReview?: Function;
+  startVoiceReview?: Function;
   switchReviewWOrdReviewedType?: Function;
   switchReviewWordWhetherWithNoteType?: Function;
   updateWordMapByWords?: Function;
@@ -180,6 +182,7 @@ ${strPrevious}`)
               )}
             </button>
             <button onClick={() => this.startStandardReview()}>Start Standard Review</button>
+            <button onClick={() => this.startVoiceReview()}>Start Voice Review</button>
           </>
         )}
         <button onClick={() => this.switchReviewWOrdReviewedType()}>{this.reviewWordReviewedTypeText}</button>

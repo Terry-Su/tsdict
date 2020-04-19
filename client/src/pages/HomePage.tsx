@@ -13,35 +13,41 @@ import StandardReviewPanel from './HomePage/StandardReviewPanel'
 import Toolbar from './HomePage/Toolbar'
 import WordPanel from './HomePage/WordPanel/WordPanel'
 import FolderPanel from '@/components/FolderPanel'
+import VoiceReviewPanel from './HomePage/VoiceReviewPanel'
 
 interface Props {}
 
 @States( "word", "visibleWordPanel" )
 @States( "tree", "visibleTreePanel" )
-@Selectors( "review", "isReviewMode", "isStandardReviewMode" )
+@Selectors( "review", "isReviewMode", "isStandardReviewMode", "isVoiceReviewMode" )
 @Actions( "tree", "SET_TREE" )
 @Actions( "word", "SET_WORDS" )
 @Actions( "tag", "SET_TAGS" )
+@Actions( "review", "exitReview" )
 export default class HomePage extends Component<Props> {
   isReviewMode?: boolean;
   visibleTreePanel?: boolean;
   visibleWordPanel?: boolean;
   isStandardReviewMode?: boolean;
+  isVoiceReviewMode?: boolean;
   SET_TREE?: Function;
   SET_WORDS?: Function;
   SET_TAGS?: Function;
+  exitReview?: Function;
 
   render() {
     return (
       <StyledRoot visibleTreePanel={this.visibleTreePanel}>
-        <div className="toolbarWrapper">
-          <Toolbar />
-        </div>
-        {/* {! this.isReviewMode && ( */}
-        <div className="searchBoxWrapper">
-          <SearchBox />
-        </div>
-        {/* )} */}
+        {!this.isReviewMode &&
+          <div className="toolbarWrapper">
+            <Toolbar />
+          </div>
+        }
+        {!this.isReviewMode &&
+          <div className="searchBoxWrapper">
+            <SearchBox />
+          </div>
+        }
         <div className="bottomContainer">
           {this.visibleTreePanel && (
             <div className="treePanelWrapper">
@@ -51,7 +57,6 @@ export default class HomePage extends Component<Props> {
           )}
           {this.isStandardReviewMode ? (
             <div className="standardReviewPanelWrapper">
-              <Pronunciation />
               <StandardReviewPanel />
             </div>
           ) : (
@@ -62,6 +67,12 @@ export default class HomePage extends Component<Props> {
               </div>
             )
           )}
+          {
+            this.isVoiceReviewMode &&
+            <div className="voiceReviewPanelWrapper">
+              <VoiceReviewPanel />
+            </div>
+          }
         </div>
 
         
@@ -71,6 +82,8 @@ export default class HomePage extends Component<Props> {
 }
 
 const StyledRoot: any = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 
@@ -91,9 +104,10 @@ const StyledRoot: any = styled.div`
   }
 
   > .bottomContainer {
+    flex: 1;
     box-sizing: border-box;
     width: 100%;
-    height: calc(100% - 120px);
+    /* height: calc(100% - 120px); */
     display: flex;
     justify-content: space-between;
 
@@ -129,12 +143,17 @@ const StyledRoot: any = styled.div`
 
     > .standardReviewPanelWrapper {
       box-sizing: border-box;
+      height: 100%;
       /* display: flex; */
       ${( props: any ) => props.visibleTreePanel ? `width: 50%;` : `width: 100%`}
       border: 1px solid #ddd;
       @media (max-width: 576px) {
         height: 100%;
       }
+    }
+    >.voiceReviewPanelWrapper {
+      width: 100%;
+      height: 100%;
     }
   }
 `

@@ -23,6 +23,7 @@ interface Props {}
   "updateSearchingWordNote",
   "deleteSearchingWord",
   "updateSearchingWordReviewLevel",
+  "refreshSearchingWordNextReviewTime",
   "saveSearchingWordToCurrentSelectedTree",
 )
 @Actions( 'tree', 'selectTag' )
@@ -47,6 +48,7 @@ export default class WordPanel extends Component<Props> {
   deleteSearchingWord?: Function;
   updateSearchingWordReviewLevel?: Function;
   saveSearchingWordToCurrentSelectedTree?: Function;
+  refreshSearchingWordNextReviewTime?: Function;
 
   handleAddClick = () => {
     this.addWordBySearchingWordName()
@@ -65,6 +67,7 @@ export default class WordPanel extends Component<Props> {
 
   handleDegreeChange = ( newDegree: ReviewLevel ) => {
     this.updateSearchingWordReviewLevel( newDegree )
+    this.refreshSearchingWordNextReviewTime()
   };
 
   handleClickTag = ( tag: TypeTag ) => {

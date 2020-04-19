@@ -7,7 +7,9 @@ import {
 } from '@/__typings__/word'
 import { removeArrayElement } from '@/utils/js'
 import { DictDataWord, Time } from '@shared/__typings__/DictData'
-
+import {
+  standardReviewLevelToDurationMap
+} from '@/utils/review/reviewGetters'
 import Tag from './Tag'
 import Tree from './Tree'
 
@@ -44,7 +46,7 @@ export default class Word {
       id: this.availableId,
       name,
       note: config.note,
-      reviewLevel: config.reviewLevel,
+      reviewLevel: config.reviewLevel != null ? config.reviewLevel : 0,
       createTime: new Date().getTime()
     })
   }
@@ -136,8 +138,13 @@ export default class Word {
     this.REFRESH_WORDS()
   }
 
+  refreshWordNextReviewTime (word: TypeWord) {
+    const duration = standardReviewLevelToDurationMap[(word.reviewLevel || 0) - 1] || 0
+    return new Date().getTime() + duration
+  }
+
   resetWordReviewLevel (word: TypeWord) {
-    word.reviewLevel = 1
+    word.reviewLevel = 0
     this.REFRESH_WORDS()
   }
 

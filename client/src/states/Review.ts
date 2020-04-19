@@ -43,6 +43,10 @@ export default class Review {
     return this.reviewMode === ReviewMode.Standard
   }
 
+  get isVoiceReviewMode (): boolean {
+    return this.reviewMode === ReviewMode.Voice
+  }
+
   get reviewingWord (): TypeWord {
     return this.app.searchingWord
   }
@@ -124,6 +128,7 @@ export default class Review {
 
   SET_REVIEW_MODE_RANDOM = () => { this.reviewMode = ReviewMode.Random }
   SET_REVIEW_MODE_STANDARD = () => { this.reviewMode = ReviewMode.Standard }
+  SET_REVIEW_MODE_VOICE = () => { this.reviewMode = ReviewMode.Voice }
   SET_REVIEW_MODE_NONE = () => { this.reviewMode = ReviewMode.None }
 
   INCREMENT_REVIEWD_COUNT = () => { this.reviewdCount = this.reviewdCount + 1 }
@@ -242,7 +247,7 @@ export default class Review {
   updateStandardReviewWordNextReviewTime () {
     const { reviewingWord } = this
     const now = new Date().getTime()
-    const { reviewLevel: level } = this.reviewingWord
+    const { reviewLevel: level = 1 } = this.reviewingWord
     const duration = (standardReviewLevelToDurationMap[level] || 0)
     const newNextReviewTime = now + duration
     this.word.setWordNextReviewTime(reviewingWord, newNextReviewTime)
@@ -305,5 +310,15 @@ export default class Review {
     const { reviewWordWhetherWithNoteType: t } = this
     const T = ReviewWordWhetherWithNoteType
     if (t === T.WITH_AND_WITHOUT) { this.SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE(T.WITH) } else if (t === T.WITH) { this.SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE(T.WITHOUT) } else if (t === T.WITHOUT) { this.SET_REVIEW_WORD_WHETHER_WITH_NOTE_TYPE(T.WITH_AND_WITHOUT) }
+  }
+
+  // # exit review mode
+  exitReview () {
+    this.SET_REVIEW_MODE_NONE()
+  }
+
+  // # voice review
+  startVoiceReview () {
+    this.SET_REVIEW_MODE_VOICE()
   }
 }

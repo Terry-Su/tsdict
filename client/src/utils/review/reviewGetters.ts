@@ -90,6 +90,7 @@ export const getNextStandardReviewWord = (words: TypeWord[]) => {
 export const standardReviewLevelToDurationMap: {
   [propName: number]: number;
 } = {
+  0: 0,
   1: 5 * TIME_ONE_MINUTE,
   2: 30 * TIME_ONE_MINUTE,
   3: 12 * TIME_ONE_HOUR,

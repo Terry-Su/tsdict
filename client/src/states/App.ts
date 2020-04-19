@@ -37,7 +37,9 @@ export default class App {
   pronunciationPlayer = null
 
   // # dev book mode
-  isDevBookMode: boolean = false
+  isDevBookMode: boolean =
+  //  true
+   false
 
   get syncData (): SyncData {
     return {
@@ -121,6 +123,10 @@ export default class App {
 
   updateSearchingWordReviewLevel (newDegree: TypeWordReviewLevel) {
     this.word.setWordReviewLevel(this.searchingWord, newDegree)
+  }
+
+  refreshSearchingWordNextReviewTime () {
+    this.word.refreshWordNextReviewTime(this.searchingWord)
   }
 
   deleteSearchingWord () {

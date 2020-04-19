@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 export default function( Target: any ) {
   return function LongPressContainer( props: any ) {
@@ -35,7 +36,7 @@ export class LongPress extends Component<
   render() {
     const { className = "", children } = this.props
     return (
-      <span
+      <StyledRoot
         className={className}
         onMouseDown={this.onPress}
         onTouchStart={this.onPress}
@@ -46,7 +47,9 @@ export class LongPress extends Component<
         onTouchMove={this.onRelease}
       >
         {children}
-      </span>
+      </StyledRoot>
     )
   }
 }
+const StyledRoot = styled.span`
+`

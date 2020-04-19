@@ -5,16 +5,19 @@ import { TypeWord } from '@/__typings__/word'
 import { Actions, Selectors, States } from '@/utils/decorators'
 
 import WordPanel from './WordPanel/WordPanel'
+import Pronunciation from '@/components/Pronunciation'
+import SearchBox from './SearchBox'
 
-interface Props {}
+interface Props { }
 
-@States( "review", "visibleReviewingWordContent" )
-@Actions( "review", "SHOW_REVIEWING_WORD_CONTENT", 
-'standardReviewWordFamiliar',
-'standardReviewWordKnown',
-'standardReviewWordUnfamiliar',
+@States("review", "visibleReviewingWordContent")
+@Actions("review", "SHOW_REVIEWING_WORD_CONTENT",
+  'standardReviewWordFamiliar',
+  'standardReviewWordKnown',
+  'standardReviewWordUnfamiliar',
+  'exitReview',
 )
-@Actions( "app", "pronunceSearchingWord" )
+@Actions("app", "pronunceSearchingWord")
 export default class StandardReviewPanel extends Component<Props> {
   visibleReviewingWordContent?: boolean;
   SHOW_REVIEWING_WORD_CONTENT?: Function;
@@ -22,31 +25,37 @@ export default class StandardReviewPanel extends Component<Props> {
   standardReviewWordKnown?: Function;
   standardReviewWordUnfamiliar?: Function;
   pronunceSearchingWord?: Function;
+  exitReview?: Function;
 
   componentDidMount() {
-    
+
   }
 
-  handleReviewButtonSectionKeyPress = ( { charCode, altKey } ) => {
-    console.log( { charCode } )
+  handleReviewButtonSectionKeyPress = ({ charCode, altKey }) => {
+    console.log({ charCode })
     // if ( altKey ) {
-      if ( charCode === 49 ) {
-        this.SHOW_REVIEWING_WORD_CONTENT()
-      } else if ( charCode === 50 ) {
-        this.standardReviewWordFamiliar()
-      } else if ( charCode === 51 ) {
-        this.standardReviewWordKnown()
-      } else if ( charCode === 52 ) {
-        this.standardReviewWordUnfamiliar()
-      } else if ( charCode === 53 ) {
-        this.pronunceSearchingWord()
-      }
+    if (charCode === 49) {
+      this.SHOW_REVIEWING_WORD_CONTENT()
+    } else if (charCode === 50) {
+      this.standardReviewWordFamiliar()
+    } else if (charCode === 51) {
+      this.standardReviewWordKnown()
+    } else if (charCode === 52) {
+      this.standardReviewWordUnfamiliar()
+    } else if (charCode === 53) {
+      this.pronunceSearchingWord()
+    }
     // }
   }
 
   render() {
     return (
       <StyledRoot>
+        <header>
+          <button onClick={() => this.exitReview()}>Back</button>
+          <Pronunciation />
+          <SearchBox />
+        </header>
         <div onKeyPress={this.handleReviewButtonSectionKeyPress} className="featurePanel" tabIndex={0}>
           <button onClick={() => this.standardReviewWordFamiliar()}>
             Familiar
@@ -56,27 +65,34 @@ export default class StandardReviewPanel extends Component<Props> {
             Unfamiliar
           </button>
         </div>
-        {this.visibleReviewingWordContent ? (
-          <>
-            <br />
+        <div className="bottom">
+          {this.visibleReviewingWordContent ? (
             <WordPanel />
-          </>
-        ) : (
-          <div
-            className="showRegion"
-            onClick={() => this.SHOW_REVIEWING_WORD_CONTENT()}
-          >
-            Show
-          </div>
-        )}
+          ) : (
+              <div
+                className="showRegion"
+                onClick={() => this.SHOW_REVIEWING_WORD_CONTENT()}
+              >
+                Show
+              </div>
+            )}
+        </div>
+
       </StyledRoot>
     )
   }
 }
 
 const StyledRoot = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+  >header {
+    display: flex;
+    align-items: center;
+    height: 60px;
+  }
 
   .featurePanel {
     display: flex;
@@ -89,8 +105,9 @@ const StyledRoot = styled.div`
       margin: 0 10px;
     }
   }
-
-  .showRegion {
+  >.bottom {
+    flex: 1;
+    .showRegion {
     display: grid;
     place-items: center;
     width: 100%;
@@ -98,4 +115,6 @@ const StyledRoot = styled.div`
     color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }
+  }
+  
 `

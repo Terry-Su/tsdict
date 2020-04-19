@@ -44,7 +44,7 @@ export default class Degree extends Component<Props> {
 
   onLongPress = () => {
     const { onChange } = this.props
-    onChange && onChange( 1 )
+    onChange && onChange( 0 )
   }
 
   render() {

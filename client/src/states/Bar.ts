@@ -5,12 +5,12 @@ export default class Bar {
 
   flag: number = 1
 
-  SWITCH_FLAG() { this.flag *= -1 }
+  SWITCH_FLAG () { this.flag *= -1 }
 
   test = () => {
-      // this.foo.INCREMENT_COUNT()
-      // this.foo.INCREMENT_COUNT()
-      // this.SWITCH_FLAG()
-      console.log( this.foo.countText )
+    // this.foo.INCREMENT_COUNT()
+    // this.foo.INCREMENT_COUNT()
+    // this.SWITCH_FLAG()
+    console.log(this.foo.countText)
   }
 }

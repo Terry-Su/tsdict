@@ -16,6 +16,7 @@ import DevBookPage from './pages/DevBookPage'
 import PopupDictPage from './pages/PopupDictPage'
 import appApi from './services/modules/appApi'
 import localStore from './store/localStore'
+import Audio from '@/components/Audio'
 
 interface Props { }
 
@@ -122,11 +123,26 @@ export default class Test extends Component<Props> {
           {/* messages */}
           <Message />
 
+          {/* # audio */}
+          <Audio />
           <React.Fragment>
             <GlobalStyle />
           </React.Fragment>
         </StyledRoot> :
-        <DevBookPage />
+        <DevBookPage>
+           {/* # dialogs */}
+           <DialogIframeSetting />
+          <DialogSetting />
+          {this.visibleDialogConfirm && <DialogConfirm />}
+
+          {/* messages */}
+          <Message />
+          {/* # audio */}
+          <Audio />
+           <React.Fragment>
+            <GlobalStyle />
+          </React.Fragment>
+        </DevBookPage>
     )
   }
 }

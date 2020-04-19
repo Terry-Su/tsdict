@@ -45,12 +45,13 @@ export default class Pronunciation extends Component<Props> {
   }
 
   render() {
+    const { ...rest } = this.props
     return (
-      <StyledRoot>
+      <StyledRoot {...rest}>
         <button onClick={ this.handleHoverButton }
         // onMouseOver={ this.handleHoverButton }
         >Speak</button>
-        <audio ref={this.audioRef} controls>
+        <audio ref={this.audioRef} controls preload="preload">
             {
               this.youdaoUrls.map( ( url, index ) => <source key={ index } src={ url } /> )
             }
@@ -64,7 +65,7 @@ export default class Pronunciation extends Component<Props> {
   }
 }
 
-const StyledRoot = styled.div`
+const StyledRoot = styled.span`
 >audio {
   display: none;
 }
