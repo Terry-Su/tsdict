@@ -20,20 +20,20 @@ import Audio from '@/components/Audio'
 
 interface Props { }
 
-@Selectors("app", "syncData")
-@States("app",
-  "visibleRightClickMenu", "isPopupDictMode", "isDevBookMode")
-@States("dialog", "visibleDialogConfirm")
+@Selectors('app', 'syncData')
+@States('app',
+  'visibleRightClickMenu', 'isPopupDictMode', 'isDevBookMode')
+@States('dialog', 'visibleDialogConfirm')
 @Actions(
-  "app",
-  "HIDE_RIGHT_CLICK_MENU",
-  "SET_SEARCHING_WORD_NAME",
-  "ENABLE_POPUP_DICT_MODE",
-  "loadSyncData",
-  "loadPulledData"
+  'app',
+  'HIDE_RIGHT_CLICK_MENU',
+  'SET_SEARCHING_WORD_NAME',
+  'ENABLE_POPUP_DICT_MODE',
+  'loadSyncData',
+  'loadPulledData'
 )
-@Actions("word", "updateWordMapByWords")
-@Actions("setting", "SET_ORIGIN")
+@Actions('word', 'updateWordMapByWords')
+@Actions('setting', 'SET_ORIGIN')
 export default class Test extends Component<Props> {
   syncData: SyncData;
   visibleRightClickMenu: boolean;
@@ -48,7 +48,7 @@ export default class Test extends Component<Props> {
   loadPulledData: Function;
   updateWordMapByWords: Function;
 
-  constructor(props) {
+  constructor (props) {
     // componentDidMount() {
     super(props)
     const localCachedStore: SyncData = localStore.getStore()
@@ -57,18 +57,19 @@ export default class Test extends Component<Props> {
     }
     this.updateWordMapByWords()
   }
-  componentDidMount() {
+
+  componentDidMount () {
     reduxStore.subscribe(() => {
       localStore.setStore(this.syncData)
     })
     this.initializeByUrlParams()
   }
 
-  async initializeByUrlParams() {
+  async initializeByUrlParams () {
     const { searchParams } = new URL(location.href)
-    const origin = searchParams.get("origin")
-    const searchingWord = searchParams.get("searchingWord")
-    const isPopupDictMode = searchParams.get("isPopupDictMode")
+    const origin = searchParams.get('origin')
+    const searchingWord = searchParams.get('searchingWord')
+    const isPopupDictMode = searchParams.get('isPopupDictMode')
     if (origin != null) {
       this.SET_ORIGIN(origin)
     }
@@ -90,7 +91,6 @@ export default class Test extends Component<Props> {
       await pullDataAndSetSearchingWord(searchingWord)
     }
 
-
     // # listen to message
     if (isPopupDictMode) {
       window.onmessage = async (e) => {
@@ -108,10 +108,11 @@ export default class Test extends Component<Props> {
   handleClick = () => {
     this.visibleRightClickMenu && this.HIDE_RIGHT_CLICK_MENU()
   };
-  render() {
+
+  render () {
     return (
-      !this.isDevBookMode ?
-        <StyledRoot onClick={this.handleClick}>
+      !this.isDevBookMode
+        ? <StyledRoot onClick={this.handleClick}>
           {this.visibleRightClickMenu && <RightClickMenu />}
           {!this.isPopupDictMode ? <HomePage /> : <PopupDictPage />}
 
@@ -128,10 +129,10 @@ export default class Test extends Component<Props> {
           <React.Fragment>
             <GlobalStyle />
           </React.Fragment>
-        </StyledRoot> :
-        <DevBookPage>
-           {/* # dialogs */}
-           <DialogIframeSetting />
+        </StyledRoot>
+        : <DevBookPage>
+          {/* # dialogs */}
+          <DialogIframeSetting />
           <DialogSetting />
           {this.visibleDialogConfirm && <DialogConfirm />}
 
@@ -139,7 +140,7 @@ export default class Test extends Component<Props> {
           <Message />
           {/* # audio */}
           <Audio />
-           <React.Fragment>
+          <React.Fragment>
             <GlobalStyle />
           </React.Fragment>
         </DevBookPage>
