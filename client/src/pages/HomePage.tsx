@@ -17,13 +17,13 @@ import VoiceReviewPanel from './HomePage/VoiceReviewPanel'
 
 interface Props {}
 
-@States( "word", "visibleWordPanel" )
-@States( "tree", "visibleTreePanel" )
-@Selectors( "review", "isReviewMode", "isStandardReviewMode", "isVoiceReviewMode" )
-@Actions( "tree", "SET_TREE" )
-@Actions( "word", "SET_WORDS" )
-@Actions( "tag", "SET_TAGS" )
-@Actions( "review", "exitReview" )
+@States('word', 'visibleWordPanel')
+@States('tree', 'visibleTreePanel')
+@Selectors('review', 'isReviewMode', 'isStandardReviewMode', 'isVoiceReviewMode')
+@Actions('tree', 'SET_TREE')
+@Actions('word', 'SET_WORDS')
+@Actions('tag', 'SET_TAGS')
+@Actions('review', 'exitReview')
 export default class HomePage extends Component<Props> {
   isReviewMode?: boolean;
   visibleTreePanel?: boolean;
@@ -39,24 +39,24 @@ export default class HomePage extends Component<Props> {
     mobileVisibleToolbar: false
   }
 
-  render() {
+  render () {
     const { mobileVisibleToolbar } = this.state
     return (
       <StyledRoot visibleTreePanel={this.visibleTreePanel}>
         {!this.isReviewMode &&
           <>
-          <div className={ `toolbarWrapper ${mobileVisibleToolbar ? `` : `m-hide`}` }>
-            <div className="only-m-show exit-toolbar-wrapper">
-              <button onClick={() => this.setState( { mobileVisibleToolbar: false } )}>Back</button>
+            <div className={ `toolbarWrapper ${mobileVisibleToolbar ? '' : 'm-hide'}` }>
+              <div className="only-m-show exit-toolbar-wrapper">
+                <button onClick={() => this.setState({ mobileVisibleToolbar: false })}>Back</button>
+              </div>
+              <Toolbar />
             </div>
-            <Toolbar />
-          </div>
-          {
-            !mobileVisibleToolbar &&
+            {
+              !mobileVisibleToolbar &&
             <div className="only-m-show show-toolbar-button-wrapper">
-                <button onClick={ () => this.setState({ mobileVisibleToolbar: true }) }>Toolbar</button>
+              <button onClick={ () => this.setState({ mobileVisibleToolbar: true }) }>Toolbar</button>
             </div>
-          }
+            }
           </>
         }
         {!this.isReviewMode &&
@@ -90,7 +90,6 @@ export default class HomePage extends Component<Props> {
           }
         </div>
 
-        
       </StyledRoot>
     )
   }
@@ -184,6 +183,7 @@ const StyledRoot: any = styled.div`
 
     > .standardReviewPanelWrapper {
       box-sizing: border-box;
+      width: 100%;
       height: 100%;
       /* display: flex; */
       border: 1px solid #ddd;

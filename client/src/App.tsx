@@ -17,6 +17,7 @@ import PopupDictPage from './pages/PopupDictPage'
 import appApi from './services/modules/appApi'
 import localStore from './store/localStore'
 import Audio from '@/components/Audio'
+import Pronunciation from './components/Pronunciation'
 
 interface Props { }
 
@@ -140,6 +141,8 @@ export default class Test extends Component<Props> {
           <Message />
           {/* # audio */}
           <Audio />
+          {/* # pronunciation */}
+          <Pronunciation />
           <React.Fragment>
             <GlobalStyle />
           </React.Fragment>

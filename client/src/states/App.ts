@@ -221,7 +221,9 @@ export default class App {
   pronunceSearchingWord () {
     if (this.pronunciationPlayer) {
       this.pronunciationPlayer.load()
-      this.pronunciationPlayer.play()
+      setTimeout(() => {
+        this.pronunciationPlayer.play()
+      }, 1000)
     }
   }
 }

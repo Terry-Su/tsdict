@@ -4,8 +4,10 @@ import { standardReviewLevelToDurationMap } from '@/utils/review/reviewGetters'
 import Word from './Word'
 import { MAX_WORD_REVIEW_LEVEL } from '@/constants/numbers'
 import Audio from './Audio'
+import App from './App'
 
 export default class VoiceReview {
+  app: App
   review: Review
   word: Word
   audio: Audio
@@ -25,8 +27,11 @@ export default class VoiceReview {
       this.review.exitReview()
       return
     }
-    this.SET_VOICE_REVIEWING_WORD(this.nextWord)
+
+    this.SET_VOICE_REVIEWING_WORD(nextWord)
     this.speakCurrentWordName()
+
+    this.app.SET_SEARCHING_WORD_NAME(nextWord.name)
   }
 
   speakCurrentWordName = () => {
@@ -34,8 +39,13 @@ export default class VoiceReview {
   }
 
   knowCurrentWord = () => {
-    // # update review level
     const { voiceReviewingWord } = this
+
+    // # stat
+    this.review.addWordToStandardReviewedWordsInfoToday(voiceReviewingWord)
+    this.review.updateStandardReviewStat()
+
+    // # update review level
     if (voiceReviewingWord.reviewLevel == null) {
       this.word.resetWordReviewLevel(voiceReviewingWord)
     }

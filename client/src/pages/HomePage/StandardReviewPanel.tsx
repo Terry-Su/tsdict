@@ -10,14 +10,14 @@ import SearchBox from './SearchBox'
 
 interface Props { }
 
-@States("review", "visibleReviewingWordContent")
-@Actions("review", "SHOW_REVIEWING_WORD_CONTENT",
+@States('review', 'visibleReviewingWordContent')
+@Actions('review', 'SHOW_REVIEWING_WORD_CONTENT',
   'standardReviewWordFamiliar',
   'standardReviewWordKnown',
   'standardReviewWordUnfamiliar',
-  'exitReview',
+  'exitReview'
 )
-@Actions("app", "pronunceSearchingWord")
+@Actions('app', 'pronunceSearchingWord')
 export default class StandardReviewPanel extends Component<Props> {
   visibleReviewingWordContent?: boolean;
   SHOW_REVIEWING_WORD_CONTENT?: Function;
@@ -27,7 +27,7 @@ export default class StandardReviewPanel extends Component<Props> {
   pronunceSearchingWord?: Function;
   exitReview?: Function;
 
-  componentDidMount() {
+  componentDidMount () {
 
   }
 
@@ -48,7 +48,7 @@ export default class StandardReviewPanel extends Component<Props> {
     // }
   }
 
-  render() {
+  render () {
     return (
       <StyledRoot>
         <header>
@@ -69,13 +69,13 @@ export default class StandardReviewPanel extends Component<Props> {
           {this.visibleReviewingWordContent ? (
             <WordPanel />
           ) : (
-              <div
-                className="showRegion"
-                onClick={() => this.SHOW_REVIEWING_WORD_CONTENT()}
-              >
+            <div
+              className="showRegion"
+              onClick={() => this.SHOW_REVIEWING_WORD_CONTENT()}
+            >
                 Show
-              </div>
-            )}
+            </div>
+          )}
         </div>
 
       </StyledRoot>

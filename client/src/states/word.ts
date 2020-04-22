@@ -144,8 +144,8 @@ export default class Word {
   }
 
   refreshWordNextReviewTime (word: TypeWord) {
-    const duration = standardReviewLevelToDurationMap[(word.reviewLevel || 0) - 1] || 0
-    return new Date().getTime() + duration
+    const duration = standardReviewLevelToDurationMap[word.reviewLevel || 0] || 0
+    this.setWordNextReviewTime(word, new Date().getTime() + duration)
   }
 
   resetWordReviewLevel (word: TypeWord) {

@@ -19,22 +19,22 @@ import Pronunciation from '@/components/Pronunciation'
 interface Props {}
 
 @Actions(
-  "app",
-  "addWordBySearchingWordName",
-  "updateSearchingWordNote",
-  "deleteSearchingWord",
-  "updateSearchingWordReviewLevel",
-  "refreshSearchingWordNextReviewTime",
-  "saveSearchingWordToCurrentSelectedTree",
+  'app',
+  'addWordBySearchingWordName',
+  'updateSearchingWordNote',
+  'deleteSearchingWord',
+  'updateSearchingWordReviewLevel',
+  'refreshSearchingWordNextReviewTime',
+  'saveSearchingWordToCurrentSelectedTree'
 )
-@Actions( 'tree', 'selectTag' )
-@Selectors( "app", "searchingWord", "searchWordTags" )
-@States( "app", "searchingWordName", "visibleIframe" )
-@States( "word", "visibleWordPanel" )
-@Selectors( "tree", "rootCalcTree" )
+@Actions('tree', 'selectTag')
+@Selectors('app', 'searchingWord', 'searchWordTags')
+@States('app', 'searchingWordName', 'visibleIframe')
+@States('word', 'visibleWordPanel')
+@Selectors('tree', 'rootCalcTree')
 export default class WordPanel extends Component<Props> {
   state = {
-    visibleInputSuggested: false,
+    visibleInputSuggested: false
   }
 
   searchWordTags?: TypeTag[];
@@ -62,43 +62,43 @@ export default class WordPanel extends Component<Props> {
     confirmd && this.deleteSearchingWord()
   };
 
-  handleNoteChange = debounce( ( newNote: TypeWordNote ) => {
-    this.updateSearchingWordNote( newNote )
-  }, 600 )
+  handleNoteChange = debounce((newNote: TypeWordNote) => {
+    this.updateSearchingWordNote(newNote)
+  }, 600)
 
-  handleDegreeChange = ( newDegree: ReviewLevel ) => {
-    this.updateSearchingWordReviewLevel( newDegree )
+  handleDegreeChange = (newDegree: ReviewLevel) => {
+    this.updateSearchingWordReviewLevel(newDegree)
     this.refreshSearchingWordNextReviewTime()
   };
 
-  handleClickTag = ( tag: TypeTag ) => {
-    this.selectTag( tag )
+  handleClickTag = (tag: TypeTag) => {
+    this.selectTag(tag)
   }
 
   handleClickAddTagBtn = () => {
-    this.setState( { visibleInputSuggested: true } )
+    this.setState({ visibleInputSuggested: true })
   }
 
   handleConfirmInputSuggested = () => {
-    this.setState( { visibleInputSuggested: false } )
+    this.setState({ visibleInputSuggested: false })
   }
 
   handleClickShowTrees = () => {
-    const trees = this.rootCalcTree.queryTreesByWordId( this.searchingWord.id )
-    alert( trees.map( tree => tree.pathName ).join( '\n\n' ) )
+    const trees = this.rootCalcTree.queryTreesByWordId(this.searchingWord.id)
+    alert(trees.map(tree => tree.pathName).join('\n\n'))
   }
 
-  render() {
+  render () {
     const { searchingWord, searchingWordName } = this
     const { visibleInputSuggested } = this.state
     return (
-      this.visibleWordPanel &&  <StyledRoot>
-        {searchingWordName.trim() !== "" && searchingWord == null && (
+      this.visibleWordPanel && <StyledRoot>
+        {searchingWordName.trim() !== '' && searchingWord == null && (
           <>
-          <button onClick={this.handleAddClick}>Add</button>
-          <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
+            <button onClick={this.handleAddClick}>Add</button>
+            <button onClick={() => this.saveSearchingWordToCurrentSelectedTree()}>
           Add to Selected Folder
-        </button>
+            </button>
           </>
         )}
         {searchingWord != null && (
@@ -112,14 +112,14 @@ export default class WordPanel extends Component<Props> {
               />
               <span className="tagsWrapper">
                 {
-                  this.searchWordTags.map( ( tag, index ) => <button onClick={() => this.handleClickTag( tag )} key={index}>{ tag.name }</button> )
+                  this.searchWordTags.map((tag, index) => <button onClick={() => this.handleClickTag(tag)} key={index}>{ tag.name }</button>)
                 }
                 {
                   visibleInputSuggested && <WordPanelInputSuggested onConfirm={ this.handleConfirmInputSuggested }/>
                 }
                 <button onClick={ this.handleClickAddTagBtn }>+Tag</button>
               </span>
-              
+
             </div>
             <div className="bottom">
               <Note data={searchingWord.note} onChange={this.handleNoteChange} />
