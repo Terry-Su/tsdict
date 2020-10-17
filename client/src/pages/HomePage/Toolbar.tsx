@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { SyncData } from '@/__typings__/app'
 import { StandardReviewedWordsInfoToday, StandardReviewStat } from '@/__typings__/review'
-import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
 import { SORT_TYPES } from '@/__typings__/tree'

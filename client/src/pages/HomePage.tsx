@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { TreeSelection, TypeTreeColumn } from '@/__typings__/tree'
 import Pronunciation from '@/components/Pronunciation'
 import TreePanel from '@/components/TreePanel/TreePanel'
-import { reduxStore } from '@/entry'
 import appApi from '@/services/modules/appApi'
 import { Actions, Selectors, States } from '@/utils/decorators'
 

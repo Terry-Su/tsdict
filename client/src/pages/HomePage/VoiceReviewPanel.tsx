@@ -10,10 +10,10 @@ import { LongPress } from '@/componentsPure/highOrder/withLongPress'
 interface Props {
 
 }
-@States(`voiceReview`, `voiceReviewingWord`)
-@Actions(`voiceReview`, `reviewNextWord`, `knowCurrentWord`, `speakCurrentWordName`)
-@Actions(`review`, `exitReview`)
-@Actions( `audio`, `play`, `stop`, )
+@States('voiceReview', 'voiceReviewingWord')
+@Actions('voiceReview', 'reviewNextWord', 'knowCurrentWord', 'speakCurrentWordName')
+@Actions('review', 'exitReview')
+@Actions('audio', 'play', 'stop')
 export default class VoiceReviewPanel extends Component<Props> {
   voiceReviewingWord: TypeWord
   reviewNextWord: Function
@@ -24,29 +24,32 @@ export default class VoiceReviewPanel extends Component<Props> {
   stop: Function
 
   state = {
-    isDisplayingExplanation: false,
+    isDisplayingExplanation: false
   }
+
   isLongPressingNo = false
   noteReadOnlyRef: any = React.createRef()
 
-  get noteText() {
+  get noteText () {
     return this.noteReadOnlyRef.current.editor.innerText
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.reviewNextWord()
   }
-  speakCurrentWordExplanation() {
+
+  speakCurrentWordExplanation () {
     this.stop()
-    setTimeout( () => {
-      console.log( this.noteText )
-      this.play( this.noteText )
-    }, 0 )
+    setTimeout(() => {
+      this.play(this.noteText)
+    }, 0)
     this.setState({ isDisplayingExplanation: true })
   }
+
   handleClickYes = () => {
     this.knowCurrentWord()
   }
+
   handleClickNo = () => {
     if (this.isLongPressingNo) {
       this.isLongPressingNo = false
@@ -54,26 +57,30 @@ export default class VoiceReviewPanel extends Component<Props> {
     }
     this.speakCurrentWordExplanation()
   }
+
   handleLongPressNo = (e:Event) => {
-      this.isLongPressingNo = true
-      console.log(`long press`)
+    this.isLongPressingNo = true
+    console.log('long press')
   }
+
   handleClickContinue = () => {
     this.speakCurrentWordName()
     this.setState({ isDisplayingExplanation: false })
   }
+
   handleClickBack = () => {
     this.exitReview()
   }
+
   handleClickHeader =() => {
-    if ( ! this.state.isDisplayingExplanation ) {
+    if (!this.state.isDisplayingExplanation) {
       this.speakCurrentWordName()
     } else {
       this.speakCurrentWordExplanation()
     }
   }
 
-  render() {
+  render () {
     const { isDisplayingExplanation } = this.state
     return (
       <StyledRoot isDisplayingExplanation={isDisplayingExplanation}>

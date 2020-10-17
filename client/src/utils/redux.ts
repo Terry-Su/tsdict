@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 
 import { TypeAction } from '@/__typings__'
-import { reduxStore } from '@/entry'
+import { reduxStore } from '@/HotApp'
 import ModelMap from '@/states'
 
 const modelMap = {}

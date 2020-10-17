@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 
 import { TypeAction } from '@/__typings__'
-import { reduxStore } from '@/entry'
 
 import { modelMap, modelsActionMap, modelsSelectorMap } from './redux'
 

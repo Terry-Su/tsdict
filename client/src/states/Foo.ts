@@ -1,5 +1,3 @@
-import { reduxStore } from '@/entry'
-
 import Bar from './Bar'
 
 export default class Foo {

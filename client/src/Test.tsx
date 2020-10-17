@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-import { reduxStore } from './entry'
 // import BasicComponent, { DefaultProps } from '@/components/BasicComponent'
 import { Actions, Selectors, States } from './utils/decorators'
 
