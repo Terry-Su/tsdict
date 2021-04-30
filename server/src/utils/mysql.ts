@@ -9,6 +9,15 @@ export const connection = mysql.createConnection( {
 
 connection.connect()
 
+export const sqlQuery = ( sentence: string ): Promise<{results: any[], fields: any}> => new Promise( ( resolve, reject ) => {
+    connection.query( sentence, function ( error, results, fields ) {
+      if ( error ) throw error
+      resolve( { results, fields } )
+    } )
+  } )
+
+export const sqlEscape = mysql.escape
+
 // connection.query( 'select * from `dirs`', function ( error, results, fields ) {
 //   if ( error ) throw error
 //   console.log( 'results', results )

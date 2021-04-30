@@ -1,3 +1,3 @@
 require( './app' )
-require( './mysql' )
+require( '@src/utils/mysql' )
 require( './models' )

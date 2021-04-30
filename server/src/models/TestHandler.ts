@@ -1,4 +1,4 @@
-import { connection } from "@src/mysql"
+import { connection } from "@src/utils/mysql"
 
 export default async function TestHandler( req, res, next ) {
   connection.query( 'SELECT 1 + 1 AS solution', function ( error, results, fields ) {
