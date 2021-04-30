@@ -97,6 +97,6 @@ export const PATH_DICT_URL_TXT = resolve( STORE_ROOT, 'dictUrl.txt' )
 
 
 // # Client
-export const CLIENT_PUBLIC = resolve( __dirname, '../../../client/build' )
+export const CLIENT_PUBLIC = resolve( __dirname, '../../../../tsdict-client/dist' )
 export const CLIENT_PUBLIC_INDEX = resolve( CLIENT_PUBLIC, 'index.html' )
-export const CLIENT_PUBLIC_APP_CACHE = resolve( CLIENT_PUBLIC, 'cache.appcache' )
+// export const CLIENT_PUBLIC_APP_CACHE = resolve( CLIENT_PUBLIC, 'cache.appcache' )
