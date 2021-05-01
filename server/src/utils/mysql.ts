@@ -18,9 +18,27 @@ export const sqlQuery = ( sentence: string ): Promise<{results: any[], fields: a
 
 export const sqlEscape = mysql.escape
 
-// connection.query( 'select * from `dirs`', function ( error, results, fields ) {
+sqlQuery( `use tsdict;` )
+sqlQuery( `create table if not exists \`models\`(
+	\`id\` INT UNSIGNED AUTO_INCREMENT,
+  \`dirId\` INT UNSIGNED,
+    \`name\` VARCHAR(1000) NOT NULL,
+    \`note\` VARCHAR(10000), 
+    \`createTime\` INT UNSIGNED,
+    \`reviewLevel\` INT unsigned,
+    \`nextReviewTime\` INT unsigned,
+    primary key (\`id\`)
+);` )
+sqlQuery( `create table if not exists \`dirs\`(
+	\`id\` INT UNSIGNED AUTO_INCREMENT,
+    \`name\` VARCHAR(1000) NOT NULL,
+    \`previousId\` INT UNSIGNED,
+    primary key (\`id\`)
+);` )
+
+// connection.query( ``, function ( error, results, fields ) {
 //   if ( error ) throw error
-//   console.log( 'results', results )
+//   // console.log( 'results', results )
 // } )
 // connection.query( 'SELECT 1 + 1 AS solution', function ( error, results, fields ) {
 //   if ( error ) throw error
