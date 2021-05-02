@@ -8,10 +8,10 @@ export default async function DescribeDirTree( req, res ) {
 
   async function recur ( dirId, curry:DirTreeItem ) {
     const { results: [ dir ] } = await sqlQuery( `select * from dirs where id = ${sqlEscape( dirId )}` )
-    const { results: childrenModels } = await sqlQuery( `select * from models where dirId ${dirId != null ? '=' : 'is'} ${sqlEscape( dirId )};` )
+    const { results: childrenBriefModels } = await sqlQuery( `select * from models where dirId ${dirId != null ? '=' : 'is'} ${sqlEscape( dirId )};` )
     const { results: childrenDirs } = await sqlQuery( `select * from dirs where previousId ${dirId != null ? '=' : 'is'} ${sqlEscape( dirId )};` )
     curry.dir = dir
-    curry.childrenModels = childrenModels
+    curry.childrenBriefModels = childrenBriefModels
     const childrenDirTreeItems = []
     for ( const childDir of childrenDirs ) {
       const dirTreeItem = new DirTreeItem()

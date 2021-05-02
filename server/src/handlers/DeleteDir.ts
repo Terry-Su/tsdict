@@ -14,7 +14,7 @@ export default async function DeleteDir( req, res ) {
   function recurToDelete( item: DirTreeItem ) {
     promises.push( sqlQuery( `delete from \`tsdict\`.\`dirs\` WHERE (\`id\` = '${sqlEscape( item.dir.id )}');` )  )
     item.childrenDirTreeItems.map( v => recurToDelete( v ) )
-    item.childrenModels.map( v => promises.push(
+    item.childrenBriefModels.map( v => promises.push(
       sqlQuery( `delete from \`tsdict\`.\`models\` WHERE (\`id\` = '${sqlEscape( v.id )}');` )
     ) )
   }

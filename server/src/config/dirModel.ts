@@ -7,11 +7,16 @@ export class Dir {
 
 export class DirTreeItem {
   dir: Dir
-  childrenModels: Model[] = []
+  childrenBriefModels: BriefModel[] = []
   childrenDirTreeItems: DirTreeItem[] = []
 }
 
 // # model
+export class BriefModel {
+  id: number
+  dirId: number
+  name: string
+}
 export class Model {
   id: number
   dirId: number
