@@ -10,6 +10,7 @@ import AddModel from '@src/handlers/AddModel'
 import ModifyModel from '@src/handlers/ModifyModel'
 import DeleteModel from '@src/handlers/DeleteModel'
 import DescribeDirTree from '@src/handlers/DescribeDirTree'
+import DescribeModel from '@src/handlers/DescribeModel'
 
 app.use( express.static( CLIENT_PUBLIC ) )
 app.use( express.static( STORE_ROOT ) )
@@ -27,5 +28,6 @@ app.post( '/RenameDir', RenameDir )
 app.post( '/AddModel', AddModel )
 app.post( '/ModifyModel', ModifyModel )
 app.post( '/DeleteModel', DeleteModel )
+app.post( '/DescribeModel', DescribeModel )
 
 app.get( '*', ( req, res ) => res.sendFile( CLIENT_PUBLIC_INDEX ) )
