@@ -3,7 +3,7 @@
     "src/**/*",
     "../shared/__typings__/**/*",
 ],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "src/deprecated"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

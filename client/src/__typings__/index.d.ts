@@ -4,13 +4,16 @@ import { SettingState } from '@/models/setting'
 
 import { DictDataWord } from '../../../shared/__typings__/DictData'
 import { TAG_IDS } from '../constants/shared'
+import { TypeWord } from './word'
 
-export type WordId = string
+export type TypeId = number
+export type WordId = TypeId
 export type Tag = {
-  id: string,
+  id: TypeId,
   name: string,
-  [ TAG_IDS ]: WordId[]
+  ids: TypeId[]
 }
+export type TypeTag = Tag
 
 export type TreeNode = WordId | Tree
 
@@ -18,20 +21,21 @@ export type TreeNode = WordId | Tree
 // 1. Tree(like 'folder')
 // 2. WordId(like 'file')
 export type Tree = {
-  id: string,
+  id: number,
   name: string,
   nodes: TreeNode[]
 }
 
+export type TypeTree = Tree
+
 export interface ClientData {
-  // words: DictDataWord[]
+  words: TypeWord[]
   // onlineLinks: OnlineLink[],
-  // tags: Tag[]
-  // tree: Tree
-  app: AppState,
-  core: CoreState,
-  setting: SettingState,
-  
+  tags: Tag[]
+  tree: Tree
+  // app: AppState,
+  // core: CoreState,
+  // setting: SettingState,
 }
 
 export interface OnlineLink {
@@ -54,3 +58,11 @@ export type TypeAction = {
   name: string
   value?: any[]
 }
+
+
+export interface Position {
+  x: number
+  y: number
+}
+
+export type TypePosition = Position

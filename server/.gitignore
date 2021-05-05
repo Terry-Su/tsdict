@@ -4,6 +4,16 @@ build
 dist
 bundle.js
 
+# dict url
+dictUrl.txt
+
+# customConfig
+customConfig.ts
+
+# store
+store
+storeBigFile
+
 # Dependencies
 node_modules
 
@@ -12,7 +22,6 @@ node_modules
 
 # system
 .DS_Store
-
 
 
 

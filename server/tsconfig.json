@@ -7,6 +7,12 @@
   ],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "./src/*",
+      ],
+    },
     "module": "commonJS",
 		"target": "es5",
 		"jsx": "react",

@@ -2,6 +2,6 @@
   "name": "TSDict",
   "short_name": "TSDict",
   "description": "TSDict",
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "standalone"
 }

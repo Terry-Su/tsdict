@@ -1,2 +1,8 @@
-export const TOP_BAR_HEIGHT = 64 
-export const SUB_TOP_BAR_HEIGHT = 48
+export const MAX_PASTING_IMAGE_WIDTH = 500
+
+export const MAX_WORD_REVIEW_LEVEL = 10
+
+export const TIME_ONE_SECOND = 1000
+export const TIME_ONE_MINUTE = 60 * TIME_ONE_SECOND
+export const TIME_ONE_HOUR = 60 * TIME_ONE_MINUTE
+export const TIME_ONE_DAY = 24 * TIME_ONE_HOUR

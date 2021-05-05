@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 
-import { reduxStore } from './entry'
 // import BasicComponent, { DefaultProps } from '@/components/BasicComponent'
-import { Action, Selector, State } from './utils/decorators'
+import { Actions, Selectors, States } from './utils/decorators'
 
 interface Props {
   
 }
 
-@State( 'foo', 'count' ) 
-@Action( 'foo', 'increase', 'decrease' )
+@States( 'foo', 'count' ) 
+@Actions( 'foo', 'increase', 'decrease' )
 export default class Test extends Component<Props> {
   count?: number
   decoratedCount?: number

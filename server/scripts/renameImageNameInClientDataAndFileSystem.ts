@@ -10,16 +10,16 @@ import {
 export default function renameImageNameInClientDataAndFileSystem() {
   const renameImageInFileSystem = ( imageFileName: string, wordName: string, afterRenamed ) => {
     const file = GET_STORE_IMAGE_FILE_BY_NAME( imageFileName )
-    const docodedFile = GET_STORE_IMAGE_FILE_BY_NAME( decodeURIComponent( imageFileName ) )
-    if ( fs.pathExistsSync( file ) || fs.pathExistsSync( docodedFile ) ) {
-      const newFileNameWithoutExt = GET_STORE_IMAGE_UNIQUE_FILE_NAME() 
+    const decodedFile = GET_STORE_IMAGE_FILE_BY_NAME( decodeURIComponent( imageFileName ) )
+    if ( fs.pathExistsSync( file ) || fs.pathExistsSync( decodedFile ) ) {
+      const newFileNameWithoutExt = GET_STORE_IMAGE_UNIQUE_FILE_NAME( wordName ) 
       const ext = path.parse( imageFileName ).ext
-      const newFileName = `${wordName}$${newFileNameWithoutExt}${ext}`
+      const newFileName = `${newFileNameWithoutExt}${ext}`
       const newFile = GET_STORE_IMAGE_FILE_BY_NAME( newFileName )
       
       // # rename image in file system
       fs.pathExistsSync( file ) && fs.renameSync( file, newFile )
-      fs.pathExistsSync( docodedFile ) && fs.renameSync( docodedFile, newFile )
+      fs.pathExistsSync( decodedFile ) && fs.renameSync( decodedFile, newFile )
       afterRenamed( newFileName )
     } else {
       console.log( `image(${file}) not existed` )

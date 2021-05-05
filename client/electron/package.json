@@ -1,0 +1,10 @@
+{
+  "main": "main.js",
+  "scripts": {
+    "start": "nodemon --watch main.js --exec electron ."
+  },
+  "devDependencies": {
+    "electron": "^3.0.7",
+    "nodemon": "^1.19.1"
+  }
+}
