@@ -24,6 +24,6 @@ app.use( express.json( {
   limit: '50mb',
 } ) )
 
-httpsServer.listen( PORT, () => {
+httpsServer.listen( PORT, '0.0.0.0', () => {
   console.log( `Server on https://localhost:${ PORT }` )
 } )

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "nodemon --verbose -e ts --watch src/ --exec ts-node -r tsconfig-paths/register src/index",
+    "dev": "nodemon --verbose -e ts --watch src/ --exec ts-node -r tsconfig-paths/register src/index",
+    "serve": "cross-env NODE_ENV=production npm run dev",
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "compress": "ts-node scripts/compressImage.command.ts --path",
     "compress:images": "ts-node scripts/compressServerImages.command.ts --dir store/image",
@@ -19,6 +20,7 @@
     "@types/trash": "^4.3.0",
     "@typescript-eslint/parser": "^1.7.0",
     "body-parser": "^1.18.3",
+    "cross-env": "^7.0.3",
     "eslint": "^5.9.0",
     "express": "^4.16.4",
     "formidable": "^1.2.2",
