@@ -11,7 +11,10 @@ connection.connect()
 
 export const sqlQuery = ( sentence: string ): Promise<{results: any[], fields: any}> => new Promise( ( resolve, reject ) => {
     connection.query( sentence, function ( error, results, fields ) {
-      if ( error ) throw error
+      if ( error ) {
+        console.error( error )
+        return
+      }
       resolve( { results, fields } )
     } )
   } )

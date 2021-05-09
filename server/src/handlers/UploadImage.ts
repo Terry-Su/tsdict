@@ -17,8 +17,8 @@ export default async function UploadImage( req: express.Request, res: express.Re
     const fileName = imageBlob.path.replace( /.*[\/\\]/g, '' )
     const outputPath = PATH.resolve( STORE_IMAGES, `${fileName}.${extension}` )
     fs.moveSync( imageBlob.path, outputPath )
-    const imageUrl = `/images/${fileName}.${extension}`
-    console.log( 'imageUrl', imageUrl )
+    const imageUrl = `images/${fileName}.${extension}`
+    // console.log( 'imageUrl', imageUrl )
     res.send( imageUrl )
     // FS.ensureDirSync( STORE_GIF )
     // const avaiableName = GET_STORE_GIF_UNIQUE_FILE_NAME( word.name )
