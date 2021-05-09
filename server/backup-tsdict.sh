@@ -37,4 +37,4 @@ tar -czvf $backupExportedDir/$exportDirName.tar.gz .
 cd $storePath
 git add -A
 git ci -m "update"
-git push
+# git push
