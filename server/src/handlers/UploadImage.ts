@@ -4,9 +4,10 @@ import formidable from 'formidable'
 import fs from 'fs-extra'
 import PATH from 'path'
 import { STORE_IMAGES } from '@src/constants/paths'
+import compressImage from "@src/utils/compressImage"
 export default async function UploadImage( req: express.Request, res: express.Response, next ) {
   const form = new formidable( { multiples: true, maxFileSize: 1 * 1024 * 1024 * 1024 } )
-  form.parse( req, ( err, fields, files ) => {
+  form.parse( req, async ( err, fields, files ) => {
     if ( err ) {
       console.log( err )
       res.end( 'Upload failed!' )
@@ -14,9 +15,13 @@ export default async function UploadImage( req: express.Request, res: express.Re
     const { imageBlob } = files
     fs.ensureDirSync( STORE_IMAGES )
     const extension = imageBlob.type.replace( /.*\//g, '' )
-    const fileName = imageBlob.path.replace( /.*[\/\\]/g, '' )
+    const fileName = imageBlob.path.replace( /.*[\/\\]/g, '' ).replace( /^upload_/, '' )
     const outputPath = PATH.resolve( STORE_IMAGES, `${fileName}.${extension}` )
-    fs.moveSync( imageBlob.path, outputPath )
+    // fs.moveSync( imageBlob.path, outputPath )
+
+    // # 压缩图片
+    await compressImage( imageBlob.path, outputPath, extension )
+
     const imageUrl = `images/${fileName}.${extension}`
     // console.log( 'imageUrl', imageUrl )
     res.send( imageUrl )
