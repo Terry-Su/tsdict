@@ -18,6 +18,7 @@ mkdir -p $targetBackupStoreDir
 # 打日期标志
 touch $targetBackupDir/log.txt
 timeStr=$(date "+%Y-%m-%d--%H-%M-%S")
+echo "$timeStr"
 echo "$timeStr" > $targetBackupDir/log.txt
 
 # # 导出数据库
